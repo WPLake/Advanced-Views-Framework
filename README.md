@@ -23,4 +23,18 @@ Repository: [Advanced Views Framework](https://wordpress.org/plugins/acf-views/)
 * [Documentation](https://docs.acfviews.com/)
 * [Landing Page](https://wplake.org/advanced-views-lite/)
 * [Pro Edition](https://wplake.org/advanced-views-pro/)
-* [SVN Repository](http://plugins.svn.wordpress.org/acf-views/) 
+* [SVN Repository](http://plugins.svn.wordpress.org/acf-views/)
+
+## 3. Demos for Advanced Usage
+
+* [AVF - Tailwind usage example](https://gitlab.com/wplake/tailwind-demo-for-advanced-views)
+* [AVF - Tailwind starter theme](https://gitlab.com/wplake/avf-tailwind-starter-theme)
+* [AVF - Sass and TypeScript usage example](https://gitlab.com/wplake/sass-and-typescript-demo-for-advanced-views)
+
+## 4. Contribution
+
+We would be excited if you decide to contribute 🤝
+
+Please submit your Pull Requests to the `main` branch. For any new code, ensure it adheres to the [WordPress Coding
+Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/).
+
