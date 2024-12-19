@@ -1,0 +1,28 @@
+<latest-article class="{{ _view.classes }}latest-article latest-article--object-id--{{ _view.object_id }}">
+
+	{% if featured_image_with_link.value %}
+		<a target="{{ featured_image_with_link.target }}" class="latest-article__featured-image-with-link" href="{{ featured_image_with_link.href }}">
+			<img class="latest-article__featured-image-with-link-image" src="{{ featured_image_with_link.value }}" width="{{ featured_image_with_link.width }}" height="{{ featured_image_with_link.height }}" alt="{{ featured_image_with_link.alt }}" decoding="{{ featured_image_with_link.decoding }}" loading="{{ featured_image_with_link.loading }}" srcset="{{ featured_image_with_link.srcset }}" sizes="{{ featured_image_with_link.sizes }}">
+		</a>
+	{% endif %}
+
+
+	{% if title_with_link.value %}
+		<a target="{{ title_with_link.target }}" class="latest-article__title-with-link" href="{{ title_with_link.value }}">
+			{{ title_with_link.linkLabel|default(title_with_link.title) }}
+		</a>
+	{% endif %}
+
+
+	{% if modified_date.value %}
+		<div class="latest-article__modified-date">
+			<div class="latest-article__modified-date-label">
+				{{ modified_date.label }}
+			</div>
+			<div class="latest-article__modified-date-field">
+				{{ modified_date.value }}
+			</div>
+		</div>
+	{% endif %}
+
+</latest-article>

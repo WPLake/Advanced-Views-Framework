@@ -1,0 +1,41 @@
+#card {
+    display: block;
+}
+
+#card__inner {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+#card__heading {
+    font-size: 22px;
+    font-weight: 500;
+    color: black;
+    margin: 0 0 40px;
+    text-align: center;
+}
+
+#card__items {
+    display: grid;
+    gap: 20px;
+}
+
+@media screen and (min-width: 768px) {
+    #card__items {
+        justify-content: center;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    #card__items {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+    }
+
+    #card__heading {
+        text-align: left;
+    }
+}

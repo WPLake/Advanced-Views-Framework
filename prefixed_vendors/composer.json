@@ -1,0 +1,37 @@
+{
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*"
+      ]
+    }
+  ],
+  "require": {
+    "yahnis-elsts/plugin-update-checker": "^5.4",
+    "twig/twig": "3.7.1",
+    "wpackagist-plugin/advanced-custom-fields": "^6.3.0",
+    "lightsource/acf-groups": "^14.0.2",
+    "ext-json": "*",
+    "psr/container": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Org\\Wplake\\Advanced_Views\\": "../src"
+    }
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  },
+  "config": {
+    "autoloader-suffix": "_org_wplake_advanced_views_prefixed_vendors",
+    "allow-plugins": {
+      "composer/installers": false
+    }
+  }
+}

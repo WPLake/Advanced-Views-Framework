@@ -1,0 +1,38 @@
+<featured-item class="{{ _view.classes }}featured-item featured-item--object-id--{{ _view.object_id }} featured-item--image-position--{{ image_position.value }}">
+    <div class="featured-item__inner">
+        {% if image.value %}
+            <div class="featured-item__image-wrapper">
+                <img class="featured-item__image" src="{{ image.value }}" width="{{ image.width }}"
+                     height="{{ image.height }}"
+                     alt="{{ image.alt }}" decoding="{{ image.decoding }}" loading="{{ image.loading }}"
+                     srcset="{{ image.srcset }}" sizes="{{ image.sizes }}">
+            </div>
+        {% endif %}
+
+        <div class="featured-item__content-wrapper">
+            <div class="featured-item__content">
+                {% if title.value %}
+                    <h2 class="featured-item__title">
+                        {{ title.value }}
+                    </h2>
+                {% endif %}
+
+
+                {% if description.value %}
+                    <div class="featured-item__description">
+                        {{ description.value|raw }}
+                    </div>
+                {% endif %}
+
+
+                {% if read_more_link.value %}
+                    <a target="{{ read_more_link.target }}" class="featured-item__read-more-link"
+                       href="{{ read_more_link.value }}">
+                        {{ read_more_link.linkLabel|default(read_more_link.title) }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="featured-item__background"></div>
+</featured-item>

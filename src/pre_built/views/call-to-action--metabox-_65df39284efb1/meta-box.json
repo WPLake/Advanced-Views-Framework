@@ -1,0 +1,174 @@
+[
+    {
+        "post_type": "meta-box",
+        "post_name": "call-to-action",
+        "post_title": "Call to action",
+        "post_date": "2024-02-28 13:47:59",
+        "post_status": "publish",
+        "post_content": "",
+        "settings": {
+            "object_type": "post",
+            "post_types": [
+                "page"
+            ],
+            "context": "normal",
+            "priority": "high",
+            "style": "default",
+            "tab_style": "",
+            "tab_default_active": "",
+            "custom_table": {
+                "name": ""
+            },
+            "class": "",
+            "prefix": "",
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name"
+        },
+        "fields": {
+            "text_2lcaose78bc": {
+                "_id": "text_2lcaose78bc",
+                "name": "Title",
+                "id": "text_2lcaose78bc",
+                "type": "text",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "placeholder": "",
+                "size": "",
+                "prepend": "",
+                "append": "",
+                "datalist_choices": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "wysiwyg_1k4esc87cw6h": {
+                "_id": "wysiwyg_1k4esc87cw6h",
+                "name": "Description",
+                "id": "wysiwyg_1k4esc87cw6h",
+                "type": "wysiwyg",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "url_qd364hwssx": {
+                "_id": "url_qd364hwssx",
+                "name": "Link",
+                "id": "url_qd364hwssx",
+                "type": "url",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "placeholder": "",
+                "size": "",
+                "prepend": "",
+                "append": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            }
+        },
+        "data": [],
+        "meta_box": {
+            "title": "Call to action",
+            "id": "call-to-action",
+            "post_types": [
+                "page"
+            ],
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name",
+            "include": {
+                "relation": "OR",
+                "ID": [
+                    3442
+                ]
+            },
+            "fields": [
+                {
+                    "name": "Title",
+                    "id": "text_2lcaose78bc",
+                    "type": "text"
+                },
+                {
+                    "name": "Description",
+                    "id": "wysiwyg_1k4esc87cw6h",
+                    "type": "wysiwyg"
+                },
+                {
+                    "name": "Link",
+                    "id": "url_qd364hwssx",
+                    "type": "url"
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,15 @@
+#view {
+    display: flex;
+    background: #f2f2f2;
+    padding: 20px 0;
+}
+
+#view__inner {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    color: #333;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+}

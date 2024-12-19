@@ -1,0 +1,220 @@
+#view {
+    display: block;
+    position: sticky;
+    background: white;
+    box-shadow: 0 2px 3px #0000000d;
+    top: 0;
+    z-index: 999;
+}
+
+#view__inner {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* logo and mobile menu item */
+
+#view__logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#view__logo-wrapper {
+    padding: 10px 20px;
+}
+
+#view__logo {
+    display: flex;
+    flex-direction: column;
+    outline: none;
+}
+
+#view__menu-icon {
+    color: #333;
+    height: 18px;
+    width: 27px;
+}
+
+/* items */
+
+#view__items,
+#view__items-sub-menu-item {
+    list-style: none;
+}
+
+#view__items-wrapper {
+    display: flex;
+    transition: all .3s ease;
+    max-height: calc(100vh - 40px) !important;
+    overflow-y: auto !important;
+}
+
+#view__items {
+    display: flex;
+    flex-direction: column;
+    border-top: 2px dashed #d0d0d0;
+    margin: 10px 0 0;
+    width: 100%;
+    padding: 0 20px;
+}
+
+#view__items-menu-item {
+    padding: 7px 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#view__items-top-link,
+#view__items-link {
+    font-size: 16px;
+    color: #008bb7;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all .2s ease;
+    outline: none;
+}
+
+#view__items-top-link--active {
+    color: #333;
+}
+
+#view__items-arrow-icon {
+    width: 10px;
+    height: 10px;
+    transition: all .2s ease;
+    margin: 0 0 0 3px;
+    fill: currentColor;
+}
+
+#view__items-sub-menu-item {
+    transition: all .2s ease;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 0;
+}
+
+#view__items-link {
+    display: flex;
+    white-space: nowrap;
+    padding: 5px 10px;
+}
+
+#view__items-link:hover {
+    color: #333;
+    background: white;
+}
+
+#view__items-link--active {
+    color: #333;
+}
+
+/* desktop only styles */
+
+@media screen and (min-width: 992px) {
+    #view__items-menu-item:hover #view__items-top-link {
+        color: #333;
+    }
+
+    #view__items-menu-item:hover #__items-arrow-icon {
+        transform: rotate(-180deg);
+    }
+
+    #view__items-menu-item:hover {
+        background: #f4f4f4;
+    }
+
+    #view__items-menu-item:hover #__items-sub-menu-item {
+        opacity: 1;
+        z-index: 1;
+        pointer-events: all;
+    }
+
+    #view__inner {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #view__logo-wrapper {
+        padding: 0 20px;
+        align-self: center;
+    }
+
+    #view__items-wrapper {
+        max-height: initial !important;
+        overflow-y: initial !important;
+    }
+
+    #view__menu-icon {
+        display: none;
+    }
+
+    #view__items-top-link {
+        padding: 0 20px;
+    }
+
+    #view__items-menu-item {
+        padding: 20px 0;
+    }
+
+    #view__items {
+        padding: 10px 0 0;
+        width: initial;
+        flex-direction: row;
+        border-top: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #view__items-sub-menu-item {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        top: 100%;
+        z-index: -1;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    body.admin-bar #view {
+        top: 32px;
+    }
+}
+
+/* mobile only styles */
+
+@media screen and (max-width: 992px) {
+    .top-header:not(.top-header--open) #__items-wrapper {
+        max-height: 0 !important;
+    }
+
+    .top-header.top-header--open #__menu-icon--state--close,
+    .top-header:not(.top-header--open) #__menu-icon--state--open {
+        display: none;
+    }
+
+    #view__items-wrapper {
+        overflow: hidden;
+        position: absolute;
+        top: calc(100%);
+        left: 0;
+        right: 0;
+        z-index: 9;
+        background: white;
+    }
+
+    #view__items-menu-item:first-child,
+    .top-header__sub-item:first-child {
+        margin-top: 10px;
+    }
+
+    #view__items-menu-item:last-child {
+        margin-bottom: 10px;
+    }
+}

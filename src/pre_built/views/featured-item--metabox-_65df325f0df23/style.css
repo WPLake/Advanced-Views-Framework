@@ -1,0 +1,128 @@
+#view {
+    display: block;
+    position: relative;
+    padding: 10px 0;
+}
+
+#view__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+    background: white;
+}
+
+/* layout (image left/right) rules */
+
+#view__image-wrapper,
+#view__content-wrapper {
+    flex: 1 0;
+    display: flex;
+}
+
+#view__image-wrapper {
+    justify-content: center;
+}
+
+#view__inner--image-position--left #__content-wrapper {
+    justify-content: flex-start;
+}
+
+#view--image-position--right #__content-wrapper {
+    justify-content: flex-start;
+}
+
+/* elements */
+
+#view__content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 15px 30px;
+}
+
+#view__image {
+    max-width: 100%;
+    height: auto;
+}
+
+#view__title {
+    font-size: 22px;
+    font-weight: 500;
+    color: black;
+    margin: 0;
+}
+
+#view__description p {
+    font-size: 16px;
+    margin: 0;
+}
+
+#view__read-more-link {
+    border: 1px solid #008bb7;
+    border-radius: 16px;
+    color: #008bb7;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 6px 24px;
+    transition: all .3s ease;
+    background: #e5f3f8;
+    text-decoration: none;
+    align-self: flex-start;
+}
+
+#view__read-more-link:hover {
+    background: white;
+}
+
+#view__background {
+    display: none;
+}
+
+/* desktop only */
+
+@media screen and (min-width: 992px) {
+    #view {
+        padding: 60px 0;
+    }
+
+    #view__inner {
+        flex-direction: row;
+        gap: 80px;
+        background: initial;
+    }
+
+    #view__content {
+        margin: 0 0 0 30px;
+        padding: 0;
+        max-width: 330px;
+    }
+
+    #view__background {
+        background: #fff;
+        bottom: 0;
+        display: block;
+        left: 50%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1;
+    }
+
+    #view--image-position--right #__image-wrapper {
+        order: 2;
+    }
+
+    #view--image-position--right #__background {
+        left: 0;
+        right: 50%;
+    }
+
+    #view--image-position--right #__content {
+        margin: 0;
+    }
+}

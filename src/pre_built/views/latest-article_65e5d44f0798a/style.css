@@ -1,0 +1,51 @@
+#view {
+    display: block;
+}
+
+#view__details {
+    padding: 10px;
+}
+
+#view__title-with-link {
+    color: #008bb7;
+    font-size: 17px;
+    font-weight: 600;
+    transition: all .3s ease;
+    text-decoration: none;
+    outline: none;
+}
+
+#view__title-with-link:hover {
+    color: black;
+}
+
+#view__modified-date {
+    color: #888;
+    font-size: 13px;
+    margin: 10px 0 0;
+    display: flex;
+    gap: 5px;
+}
+
+#view__featured-image-with-link {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding-top: 62.5%;
+    outline: none;
+}
+
+#view__featured-image-with-link-image {
+    border: 1px solid #f4f4f4;
+    border-radius: 6px;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

@@ -1,0 +1,170 @@
+[
+    {
+        "post_type": "meta-box",
+        "post_name": "hero-introduction",
+        "post_title": "Hero (introduction)",
+        "post_date": "2024-02-28 11:07:39",
+        "post_status": "publish",
+        "post_content": "",
+        "settings": {
+            "object_type": "post",
+            "post_types": [
+                "page"
+            ],
+            "context": "normal",
+            "priority": "high",
+            "style": "default",
+            "tab_style": "",
+            "tab_default_active": "",
+            "custom_table": {
+                "name": ""
+            },
+            "class": "",
+            "prefix": "",
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name"
+        },
+        "fields": {
+            "text_hb8mc7b5yup": {
+                "_id": "text_hb8mc7b5yup",
+                "name": "Title",
+                "id": "text_hb8mc7b5yup",
+                "type": "text",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "placeholder": "",
+                "size": "",
+                "prepend": "",
+                "append": "",
+                "datalist_choices": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "wysiwyg_nshyney7gac": {
+                "_id": "wysiwyg_nshyney7gac",
+                "name": "Description",
+                "id": "wysiwyg_nshyney7gac",
+                "type": "wysiwyg",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "single_image_kpi4agaas1": {
+                "_id": "single_image_kpi4agaas1",
+                "name": "Background",
+                "id": "single_image_kpi4agaas1",
+                "type": "single_image",
+                "label_description": "",
+                "desc": "",
+                "image_size": "thumbnail",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            }
+        },
+        "data": [],
+        "meta_box": {
+            "title": "Hero (introduction)",
+            "id": "hero-introduction",
+            "post_types": [
+                "page"
+            ],
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name",
+            "include": {
+                "relation": "OR",
+                "ID": [
+                    3442
+                ]
+            },
+            "fields": [
+                {
+                    "name": "Title",
+                    "id": "text_hb8mc7b5yup",
+                    "type": "text"
+                },
+                {
+                    "name": "Description",
+                    "id": "wysiwyg_nshyney7gac",
+                    "type": "wysiwyg"
+                },
+                {
+                    "name": "Background",
+                    "id": "single_image_kpi4agaas1",
+                    "type": "single_image"
+                }
+            ]
+        }
+    }
+]

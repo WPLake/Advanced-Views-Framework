@@ -1,0 +1,23 @@
+<cta-section class="{{ _view.classes }}cta-section cta-section--object-id--{{ _view.object_id }}">
+
+	{% if title.value %}
+		<div class="cta-section__title">
+			{{ title.value }}
+		</div>
+	{% endif %}
+
+
+	{% if description.value %}
+		<div class="cta-section__description">
+			{{ description.value|raw }}
+		</div>
+	{% endif %}
+
+
+	{% if link.value %}
+		<a target="{{ link.target }}" class="cta-section__link" href="{{ link.value }}">
+			{{ link.linkLabel|default(link.title) }}
+		</a>
+	{% endif %}
+
+</cta-section>

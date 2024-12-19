@@ -1,0 +1,44 @@
+#view {
+    display: block;
+    background: #e5f3f8;
+    padding: 40px 0;
+}
+
+#view__inner {
+    max-width: 970px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 15px;
+    text-align: center;
+}
+
+#view__title {
+    font-size: 22px;
+    font-weight: 500;
+    color: black;
+    margin: 0;
+}
+
+#view__description p {
+    font-size: 16px;
+    margin: 0;
+}
+
+#view__link {
+    border: 1px solid #008bb7;
+    border-radius: 16px;
+    color: #008bb7;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 6px 24px;
+    transition: all .3s ease;
+    background: #e5f3f8;
+    text-decoration: none;
+}
+
+#view__link:hover {
+    background: white;
+}

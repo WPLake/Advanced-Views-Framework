@@ -1,0 +1,36 @@
+<featured-section class="{{ _view.classes }}featured-section featured-section--object-id--{{ _view.object_id }}">
+
+    <div class="featured-section__container">
+        <div class="featured-section__content">
+            {% if title.value %}
+                <h2 class="featured-section__title">
+                    {{ title.value }}
+                </h2>
+            {% endif %}
+
+            <div class="featured-section__content-delimiter"></div>
+
+            {% if description.value %}
+                <div class="featured-section__description">
+                    {{ description.value|raw }}
+                </div>
+            {% endif %}
+
+
+            {% if link.value %}
+                <a target="{{ link.target }}" class="featured-section__link" href="{{ link.value }}">
+                    {{ link.linkLabel|default(link.title) }}
+                </a>
+            {% endif %}
+        </div>
+
+        {% if image.value %}
+            <img class="featured-section__image" src="{{ image.value }}" width="{{ image.width }}"
+                 height="{{ image.height }}" alt="{{ image.alt }}" decoding="{{ image.decoding }}"
+                 loading="{{ image.loading }}" srcset="{{ image.srcset }}" sizes="{{ image.sizes }}">
+        {% endif %}
+    </div>
+
+    <div class="featured-section__background"></div>
+
+</featured-section>

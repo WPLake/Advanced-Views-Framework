@@ -1,0 +1,33 @@
+<top-header class="{{ _view.classes }}top-header top-header--object-id--{{ _view.object_id }}">
+
+	{% if items.value %}
+		<ul class="top-header__items">
+			
+			{% for menu_item in items.value %}
+				<li class="top-header__items-menu-item{% if menu_item.isActive or menu_item.isChildActive %} top-header__items-menu-item--active{% endif %}">
+
+					<a target="{{ menu_item.target }}" class="top-header__items-link" href="{{ menu_item.value }}">
+						{{ menu_item.linkLabel|default(menu_item.title) }}
+					</a>
+
+					{% if menu_item.children %}
+						<ul class="top-header__items-sub-menu">
+
+							{% for sub_menu_item in menu_item.children %}
+								<li class="top-header__items-sub-menu-item{% if sub_menu_item.isActive %} top-header__items-sub-menu-item--active{% endif %}">
+									<a target="{{ sub_menu_item.target }}" class="top-header__items-link" href="{{ sub_menu_item.value }}">
+										{{ sub_menu_item.linkLabel|default(sub_menu_item.title) }}
+									</a>
+								</li>
+							{% endfor %}
+
+						</ul>
+					{% endif %}
+
+				</li>
+			{% endfor %}
+
+		</ul>
+	{% endif %}
+
+</top-header>

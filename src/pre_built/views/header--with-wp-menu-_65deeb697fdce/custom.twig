@@ -1,0 +1,61 @@
+<top-header class="{{ _view.classes }}top-header top-header--object-id--{{ _view.object_id }}">
+    <div class="top-header__inner">
+        <div class="top-header__logo-wrapper">
+            <a class="top-header__logo" href="/">
+               <img src="https://placehold.co/200x40" alt="logo">
+            </a>
+
+            <svg class="top-header__menu-icon top-header__menu-icon--state--close" viewBox="0 0 27 19"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.375 18.25H26.625V15.3333H0.375V18.25ZM0.375 10.9583H26.625V8.04167H0.375V10.9583ZM0.375 0.75V3.66667H26.625V0.75H0.375Z"></path>
+            </svg>
+
+            <svg id="svg-menu-open" class="top-header__menu-icon top-header__menu-icon--state--open" viewBox="0 0 26 19"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 18.25H18.9583V15.3333H0V18.25ZM0 10.9583H14.5833V8.04167H0V10.9583ZM0 0.75V3.66667H18.9583V0.75H0ZM26.25 14.7354L21.0292 9.5L26.25 4.26458L24.1938 2.20833L16.9021 9.5L24.1938 16.7917L26.25 14.7354Z"></path>
+            </svg>
+        </div>
+
+        {% if items.value %}
+            <div class="top-header__items-wrapper">
+                <ul class="top-header__items">
+
+                    {% for menu_item in items.value %}
+                        <li class="top-header__items-menu-item">
+
+                            <a target="{{ menu_item.target }}"
+                               class="top-header__items-top-link{% if menu_item.isActive or menu_item.isChildActive %} top-header__items-top-link--active{% endif %}"
+                               href="{{ menu_item.value }}">
+                                <span>{{ menu_item.linkLabel|default(menu_item.title) }}</span>
+                                {% if menu_item.children %}
+                                    <svg class="top-header__items-arrow-icon" viewBox="0 0 8 7"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.57513 5.90565L0.176195 2.50671C-0.0587311 2.27178 -0.0587311 1.8919 0.176195 1.65948L0.741019 1.09465C0.975945 0.859725 1.35583 0.859725 1.58825 1.09465L3.9975 3.5039L6.40675 1.09465C6.64167 0.859725 7.02156 0.859725 7.25398 1.09465L7.82381 1.65698C8.05873 1.8919 8.05873 2.27178 7.8238 2.50421L4.42487 5.90315C4.18994 6.14057 3.81006 6.14058 3.57513 5.90565Z"></path>
+                                    </svg>
+                                {% endif %}
+                            </a>
+
+                            {% if menu_item.children %}
+                                <ul class="top-header__items-sub-menu-item">
+
+                                    {% for sub_menu_item in menu_item.children %}
+                                        <li class="top-header__sub-item">
+                                            <a target="{{ sub_menu_item.target }}"
+                                               class="top-header__items-link{% if sub_menu_item.isActive %} top-header__items-link--active{% endif %}"
+                                               href="{{ sub_menu_item.value }}">
+                                                {{ sub_menu_item.linkLabel|default(sub_menu_item.title) }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+
+                                </ul>
+                            {% endif %}
+
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</top-header>

@@ -1,0 +1,13 @@
+<latest-articles class="{{ _card.classes }}latest-articles">
+
+	{% if _card.post_ids %}
+		<div class="latest-articles__items">
+			{% for post_id in _card.post_ids %}
+				[acf_views view-id="{{ _card.view_id }}" object-id="{{ post_id }}"]
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="latest-articles__no-posts-message">{{ _card.no_posts_found_message }}</div>
+	{% endif %}
+
+</latest-articles>

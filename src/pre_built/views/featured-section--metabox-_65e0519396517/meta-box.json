@@ -1,0 +1,213 @@
+[
+    {
+        "post_type": "meta-box",
+        "post_name": "featured-section",
+        "post_title": "Featured section",
+        "post_date": "2024-02-29 09:44:05",
+        "post_status": "publish",
+        "post_content": "",
+        "settings": {
+            "object_type": "post",
+            "post_types": [
+                "page"
+            ],
+            "context": "normal",
+            "priority": "high",
+            "style": "default",
+            "tab_style": "",
+            "tab_default_active": "",
+            "custom_table": {
+                "name": ""
+            },
+            "class": "",
+            "prefix": "",
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name"
+        },
+        "fields": {
+            "text_7tnys0ctz5r": {
+                "_id": "text_7tnys0ctz5r",
+                "name": "Title",
+                "id": "text_7tnys0ctz5r",
+                "type": "text",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "placeholder": "",
+                "size": "",
+                "prepend": "",
+                "append": "",
+                "datalist_choices": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "wysiwyg_mp07nchfmr": {
+                "_id": "wysiwyg_mp07nchfmr",
+                "name": "Description",
+                "id": "wysiwyg_mp07nchfmr",
+                "type": "wysiwyg",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "url_u2niwdjscg": {
+                "_id": "url_u2niwdjscg",
+                "name": "Link",
+                "id": "url_u2niwdjscg",
+                "type": "url",
+                "label_description": "",
+                "desc": "",
+                "std": "",
+                "placeholder": "",
+                "size": "",
+                "prepend": "",
+                "append": "",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            },
+            "single_image_1ahsrf0hq18": {
+                "_id": "single_image_1ahsrf0hq18",
+                "name": "Image",
+                "id": "single_image_1ahsrf0hq18",
+                "type": "single_image",
+                "label_description": "",
+                "desc": "",
+                "image_size": "thumbnail",
+                "min_clone": "",
+                "max_clone": "",
+                "add_button": "",
+                "admin_columns": {
+                    "position": {
+                        "type": "after",
+                        "column": "title"
+                    },
+                    "title": "",
+                    "before": "",
+                    "after": "",
+                    "sort": false,
+                    "link": false
+                },
+                "columns": 12,
+                "tooltip": {
+                    "icon": "",
+                    "position": "top",
+                    "content": ""
+                },
+                "before": "",
+                "after": "",
+                "class": "",
+                "sanitize_callback": "",
+                "save_field": true
+            }
+        },
+        "data": [],
+        "meta_box": {
+            "title": "Featured section",
+            "id": "featured-section",
+            "post_types": [
+                "page"
+            ],
+            "text_domain": "your-text-domain",
+            "function_name": "your_prefix_function_name",
+            "include": {
+                "relation": "OR",
+                "ID": [
+                    3442
+                ]
+            },
+            "fields": [
+                {
+                    "name": "Title",
+                    "id": "text_7tnys0ctz5r",
+                    "type": "text"
+                },
+                {
+                    "name": "Description",
+                    "id": "wysiwyg_mp07nchfmr",
+                    "type": "wysiwyg"
+                },
+                {
+                    "name": "Link",
+                    "id": "url_u2niwdjscg",
+                    "type": "url"
+                },
+                {
+                    "name": "Image",
+                    "id": "single_image_1ahsrf0hq18",
+                    "type": "single_image"
+                }
+            ]
+        }
+    }
+]

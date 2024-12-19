@@ -1,0 +1,13 @@
+{
+  "name": "some/test",
+  "require": {
+    "jenssegers/blade": "2.0.1",
+    "illuminate/view": "11.7.0"
+  },
+  "config": {
+    "autoloader-suffix": "_org_wplake_advanced_views_optional_vendors",
+    "allow-plugins": {
+      "composer/installers": false
+    }
+  }
+}

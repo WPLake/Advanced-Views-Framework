@@ -1,0 +1,21 @@
+<hero-intro class="{{ _view.classes }}hero-intro hero-intro--object-id--{{ _view.object_id }}">
+
+	{% if title.value %}
+		<div class="hero-intro__title">
+			{{ title.value }}
+		</div>
+	{% endif %}
+
+
+	{% if description.value %}
+		<div class="hero-intro__description">
+			{{ description.value|raw }}
+		</div>
+	{% endif %}
+
+
+	{% if background.value %}
+		<img class="hero-intro__background" src="{{ background.value }}" width="{{ background.width }}" height="{{ background.height }}" alt="{{ background.alt }}" decoding="{{ background.decoding }}" loading="{{ background.loading }}" srcset="{{ background.srcset }}" sizes="{{ background.sizes }}">
+	{% endif %}
+
+</hero-intro>
