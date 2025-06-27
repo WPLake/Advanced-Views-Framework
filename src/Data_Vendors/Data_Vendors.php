@@ -30,11 +30,17 @@ use Org\Wplake\Advanced_Views\Views\Field_Meta;
 use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Views\Source;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
 class Data_Vendors extends Action implements Hooks_Interface {
+	/**
+	 * 1. must be more than the default 10, so it's executed after the data vendor plugins fully loaded themselves (e.g. MetaBox has loading inside this hook)
+	 * 2. '15' gives the ability to shift back when it needs, while still been after the default one.
+	 */
+	const PLUGINS_LOADED_HOOK_PRIORITY = 15;
+
 	use Safe_Array_Arguments;
 
 	/**
@@ -501,7 +507,12 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
-		// before other hooks inside this plugin that listen to plugins_loaded.
-		add_action( 'plugins_loaded', array( $this, 'load_available_vendors' ), 5 );
+		// 1. with the higher priority than the default one, to make sure all vendor codes are loaded.
+		// 2. still small, to be earlier than the rest of AVF code listening to this hook
+		add_action(
+			'plugins_loaded',
+			array( $this, 'load_available_vendors' ),
+			self::PLUGINS_LOADED_HOOK_PRIORITY
+		);
 	}
 }

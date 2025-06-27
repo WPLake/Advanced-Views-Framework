@@ -6,12 +6,11 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
 class Fs_Only_Tab extends Cpt_Table_Tab {
-	use Safe_Query_Arguments;
 
 	const NAME               = 'fs_only';
 	const KEY_PREFIX         = 'acf-views-sync-';
@@ -76,7 +75,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 				);
 				printf(
 					' <a target="_blank" href="%s">%s</a>',
-					esc_url( 'https://docs.acfviews.com/templates/file-system-storage#auto-sync' ),
+					esc_url( 'https://docs.advanced-views.com/templates/file-system-storage#auto-sync' ),
 					esc_html( __( 'Read more', 'acf-views' ) )
 				);
 			}
@@ -131,8 +130,8 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 	}
 
 	public function maybe_show_action_result_message(): void {
-		$post_type = $this->get_query_string_arg_for_non_action( 'post_type' );
-		$ids       = $this->get_query_string_arg_for_non_action( self::KEY_RESULT_MESSAGE );
+		$post_type = Query_Arguments::get_string_for_non_action( 'post_type' );
+		$ids       = Query_Arguments::get_string_for_non_action( self::KEY_RESULT_MESSAGE );
 
 		if ( $this->get_cpt_name() !== $post_type ||
 			'' === $ids ) {

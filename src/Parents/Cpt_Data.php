@@ -54,7 +54,7 @@ abstract class Cpt_Data extends Group {
 	 * @item \Org\Wplake\Advanced_Views\Groups\Mount_Point_Data
 	 * @var Mount_Point_Data[]
 	 * @label Mount Points
-	 * @instructions 'Mount' this item to a location that doesn't support shortcodes. Mounting uses 'the_content' theme hook. <a target="_blank" href="https://docs.acfviews.com/display-content/mount-points-pro">Read more</a>
+	 * @instructions 'Mount' this item to a location that doesn't support shortcodes. Mounting uses 'the_content' theme hook. <a target="_blank" href="https://docs.advanced-views.com/display-content/mount-points-pro">Read more</a>
 	 * @button_label Add Mount Point
 	 * @a-no-tab 1
 	 * @a-order 2

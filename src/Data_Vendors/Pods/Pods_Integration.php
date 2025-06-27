@@ -8,18 +8,17 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
 class Pods_Integration extends Data_Vendor_Integration {
-	use Safe_Query_Arguments;
 
 	private Pods_Data_Vendor $pods_data_vendor;
 
@@ -178,7 +177,7 @@ class Pods_Integration extends Data_Vendor_Integration {
 					return $output;
 				}
 
-				$id = $this->get_query_string_arg_for_non_action( 'id' );
+				$id = Query_Arguments::get_string_for_non_action( 'id' );
 
 				if ( false === function_exists( 'pods_api' ) ||
 					'' === $id ) {
@@ -280,7 +279,7 @@ class Pods_Integration extends Data_Vendor_Integration {
 		add_filter(
 			'pods_ui_pre_init',
 			function ( array $options ): array {
-				$page = $this->get_query_string_arg_for_non_action( 'page' );
+				$page = Query_Arguments::get_string_for_non_action( 'page' );
 
 				if ( 'pods' !== $page ) {
 					return $options;

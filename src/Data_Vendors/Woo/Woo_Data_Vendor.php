@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration_Interf
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Image_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Featured_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Gallery_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Height_Field;
@@ -18,6 +19,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Price_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Regular_Price_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Sale_Price_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Sku_Field;
+use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Stock_Quantity_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Stock_Status_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Weight_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Width_Field;
@@ -31,7 +33,7 @@ use Org\Wplake\Advanced_Views\Views\Field_Meta;
 use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Views\Source;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -49,26 +51,30 @@ class Woo_Data_Vendor extends Data_Vendor {
 	 */
 	protected function get_fields_with_labels( bool $is_field_name_as_label = false ): array {
 		return array(
-			Woo_Fields::FIELD_GALLERY       => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_GALLERY        => false === $is_field_name_as_label ?
 				__( 'Gallery', 'acf-views' ) : 'gallery',
-			Woo_Fields::FIELD_PRICE         => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_PRICE          => false === $is_field_name_as_label ?
 				__( 'Price', 'acf-views' ) : 'price',
-			Woo_Fields::FIELD_REGULAR_PRICE => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_REGULAR_PRICE  => false === $is_field_name_as_label ?
 				__( 'Regular price', 'acf-views' ) : 'regular_price',
-			Woo_Fields::FIELD_SALE_PRICE    => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_SALE_PRICE     => false === $is_field_name_as_label ?
 				__( 'Sale price', 'acf-views' ) : 'sale_price',
-			Woo_Fields::FIELD_SKU           => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_SKU            => false === $is_field_name_as_label ?
 				__( 'SKU', 'acf-views' ) : 'sku',
-			Woo_Fields::FIELD_STOCK_STATUS  => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_STOCK_STATUS   => false === $is_field_name_as_label ?
 				__( 'Stock status', 'acf-views' ) : 'stock_status',
-			Woo_Fields::FIELD_WEIGHT        => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_STOCK_QUANTITY => false === $is_field_name_as_label ?
+				__( 'Stock quantity', 'acf-views' ) : 'stock_quantity',
+			Woo_Fields::FIELD_WEIGHT         => false === $is_field_name_as_label ?
 				__( 'Weight', 'acf-views' ) : 'weight',
-			Woo_Fields::FIELD_LENGTH        => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_LENGTH         => false === $is_field_name_as_label ?
 				__( 'Length', 'acf-views' ) : 'length',
-			Woo_Fields::FIELD_WIDTH         => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_WIDTH          => false === $is_field_name_as_label ?
 				__( 'Width', 'acf-views' ) : 'width',
-			Woo_Fields::FIELD_HEIGHT        => false === $is_field_name_as_label ?
+			Woo_Fields::FIELD_HEIGHT         => false === $is_field_name_as_label ?
 				__( 'Height', 'acf-views' ) : 'height',
+			Woo_Fields::FIELD_FEATURED       => false === $is_field_name_as_label ?
+				__( 'Featured', 'acf-views' ) : 'featured',
 		);
 	}
 
@@ -77,16 +83,18 @@ class Woo_Data_Vendor extends Data_Vendor {
 	 */
 	protected function get_field_types(): array {
 		return array(
-			Woo_Fields::FIELD_GALLERY       => new Woo_Gallery_Field( new Image_Field() ),
-			Woo_Fields::FIELD_PRICE         => new Woo_Price_Field(),
-			Woo_Fields::FIELD_REGULAR_PRICE => new Woo_Regular_Price_Field(),
-			Woo_Fields::FIELD_SALE_PRICE    => new Woo_Sale_Price_Field(),
-			Woo_Fields::FIELD_SKU           => new Woo_Sku_Field(),
-			Woo_Fields::FIELD_STOCK_STATUS  => new Woo_Stock_Status_Field(),
-			Woo_Fields::FIELD_WEIGHT        => new Woo_Weight_Field(),
-			Woo_Fields::FIELD_LENGTH        => new Woo_Length_Field(),
-			Woo_Fields::FIELD_WIDTH         => new Woo_Width_Field(),
-			Woo_Fields::FIELD_HEIGHT        => new Woo_Height_Field(),
+			Woo_Fields::FIELD_GALLERY        => new Woo_Gallery_Field( new Image_Field() ),
+			Woo_Fields::FIELD_PRICE          => new Woo_Price_Field(),
+			Woo_Fields::FIELD_REGULAR_PRICE  => new Woo_Regular_Price_Field(),
+			Woo_Fields::FIELD_SALE_PRICE     => new Woo_Sale_Price_Field(),
+			Woo_Fields::FIELD_SKU            => new Woo_Sku_Field(),
+			Woo_Fields::FIELD_STOCK_STATUS   => new Woo_Stock_Status_Field(),
+			Woo_Fields::FIELD_STOCK_QUANTITY => new Woo_Stock_Quantity_Field(),
+			Woo_Fields::FIELD_WEIGHT         => new Woo_Weight_Field(),
+			Woo_Fields::FIELD_LENGTH         => new Woo_Length_Field(),
+			Woo_Fields::FIELD_WIDTH          => new Woo_Width_Field(),
+			Woo_Fields::FIELD_HEIGHT         => new Woo_Height_Field(),
+			Woo_Fields::FIELD_FEATURED       => new Woo_Featured_Field(),
 		);
 	}
 
@@ -104,6 +112,8 @@ class Woo_Data_Vendor extends Data_Vendor {
 				return '_sku';
 			case Woo_Fields::FIELD_STOCK_STATUS:
 				return '_stock_status';
+			case Woo_Fields::FIELD_STOCK_QUANTITY:
+				return '_stock';
 			case Woo_Fields::FIELD_WEIGHT:
 				return '_weight';
 			case Woo_Fields::FIELD_LENGTH:
@@ -112,6 +122,7 @@ class Woo_Data_Vendor extends Data_Vendor {
 				return '_width';
 			case Woo_Fields::FIELD_HEIGHT:
 				return '_height';
+			case Woo_Fields::FIELD_FEATURED: // FEATURED doesn't have a real name, as it's actually a taxonomy.
 			default:
 				return '';
 		}
@@ -147,7 +158,7 @@ class Woo_Data_Vendor extends Data_Vendor {
 	 */
 	public function get_group_choices(): array {
 		$groups = array(
-			Woo_Fields::GROUP_NAME => __( 'Product (WooCommerce)', 'acf-views' ),
+			Woo_Fields::GROUP_NAME => __( 'Product specific fields (WooCommerce)', 'acf-views' ),
 		);
 
 		$group_choices = array();

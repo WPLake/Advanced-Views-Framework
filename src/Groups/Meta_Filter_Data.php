@@ -28,7 +28,7 @@ class Meta_Filter_Data extends Group {
 	 * @var Meta_Rule_Data[]
 	 * @item \Org\Wplake\Advanced_Views\Groups\Meta_Rule_Data
 	 * @label Rules
-	 * @instructions Rules for the meta query. Multiple rules are supported. <a target='_blank' href='https://docs.acfviews.com/query-content/meta-filters-pro'>Read more</a> <br>If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab
+	 * @instructions Rules for the meta query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/query-content/meta-filters-pro'>Read more</a> <br>If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab
 	 * @button_label Add Rule
 	 * @a-no-tab 1
 	 * @layout block

@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Parents;
 
 use Error;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Psr\Container\ContainerInterface;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -91,18 +90,11 @@ abstract class Instance {
 		$this->template = $template;
 	}
 
-	// @phpstan-ignore-next-line
-	protected function get_container(): ?ContainerInterface {
-		$container = apply_filters( 'acf_views/container', null );
-
-		// wrong return check.
-		// @phpstan-ignore-next-line .
-		if ( false === ( $container instanceof ContainerInterface ) &&
-		null !== $container ) {
-			return null;
-		}
-
-		return $container;
+	/**
+	 * @return \Psr\Container\ContainerInterface|null
+	 */
+	protected function get_container() {
+		return apply_filters( 'acf_views/container', null );
 	}
 
 	protected function print_template_engine_is_not_loaded_message(): void {

@@ -4,13 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
 // unlike get_current_screen it fits for early calls.
 class Current_Screen {
-	use Safe_Query_Arguments;
 
 	/**
 	 * This constant includes: the settings, tools and other plugin pages
@@ -34,7 +33,7 @@ class Current_Screen {
 	}
 
 	protected function is_rest_cpt_related( string $cpt_name ): bool {
-		$request_url = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
+		$request_url = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 
 		return false !== strpos( $request_url, '/wp-json/' ) &&
 				false !== strpos( $request_url, '/' . $cpt_name . '/' );
@@ -43,7 +42,7 @@ class Current_Screen {
 	// includes any rest requests.
 	public function is_admin(): bool {
 		if ( false === key_exists( 'isAdmin', $this->cache ) ) {
-			$request_uri            = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
+			$request_uri            = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 			$this->cache['isAdmin'] = true === is_admin() ||
 										false !== strpos( $request_uri, '/wp-json/' );
 		}
@@ -78,9 +77,9 @@ class Current_Screen {
 		}
 
 		// manual detection for early calls.
-		$request_url          = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
-		$post_type            = $this->get_query_string_arg_for_non_action( 'post_type' );
-		$action               = $this->get_query_string_arg_for_non_action( 'action' );
+		$request_url          = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
+		$post_type            = Query_Arguments::get_string_for_non_action( 'post_type' );
+		$action               = Query_Arguments::get_string_for_non_action( 'action' );
 		$is_admin_cpt_related = false;
 
 		switch ( $screen ) {
@@ -106,7 +105,7 @@ class Current_Screen {
 				$is_my_edit_page = false;
 
 				if ( true === $is_edit_page ) {
-					$post_id         = $this->get_query_int_arg_for_non_action( 'post' );
+					$post_id         = Query_Arguments::get_int_for_non_action( 'post' );
 					$is_my_edit_page = (string) get_post_type( $post_id ) === $cpt_name;
 				}
 

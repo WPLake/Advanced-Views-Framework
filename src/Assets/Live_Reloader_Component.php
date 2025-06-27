@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_Post;
@@ -16,8 +16,6 @@ defined( 'ABSPATH' ) || exit;
 
 class Live_Reloader_Component implements Hooks_Interface {
 	const QUERY_ARG = 'avf_live-reload';
-
-	use Safe_Query_Arguments;
 
 	private bool $is_active;
 	private bool $is_present;
@@ -42,7 +40,7 @@ class Live_Reloader_Component implements Hooks_Interface {
 
 	public function set_is_active(): void {
 		$this->is_active = true === current_user_can( 'manage_options' ) &&
-							'' !== $this->get_query_string_arg_for_non_action( self::QUERY_ARG );
+							'' !== Query_Arguments::get_string_for_non_action( self::QUERY_ARG );
 	}
 
 	public function set_parent_card_id( string $unique_id ): void {

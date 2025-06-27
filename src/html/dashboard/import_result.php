@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Dashboard\Demo_Import;
+use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 
 $view = $view ?? array();
 

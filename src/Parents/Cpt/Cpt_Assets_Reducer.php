@@ -234,7 +234,7 @@ class Cpt_Assets_Reducer implements Hooks_Interface {
 		echo '<br>';
 		printf(
 				// translators: 1 is the opening tag, 2 is the closing tag.
-			esc_html__( 'If you still see this message after an extended period, please visit the %1$s Settings %2$s > Debugging tab and enable the Enhanced Compatibility Mode.', 'acf-views' ),
+			esc_html__( 'If you still see this message after an extended period, please visit the %1$s Settings %2$s and disable the screen performance optimization.', 'acf-views' ),
 			// @phpcs:ignore
             $safe_opening_tag,
 			'</a>'
@@ -247,7 +247,7 @@ class Cpt_Assets_Reducer implements Hooks_Interface {
 			setTimeout(()=>{
 				document.querySelector('.acf-views__loading-fallback')
 					.classList.remove('acf-views__loading-fallback--hidden');
-			},7000)
+			},15 * 1000)
 		});
 		</script>
 		<?php
@@ -255,7 +255,7 @@ class Cpt_Assets_Reducer implements Hooks_Interface {
 
 	public function set_hooks( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_EDIT ) ||
-		true === $this->settings->is_enhanced_compatible_mode_active() ) {
+		false === $this->settings->is_cpt_admin_optimization_enabled() ) {
 			return;
 		}
 

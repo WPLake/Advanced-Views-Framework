@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Dashboard\Demo_Import;
+use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;

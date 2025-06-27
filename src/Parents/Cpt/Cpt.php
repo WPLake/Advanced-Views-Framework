@@ -33,7 +33,7 @@ abstract class Cpt implements Hooks_Interface {
 
 	protected function get_storage_label(): string {
 		$description  = __(
-			'<a target="_blank" href="https://docs.acfviews.com/templates/file-system-storage">File system storage</a> is',
+			'<a target="_blank" href="https://docs.advanced-views.com/templates/file-system-storage">File system storage</a> is',
 			'acf-views'
 		);
 		$description .= ' ';
@@ -43,6 +43,19 @@ abstract class Cpt implements Hooks_Interface {
 		$description .= '.';
 
 		return $description;
+	}
+
+	protected function inject_add_new_item_link( string $label_template ): string {
+		$relative_url = sprintf( 'post-new.php?post_type=%s', static::NAME );
+		$absolute_url = admin_url( $relative_url );
+
+		$opening_tag = sprintf(
+			'<a href="%s" target="_self">',
+			esc_url( $absolute_url )
+		);
+		$closing_tag = '</a>';
+
+		return sprintf( $label_template, $opening_tag, $closing_tag );
 	}
 
 	public function print_survey_link( string $html ): string {
@@ -60,14 +73,14 @@ abstract class Cpt implements Hooks_Interface {
 			__( 'WordPress', 'acf-views' ),
 			__( 'and', 'acf-views' ),
 			Plugin::BASIC_VERSION_URL,
-			__( 'Advanced Views Framework', 'acf-views' )
+			__( 'Advanced Views', 'acf-views' )
 		);
 		$content .= ' ' . sprintf(
 			"<span>%s <a target='_blank' href='%s'>%s</a> %s</span>",
 			__( 'Take', 'acf-views' ),
 			Plugin::SURVEY_URL,
 			__( '2 minute survey', 'acf-views' ),
-			__( 'to improve the Advanced Views Framework.', 'acf-views' )
+			__( 'to improve Advanced Views.', 'acf-views' )
 		);
 
 		return sprintf(

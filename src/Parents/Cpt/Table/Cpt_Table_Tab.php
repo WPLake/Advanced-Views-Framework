@@ -7,12 +7,11 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Table_Tab implements Hooks_Interface {
-	use Safe_Query_Arguments;
 
 	private Cpt_Table $cpt_table;
 
@@ -40,8 +39,8 @@ abstract class Cpt_Table_Tab implements Hooks_Interface {
 	 * @return string[]
 	 */
 	protected function get_action_unique_ids( string $key_single_action, string $key_batch_action ): array {
-		$is_batch_sync  = $this->get_query_string_arg_for_non_action( 'action2' ) === $key_batch_action;
-		$is_single_sync = '' !== $this->get_query_string_arg_for_non_action( $key_single_action );
+		$is_batch_sync  = Query_Arguments::get_string_for_non_action( 'action2' ) === $key_batch_action;
+		$is_single_sync = '' !== Query_Arguments::get_string_for_non_action( $key_single_action );
 
 		if ( ( false === $is_batch_sync && false === $is_single_sync ) ||
 			false === current_user_can( 'manage_options' ) ) {
@@ -49,8 +48,8 @@ abstract class Cpt_Table_Tab implements Hooks_Interface {
 		}
 
 		return true === $is_batch_sync ?
-			$this->get_query_string_array_arg_for_admin_action( 'post', 'bulk-posts' ) :
-			array( $this->get_query_string_arg_for_admin_action( $key_single_action, 'bulk-posts' ) );
+			Query_Arguments::get_string_array_for_admin_action( 'post', 'bulk-posts' ) :
+			array( Query_Arguments::get_string_for_admin_action( $key_single_action, 'bulk-posts' ) );
 	}
 
 	protected function get_cpt_table(): Cpt_Table {

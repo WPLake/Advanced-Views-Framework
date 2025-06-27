@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use acf_field_select;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 
 if ( true === class_exists( 'acf_field_select' ) ) {
@@ -18,7 +18,6 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 	 *  b) includes fs-only items.
 	 */
 	class Av_Slug_Select_Field extends acf_field_select {
-		use Safe_Query_Arguments;
 		use Safe_Array_Arguments;
 
 		private Views_Data_Storage $views_data_storage;
@@ -89,12 +88,12 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 				'limit'   => $per_page,
 			);
 
-			$current_page = $this->get_query_int_arg_for_non_action( 'paged', 'post' );
+			$current_page = Query_Arguments::get_int_for_non_action( 'paged', 'post' );
 			$current_page = 0 === $current_page ?
 				1 :
 				$current_page;
 
-			$search_term = $this->get_query_string_arg_for_non_action( 's', 'post' );
+			$search_term = Query_Arguments::get_string_for_non_action( 's', 'post' );
 
 			$filtered_items = '' !== $search_term ?
 				array_filter(

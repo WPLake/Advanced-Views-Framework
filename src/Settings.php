@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views;
 
 use DateTime;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,6 @@ class Settings {
 	const QUERY_ARG_PAGE_DEV_MODE = 'avf_page-dev-mode';
 
 	use Safe_Array_Arguments;
-	use Safe_Query_Arguments;
 
 	private Options $options;
 
@@ -43,7 +42,7 @@ class Settings {
 	private string $classes_generation;
 	private string $sass_template;
 	private string $ts_template;
-	private bool $is_enhanced_compatible_mode_active;
+	private bool $is_cpt_admin_optimization_enabled;
 
 	public function __construct( Options $options ) {
 		$this->options = $options;
@@ -67,7 +66,7 @@ class Settings {
 		$this->git_repositories                   = array();
 		$this->is_automatic_reports_disabled      = false;
 		$this->is_automatic_reports_confirmed     = false;
-		$this->is_enhanced_compatible_mode_active = false;
+		$this->is_cpt_admin_optimization_enabled  = false;
 	}
 
 	/**
@@ -115,7 +114,7 @@ class Settings {
 		$this->web_components_type                = $this->get_string_arg( 'webComponentsType', $settings );
 		$this->template_engine                    = $this->get_string_arg( 'templateEngine', $settings );
 		$this->classes_generation                 = $this->get_string_arg( 'classesGeneration', $settings );
-		$this->is_enhanced_compatible_mode_active = $this->get_bool_arg( 'isEnhancedCompatibleModeActive', $settings );
+		$this->is_cpt_admin_optimization_enabled  = $this->get_bool_arg( 'isCptAdminOptimizationEnabled', $settings );
 		$this->sass_template                      = $this->get_string_arg( 'sassTemplate', $settings );
 		$this->ts_template                        = $this->get_string_arg( 'tsTemplate', $settings );
 		$this->live_reload_interval_seconds       = $this->get_int_arg( 'liveReloadIntervalSeconds', $settings );
@@ -129,11 +128,11 @@ class Settings {
 
 		// set defaults if empty.
 		$this->live_reload_interval_seconds       = 0 === $this->live_reload_interval_seconds ?
-				5 :
-				$this->live_reload_interval_seconds;
+			5 :
+			$this->live_reload_interval_seconds;
 		$this->live_reload_inactive_delay_seconds = 0 === $this->live_reload_inactive_delay_seconds ?
-				20 :
-				$this->live_reload_inactive_delay_seconds;
+			20 :
+			$this->live_reload_inactive_delay_seconds;
 	}
 
 	public function save(): void {
@@ -152,7 +151,7 @@ class Settings {
 			'templateEngine'                 => $this->template_engine,
 			'webComponentsType'              => $this->web_components_type,
 			'classesGeneration'              => $this->classes_generation,
-			'isEnhancedCompatibleModeActive' => $this->is_enhanced_compatible_mode_active,
+			'isCptAdminOptimizationEnabled'  => $this->is_cpt_admin_optimization_enabled,
 			'sassTemplate'                   => $this->sass_template,
 			'tsTemplate'                     => $this->ts_template,
 			'liveReloadIntervalSeconds'      => $this->live_reload_interval_seconds,
@@ -333,12 +332,12 @@ class Settings {
 
 	public function is_dev_mode(): bool {
 		return true === $this->is_dev_mode ||
-			true === $this->is_page_dev_mode();
+				true === $this->is_page_dev_mode();
 	}
 
 	public function is_page_dev_mode(): bool {
 		if ( null === $this->is_page_dev_mode ) {
-			$this->is_page_dev_mode = '' !== $this->get_query_string_arg_for_non_action( self::QUERY_ARG_PAGE_DEV_MODE );
+			$this->is_page_dev_mode = '' !== Query_Arguments::get_string_for_non_action( self::QUERY_ARG_PAGE_DEV_MODE );
 		}
 
 		return $this->is_page_dev_mode;
@@ -375,12 +374,12 @@ class Settings {
 		$this->is_automatic_reports_confirmed = $is_automatic_reports_confirmed;
 	}
 
-	public function is_enhanced_compatible_mode_active(): bool {
-		return $this->is_enhanced_compatible_mode_active;
+	public function is_cpt_admin_optimization_enabled(): bool {
+		return $this->is_cpt_admin_optimization_enabled;
 	}
 
-	public function set_is_enhanced_compatible_mode_active( bool $is_enhanced_compatible_mode_active ): void {
-		$this->is_enhanced_compatible_mode_active = $is_enhanced_compatible_mode_active;
+	public function set_is_cpt_admin_optimization_enabled( bool $is_cpt_admin_optimization_enabled ): void {
+		$this->is_cpt_admin_optimization_enabled = $is_cpt_admin_optimization_enabled;
 	}
 
 	public function get_ts_template(): string {

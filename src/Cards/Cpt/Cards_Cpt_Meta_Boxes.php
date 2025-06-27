@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cards\Cpt;
 
-use Org\Wplake\Advanced_Views\Cards\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
 use Org\Wplake\Advanced_Views\Html;

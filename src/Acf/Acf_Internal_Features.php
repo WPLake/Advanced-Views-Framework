@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Acf;
 
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
@@ -75,7 +76,11 @@ class Acf_Internal_Features implements Hooks_Interface {
 		}
 
 		// only since 'plugins_loaded' we can judge if ACF is loaded or not
-		// 20, to be after AcfDependency->maybeIncludeAcfPlugin().
-		add_action( 'plugins_loaded', array( $this, 'maybe_include_features' ), 20 );
+		// '-1' so it's after AcfDependency->maybeIncludeAcfPlugin().
+		add_action(
+			'plugins_loaded',
+			array( $this, 'maybe_include_features' ),
+			Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY - 1
+		);
 	}
 }

@@ -18,27 +18,6 @@ abstract class Group extends AcfGroup {
 	const FIELD_NAME_PREFIX = '';
 	const TEXT_DOMAIN       = 'acf-views';
 
-	// @phpcs:ignore WordPress.NamingConventions.ValidVariableName
-	protected static function getFieldInfo( string $fieldName ): ?FieldInfoInterface {
-		// @phpcs:ignore WordPress.NamingConventions.ValidVariableName
-		$field_info = parent::getFieldInfo( $fieldName );
-
-		if ( null === $field_info ) {
-			return null;
-		}
-
-		$args = $field_info->getArguments();
-
-		if ( true === key_exists( 'instructions', $args ) &&
-			true === is_string( $args['instructions'] ) ) {
-			// @phpcs:ignore WordPress.WP.I18n
-			$instructions = __( $args['instructions'], self::TEXT_DOMAIN );
-			$field_info->setArgument( 'instructions', $instructions );
-		}
-
-		return $field_info;
-	}
-
 	public function reset_pro_fields( ?Group $origin_instance ): void {
 		$fields_info = static::getFieldsInfo();
 

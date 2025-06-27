@@ -10,13 +10,12 @@ use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Upgrades;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class External_Storage_Tab extends Cpt_Table_Tab {
-	use Safe_Query_Arguments;
 
 	const KEY_RESULT_ITEMS  = '';
 	const KEY_RESULT_GROUPS = '';
@@ -133,20 +132,20 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 	}
 
 	protected function maybe_show_import_result_message(): void {
-		$post_type = $this->get_query_string_arg_for_non_action( 'post_type' );
+		$post_type = Query_Arguments::get_string_for_non_action( 'post_type' );
 
 		if ( $this->get_cpt_name() !== $post_type ) {
 			return;
 		}
 
-		$result_items = $this->get_query_string_arg_for_non_action( static::KEY_RESULT_ITEMS );
+		$result_items = Query_Arguments::get_string_for_non_action( static::KEY_RESULT_ITEMS );
 
 		if ( '' === $result_items ) {
 			return;
 		}
 
 		// result groups argument is optional, as can be no related items.
-		$result_groups = $this->get_query_string_arg_for_non_action( static::KEY_RESULT_GROUPS );
+		$result_groups = Query_Arguments::get_string_for_non_action( static::KEY_RESULT_GROUPS );
 
 		$cpt_import_result = new Import_Result();
 		$cpt_import_result->from_query_string( $result_items, $result_groups );

@@ -26,6 +26,7 @@ class Front_Assets implements Hooks_Interface {
 	private Plugin $plugin;
 	private Data_Vendors $data_vendors;
 	private ?int $buffer_level;
+	private bool $is_custom_interactivity_api_import_map_required;
 	/**
 	 * @var Front_Asset_Interface[]
 	 */
@@ -50,6 +51,7 @@ class Front_Assets implements Hooks_Interface {
 		$this->plugin       = $plugin;
 		$this->data_vendors = $data_vendors;
 		$this->buffer_level = null;
+		$this->is_custom_interactivity_api_import_map_required = false;
 
 		$this->assets                      = array();
 		$this->inline_js_code              = array();
@@ -94,22 +96,8 @@ class Front_Assets implements Hooks_Interface {
 		$tag_name                   = $cpt_data->get_tag_name();
 		$is_wp_interactivity_in_use = $cpt_data->is_wp_interactivity_in_use();
 
-		// turn alias into the full path, as WP won't mention in the 'importmap' if others don't use it.
-		// todo find a way to make it natively, so @wordpress/interactivity works.
 		if ( true === $is_wp_interactivity_in_use ) {
-			$wp_file_system = $this->file_system->get_wp_filesystem();
-			$old_path       = true === defined( 'ABSPATH' ) &&
-								true === defined( 'WPINC' ) ?
-				ABSPATH . WPINC . '/js/dist/interactivity.min.js' :
-			'';
-
-			$interactivity_path = '' !== $old_path &&
-									true === $wp_file_system->is_file( $old_path ) ?
-				includes_url( 'js/dist/interactivity.min.js' ) :
-				// Since WP 6.7.
-				includes_url( 'js/dist/script-modules/interactivity/index.min.js' );
-
-			$js_code = str_replace( '@wordpress/interactivity', $interactivity_path, $js_code );
+			$this->is_custom_interactivity_api_import_map_required = true;
 		}
 
 		if ( false === $cpt_data->is_web_component() ) {
@@ -252,6 +240,28 @@ class Front_Assets implements Hooks_Interface {
 
 	protected function get_filesystem(): File_System {
 		return $this->file_system;
+	}
+
+	protected function print_interactivity_api_import_map( string $interactivity_api_script_url ): void {
+		$imports = array(
+			'@wordpress/interactivity' => $interactivity_api_script_url,
+		);
+
+		$data = array(
+			'imports' => $imports,
+		);
+
+		$json_data = (string) wp_json_encode(
+			$data,
+			JSON_HEX_TAG | JSON_HEX_AMP
+		);
+
+		$attributes = array(
+			'type' => 'importmap',
+			'id'   => 'avf-importmap',
+		);
+
+		wp_print_inline_script_tag( $json_data, $attributes );
 	}
 
 	public function minify_code( string $code, string $type ): string {
@@ -568,6 +578,12 @@ class Front_Assets implements Hooks_Interface {
 	}
 
 	public function enqueue_assets(): void {
+		// enqueue wp interactivity, as in non-block themes it isn't enqueued by default.
+		if ( $this->is_custom_interactivity_api_import_map_required &&
+			function_exists( 'wp_enqueue_script_module' ) ) {
+			wp_enqueue_script_module( '@wordpress/interactivity' );
+		}
+
 		foreach ( $this->assets as $asset ) {
 			$css_code = $asset->enqueue_active();
 
@@ -581,11 +597,34 @@ class Front_Assets implements Hooks_Interface {
 		}
 	}
 
+	/**
+	 * In WP 6.7 for classic themes there is no straight way
+	 * to automatically 'enqueue' iApi script and get its import map added to the page.
+	 * While we can't use fixed url, as in WP 6.7, iApi introduced custom script versions,
+	 * like '06b8f695ef48ab2d9277 (see wp-includes/assets/script-modules-packages.min.php).
+	 */
+	public function catch_interactivity_api_script_url( string $src, string $id ): string {
+		if ( '@wordpress/interactivity' === $id &&
+			$this->is_custom_interactivity_api_import_map_required ) {
+			$this->is_custom_interactivity_api_import_map_required = false;
+
+			$this->print_interactivity_api_import_map( $src );
+		}
+
+		return $src;
+	}
+
 	public function set_hooks( Current_Screen $current_screen ): void {
 		if ( true === $current_screen->is_admin() ) {
 			return;
 		}
 
+		add_filter(
+			'script_module_loader_src',
+			array( $this, 'catch_interactivity_api_script_url' ),
+			10,
+			2
+		);
 		add_action( 'wp_footer', array( $this, 'enqueue_assets' ) );
 		// printCustomAssets() contains ob_get_clean, so must be executed after all other scripts.
 		add_action( 'wp_footer', array( $this, 'print_assets' ), 9999 );

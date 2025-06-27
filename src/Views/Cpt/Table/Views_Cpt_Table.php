@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;

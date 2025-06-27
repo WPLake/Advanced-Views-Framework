@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Groups;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Dashboard\Tools;
+use Org\Wplake\Advanced_Views\Tools\Tools;
 use Org\Wplake\Advanced_Views\Parents\Group;
 
 defined( 'ABSPATH' ) || exit;
@@ -16,6 +16,10 @@ class Tools_Data extends Group {
 
 	const FIELD_EXPORT_VIEWS = 'export_views';
 	const FIELD_EXPORT_CARDS = 'export_cards';
+	const FIELD_DUMP_VIEWS   = 'dump_views';
+	const FIELD_DUMP_CARDS   = 'dump_cards';
+	const FIELD_ERROR_LOGS   = 'error_logs';
+	const FIELD_LOGS         = 'logs';
 
 	/**
 	 * @a-type tab
@@ -78,6 +82,53 @@ class Tools_Data extends Group {
 	 * @instructions Note: Views and Cards with the same IDs are overridden.
 	 */
 	public int $import_file;
+
+	/**
+	 * @a-type tab
+	 * @label Debugging
+	 */
+	public bool $debugging_tab;
+	/**
+	 * @a-type textarea
+	 * @rows 16
+	 * @label Error logs
+	 * @instructions Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation.
+	 */
+	public string $error_logs;
+	/**
+	 * @a-type textarea
+	 * @rows 16
+	 * @label Internal logs
+	 * @instructions Contains plugin warnings and debug messages if the development mode is enabled in <a target='_blank' href='/wp-admin/edit.php?post_type=acf_views&page=acf-views-settings'>the settings</a>. The logs are deleted upon plugin deactivation.
+	 */
+	public string $logs;
+	/**
+	 * @a-type true_false
+	 * @ui 1
+	 * @label Generate debug dump
+	 * @instructions Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.
+	 */
+	public bool $is_generate_installation_dump;
+
+	/**
+	 * @a-type checkbox
+	 * @multiple 1
+	 * @label Include specific Views data in your debug dump
+	 * @instructions Select the View items related to your issue to include them in the debug dump.
+	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-generate-installation-dump","operator": "==","value": "1"}]]
+	 * @var string[]
+	 */
+	public array $dump_views;
+
+	/**
+	 * @a-type checkbox
+	 * @multiple 1
+	 * @label Include specific Cards data in your debug dump
+	 * @instructions Select the Card items related to your issue to include them in the debug dump.
+	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-generate-installation-dump","operator": "==","value": "1"}]]
+	 * @var string[]
+	 */
+	public array $dump_cards;
 
 	/**
 	 * @return array<int,string[]>

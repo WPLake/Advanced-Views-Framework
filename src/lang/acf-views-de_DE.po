@@ -13,8 +13,10 @@ msgstr ""
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: acf-views\n"
 
-#: src/Plugin.php:206
-#: src/Plugin.php:332
+#. Plugin Name of the plugin
+#: acf-views.php
+#: src/Plugin.php:218
+#: src/Plugin.php:344
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -66,109 +68,104 @@ msgstr "Abfragevorschau"
 msgid "Custom data"
 msgstr "Benutzerdefinierte Daten"
 
-#: src/Cards/Card_Shortcode.php:72
+#: src/Shortcode/Card_Shortcode.php:73
 msgid "card-id attribute is missing or wrong"
 msgstr "Attribut card-id fehlt oder ist falsch"
 
-#: src/Cards/Cpt/Cards_Cpt.php:33
-#: src/Cards/Cpt/Cards_Cpt.php:35
-#: src/Cards/Cpt/Cards_Cpt.php:37
-#: src/Cards/Cpt/Cards_Cpt.php:65
+#: src/Cards/Cpt/Cards_Cpt.php:36
+#: src/Cards/Cpt/Cards_Cpt.php:38
+#: src/Cards/Cpt/Cards_Cpt.php:40
+#: src/Cards/Cpt/Cards_Cpt.php:68
 #: src/Dashboard/Dashboard.php:65
 msgid "Cards"
 msgstr "Karten"
 
-#: src/Cards/Cpt/Cards_Cpt.php:34
+#: src/Cards/Cpt/Cards_Cpt.php:37
 #: src/Parents/Cpt/Table/External_Storage_Tab.php:232
 msgid "Card"
 msgid_plural "Cards"
 msgstr[0] "Karte"
 msgstr[1] ""
 
-#: src/Cards/Cpt/Cards_Cpt.php:36
+#: src/Cards/Cpt/Cards_Cpt.php:39
 msgid "Parent Card"
 msgstr "Übergeordnete Karte"
 
-#: src/Cards/Cpt/Cards_Cpt.php:38
+#: src/Cards/Cpt/Cards_Cpt.php:41
 msgid "Browse Card"
 msgstr "Karte durchsuchen"
 
-#: src/Cards/Cpt/Cards_Cpt.php:39
+#: src/Cards/Cpt/Cards_Cpt.php:42
 msgid "Add New Card"
 msgstr "Neue Karte hinzufügen"
 
-#: src/Cards/Cpt/Cards_Cpt.php:40
-#: src/Views/Cpt/Views_Cpt.php:27
+#: src/Cards/Cpt/Cards_Cpt.php:43
+#: src/Views/Cpt/Views_Cpt.php:30
 msgid "Add New"
 msgstr "Neu hinzufügen"
 
-#: src/Cards/Cpt/Cards_Cpt.php:41
-#: src/Cards/Cpt/Cards_Cpt.php:126
+#: src/Cards/Cpt/Cards_Cpt.php:44
 #: src/Cards/Cpt/Cards_Cpt.php:129
+#: src/Cards/Cpt/Cards_Cpt.php:132
 msgid "Card updated."
 msgstr "Karte aktualisiert."
 
-#: src/Cards/Cpt/Cards_Cpt.php:42
+#: src/Cards/Cpt/Cards_Cpt.php:45
 msgid "Edit Card"
 msgstr "Karte bearbeiten"
 
-#: src/Cards/Cpt/Cards_Cpt.php:43
+#: src/Cards/Cpt/Cards_Cpt.php:46
 msgid "Update Card"
 msgstr "Karte aktualisieren"
 
-#: src/Cards/Cpt/Cards_Cpt.php:44
+#: src/Cards/Cpt/Cards_Cpt.php:47
 msgid "Search Card"
 msgstr "Karte suchen"
 
-#: src/Cards/Cpt/Cards_Cpt.php:45
-#: src/Views/Cpt/Views_Cpt.php:32
-msgid "Not Found"
-msgstr "Nicht gefunden"
-
-#: src/Cards/Cpt/Cards_Cpt.php:46
-#: src/Views/Cpt/Views_Cpt.php:33
+#: src/Cards/Cpt/Cards_Cpt.php:49
+#: src/Views/Cpt/Views_Cpt.php:36
 msgid "Not Found In Trash"
 msgstr "Im Papierkorb nicht gefunden"
 
-#: src/Cards/Cpt/Cards_Cpt.php:54
-msgid "<a target=\"_blank\" href=\"https://docs.acfviews.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the Card</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.acfviews.com/shortcode-attributes/card-shortcode\">the shortcode</a>, to display queried items with their fields."
-msgstr "<a target=\"_blank\" href=\"https://docs.acfviews.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Hängen Sie die Karte</a> an den Zielort, zum Beispiel mit <a target=\"_blank\" href=\"https://docs.acfviews.com/shortcode-attributes/card-shortcode\">dem Shortcode</a>, um abgefragte Elemente mit ihren Feldern anzuzeigen."
+#: src/Cards/Cpt/Cards_Cpt.php:57
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the Card</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">the shortcode</a>, to display queried items with their fields."
+msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Hängen Sie die Karte</a> an den Zielort, zum Beispiel mit <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">dem Shortcode</a>, um abgefragte Elemente mit ihren Feldern anzuzeigen."
 
-#: src/Cards/Cpt/Cards_Cpt.php:59
+#: src/Cards/Cpt/Cards_Cpt.php:62
 msgid "(The assigned View determines which fields are displayed)"
 msgstr "(Die zugewiesene Ansicht bestimmt, welche Felder angezeigt werden)"
 
-#: src/Cards/Cpt/Cards_Cpt.php:111
+#: src/Cards/Cpt/Cards_Cpt.php:114
 msgid "Card scheduled for:"
 msgstr "Karte geplant für:"
 
-#: src/Cards/Cpt/Cards_Cpt.php:120
+#: src/Cards/Cpt/Cards_Cpt.php:123
 msgid "Card restored to revision from"
 msgstr "Karte wiederhergestellt zur Revision von"
 
-#: src/Cards/Cpt/Cards_Cpt.php:127
-#: src/Views/Cpt/Views_Cpt.php:104
+#: src/Cards/Cpt/Cards_Cpt.php:130
+#: src/Views/Cpt/Views_Cpt.php:107
 msgid "Custom field updated."
 msgstr "Benutzerdefiniertes Feld aktualisiert."
 
-#: src/Cards/Cpt/Cards_Cpt.php:128
-#: src/Views/Cpt/Views_Cpt.php:105
+#: src/Cards/Cpt/Cards_Cpt.php:131
+#: src/Views/Cpt/Views_Cpt.php:108
 msgid "Custom field deleted."
 msgstr "Benutzerdefiniertes Feld gelöscht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:131
+#: src/Cards/Cpt/Cards_Cpt.php:134
 msgid "Card published."
 msgstr "Karte veröffentlicht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:132
+#: src/Cards/Cpt/Cards_Cpt.php:135
 msgid "Card saved."
 msgstr "Karte gespeichert."
 
-#: src/Cards/Cpt/Cards_Cpt.php:133
+#: src/Cards/Cpt/Cards_Cpt.php:136
 msgid "Card submitted."
 msgstr "Karte eingereicht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:135
+#: src/Cards/Cpt/Cards_Cpt.php:138
 msgid "Card draft updated."
 msgstr "Kartenentwurf aktualisiert."
 
@@ -206,10 +203,10 @@ msgid "Last modified"
 msgstr "Zuletzt geändert"
 
 #: src/Dashboard/Dashboard.php:58
-#: src/Views/Cpt/Views_Cpt.php:20
-#: src/Views/Cpt/Views_Cpt.php:24
-#: src/Views/Cpt/Views_Cpt.php:49
-#: src/Views/Cpt/Views_Cpt.php:152
+#: src/Views/Cpt/Views_Cpt.php:23
+#: src/Views/Cpt/Views_Cpt.php:27
+#: src/Views/Cpt/Views_Cpt.php:52
+#: src/Views/Cpt/Views_Cpt.php:155
 msgid "Views"
 msgstr "Ansichten"
 
@@ -411,6 +408,8 @@ msgstr "Erweiterte Ansicht"
 #: src/Data_Vendors/Common/Data_Vendor_Integration.php:89
 #: src/Data_Vendors/Common/Data_Vendor_Integration.php:327
 #: src/Data_Vendors/Pods/Pods_Integration.php:217
+#: src/Parents/Cpt/Cpt.php:76
+#: src/Views/Cpt/Views_Cpt.php:25
 msgid "Advanced Views"
 msgstr "Erweiterte Ansichten"
 
@@ -440,9 +439,9 @@ msgstr "Mit dieser Gruppe verbundene Ansichten enthalten ungültiges benutzerdef
 msgid "This field is available in the Pro version only"
 msgstr "Dieses Feld ist nur in der Pro-Version verfügbar"
 
-#: src/Data_Vendors/Data_Vendors.php:97
-#: src/Data_Vendors/Data_Vendors.php:122
-#: src/Data_Vendors/Data_Vendors.php:156
+#: src/Data_Vendors/Data_Vendors.php:103
+#: src/Data_Vendors/Data_Vendors.php:128
+#: src/Data_Vendors/Data_Vendors.php:162
 #: src/Groups/Integration/Tax_Field_Data_Integration.php:27
 #: src/Groups/Integration/Tax_Field_Data_Integration.php:44
 #: src/Groups/Integration/Tax_Field_Data_Integration.php:94
@@ -681,7 +680,7 @@ msgstr "$current$ (Archiv- und Kategorieseiten)"
 #: src/Groups/translations.php:8
 #: src/Groups/translations.php:177
 #: src/Parents/Cpt/Table/External_Storage_Tab.php:195
-#: src/Views/Cpt/Views_Cpt.php:21
+#: src/Views/Cpt/Views_Cpt.php:24
 msgid "View"
 msgid_plural "Views"
 msgstr[0] "Ansicht"
@@ -1302,8 +1301,8 @@ msgid "Controls how meta rules will be joined within the meta query"
 msgstr "Steuert, wie Metaregeln innerhalb der Metaabfrage verbunden werden"
 
 #: src/Groups/translations.php:304
-msgid "Rules for the meta query. Multiple rules are supported. <a target='_blank' href='https://docs.acfviews.com/query-content/meta-filters-pro'>Read more</a> <br>If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab"
-msgstr "Regeln für die Metaabfrage. Mehrere Regeln werden unterstützt. <a target='_blank' href='https://docs.acfviews.com/query-content/meta-filters-pro'>Mehr lesen</a> <br>Wenn Sie die Abfrage sehen möchten, die durch Ihre Eingabe erstellt wurde, aktualisieren Sie die Karte und laden Sie die Seite neu. Schauen Sie sich danach das Feld 'Abfragevorschau' im Tab 'Erweitert' an"
+msgid "Rules for the meta query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/query-content/meta-filters-pro'>Read more</a> <br>If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab"
+msgstr "Regeln für die Metaabfrage. Mehrere Regeln werden unterstützt. <a target='_blank' href='https://docs.advanced-views.com/query-content/meta-filters-pro'>Mehr lesen</a> <br>Wenn Sie die Abfrage sehen möchten, die durch Ihre Eingabe erstellt wurde, aktualisieren Sie die Karte und laden Sie die Seite neu. Schauen Sie sich danach das Feld 'Abfragevorschau' im Tab 'Erweitert' an"
 
 #: src/Groups/translations.php:312
 #: src/Groups/translations.php:331
@@ -1411,15 +1410,15 @@ msgstr "Entwicklungsmodus"
 msgid "File system storage"
 msgstr "Dateisystemspeicher"
 
-#: src/Groups/translations.php:379
+#: src/Groups/translations.php:380
 msgid "Git repositories"
 msgstr "Git-Repositories"
 
-#: src/Groups/translations.php:380
+#: src/Groups/translations.php:381
 msgid "Git Repositories"
 msgstr "Git-Repositories"
 
-#: src/Groups/translations.php:381
+#: src/Groups/translations.php:382
 msgid "Debugging"
 msgstr "Debugging"
 
@@ -1448,8 +1447,8 @@ msgid "Enable to display quick access links on the front and make error messages
 msgstr "Aktivieren, um Schnellzugriff-Links auf der Vorderseite anzuzeigen und Fehlermeldungen detaillierter zu gestalten (beides nur für Admins)."
 
 #: src/Groups/translations.php:392
-msgid "Enable to store View and Card data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.acfviews.com/templates/file-system-storage'>Read more</a>"
-msgstr "Aktivieren, um Ansichts- und Kartendaten im Theme-Ordner zu speichern (anstatt in der Datenbank). <br> Dies ermöglicht es Ihnen, Dateien mit Ihrem bevorzugten Editor (IDE) zu bearbeiten und die Versionskontrolle mit Auto-Sync durchzuführen. <a target='_blank' href='https://docs.acfviews.com/templates/file-system-storage'>Mehr lesen</a>"
+msgid "Enable to store View and Card data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a>"
+msgstr "Aktivieren, um Ansichts- und Kartendaten im Theme-Ordner zu speichern (anstatt in der Datenbank). <br> Dies ermöglicht es Ihnen, Dateien mit Ihrem bevorzugten Editor (IDE) zu bearbeiten und die Versionskontrolle mit Auto-Sync durchzuführen. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Mehr lesen</a>"
 
 #: src/Groups/translations.php:403
 msgid "Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation."
@@ -1492,8 +1491,8 @@ msgid "Controls how taxonomy rules will be joined within the taxonomy query"
 msgstr "Steuert, wie Taxonomieregeln innerhalb der Taxonomieabfrage verknüpft werden"
 
 #: src/Groups/translations.php:461
-msgid "Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.acfviews.com/query-content/taxonomy-filters-pro'>Read more</a> <br> If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab"
-msgstr "Regeln für die Taxonomieabfrage. Mehrere Regeln werden unterstützt. <a target='_blank' href='https://docs.acfviews.com/query-content/taxonomy-filters-pro'>Mehr lesen</a> <br> Wenn Sie die Abfrage sehen möchten, die durch Ihre Eingabe erstellt wurde, aktualisieren Sie die Karte und laden Sie die Seite neu. Schauen Sie sich danach das Feld 'Query Preview' im Tab 'Erweitert' an"
+msgid "Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/query-content/taxonomy-filters-pro'>Read more</a> <br> If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab"
+msgstr "Regeln für die Taxonomieabfrage. Mehrere Regeln werden unterstützt. <a target='_blank' href='https://docs.advanced-views.com/query-content/taxonomy-filters-pro'>Mehr lesen</a> <br> Wenn Sie die Abfrage sehen möchten, die durch Ihre Eingabe erstellt wurde, aktualisieren Sie die Karte und laden Sie die Seite neu. Schauen Sie sich danach das Feld 'Query Preview' im Tab 'Erweitert' an"
 
 #: src/Groups/translations.php:475
 msgid "Taxonomies"
@@ -1779,7 +1778,7 @@ msgstr "In die Zwischenablage kopieren"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:80
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:99
-#: src/Plugin.php:188
+#: src/Plugin.php:200
 msgid "Read more"
 msgstr "Mehr lesen"
 
@@ -1792,8 +1791,8 @@ msgid "Get support"
 msgstr "Unterstützung erhalten"
 
 #: src/Parents/Cpt/Cpt.php:35
-msgid "<a target=\"_blank\" href=\"https://docs.acfviews.com/templates/file-system-storage\">File system storage</a> is"
-msgstr "<a target=\"_blank\" href=\"https://docs.acfviews.com/templates/file-system-storage\">Dateisystemspeicher</a> ist"
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/templates/file-system-storage\">File system storage</a> is"
+msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/templates/file-system-storage\">Dateisystemspeicher</a> ist"
 
 #: src/Parents/Cpt/Cpt.php:41
 msgid "enabled"
@@ -1803,23 +1802,23 @@ msgstr "aktiviert"
 msgid "disabled"
 msgstr "deaktiviert"
 
-#: src/Parents/Cpt/Cpt.php:58
+#: src/Parents/Cpt/Cpt.php:71
 msgid "Thank you for creating with"
 msgstr "Danke für das Erstellen mit"
 
-#: src/Parents/Cpt/Cpt.php:60
+#: src/Parents/Cpt/Cpt.php:73
 msgid "WordPress"
 msgstr "WordPress"
 
-#: src/Parents/Cpt/Cpt.php:61
+#: src/Parents/Cpt/Cpt.php:74
 msgid "and"
 msgstr "und"
 
-#: src/Parents/Cpt/Cpt.php:67
+#: src/Parents/Cpt/Cpt.php:80
 msgid "Take"
 msgstr "Nehmen Sie"
 
-#: src/Parents/Cpt/Cpt.php:69
+#: src/Parents/Cpt/Cpt.php:82
 msgid "2 minute survey"
 msgstr "2-Minuten-Umfrage"
 
@@ -1848,7 +1847,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "Massenvalidierung - Wird verwendet, um das benutzerdefinierte Vorlagenfeld aller vorhandenen Elemente zu validieren und Elemente anzuzeigen, die die Validierung nicht bestanden haben."
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Parents/Shortcode.php:211
+#: src/Shortcode/Shortcode.php:214
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1915,51 +1914,51 @@ msgstr "Überprüfen und korrigieren Sie Dateiberechtigungen, um mit Ansichten u
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Hinweis: Deaktivieren Sie die FS-Speicherfunktion nicht, bevor Sie sie reparieren, sonst gehen Ihre Daten verloren."
 
-#: src/Parents/Shortcode.php:116
+#: src/Shortcode/Shortcode.php:119
 msgid "Shortcode error:"
 msgstr "Shortcode-Fehler:"
 
-#: src/Plugin.php:110
+#: src/Plugin.php:111
 msgid "Upgrade to Pro"
 msgstr "Auf Pro upgraden"
 
-#: src/Plugin.php:111
+#: src/Plugin.php:112
 msgid "Activate your license"
 msgstr "Aktivieren Sie Ihre Lizenz"
 
-#: src/Plugin.php:119
+#: src/Plugin.php:120
 msgid "to unlock."
 msgstr "zum Entsperren."
 
-#: src/Plugin.php:129
+#: src/Plugin.php:130
 msgid "ACF Pro"
 msgstr "ACF Pro"
 
-#: src/Plugin.php:130
+#: src/Plugin.php:131
 msgid "version is required for this feature"
 msgstr "Version ist für diese Funktion erforderlich"
 
-#: src/Plugin.php:139
+#: src/Plugin.php:140
 msgid "MB Blocks"
 msgstr "MB Blocks"
 
-#: src/Plugin.php:140
+#: src/Plugin.php:141
 msgid "extension is required for this feature"
 msgstr "Erweiterung ist für diese Funktion erforderlich"
 
-#: src/Plugin.php:173
+#: src/Plugin.php:185
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "Kompatibilitätsproblem festgestellt! Das \"Advanced Views\" Plugin erfordert \"PHPDoc\" Kommentare im Code."
 
-#: src/Plugin.php:177
+#: src/Plugin.php:189
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Bitte ändern Sie die Option \"opcache.save_comments\" in Ihrer php.ini-Datei auf den Standardwert \"1\" bei Ihrem Hosting."
 
-#: src/Plugin.php:327
+#: src/Plugin.php:339
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' und 'Advanced Views Pro' sollten nicht gleichzeitig aktiv sein. Wir haben automatisch deaktiviert"
 
-#: src/Plugin.php:333
+#: src/Plugin.php:345
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1983,61 +1982,61 @@ msgstr "Zugewiesene Gruppe"
 msgid "Assigned to Card"
 msgstr "Zugewiesen zu Karte"
 
-#: src/Views/Cpt/Views_Cpt.php:23
+#: src/Views/Cpt/Views_Cpt.php:26
 msgid "Parent View"
 msgstr "Übergeordnete Ansicht"
 
-#: src/Views/Cpt/Views_Cpt.php:25
+#: src/Views/Cpt/Views_Cpt.php:28
 msgid "Browse View"
 msgstr "Ansicht durchsuchen"
 
-#: src/Views/Cpt/Views_Cpt.php:26
+#: src/Views/Cpt/Views_Cpt.php:29
 msgid "Add New View"
 msgstr "Neue Ansicht hinzufügen"
 
-#: src/Views/Cpt/Views_Cpt.php:28
-#: src/Views/Cpt/Views_Cpt.php:103
+#: src/Views/Cpt/Views_Cpt.php:31
 #: src/Views/Cpt/Views_Cpt.php:106
+#: src/Views/Cpt/Views_Cpt.php:109
 msgid "View updated."
 msgstr "Ansicht aktualisiert."
 
-#: src/Views/Cpt/Views_Cpt.php:29
+#: src/Views/Cpt/Views_Cpt.php:32
 msgid "Edit View"
 msgstr "Ansicht bearbeiten"
 
-#: src/Views/Cpt/Views_Cpt.php:30
+#: src/Views/Cpt/Views_Cpt.php:33
 msgid "Update View"
 msgstr "Ansicht aktualisieren"
 
-#: src/Views/Cpt/Views_Cpt.php:31
+#: src/Views/Cpt/Views_Cpt.php:34
 msgid "Search View"
 msgstr "Ansicht suchen"
 
-#: src/Views/Cpt/Views_Cpt.php:41
-msgid "<a target=\"_blank\" href=\"https://docs.acfviews.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the View</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.acfviews.com/shortcode-attributes/view-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
-msgstr "<a target=\"_blank\" href=\"https://docs.acfviews.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Binden Sie die Ansicht</a> an den Zielort ein, zum Beispiel mit <a target=\"_blank\" href=\"https://docs.acfviews.com/shortcode-attributes/view-shortcode\">dem Shortcode</a>, um Feldwerte des Beitrags, der Seite oder des CPT-Elements anzuzeigen."
+#: src/Views/Cpt/Views_Cpt.php:44
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the View</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/view-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
+msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Binden Sie die Ansicht</a> an den Zielort ein, zum Beispiel mit <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/view-shortcode\">dem Shortcode</a>, um Feldwerte des Beitrags, der Seite oder des CPT-Elements anzuzeigen."
 
-#: src/Views/Cpt/Views_Cpt.php:88
+#: src/Views/Cpt/Views_Cpt.php:91
 msgid "View scheduled for:"
 msgstr "Ansicht geplant für:"
 
-#: src/Views/Cpt/Views_Cpt.php:97
+#: src/Views/Cpt/Views_Cpt.php:100
 msgid "View restored to revision from"
 msgstr "Ansicht wiederhergestellt zur Revision von"
 
-#: src/Views/Cpt/Views_Cpt.php:108
+#: src/Views/Cpt/Views_Cpt.php:111
 msgid "View published."
 msgstr "Ansicht veröffentlicht."
 
-#: src/Views/Cpt/Views_Cpt.php:109
+#: src/Views/Cpt/Views_Cpt.php:112
 msgid "View saved."
 msgstr "Ansicht gespeichert."
 
-#: src/Views/Cpt/Views_Cpt.php:110
+#: src/Views/Cpt/Views_Cpt.php:113
 msgid "View submitted."
 msgstr "Ansicht eingereicht."
 
-#: src/Views/Cpt/Views_Cpt.php:112
+#: src/Views/Cpt/Views_Cpt.php:115
 msgid "View draft updated."
 msgstr "Ansichtsentwurf aktualisiert."
 
@@ -2079,11 +2078,11 @@ msgstr "Das Feld \"%1$s\" wird fälschlicherweise als Array erwartet. Zeile %2$d
 msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
 msgstr "Das Feld \"%1$s\" wird fälschlicherweise als Zeichenkette erwartet. Zeile %2$d"
 
-#: src/Views/View_Shortcode.php:221
+#: src/Shortcode/View_Shortcode.php:94
 msgid "view-id attribute is missing or wrong"
 msgstr "view-id Attribut fehlt oder ist falsch"
 
-#: src/Views/View_Shortcode.php:310
+#: src/Shortcode/View_Shortcode.php:179
 msgid "object-id argument contains the wrong value"
 msgstr "object-id Argument enthält den falschen Wert"
 
@@ -2137,31 +2136,31 @@ msgstr "Metafelder und deren Feldgruppen zusammen mit responsiven CSS-Regeln sin
 msgid "Hover on the title and click Import."
 msgstr "Fahren Sie mit der Maus über den Titel und klicken Sie auf Importieren."
 
-#: src/Automatic_Reports.php:224
+#: src/Automatic_Reports.php:218
 msgid "The Advanced Views plugin sends automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement."
 msgstr "Das Advanced Views-Plugin sendet automatische Fehler- und Nutzungsberichte an die Entwickler, was eine schnellere Problemlösung und Verbesserung des Plugins ermöglicht."
 
-#: src/Automatic_Reports.php:231
+#: src/Automatic_Reports.php:225
 msgid "Automatic reports do not include any private or sensitive information and can be disabled in the plugin settings."
 msgstr "Automatische Berichte enthalten keine privaten oder sensiblen Informationen und können in den Plugin-Einstellungen deaktiviert werden."
 
-#: src/Automatic_Reports.php:248
+#: src/Automatic_Reports.php:242
 msgid "Got it, hide"
 msgstr "Verstanden, ausblenden"
 
-#: src/Automatic_Reports.php:269
+#: src/Automatic_Reports.php:263
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Automatic_Reports.php:270
+#: src/Automatic_Reports.php:264
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
-#: src/Cards/Cpt/Cards_Cpt.php:49
+#: src/Cards/Cpt/Cards_Cpt.php:52
 msgid "Add a Card and select a set of posts or import a pre-built component."
 msgstr "Fügen Sie eine Karte hinzu und wählen Sie eine Reihe von Beiträgen aus oder importieren Sie eine vorgefertigte Komponente."
 
-#: src/Groups/translations.php:372
+#: src/Groups/translations.php:373
 msgid "Disable automatic reports"
 msgstr "Automatische Berichte deaktivieren"
 
@@ -2174,7 +2173,7 @@ msgstr "Advanced Views-Fehler: Der Gutenberg-Editor ist deaktiviert, was auf ein
 msgid "Please %1$s reach out %2$s to our support team for further assistance."
 msgstr "Bitte %1$s kontaktieren Sie %2$s unser Support-Team für weitere Unterstützung."
 
-#: src/Views/Cpt/Views_Cpt.php:36
+#: src/Views/Cpt/Views_Cpt.php:39
 msgid "Add a View and select target fields or import a pre-built component."
 msgstr "Fügen Sie eine Ansicht hinzu und wählen Sie Zielfelder aus oder importieren Sie eine vorgefertigte Komponente."
 
@@ -2215,51 +2214,51 @@ msgid "Assigned View is used to display every post from the query results."
 msgstr "Die zugewiesene Ansicht wird verwendet, um jeden Beitrag aus den Abfrageergebnissen anzuzeigen."
 
 #: src/Groups/translations.php:203
-msgid "If filled then data within this field will be displayed using the selected View. <a target='_blank' href='https://docs.acfviews.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>"
-msgstr "Wenn ausgefüllt, werden die Daten in diesem Feld mit der ausgewählten Ansicht angezeigt. <a target='_blank' href='https://docs.acfviews.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Mehr erfahren</a>"
+msgid "If filled then data within this field will be displayed using the selected View. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>"
+msgstr "Wenn ausgefüllt, werden die Daten in diesem Feld mit der ausgewählten Ansicht angezeigt. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Mehr erfahren</a>"
 
-#: src/Automatic_Reports.php:261
+#: src/Automatic_Reports.php:255
 msgid "Please tell us the reason why you are deactivating the plugin (optionally)"
 msgstr "Bitte teilen Sie uns den Grund mit, warum Sie das Plugin deaktivieren (optional)"
 
-#: src/Automatic_Reports.php:265
+#: src/Automatic_Reports.php:259
 msgid "Tell us more about your case to help us improve the plugin"
 msgstr "Erzählen Sie uns mehr über Ihren Fall, um uns zu helfen, das Plugin zu verbessern"
 
-#: src/Automatic_Reports.php:271
+#: src/Automatic_Reports.php:265
 msgid "Delete data and deactivate"
 msgstr "Daten löschen und deaktivieren"
 
-#: src/Automatic_Reports.php:273
+#: src/Automatic_Reports.php:267
 msgid "Does not suit my use case"
 msgstr "Passt nicht zu meinem Anwendungsfall"
 
-#: src/Automatic_Reports.php:274
+#: src/Automatic_Reports.php:268
 msgid "Compatibility issues"
 msgstr "Kompatibilitätsprobleme"
 
-#: src/Automatic_Reports.php:275
+#: src/Automatic_Reports.php:269
 msgid "Requires coding"
 msgstr "Erfordert Programmierung"
 
-#: src/Automatic_Reports.php:276
+#: src/Automatic_Reports.php:270
 msgid "Too complex"
 msgstr "Zu komplex"
 
-#: src/Automatic_Reports.php:277
+#: src/Automatic_Reports.php:271
 msgid "I found an alternative"
 msgstr "Ich habe eine Alternative gefunden"
 
-#: src/Automatic_Reports.php:279
+#: src/Automatic_Reports.php:273
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Alle Plugin-Daten löschen (kann nicht rückgängig gemacht werden)"
 
-#: src/Cards/Card_Shortcode.php:124
+#: src/Shortcode/Card_Shortcode.php:125
 msgid "Card id is wrong"
 msgstr "Karten-ID ist falsch"
 
 #: src/Groups/translations.php:25
-#: src/Groups/translations.php:376
+#: src/Groups/translations.php:377
 #: src/Groups/translations.php:529
 msgid "Classes generation"
 msgstr "Generierung von Klassen"
@@ -2275,35 +2274,25 @@ msgstr "Steuert die Klassengenerierung im Standardtemplate."
 msgid "BEM style"
 msgstr "BEM-Stil"
 
-#: src/Groups/translations.php:373
+#: src/Groups/translations.php:374
 msgid "Defaults"
 msgstr "Standardeinstellungen"
 
-#: src/Groups/translations.php:375
+#: src/Groups/translations.php:376
 msgid "Web components type"
 msgstr "Art der Web-Komponenten"
 
-#: src/Groups/translations.php:397
+#: src/Groups/translations.php:398
 msgid "Controls the web component setting for new Views and Cards."
 msgstr "Steuert die Webkomponenten-Einstellung für neue Ansichten und Karten."
 
-#: src/Groups/translations.php:398
+#: src/Groups/translations.php:399
 msgid "Controls classes generation in the Default Template for new Views and Cards."
 msgstr "Steuert die Klassengenerierung im Standardtemplate für neue Ansichten und Karten."
 
-#: src/Views/View_Shortcode.php:435
+#: src/Shortcode/View_Shortcode.php:254
 msgid "View id is wrong"
 msgstr "Ansichts-ID ist falsch"
-
-#. Plugin Name of the plugin
-#: acf-views.php
-msgid "Advanced Views Framework: Lite Edition"
-msgstr "Advanced Views Framework: Lite Edition"
-
-#. Description of the plugin
-#: acf-views.php
-msgid "Smart templates for the WordPress front-end, simplifying post queries and template creation."
-msgstr "Intelligente Templates für das WordPress-Frontend, die Beitragsabfragen und die Template-Erstellung vereinfachen."
 
 #: src/Groups/translations.php:24
 #: src/Groups/translations.php:528
@@ -2312,33 +2301,16 @@ msgstr "Art der Web-Komponente"
 
 #: src/Groups/translations.php:69
 #: src/Groups/translations.php:555
-msgid "By default, every Card is a <a target='_blank' href='https://docs.acfviews.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.acfviews.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>."
-msgstr "Standardmäßig ist jede Karte eine <a target='_blank' href='https://docs.acfviews.com/templates/css-and-js#web-components-for-js-code'>Web-Komponente</a>, die es Ihnen ermöglicht, im JS-Code-Feld einfach mit dem Element zu arbeiten. <br><br> Setzen Sie es auf 'None', wenn Sie die <a target='_blank' href='https://docs.acfviews.com/templates/wordpress-interactivity-api'>WP Interactivity API</a> verwenden möchten."
+msgid "By default, every Card is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>."
+msgstr "Standardmäßig ist jede Karte eine <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>Web-Komponente</a>, die es Ihnen ermöglicht, im JS-Code-Feld einfach mit dem Element zu arbeiten. <br><br> Setzen Sie es auf 'None', wenn Sie die <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a> verwenden möchten."
 
 #: src/Groups/translations.php:73
-msgid "Using the Custom Card Data PHP snippet you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the ajax handler. <a target='_blank' href='https://docs.acfviews.com/query-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
-msgstr "Mit dem benutzerdefinierten PHP-Snippet für Kartendaten können Sie dem Template zusätzliche Variablen, zusätzliche Argumente zur <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query-Instanz</a> hinzufügen und den Ajax-Handler definieren. <a target='_blank' href='https://docs.acfviews.com/query-content/custom-data-pro'>Mehr erfahren</a> <br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen)."
+msgid "Using the Custom Card Data PHP snippet you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/query-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr "Mit dem benutzerdefinierten PHP-Snippet für Kartendaten können Sie dem Template zusätzliche Variablen, zusätzliche Argumente zur <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query-Instanz</a> hinzufügen und den Ajax-Handler definieren. <a target='_blank' href='https://docs.advanced-views.com/query-content/custom-data-pro'>Mehr erfahren</a> <br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen)."
 
 #: src/Groups/translations.php:549
-msgid "Using the Custom View Data PHP snippet you can add custom variables to the template and define the ajax handler. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
-msgstr "Mit dem benutzerdefinierten PHP-Snippet für Ansichts-Daten können Sie dem Template benutzerdefinierte Variablen hinzufügen und den Ajax-Handler definieren. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-data-pro'>Mehr erfahren</a> <br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen)."
-
-#: src/Parents/Cpt/Cpt.php:63
-#: src/Views/Cpt/Views_Cpt.php:22
-msgid "Advanced Views Framework"
-msgstr "Advanced Views Framework"
-
-#: src/Parents/Cpt/Cpt.php:70
-msgid "to improve the Advanced Views Framework."
-msgstr "um das Advanced Views Framework zu verbessern."
-
-#: src/Groups/translations.php:382
-msgid "Enhanced compatible mode"
-msgstr "Erweiterter Kompatibilitätsmodus"
-
-#: src/Groups/translations.php:402
-msgid "Enable when you're stuck at the View or Card loading screen. <br> Reason: Advanced Views, by default, reduces unused scripts to speed up the editor loading, and this may cause issues in some rare cases."
-msgstr "Aktivieren Sie diese Option, wenn Sie beim Laden des Ansicht- oder Karten-Bildschirms feststecken. <br> Grund: Advanced Views reduziert standardmäßig ungenutzte Skripte, um das Laden des Editors zu beschleunigen, was in einigen seltenen Fällen zu Problemen führen kann."
+msgid "Using the Custom View Data PHP snippet you can add custom variables to the template and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr "Mit dem benutzerdefinierten PHP-Snippet für Ansichts-Daten können Sie dem Template benutzerdefinierte Variablen hinzufügen und den Ajax-Handler definieren. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Mehr erfahren</a> <br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen)."
 
 #: src/Groups/translations.php:47
 msgid "'Load More' button label"
@@ -2401,10 +2373,6 @@ msgstr "Zu Debugging-Zwecken. Hier können Sie die Abfrage sehen, die ausgeführ
 msgid "Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>."
 msgstr "Fügen Sie einen Klassennamen ohne Punkt hinzu (z. B. 'klassenname') oder mehrere Klassen mit einem Leerzeichen als Trennzeichen hinzu (z. B. 'klassenname1 klassenname2'). Diese Klassen werden dem umschließenden HTML-Element hinzugefügt. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Weitere Informationen zu CSS-Klassen</a>."
 
-#: src/Groups/translations.php:78
-msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this card. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Don't style the View fields here, each View has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
-msgstr "Definieren Sie Ihre CSS-Stilregeln. <br> Diese werden nur innerhalb von &lt;style&gt;&lt;/style&gt; Tags zu Seiten hinzugefügt, die diese Karte enthalten. <br><br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen). <br><br> Stilisieren Sie hier nicht die View-Felder, jede View hat ihr eigenes CSS-Feld für dieses Ziel. <br><br> Magische Abkürzungen sind verfügbar (und verwenden den BEM-Einzigartigen Namen, falls definiert): <br><br> '#card' wird ersetzt durch '.acf-card--id--X' (oder '.bem-name'). <br> '#this__' wird ersetzt durch '.acf-card__' (oder '.bem-name__'). <br><br> Wi"
-
 #: src/Groups/translations.php:80
 msgid "Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab."
 msgstr "Wählen Sie die Schieberegler-Bibliothek aus, die aktiviert werden soll. <br> Passen Sie den Schieberegler nach dem Speichern an, indem Sie den JS-Code im CSS & JS-Tab bearbeiten."
@@ -2418,8 +2386,8 @@ msgid "The rules control the layout of Card items. <br>Note: These rules are inh
 msgstr "Die Regeln steuern das Layout der Kartenobjekte. <br>Hinweis: Diese Regeln werden von klein nach groß vererbt. Wenn Sie z.B. Regeln für 'Mobile' und 'Desktop'-Bildschirme eingerichtet haben, wird 'Tablet' dieselben Regeln wie 'Mobile' haben und 'Großer Desktop' dieselben Regeln wie 'Desktop'."
 
 #: src/Groups/translations.php:83
-msgid "If enabled then the selected pagination type is applied and the 'Posts per page' rule takes effect. <a target='_blank' href='https://docs.acfviews.com/query-content/pagination-pro'>Read more</a>."
-msgstr "Wenn aktiviert, wird der ausgewählte Seitenumbruchstyp angewendet und die Regel 'Beiträge pro Seite' tritt in Kraft. <a target='_blank' href='https://docs.acfviews.com/query-content/pagination-pro'>Erfahren Sie mehr</a>."
+msgid "If enabled then the selected pagination type is applied and the 'Posts per page' rule takes effect. <a target='_blank' href='https://docs.advanced-views.com/query-content/pagination-pro'>Read more</a>."
+msgstr "Wenn aktiviert, wird der ausgewählte Seitenumbruchstyp angewendet und die Regel 'Beiträge pro Seite' tritt in Kraft. <a target='_blank' href='https://docs.advanced-views.com/query-content/pagination-pro'>Erfahren Sie mehr</a>."
 
 #: src/Groups/translations.php:84
 msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the card automatically, you can style it (using the 'CSS Code' field in the 'Advanced' tab)."
@@ -2430,32 +2398,32 @@ msgid "Define a Custom label for the load more button."
 msgstr "Definieren Sie eine benutzerdefinierte Beschriftung für die Schaltfläche 'Mehr laden'."
 
 #: src/Groups/translations.php:87
-msgid "See an output preview of your Card, where you can test some CSS styles. <a target='_blank' href='https://docs.acfviews.com/getting-started/introduction/plugin-interface#preview-1'>Read more</a> <br> Styles from your front page are included in the preview (some differences may appear). <br>Note: Press 'Update' if you have changed Custom Markup (in the Template tab) to see the latest preview. <br> After testing: Copy and paste the Card styles to the CSS Code field. <br> Important! Don't style your View here, instead use the CSS Code field in your View for this goal."
-msgstr "Sehen Sie eine Ausgabevorschau Ihrer Karte, wo Sie einige CSS-Stile testen können. <a target='_blank' href='https://docs.acfviews.com/getting-started/introduction/plugin-interface#preview-1'>Erfahren Sie mehr</a> <br> Stile von Ihrer Startseite sind in der Vorschau enthalten (es können einige Unterschiede auftreten). <br>Hinweis: Drücken Sie 'Aktualisieren', wenn Sie das benutzerdefinierte Markup (im Vorlagen-Tab) geändert haben, um die neueste Vorschau zu sehen. <br> Nach dem Testen: Kopieren und fügen Sie die Kartenstile in das CSS Code-Feld ein. <br> Wichtig! Stilisieren Sie Ihre View hier nicht, verwenden Sie stattdessen das CSS-Code-Feld in Ihrer View für dieses Ziel."
+msgid "See an output preview of your Card, where you can test some CSS styles. <a target='_blank' href='https://docs.advanced-views.com/getting-started/introduction/plugin-interface#preview-1'>Read more</a> <br> Styles from your front page are included in the preview (some differences may appear). <br>Note: Press 'Update' if you have changed Custom Markup (in the Template tab) to see the latest preview. <br> After testing: Copy and paste the Card styles to the CSS Code field. <br> Important! Don't style your View here, instead use the CSS Code field in your View for this goal."
+msgstr "Sehen Sie eine Ausgabevorschau Ihrer Karte, wo Sie einige CSS-Stile testen können. <a target='_blank' href='https://docs.advanced-views.com/getting-started/introduction/plugin-interface#preview-1'>Erfahren Sie mehr</a> <br> Stile von Ihrer Startseite sind in der Vorschau enthalten (es können einige Unterschiede auftreten). <br>Hinweis: Drücken Sie 'Aktualisieren', wenn Sie das benutzerdefinierte Markup (im Vorlagen-Tab) geändert haben, um die neueste Vorschau zu sehen. <br> Nach dem Testen: Kopieren und fügen Sie die Kartenstile in das CSS Code-Feld ein. <br> Wichtig! Stilisieren Sie Ihre View hier nicht, verwenden Sie stattdessen das CSS-Code-Feld in Ihrer View für dieses Ziel."
 
-#: src/Groups/translations.php:377
+#: src/Groups/translations.php:378
 msgid "Sass Template (for File System Storage)"
 msgstr "Sass-Vorlage (für Dateisystem-Speicher)"
 
-#: src/Groups/translations.php:378
+#: src/Groups/translations.php:379
 msgid "TypeScript Template (for File System Storage)"
 msgstr "TypeScript-Vorlage (für Dateisystem-Speicher)"
 
-#: src/Groups/translations.php:399
-msgid "When present, this value is used as the default for the 'style.scss' file of View and Card, which is useful e.g. when <a target='_blank' href='https://docs.acfviews.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted."
-msgstr "Wenn vorhanden, wird dieser Wert als Standard für die 'style.scss'-Datei von View und Card verwendet, was z.B. nützlich ist, wenn <a target='_blank' href='https://docs.acfviews.com/templates/file-system-storage#tailwind-usage'>Tailwind verwendet wird</a>. <br> Wenn übersprungen, wird die Erstellung von 'style.scss' unterlassen."
-
 #: src/Groups/translations.php:400
+msgid "When present, this value is used as the default for the 'style.scss' file of View and Card, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted."
+msgstr "Wenn vorhanden, wird dieser Wert als Standard für die 'style.scss'-Datei von View und Card verwendet, was z.B. nützlich ist, wenn <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind verwendet wird</a>. <br> Wenn übersprungen, wird die Erstellung von 'style.scss' unterlassen."
+
+#: src/Groups/translations.php:401
 msgid "When present, this value is used as the default for the 'script.ts' file of View and Card. <br> If skipped, 'script.ts' creation will be omitted."
 msgstr "Wenn vorhanden, wird dieser Wert als Standard für die 'script.ts'-Datei von View und Card verwendet. <br> Wenn übersprungen, wird die Erstellung von 'script.ts' unterlassen."
 
-#: src/Groups/translations.php:401
-msgid "By saving Views and Cards in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.acfviews.com/templates/reusable-components-library-pro'>Read more</a>"
-msgstr "Durch Speichern von Views und Cards in Ihrem GitLab-Repository können Sie Ihre eigene Bibliothek erstellen und sie auf anderen Websites wiederverwenden. <br> <a target='_blank' href='https://docs.acfviews.com/templates/reusable-components-library-pro'>Erfahren Sie mehr</a>"
+#: src/Groups/translations.php:402
+msgid "By saving Views and Cards in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>"
+msgstr "Durch Speichern von Views und Cards in Ihrem GitLab-Repository können Sie Ihre eigene Bibliothek erstellen und sie auf anderen Websites wiederverwenden. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Erfahren Sie mehr</a>"
 
 #: src/Groups/translations.php:542
-msgid "If you're making an internal View for the <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/repeater-pro'>group</a>, <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/repeater-pro'>repeater</a> or <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> field, then fill out this field."
-msgstr "Wenn Sie eine interne Ansicht für die <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/repeater-pro'>Gruppe</a>, den <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/repeater-pro'>Repeater</a> oder das <a target='_blank' href='https://docs.acfviews.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> Feld erstellen, füllen Sie dieses Feld aus."
+msgid "If you're making an internal View for the <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>group</a>, <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>repeater</a> or <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> field, then fill out this field."
+msgstr "Wenn Sie eine interne Ansicht für die <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>Gruppe</a>, den <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>Repeater</a> oder das <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> Feld erstellen, füllen Sie dieses Feld aus."
 
 #: src/Groups/translations.php:540
 msgid "Assign fields to your View. <br> Tip: hover mouse on the field number column and drag to reorder."
@@ -2465,21 +2433,17 @@ msgstr "Weisen Sie Felder Ihrer Ansicht zu. <br> Tipp: Bewegen Sie die Maus übe
 msgid "Add a class name without a dot (e.g. “class-name”) or multiple classes with single space as a delimiter (e.g. “class-name1 class-name2”). <br> These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>."
 msgstr "Fügen Sie einen Klassennamen ohne Punkt hinzu (z.B. 'klassenname') oder mehrere Klassen mit einem einzelnen Leerzeichen als Trennzeichen hinzu (z.B. 'klassenname1 klassenname2'). <br> Diese Klassen werden dem umschließenden HTML-Element hinzugefügt. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Erfahren Sie mehr über CSS-Klassen</a>."
 
-#: src/Groups/translations.php:550
-msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#view' will be replaced with '.acf-view--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-view__' (or '.bem-name__'). <br><br> We recommend using #view { #this__first-field { //... }, #this__second-field { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#view__', which will be replaced with '.acf-view--id--X .acf-view__' (or '.bem-name .bem-name__')."
-msgstr "Definieren Sie Ihre CSS-Stilregeln. <br> Hier definierte Regeln werden nur zu Seiten hinzugefügt, die diese Ansicht haben, innerhalb von &lt;style&gt;&lt;/style&gt; Tags. <br><br> Drücken Sie Strg (Cmd) + Alt + L, um den Code zu formatieren. Drücken Sie Strg + F, um zu suchen (oder zu ersetzen). <br><br> Magische Verknüpfungen sind verfügbar (und verwenden den eindeutigen BEM-Namen, wenn definiert) : <br><br> '#view' wird durch '.acf-view--id--X' (oder '.bem-name') ersetzt. <br> '#this__' wird durch '.acf-view__' (oder '.bem-name__') ersetzt. <br><br> Wir empfehlen die Verwendung des Formats #view { #this__first-field { //... }, #this__second-field { //... } }, das dank des <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>integrierten CSS-Nesting</a> möglich ist. <br><br> Alternativ können Sie '#view__' verwenden, das durch '.acf-view--id--X .acf-view__' (oder '.bem-name .bem-name__') ersetzt wird."
-
 #: src/Groups/translations.php:553
-msgid "If a block vendor is selected then a separate Gutenberg block for this View will be available. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>."
-msgstr "Wenn ein Blockanbieter ausgewählt ist, wird ein separater Gutenberg-Block für diese Ansicht verfügbar sein. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-gutenberg-blocks-pro'>Erfahren Sie mehr</a>."
+msgid "If a block vendor is selected then a separate Gutenberg block for this View will be available. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>."
+msgstr "Wenn ein Blockanbieter ausgewählt ist, wird ein separater Gutenberg-Block für diese Ansicht verfügbar sein. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Erfahren Sie mehr</a>."
 
 #: src/Groups/translations.php:560
 msgid "Select a data object (which field values will be used) and update the View. After reload the page to see the markup in the preview."
 msgstr "Wählen Sie ein Datenobjekt aus (welche Feldwerte verwendet werden sollen) und aktualisieren Sie die Ansicht. Laden Sie die Seite neu, um die Markup-Vorschau zu sehen."
 
 #: src/Groups/translations.php:561
-msgid "Here you can see the preview of the view and play with CSS rules. <a target='_blank' href='https://docs.acfviews.com/getting-started/introduction/plugin-interface#preview-1'>Read more</a><br>Important! Update the View after changes and reload the page to see the latest markup here. <br>Your changes to the preview won't be applied to the view automatically, if you want to keep them copy amended CSS to the 'CSS Code' field and press the 'Update' button. <br> Note: styles from your front page are included in the preview (some differences may appear)."
-msgstr "Hier können Sie die Vorschau der Ansicht sehen und mit CSS-Regeln spielen. <a target='_blank' href='https://docs.acfviews.com/getting-started/introduction/plugin-interface#preview-1'>Erfahren Sie mehr</a><br>Wichtig! Aktualisieren Sie die Ansicht nach Änderungen und laden Sie die Seite neu, um das neueste Markup hier zu sehen. <br>Ihre Änderungen an der Vorschau werden nicht automatisch auf die Ansicht angewendet. Wenn Sie sie beibehalten möchten, kopieren Sie den geänderten CSS-Code in das Feld 'CSS-Code' und drücken Sie die Schaltfläche 'Aktualisieren'. <br> Hinweis: Stile von Ihrer Startseite sind in der Vorschau enthalten (es können einige Unterschiede auftreten)."
+msgid "Here you can see the preview of the view and play with CSS rules. <a target='_blank' href='https://docs.advanced-views.com/getting-started/introduction/plugin-interface#preview-1'>Read more</a><br>Important! Update the View after changes and reload the page to see the latest markup here. <br>Your changes to the preview won't be applied to the view automatically, if you want to keep them copy amended CSS to the 'CSS Code' field and press the 'Update' button. <br> Note: styles from your front page are included in the preview (some differences may appear)."
+msgstr "Hier können Sie die Vorschau der Ansicht sehen und mit CSS-Regeln spielen. <a target='_blank' href='https://docs.advanced-views.com/getting-started/introduction/plugin-interface#preview-1'>Erfahren Sie mehr</a><br>Wichtig! Aktualisieren Sie die Ansicht nach Änderungen und laden Sie die Seite neu, um das neueste Markup hier zu sehen. <br>Ihre Änderungen an der Vorschau werden nicht automatisch auf die Ansicht angewendet. Wenn Sie sie beibehalten möchten, kopieren Sie den geänderten CSS-Code in das Feld 'CSS-Code' und drücken Sie die Schaltfläche 'Aktualisieren'. <br> Hinweis: Stile von Ihrer Startseite sind in der Vorschau enthalten (es können einige Unterschiede auftreten)."
 
 #: src/html/postbox/shortcodes.php:44
 msgid "displays the card, posts will be loaded according to the settings and displayed according to the selected View."
@@ -2514,16 +2478,11 @@ msgid "Add a short description for your Views’ purpose. <br> Note : This descr
 msgstr "Fügen Sie eine kurze Beschreibung für den Zweck Ihrer Ansichten hinzu. <br> Hinweis: Diese Beschreibung wird nur in der Liste der erweiterten Ansichten des Administrators angezeigt."
 
 #: src/Groups/translations.php:562
-msgid "If checked, a separate Gutenberg block for this view will be available. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>."
-msgstr "Wenn aktiviert, wird ein separater Gutenberg-Block für diese Ansicht verfügbar sein. <a target='_blank' href='https://docs.acfviews.com/display-content/custom-gutenberg-blocks-pro'>Mehr erfahren</a>."
+msgid "If checked, a separate Gutenberg block for this view will be available. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>."
+msgstr "Wenn aktiviert, wird ein separater Gutenberg-Block für diese Ansicht verfügbar sein. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Mehr erfahren</a>."
 
 #: src/Parents/Cpt/Cpt_Assets_Reducer.php:232
 msgid "Loading the Editor is taking longer than expected."
-msgstr ""
-
-#. translators: 1 is the opening tag, 2 is the closing tag.
-#: src/Parents/Cpt/Cpt_Assets_Reducer.php:237
-msgid "If you still see this message after an extended period, please visit the %1$s Settings %2$s > Debugging tab and enable the Enhanced Compatibility Mode."
 msgstr ""
 
 #: src/Cards/Card_Markup.php:253
@@ -2536,16 +2495,16 @@ msgid "Template Engine"
 msgstr ""
 
 #: src/Groups/translations.php:68
-msgid "Choose one of the <a target='_blank' href='https://docs.acfviews.com/templates/template-engines'>supported template engines</a>, which will be used for this Card."
+msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Card."
 msgstr ""
 
 #: src/Groups/translations.php:74
 #: src/Groups/translations.php:543
-msgid "Output preview of the generated <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup."
+msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup."
 msgstr ""
 
 #: src/Groups/translations.php:75
-msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work."
+msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work."
 msgstr ""
 
 #: src/Groups/translations.php:114
@@ -2560,24 +2519,24 @@ msgstr ""
 msgid "Blade (requires PHP >= 8.2.0)"
 msgstr ""
 
-#: src/Groups/translations.php:374
+#: src/Groups/translations.php:375
 msgid "Template engine"
 msgstr ""
 
-#: src/Groups/translations.php:396
-msgid "Controls the <a target='_blank' href='https://docs.acfviews.com/templates/template-engines'>template engine</a> setting for new Views and Cards."
+#: src/Groups/translations.php:397
+msgid "Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Views and Cards."
 msgstr ""
 
 #: src/Groups/translations.php:544
-msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.acfviews.com/templates/template-engines/blade'>Blade</a> features. <br>Note: WordPress shortcodes inside the template are only supported in the Pro version. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br>Note: WordPress shortcodes inside the template are only supported in the Pro version. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
 #: src/Groups/translations.php:554
-msgid "Choose one of the <a target='_blank' href='https://docs.acfviews.com/templates/template-engines'>supported template engines</a>, which will be used for this View."
+msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this View."
 msgstr ""
 
 #. translators: %s is the template engine name.
-#: src/Parents/Instance.php:111
+#: src/Parents/Instance.php:103
 msgid "%s template engine is not available (PHP >= 8.2.0 is required)."
 msgstr ""
 
@@ -2616,7 +2575,7 @@ msgid "$meta$ (from specific meta field)"
 msgstr ""
 
 #: src/Groups/translations.php:79
-msgid "Add Custom Javascript code to your Card.<br><br> By default, the Card is a <a target='_blank' href='https://docs.acfviews.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.acfviews.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Card. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgid "Add Custom Javascript code to your Card.<br><br> By default, the Card is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Card. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
 #: src/Groups/translations.php:116
@@ -2686,10 +2645,10 @@ msgid "Choose a Term field whose value should be used in the query."
 msgstr ""
 
 #: src/Groups/translations.php:551
-msgid "Add Custom Javascript code to your View. <br><br> By default, the View is a <a target='_blank' href='https://docs.acfviews.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.acfviews.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgid "Add Custom Javascript code to your View. <br><br> By default, the View is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
-#: src/Cards/Cpt/Cards_Cpt.php:99
+#: src/Cards/Cpt/Cards_Cpt.php:102
 msgid "Name your Card here (required)"
 msgstr ""
 
@@ -2698,10 +2657,10 @@ msgid "$custom-argument$ (from the shortcode arguments)"
 msgstr ""
 
 #: src/Groups/translations.php:281
-msgid "Value that will be compared.<br>Can be empty, in case you want to compare with empty string.<br>Use <strong>&#36;post&#36;</strong> to pick up the actual ID or <strong>&#36;post&#36;.field-name</strong> to pick up field value dynamically. <br>Use <strong>&#36;now&#36;</strong> to pick up the current datetime dynamically. <br>Use <strong>&#36;query&#36;.my-field</strong> to pick up the query value (from &#36;_GET) dynamically. <br>Use <strong>&#36;custom-arguments&#36;.my-field</strong> to pick up the <a target='_blank' href='https://docs.acfviews.com/shortcode-attributes/common-arguments#custom-argument'>custom shortcode argument</a> value dynamically."
+msgid "Value that will be compared.<br>Can be empty, in case you want to compare with empty string.<br>Use <strong>&#36;post&#36;</strong> to pick up the actual ID or <strong>&#36;post&#36;.field-name</strong> to pick up field value dynamically. <br>Use <strong>&#36;now&#36;</strong> to pick up the current datetime dynamically. <br>Use <strong>&#36;query&#36;.my-field</strong> to pick up the query value (from &#36;_GET) dynamically. <br>Use <strong>&#36;custom-arguments&#36;.my-field</strong> to pick up the <a target='_blank' href='https://docs.advanced-views.com/shortcode-attributes/common-arguments#custom-argument'>custom shortcode argument</a> value dynamically."
 msgstr ""
 
-#: src/Groups/translations.php:395
+#: src/Groups/translations.php:396
 msgid "Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In the Pro edition, the license key/domain pair is always sent, regardless of this setting."
 msgstr ""
 
@@ -2710,10 +2669,10 @@ msgid "Custom argument name"
 msgstr ""
 
 #: src/Groups/translations.php:444
-msgid "Enter the <a target='_blank' href='https://docs.acfviews.com/shortcode-attributes/common-arguments#custom-arguments'>custom shortcode argument</a> name which will be used in the query."
+msgid "Enter the <a target='_blank' href='https://docs.advanced-views.com/shortcode-attributes/common-arguments#custom-arguments'>custom shortcode argument</a> name which will be used in the query."
 msgstr ""
 
-#: src/Views/Cpt/Views_Cpt.php:125
+#: src/Views/Cpt/Views_Cpt.php:128
 msgid "Name your View here (required)"
 msgstr ""
 
@@ -2723,4 +2682,44 @@ msgstr ""
 
 #: src/Groups/translations.php:541
 msgid "Choose a Parent group when setting up Nested repeater or Flexible layout."
+msgstr ""
+
+#. Description of the plugin
+#: acf-views.php
+msgid "Effortlessly display WordPress posts, custom fields, and WooCommerce data."
+msgstr ""
+
+#. translators: %1$s - link opening tag, %2$s - link closing tag.
+#: src/Cards/Cpt/Cards_Cpt.php:33
+msgid "No Cards yet. %1$s Add New Card %2$s"
+msgstr ""
+
+#: src/Groups/translations.php:372
+msgid "Optimize View and Card admin screen performance"
+msgstr ""
+
+#: src/Groups/translations.php:395
+msgid "This setting improves loading speed by disabling third-party scripts on View and Card admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on View and Card screens)."
+msgstr ""
+
+#: src/Parents/Cpt/Cpt.php:83
+msgid "to improve Advanced Views."
+msgstr ""
+
+#. translators: 1 is the opening tag, 2 is the closing tag.
+#: src/Parents/Cpt/Cpt_Assets_Reducer.php:237
+msgid "If you still see this message after an extended period, please visit the %1$s Settings %2$s and disable the screen performance optimization."
+msgstr ""
+
+#. translators: %1$s - link opening tag, %2$s - link closing tag.
+#: src/Views/Cpt/Views_Cpt.php:20
+msgid "No Views yet. %1$s Add New View %2$s"
+msgstr ""
+
+#: src/Groups/translations.php:78
+msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this card. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the View fields here, each View has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
+msgstr ""
+
+#: src/Groups/translations.php:550
+msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#view' will be replaced with '.acf-view--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-view__' (or '.bem-name__'). <br><br> We recommend using #view { #this__first-field { //... }, #this__second-field { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#view__', which will be replaced with '.acf-view--id--X .acf-view__' (or '.bem-name .bem-name__')."
 msgstr ""

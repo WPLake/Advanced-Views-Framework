@@ -8,15 +8,17 @@ use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
+use Org\Wplake\Advanced_Views\Tools\Demo_Import;
+use Org\Wplake\Advanced_Views\Tools\Tools;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use WP_Screen;
 
 defined( 'ABSPATH' ) || exit;
 
 class Dashboard implements Hooks_Interface {
-	use Safe_Query_Arguments;
 
 	const PAGE_DEMO_IMPORT = 'demo-import';
 	const PAGE_DOCS        = 'docs';
@@ -37,127 +39,6 @@ class Dashboard implements Hooks_Interface {
 		$this->plugin      = $plugin;
 		$this->html        = $html;
 		$this->demo_import = $demo_import;
-	}
-
-	/**
-	 * @return array<int, array<string,mixed>>
-	 */
-	protected function get_pages(): array {
-		// iframe with https isn't supported on localhost (and websites with http).
-		$is_https = true === wp_is_using_https();
-
-		$docs_url      = true === $is_https ?
-			$this->plugin->get_admin_url( self::PAGE_DOCS ) :
-			Plugin::DOCS_URL;
-		$is_docs_blank = false === $is_https;
-
-		return array(
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url(),
-				'label'       => __( 'Views', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( '', Cards_Cpt::NAME ),
-				'label'       => __( 'Cards', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( Settings_Page::SLUG ),
-				'label'       => __( 'Settings', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( Tools::SLUG ),
-				'label'       => __( 'Tools', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => Plugin::PRO_VERSION_URL,
-				'isBlank'     => true,
-				'label'       => __( 'Get PRO', 'acf-views' ),
-				'isActive'    => false,
-				'iconClasses' => 'av-toolbar__external-icon dashicons dashicons-star-filled',
-				'isSecondary' => false,
-			),
-			array(
-				'isRightBlock' => true,
-				'url'          => $this->plugin->get_admin_url( self::PAGE_DEMO_IMPORT ),
-				'label'        => __( 'Demo Import', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => true,
-			),
-			array(
-				'isRightBlock' => true,
-				'url'          => $docs_url,
-				'label'        => __( 'Docs', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => false,
-				'isBlank'      => $is_docs_blank,
-			),
-			array(
-				'isRightBlock' => true,
-				// static to be overridden in child.
-				'url'          => static::URL_SUPPORT,
-				'label'        => __( 'Support', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => false,
-				'iconClasses'  => 'av-toolbar__license-icon dashicons dashicons-external',
-				'isBlank'      => true,
-			),
-		);
-	}
-
-	protected function get_current_admin_url(): string {
-		$uri = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
-		$uri = preg_replace( '|^.*/wp-admin/|i', '', $uri );
-
-		if ( null === $uri ) {
-			return '';
-		}
-
-		return admin_url( $uri );
-	}
-
-	protected function get_plugin(): Plugin {
-		return $this->plugin;
-	}
-
-	protected function remove_submenu_links(): void {
-		$url = sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME );
-
-		global $submenu;
-
-		if ( ! $submenu[ $url ] ) {
-			// @phpcs:ignore
-			$submenu[ $url ] = array();
-		}
-
-		foreach ( $submenu[ $url ] as $item_key => $item ) {
-			if ( 4 !== count( $item ) ||
-				! in_array(
-					$item[2],
-					array(
-						self::PAGE_DEMO_IMPORT,
-						self::PAGE_DOCS,
-						self::PAGE_SURVEY,
-					),
-					true
-				) ) {
-				continue;
-			}
-
-			unset( $submenu[ $url ][ $item_key ] );
-		}
 	}
 
 	public function add_pages(): void {
@@ -264,16 +145,14 @@ class Dashboard implements Hooks_Interface {
 	 *
 	 * @return string[]
 	 */
-	public function add_upgrade_to_pro_link( array $links ): array {
-		$settings_link = sprintf(
-			'<a href="%s" target="_blank">%s</a>',
-			Plugin::PRO_VERSION_URL,
-			__( 'Get Pro', 'acf-views' )
-		);
+	public function extend_plugin_action_links( array $links ): array {
+		$cpt_links = array_reverse( $this->get_cpt_links() );
 
-		array_unshift( $links, $settings_link );
+		foreach ( $cpt_links as $cpt_link ) {
+			array_unshift( $links, $cpt_link );
+		}
 
-		return $links;
+		return array_merge( $links, $this->get_promo_links() );
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
@@ -295,6 +174,161 @@ class Dashboard implements Hooks_Interface {
 			}
 		);
 
-		add_filter( "plugin_action_links_{$plugin_slug}", array( $this, 'add_upgrade_to_pro_link' ) );
+		add_filter( "plugin_action_links_{$plugin_slug}", array( $this, 'extend_plugin_action_links' ) );
+	}
+
+	/**
+	 * @return array<int, array<string,mixed>>
+	 */
+	protected function get_pages(): array {
+		// iframe with https isn't supported on localhost (and websites with http).
+		$is_https = true === wp_is_using_https();
+
+		$docs_url      = true === $is_https ?
+			$this->plugin->get_admin_url( self::PAGE_DOCS ) :
+			Plugin::DOCS_URL;
+		$is_docs_blank = false === $is_https;
+
+		return array(
+			array(
+				'isLeftBlock' => true,
+				'url'         => $this->plugin->get_admin_url(),
+				'label'       => __( 'Views', 'acf-views' ),
+				'isActive'    => false,
+				'isSecondary' => false,
+			),
+			array(
+				'isLeftBlock' => true,
+				'url'         => $this->plugin->get_admin_url( '', Cards_Cpt::NAME ),
+				'label'       => __( 'Cards', 'acf-views' ),
+				'isActive'    => false,
+				'isSecondary' => false,
+			),
+			array(
+				'isLeftBlock' => true,
+				'url'         => $this->plugin->get_admin_url( Settings_Page::SLUG ),
+				'label'       => __( 'Settings', 'acf-views' ),
+				'isActive'    => false,
+				'isSecondary' => false,
+			),
+			array(
+				'isLeftBlock' => true,
+				'url'         => $this->plugin->get_admin_url( Tools::SLUG ),
+				'label'       => __( 'Tools', 'acf-views' ),
+				'isActive'    => false,
+				'isSecondary' => false,
+			),
+			array(
+				'isLeftBlock' => true,
+				'url'         => Plugin::PRO_VERSION_URL,
+				'isBlank'     => true,
+				'label'       => __( 'Get PRO', 'acf-views' ),
+				'isActive'    => false,
+				'iconClasses' => 'av-toolbar__external-icon dashicons dashicons-star-filled',
+				'isSecondary' => false,
+			),
+			array(
+				'isRightBlock' => true,
+				'url'          => $this->plugin->get_admin_url( self::PAGE_DEMO_IMPORT ),
+				'label'        => __( 'Demo Import', 'acf-views' ),
+				'isActive'     => false,
+				'isSecondary'  => true,
+			),
+			array(
+				'isRightBlock' => true,
+				'url'          => $docs_url,
+				'label'        => __( 'Docs', 'acf-views' ),
+				'isActive'     => false,
+				'isSecondary'  => false,
+				'isBlank'      => $is_docs_blank,
+			),
+			array(
+				'isRightBlock' => true,
+				// static to be overridden in child.
+				'url'          => static::URL_SUPPORT,
+				'label'        => __( 'Support', 'acf-views' ),
+				'isActive'     => false,
+				'isSecondary'  => false,
+				'iconClasses'  => 'av-toolbar__license-icon dashicons dashicons-external',
+				'isBlank'      => true,
+			),
+		);
+	}
+
+	protected function get_current_admin_url(): string {
+		$uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
+		$uri = preg_replace( '|^.*/wp-admin/|i', '', $uri );
+
+		if ( null === $uri ) {
+			return '';
+		}
+
+		return admin_url( $uri );
+	}
+
+	protected function get_plugin(): Plugin {
+		return $this->plugin;
+	}
+
+	protected function remove_submenu_links(): void {
+		$url = sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME );
+
+		global $submenu;
+
+		if ( ! $submenu[ $url ] ) {
+			// @phpcs:ignore
+			$submenu[ $url ] = array();
+		}
+
+		foreach ( $submenu[ $url ] as $item_key => $item ) {
+			if ( 4 !== count( $item ) ||
+				! in_array(
+					$item[2],
+					array(
+						self::PAGE_DEMO_IMPORT,
+						self::PAGE_DOCS,
+						self::PAGE_SURVEY,
+					),
+					true
+				) ) {
+				continue;
+			}
+
+			unset( $submenu[ $url ][ $item_key ] );
+		}
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function get_cpt_links(): array {
+		return array(
+			sprintf(
+				'<a href="%s" target="_self">%s</a>',
+				esc_url( $this->plugin->get_admin_url( '', Views_Cpt::NAME ) ),
+				esc_html_x( 'Views', 'acf-views' )
+			),
+			sprintf(
+				'<a href="%s" target="_self">%s</a>',
+				esc_url( $this->plugin->get_admin_url( '', Cards_Cpt::NAME ) ),
+				esc_html_x( 'Cards', 'acf-views' )
+			),
+		);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function get_promo_links(): array {
+		$link_style = 'color:#d46f4d; font-weight:bold; transition: opacity 0.3s;';
+
+		return array(
+			sprintf(
+				'<a href="%s" target="_blank" style="%s" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">%s</a>',
+				Plugin::PRO_VERSION_URL,
+				esc_attr( $link_style ),
+				esc_html_x( 'Get Pro', 'acf-views' )
+			),
+		);
 	}
 }

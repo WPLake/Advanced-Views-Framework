@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Bridge\Shortcodes;
 
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\Card_Shortcode_Interface;
-use Org\Wplake\Advanced_Views\Cards\Card_Shortcode as InnerCardShortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode as InnerCardShortcode;
 
 defined( 'ABSPATH' ) || exit;
 

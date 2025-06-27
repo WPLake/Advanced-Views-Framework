@@ -17,7 +17,7 @@ use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use WP_Post;
@@ -28,7 +28,6 @@ defined( 'ABSPATH' ) || exit;
 abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	const REST_REFRESH_ROUTE = '';
 
-	use Safe_Query_Arguments;
 	use Safe_Array_Arguments;
 
 	private Cpt_Data_Storage $cpt_data_storage;
@@ -180,7 +179,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	}
 
 	protected function get_acf_ajax_post_id(): int {
-		return $this->get_query_int_arg_for_non_action( 'post_id', 'post' );
+		return Query_Arguments::get_int_for_non_action( 'post_id', 'post' );
 	}
 
 	protected function add_validation_error( string $field_key, string $message ): void {

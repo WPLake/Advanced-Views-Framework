@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Bridge\Shortcodes;
 
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\View_Shortcode_Interface;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode as InnerViewShortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode as InnerViewShortcode;
 
 defined( 'ABSPATH' ) || exit;
 

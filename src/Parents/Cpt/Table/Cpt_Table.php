@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use WP_List_Table;
 use WP_Post;
@@ -21,7 +21,6 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Table implements Hooks_Interface {
-	use Safe_Query_Arguments;
 
 	private Cpt_Data_Storage $cpt_data_storage;
 	private string $cpt_name;
@@ -61,7 +60,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 	}
 
 	protected function maybe_clone_item(): void {
-		$post_id = $this->get_query_int_arg_for_admin_action( $this->get_action_clone(), 'bulk-posts' );
+		$post_id = Query_Arguments::get_int_for_admin_action( $this->get_action_clone(), 'bulk-posts' );
 		$post    = 0 !== $post_id ?
 			get_post( $post_id ) :
 			null;
@@ -106,7 +105,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 	}
 
 	protected function maybe_show_item_cloned_message(): void {
-		$cloned_action = $this->get_query_string_arg_for_non_action( $this->get_action_cloned() );
+		$cloned_action = Query_Arguments::get_string_for_non_action( $this->get_action_cloned() );
 
 		if ( '' === $cloned_action ) {
 			return;
@@ -457,9 +456,9 @@ abstract class Cpt_Table implements Hooks_Interface {
 			return $excerpt;
 		}
 
-		$request_uri  = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
+		$request_uri  = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 		$is_edit_page = false !== strpos( $request_uri, '/edit.php' );
-		$post_type    = $this->get_query_string_arg_for_non_action( 'post_type' );
+		$post_type    = Query_Arguments::get_string_for_non_action( 'post_type' );
 
 		if ( ! $is_edit_page ||
 			$this->cpt_name !== $post_type ) {
@@ -484,7 +483,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 
 	public function get_current_tab(): string {
 		if ( null === $this->current_tab ) {
-			$this->current_tab = $this->get_query_string_arg_for_non_action( 'post_status' );
+			$this->current_tab = Query_Arguments::get_string_for_non_action( 'post_status' );
 		}
 
 		return $this->current_tab;
@@ -492,7 +491,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 
 	public function get_current_page_number(): int {
 		if ( null === $this->current_page_number ) {
-			$page_number = $this->get_query_int_arg_for_non_action( 'paged' );
+			$page_number = Query_Arguments::get_int_for_non_action( 'paged' );
 
 			$this->current_page_number = 0 === $page_number ?
 				1 :
@@ -504,7 +503,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 
 	public function get_current_search_value(): string {
 		if ( null === $this->current_search_value ) {
-			$s = $this->get_query_string_arg_for_non_action( 's' );
+			$s = Query_Arguments::get_string_for_non_action( 's' );
 
 			$this->current_search_value = strtolower( $s );
 		}

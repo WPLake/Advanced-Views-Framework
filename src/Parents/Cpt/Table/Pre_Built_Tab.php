@@ -95,7 +95,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 				echo ' ';
 				printf(
 					' <a target="_blank" href="%s">%s</a>',
-					esc_url( 'https://docs.acfviews.com/templates/pre-built-components' ),
+					esc_url( 'https://docs.advanced-views.com/templates/pre-built-components' ),
 					esc_html__( 'Read more', 'acf-views' )
 				);
 				echo '.';

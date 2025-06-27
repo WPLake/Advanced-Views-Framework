@@ -8,6 +8,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment_Items\Comment_Item_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu\Menu_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu_Item\Menu_Item_Fields;
@@ -1004,8 +1005,9 @@ return new class extends CustomCardData {
 
 		// run upgrade if version in the DB is different from the code version.
 		if ( $db_version !== $code_version ) {
-			// only at this hook can be sure that other plugin's functions are available.
-			add_action( 'plugins_loaded', array( $this, 'perform_upgrade' ) );
+			// 1. only at this hook can be sure that other plugin's functions are available.
+			// 2. with the priority higher than in the Data_Vendors
+			add_action( 'plugins_loaded', array( $this, 'perform_upgrade' ), Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY + 1 );
 		}
 	}
 }

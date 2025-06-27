@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Cards\Cpt;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
@@ -16,7 +16,6 @@ use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 defined( 'ABSPATH' ) || exit;
 
 class Cards_View_Integration extends Cpt_Data_Creator implements Hooks_Interface {
-	use Safe_Query_Arguments;
 
 	const ARGUMENT_FROM  = '_from';
 	const NONCE_MAKE_NEW = 'av-make-card';
@@ -45,7 +44,7 @@ class Cards_View_Integration extends Cpt_Data_Creator implements Hooks_Interface
 			return;
 		}
 
-		$from      = $this->get_query_int_arg_for_admin_action(
+		$from      = Query_Arguments::get_int_for_admin_action(
 			self::ARGUMENT_FROM,
 			self::NONCE_MAKE_NEW
 		);

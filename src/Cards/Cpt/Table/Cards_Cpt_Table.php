@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cards\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Cards\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;

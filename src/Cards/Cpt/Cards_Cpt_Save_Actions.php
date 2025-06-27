@@ -8,7 +8,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cards\Card_Factory;
 use Org\Wplake\Advanced_Views\Cards\Card_Markup;
-use Org\Wplake\Advanced_Views\Cards\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Cards\Query_Builder;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;

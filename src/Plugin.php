@@ -14,16 +14,16 @@ use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 defined( 'ABSPATH' ) || exit;
 
 class Plugin implements Hooks_Interface {
-	const DOCS_URL          = 'https://docs.acfviews.com/';
-	const PRO_VERSION_URL   = 'https://wplake.org/advanced-views-pro/';
-	const PRO_PRICING_URL   = 'https://wplake.org/advanced-views-pro/#pricing';
-	const BASIC_VERSION_URL = 'https://wplake.org/advanced-views-lite/';
+	const DOCS_URL          = 'https://docs.advanced-views.com/';
+	const PRO_VERSION_URL   = 'https://advanced-views.com/pro/';
+	const PRO_PRICING_URL   = 'https://advanced-views.com/pro/#tiers';
+	const BASIC_VERSION_URL = 'https://advanced-views.com';
 	const SURVEY_URL        = 'https://forms.gle/Wjb16B4mzgLEQvru6';
-	const CONFLICTS_URL     = 'https://docs.acfviews.com/troubleshooting/compatibility#conflicts';
+	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/compatibility#conflicts';
 
-	private string $slug         = 'acf-views/acf-views.php';
-	private string $short_slug   = 'acf-views';
-	private string $version      = '3.7.8';
+	private string $slug       = 'acf-views/acf-views.php';
+	private string $short_slug = 'acf-views';
+	private string $version;
 	private bool $is_pro_version = false;
 	private bool $is_switching_versions;
 	private string $plugin_url;
@@ -35,6 +35,7 @@ class Plugin implements Hooks_Interface {
 	public function __construct( string $main_file, Options $options, Settings $settings ) {
 		$this->plugin_url            = plugin_dir_url( $main_file );
 		$this->plugin_path           = plugin_dir_path( $main_file );
+		$this->version               = $this->detect_plugin_version_number( $main_file );
 		$this->options               = $options;
 		$this->settings              = $settings;
 		$this->is_switching_versions = false;
@@ -167,6 +168,17 @@ class Plugin implements Hooks_Interface {
 		$field['wrapper']['class'] .= ' acf-field--deprecated';
 
 		return $field;
+	}
+
+	protected function detect_plugin_version_number( string $plugin_file ): string {
+		// @phpcs:ignore
+		$plugin_file_content = (string)file_get_contents($plugin_file);
+
+		preg_match( '/Version:(.*)/', $plugin_file_content, $matches );
+
+		$current_version_number = $matches[1] ?? '1.0.0';
+
+		return trim( $current_version_number );
 	}
 
 	protected function print_opcache_compatibility_warning(): void {

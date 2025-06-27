@@ -26,7 +26,11 @@ interface Wc_Product_Interface {
 
 	public function get_stock_status(): string;
 
+	public function get_stock_quantity(): ?string;
+
 	public function get_weight(): string;
 
 	public function get_width(): string;
+
+	public function get_featured(): bool;
 }

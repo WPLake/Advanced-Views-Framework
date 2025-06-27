@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use WP_Query;
@@ -21,7 +21,6 @@ defined( 'ABSPATH' ) || exit;
  * FYI: built-in WordPress growth counter was removed https://meta.trac.wordpress.org/ticket/6511
  */
 class Automatic_Reports extends Action implements Hooks_Interface {
-	use Safe_Query_Arguments;
 
 	const HOOK          = Views_Cpt::NAME . '_refresh';
 	const DELAY_MIN_HR  = 12;
@@ -48,119 +47,10 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$this->views_data_storage = $views_data_storage;
 	}
 
-	protected function get_count_of_posts( string $post_type ): int {
-		$query_args = array(
-			'fields'         => 'ids',
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-		);
-		$query      = new WP_Query( $query_args );
-
-		return $query->found_posts;
-	}
-
 	/**
 	 * @return array<string,mixed>
 	 */
-	protected function get_report_data(): array {
-		$error_logs = $this->get_logger()->get_error_logs();
-
-		if ( strlen( $error_logs ) > 5000 ) {
-			$error_logs = substr( $error_logs, 0, 5000 );
-		}
-
-		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
-		// And the domain is only used to avoid multiple counting from one website.
-		$args = array(
-			'_viewsCount'                     => $this->get_count_of_posts( Views_Cpt::NAME ),
-			'_cardsCount'                     => $this->get_count_of_posts( Cards_Cpt::NAME ),
-			// 'is_plugin_active()' is available only later
-			'_isAcfPro'                       => class_exists( 'acf_pro' ),
-			'_isAcf'                          => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),
-			'_isWoo'                          => class_exists( 'WooCommerce' ),
-			'_isMetaBox'                      => class_exists( 'RW_Meta_Box' ),
-			'_isPods'                         => class_exists( 'Pods' ),
-			// check only for Views, as Views and Cards use the same setting.
-			'_isFsStorageActive'              => $this->views_data_storage->get_file_system()->is_active(),
-			'_gitRepositoriesCount'           => count( $this->settings->get_git_repositories() ),
-			'_language'                       => get_bloginfo( 'language' ),
-			'_phpErrors'                      => $error_logs,
-			'_isEnhancedCompatibleModeActive' => $this->settings->is_enhanced_compatible_mode_active(),
-		);
-
-		// send the environment data, so we can debug the issue.
-		if ( true === $this->settings->is_enhanced_compatible_mode_active() ) {
-		    // @phpcs:ignore
-		    $args['_debugDump'] = print_r( $this->get_environment_data(), true );
-		}
-
-		return $args;
-	}
-
-	/**
-	 * @param array<string,string> $deactivation_survey_fields
-	 */
-	protected function send_active_installation_request(
-		bool $is_active = true,
-		array $deactivation_survey_fields = array()
-	): void {
-		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
-		// And the domain is only used to avoid multiple counting from one website.
-		$args = array(
-			'action'                 => 'active_installations',
-			'_domain'                => wp_parse_url( get_site_url() )['host'] ?? '',
-			'_version'               => $this->plugin->get_version(),
-			'_isPro'                 => $this->plugin->is_pro_version(),
-			'_license'               => $this->settings->get_license(),
-			'_isActive'              => $is_active,
-			'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
-		);
-
-		// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
-		if ( false === $this->settings->is_automatic_reports_disabled() ) {
-			$args = array_merge( $args, $this->get_report_data() );
-		}
-
-		wp_remote_post(
-			self::REQUEST_URL,
-			array(
-				'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
-				'method'   => 'POST',
-				'body'     => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
-				// we don't need the response, so it's non-blocking.
-				'blocking' => false,
-			)
-		);
-	}
-
-	protected function schedule_next(): void {
-		// next_check_time in seconds. Randomly to avoid DDOS.
-		$next_check_time = time() + wp_rand( self::DELAY_MIN_HR * 3600, self::DELAY_MAX_HRS * 3600 );
-
-		wp_schedule_single_event( $next_check_time, self::HOOK );
-	}
-
-	protected function un_schedule(): void {
-		$check_time = wp_next_scheduled( self::HOOK );
-
-		if ( false === $check_time ) {
-			return;
-		}
-
-		wp_unschedule_event( $check_time, self::HOOK );
-	}
-
-	// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
-	protected function is_automatic_reports_completely_disabled(): bool {
-		return true === $this->settings->is_automatic_reports_disabled() &&
-				false === $this->plugin->is_pro_version();
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	public function get_environment_data(): array {
+	public static function get_environment_data(): array {
 		return array(
 			'site_url'          => get_site_url(),
 			'php_version'       => phpversion(),
@@ -173,6 +63,62 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			'memory_limit'      => ini_get( 'memory_limit' ),
 			'uploads_limit'     => ini_get( 'upload_max_filesize' ),
 		);
+	}
+
+	public function set_hooks( Current_Screen $current_screen ): void {
+		if ( true === $current_screen->is_admin() ) {
+			$request_uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
+
+			// deactivation survey includes the 'delete data' option, which should be visible even if reports are off
+			// (without the survey for sure).
+			if ( false !== strpos( $request_uri, '/wp-admin/plugins.php' ) ) {
+				add_action( 'admin_footer', array( $this, 'bind_deactivation_survey_popup' ) );
+			}
+		}
+
+		if ( true === $this->is_automatic_reports_completely_disabled() ) {
+			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
+			add_action(
+				self::HOOK,
+				function () {
+					// nothing to do.
+				}
+			);
+
+			return;
+		}
+
+		add_action( 'init', array( $this, 'init' ) );
+		// CRON job.
+		add_action( self::HOOK, array( $this, 'send_and_schedule_next' ) );
+
+		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
+		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
+		$is_activated_after_another_deactivation = $this->options->get_transient(
+			Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
+		);
+
+		$is_activated_after_another_deactivation = is_numeric( $is_activated_after_another_deactivation ) ?
+			(int) $is_activated_after_another_deactivation :
+			0;
+
+		if ( 0 !== $is_activated_after_another_deactivation ) {
+			$this->send_active_installation_request();
+		}
+
+		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
+			Views_Cpt::NAME,
+			Current_Screen::CPT_LIST
+		) ||
+								true === $current_screen->is_admin_cpt_related(
+									Cards_Cpt::NAME,
+									Current_Screen::CPT_LIST
+								);
+
+		if ( true === $is_cpt_list_screen &&
+			false === $this->settings->is_automatic_reports_confirmed() ) {
+			add_action( 'admin_notices', array( $this, 'show_automatic_reports_notice' ) );
+		}
 	}
 
 	// WP Cron is unreliable. Execute also within the dashboard (in case the time has come).
@@ -210,7 +156,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$dismiss_key = 'av-reports-dismiss';
 		$nonce_name  = 'av-reports-notice';
 
-		if ( '' !== $this->get_query_string_arg_for_admin_action( $dismiss_key, $nonce_name ) &&
+		if ( '' !== Query_Arguments::get_string_for_admin_action( $dismiss_key, $nonce_name ) &&
 			true === current_user_can( 'manage_options' ) ) {
 			$this->settings->set_is_automatic_reports_confirmed( true );
 			$this->settings->save();
@@ -282,7 +228,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		?>
 		<style>
-			/*hide other action links while survey is open, 
+			/*hide other action links while survey is open,
 			otherwise may be links after deactivate (like 'loco translate') and it'll look weird*/
 			tr.advanced-views-survey-row .row-actions > *:not(.deactivate) {
 				display: none;
@@ -388,7 +334,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 								reason = null !== reason ?
 									reason.value :
 									'';
-								
+
 								redirectLink += '&advanced-views-reason=' + reason +
 									'&advanced-views-notes=' + popup.querySelector('textarea[name="advanced-views-survey__notes"]').value;
 							}
@@ -456,8 +402,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		$deactivation_survey_fields = array();
 
-		$deactivation_survey_fields['_deactivationReason'] = $this->get_query_string_arg_for_non_action( 'advanced-views-reason' );
-		$deactivation_survey_fields['_deactivationNotes']  = $this->get_query_string_arg_for_non_action( 'advanced-views-notes' );
+		$deactivation_survey_fields['_deactivationReason'] = Query_Arguments::get_string_for_non_action( 'advanced-views-reason' );
+		$deactivation_survey_fields['_deactivationNotes']  = Query_Arguments::get_string_for_non_action( 'advanced-views-notes' );
 
 		if ( strlen( $deactivation_survey_fields['_deactivationNotes'] ) > 1000 ) {
 			$deactivation_survey_fields['_deactivationNotes'] = substr(
@@ -468,66 +414,113 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		if ( 'compatibility_issues' === $deactivation_survey_fields['_deactivationReason'] ) {
-            // @phpcs:ignore
-			$deactivation_survey_fields['_debugDump'] = print_r( $this->get_environment_data(), true );
+			// @phpcs:ignore
+			$deactivation_survey_fields['_debugDump'] = print_r( self::get_environment_data(), true );
 		}
 
 		$this->send_active_installation_request( false, $deactivation_survey_fields );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( true === $current_screen->is_admin() ) {
-			$request_uri = $this->get_query_string_arg_for_non_action( 'REQUEST_URI', 'server' );
+	protected function get_count_of_posts( string $post_type ): int {
+		$query_args = array(
+			'fields'         => 'ids',
+			'post_type'      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => - 1,
+		);
+		$query      = new WP_Query( $query_args );
 
-			// deactivation survey includes the 'delete data' option, which should be visible even if reports are off
-			// (without the survey for sure).
-			if ( false !== strpos( $request_uri, '/wp-admin/plugins.php' ) ) {
-				add_action( 'admin_footer', array( $this, 'bind_deactivation_survey_popup' ) );
-			}
+		return $query->found_posts;
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_report_data(): array {
+		$error_logs = $this->get_logger()->get_error_logs();
+
+		if ( strlen( $error_logs ) > 5000 ) {
+			$error_logs = substr( $error_logs, 0, 5000 );
 		}
 
-		if ( true === $this->is_automatic_reports_completely_disabled() ) {
-			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
-			add_action(
-				self::HOOK,
-				function () {
-					// nothing to do.
-				}
-			);
+		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
+		// And the domain is only used to avoid multiple counting from one website.
+		$args = array(
+			'_viewsCount'                    => $this->get_count_of_posts( Views_Cpt::NAME ),
+			'_cardsCount'                    => $this->get_count_of_posts( Cards_Cpt::NAME ),
+			// 'is_plugin_active()' is available only later
+			'_isAcfPro'                      => class_exists( 'acf_pro' ),
+			'_isAcf'                         => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),
+			'_isWoo'                         => class_exists( 'WooCommerce' ),
+			'_isMetaBox'                     => class_exists( 'RW_Meta_Box' ),
+			'_isPods'                        => class_exists( 'Pods' ),
+			// check only for Views, as Views and Cards use the same setting.
+			'_isFsStorageActive'             => $this->views_data_storage->get_file_system()->is_active(),
+			'_gitRepositoriesCount'          => count( $this->settings->get_git_repositories() ),
+			'_language'                      => get_bloginfo( 'language' ),
+			'_phpErrors'                     => $error_logs,
+			'_isCptAdminOptimizationEnabled' => $this->settings->is_cpt_admin_optimization_enabled(),
+		);
 
+		return $args;
+	}
+
+	/**
+	 * @param array<string,string> $deactivation_survey_fields
+	 */
+	protected function send_active_installation_request(
+		bool $is_active = true,
+		array $deactivation_survey_fields = array()
+	): void {
+		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
+		// And the domain is only used to avoid multiple counting from one website.
+		$args = array(
+			'action'                 => 'active_installations',
+			'_domain'                => wp_parse_url( get_site_url() )['host'] ?? '',
+			'_version'               => $this->plugin->get_version(),
+			'_isPro'                 => $this->plugin->is_pro_version(),
+			'_license'               => $this->settings->get_license(),
+			'_isActive'              => $is_active,
+			'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
+		);
+
+		// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
+		if ( false === $this->settings->is_automatic_reports_disabled() ) {
+			$args = array_merge( $args, $this->get_report_data() );
+		}
+
+		wp_remote_post(
+			self::REQUEST_URL,
+			array(
+				'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+				'method'   => 'POST',
+				'body'     => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
+				// we don't need the response, so it's non-blocking.
+				'blocking' => false,
+			)
+		);
+	}
+
+	protected function schedule_next(): void {
+		// next_check_time in seconds. Randomly to avoid DDOS.
+		$next_check_time = time() + wp_rand( self::DELAY_MIN_HR * 3600, self::DELAY_MAX_HRS * 3600 );
+
+		wp_schedule_single_event( $next_check_time, self::HOOK );
+	}
+
+	protected function un_schedule(): void {
+		$check_time = wp_next_scheduled( self::HOOK );
+
+		if ( false === $check_time ) {
 			return;
 		}
 
-		add_action( 'init', array( $this, 'init' ) );
-		// CRON job.
-		add_action( self::HOOK, array( $this, 'send_and_schedule_next' ) );
+		wp_unschedule_event( $check_time, self::HOOK );
+	}
 
-		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
-		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
-		$is_activated_after_another_deactivation = $this->options->get_transient(
-			Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
-		);
-
-		$is_activated_after_another_deactivation = is_numeric( $is_activated_after_another_deactivation ) ?
-			(int) $is_activated_after_another_deactivation :
-			0;
-
-		if ( 0 !== $is_activated_after_another_deactivation ) {
-			$this->send_active_installation_request();
-		}
-
-		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
-			Views_Cpt::NAME,
-			Current_Screen::CPT_LIST
-		) ||
-								true === $current_screen->is_admin_cpt_related(
-									Cards_Cpt::NAME,
-									Current_Screen::CPT_LIST
-								);
-
-		if ( true === $is_cpt_list_screen &&
-			false === $this->settings->is_automatic_reports_confirmed() ) {
-			add_action( 'admin_notices', array( $this, 'show_automatic_reports_notice' ) );
-		}
+	// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
+	protected function is_automatic_reports_completely_disabled(): bool {
+		return true === $this->settings->is_automatic_reports_disabled() &&
+				false === $this->plugin->is_pro_version();
 	}
 }

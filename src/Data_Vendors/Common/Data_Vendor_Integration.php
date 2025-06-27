@@ -10,21 +10,20 @@ use Org\Wplake\Advanced_Views\Groups\Item_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Views\Source;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_Vendor_Integration_Interface {
 	use Safe_Array_Arguments;
-	use Safe_Query_Arguments;
 
 	const NONCE_ADD_NEW = 'av-add-new';
 	const ARGUMENT_FROM = '_from-group';
@@ -362,7 +361,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 					return;
 				}
 
-				$from      = $this->get_query_int_arg_for_admin_action( self::ARGUMENT_FROM, self::NONCE_ADD_NEW );
+				$from      = Query_Arguments::get_int_for_admin_action( self::ARGUMENT_FROM, self::NONCE_ADD_NEW );
 				$from_post = 0 !== $from ?
 					get_post( $from ) :
 					null;

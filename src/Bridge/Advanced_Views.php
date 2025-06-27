@@ -8,8 +8,8 @@ use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\Card_Shortcode_Interf
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\View_Shortcode_Interface;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\View_Shortcode;
-use Org\Wplake\Advanced_Views\Cards\Card_Shortcode as InnerCardShortcode;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode as InnerViewShortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode as InnerCardShortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode as InnerViewShortcode;
 
 defined( 'ABSPATH' ) || exit;
 

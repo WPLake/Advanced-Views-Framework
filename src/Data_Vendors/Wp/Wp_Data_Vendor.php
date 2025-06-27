@@ -58,7 +58,7 @@ use Org\Wplake\Advanced_Views\Views\Field_Meta;
 use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Views\Source;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
-use Org\Wplake\Advanced_Views\Views\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -77,9 +77,9 @@ class Wp_Data_Vendor extends Data_Vendor {
 				Post_Fields::FIELD_TITLE_LINK       => false === $is_field_name_as_label ?
 					__( 'Title with link', 'acf-views' ) : 'post_title_link',
 				Post_Fields::FIELD_CONTENT          => false === $is_field_name_as_label ?
-					__( 'Content', 'acf-views' ) : 'post_content',
+					__( 'Content (product description)', 'acf-views' ) : 'post_content',
 				Post_Fields::FIELD_EXCERPT          => false === $is_field_name_as_label ?
-					__( 'Excerpt', 'acf-views' ) : 'post_excerpt',
+					__( 'Excerpt (product short description)', 'acf-views' ) : 'post_excerpt',
 				Post_Fields::FIELD_THUMBNAIL        => false === $is_field_name_as_label ?
 					__( 'Featured Image', 'acf-views' ) : 'post_featured_image',
 				Post_Fields::FIELD_THUMBNAIL_LINK   => false === $is_field_name_as_label ?
@@ -251,12 +251,12 @@ class Wp_Data_Vendor extends Data_Vendor {
 	 */
 	public function get_group_choices(): array {
 		$groups = array(
-			Post_Fields::GROUP_NAME          => __( 'Post (WordPress)', 'acf-views' ),
+			Post_Fields::GROUP_NAME          => __( 'Post & Product fields (WordPress, WooCommerce)', 'acf-views' ),
 			Taxonomy_Term_Fields::GROUP_NAME => __( 'Taxonomy terms (WordPress)', 'acf-views' ),
 			Term_Fields::GROUP_NAME          => __( 'Term (WordPress)', 'acf-views' ),
 			User_Fields::GROUP_NAME          => __( 'User (WordPress)', 'acf-views' ),
-			Comment_Item_Fields::GROUP_NAME  => __( 'Comment items (WordPress)', 'acf-views' ),
-			Comment_Fields::GROUP_NAME       => __( 'Comment (WordPress)', 'acf-views' ),
+			Comment_Item_Fields::GROUP_NAME  => __( 'Comments & Reviews (WordPress, WooCommerce)', 'acf-views' ),
+			Comment_Fields::GROUP_NAME       => __( 'Comment & Review fields (WordPress, WooCommerce)', 'acf-views' ),
 			Menu_Fields::GROUP_NAME          => __( 'Menu (WordPress)', 'acf-views' ),
 			Menu_Item_Fields::GROUP_NAME     => __( 'Menu item (WordPress)', 'acf-views' ),
 		);

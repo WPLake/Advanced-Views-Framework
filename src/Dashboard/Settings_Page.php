@@ -16,7 +16,7 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Safe_Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
@@ -25,8 +25,7 @@ use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
-class Settings_Page extends Action implements Hooks_Interface {
-	use Safe_Query_Arguments;
+final class Settings_Page extends Action implements Hooks_Interface {
 
 	const SLUG = 'acf-views-settings';
 	/**
@@ -117,110 +116,6 @@ class Settings_Page extends Action implements Hooks_Interface {
 		);
 	}
 
-	/**
-	 * @param string[] $slugs
-	 *
-	 * @return WP_Post[]
-	 */
-	protected function get_posts( string $post_type, array $slugs ): array {
-		$query_args = array(
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-		);
-
-		if ( array() !== $slugs ) {
-			$query_args['post_name__in'] = $slugs;
-		}
-
-		$query = new WP_Query( $query_args );
-
-		/**
-		 * @var WP_Post[]
-		 */
-		return $query->get_posts();
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function get_cpt_dump_data(): array {
-		$export_data = array();
-
-		$views_to_export = array() !== $this->settings_data->dump_views ?
-			$this->get_posts( Views_Cpt::NAME, $this->settings_data->dump_views ) :
-			array();
-		$cards_to_export = array() !== $this->settings_data->dump_cards ?
-			$this->get_posts( Cards_Cpt::NAME, $this->settings_data->dump_cards ) :
-			array();
-
-		foreach ( $views_to_export as $view_post ) {
-			$view_data = $this->views_data_storage->get( $view_post->post_name );
-			// we don't need to save defaults.
-			$export_data[ $view_post->post_name ] = $view_data->getFieldValues( '', true );
-		}
-
-		foreach ( $cards_to_export as $card_post ) {
-			$card_data      = $this->cards_data_storage->get( $card_post->post_name );
-			$card_unique_id = $card_data->get_unique_id();
-			// we don't need to save defaults.
-			$export_data[ $card_unique_id ] = $card_data->getFieldValues( '', true );
-		}
-
-		return $export_data;
-	}
-
-	protected function maybe_echo_dump_file(): void {
-		if ( false === $this->settings_data->is_generate_installation_dump ) {
-			return;
-		}
-
-		$dump_data = array(
-			'error_logs'  => $this->get_logger()->get_error_logs(),
-			'logs'        => $this->get_logger()->get_logs(),
-			'cpt_data'    => $this->get_cpt_dump_data(),
-			'environment' => $this->automatic_reports->get_environment_data(),
-		);
-
-		$redirect_url = add_query_arg(
-			array(
-				'message' => 1,
-			)
-		);
-		?>
-		<script>
-			(function () {
-				function save() {
-					const data = <?php echo wp_json_encode( $dump_data ); ?>;
-
-					let date = new Date().toISOString().slice(0, 10);
-					let timestamp = new Date().getTime();
-					let fileName = `advanced-views-debug-dump-${date}-${timestamp}.json`;
-					let content = JSON.stringify(data);
-
-					const file = new File([content], fileName, {
-						type: 'application/json',
-					})
-
-					let settingsUrl = "<?php echo esc_url_raw( $redirect_url ); ?>";
-
-					const a = document.createElement('a');
-
-					a.href = URL.createObjectURL(file);
-					a.download = fileName;
-					a.click();
-					window.location.href = settingsUrl;
-				}
-
-				'loading' === document.readyState ?
-					window.document.addEventListener('DOMContentLoaded', save) :
-					save();
-			}())
-		</script>
-		<?php
-		exit;
-	}
-
 	public function add_page(): void {
 		// do not use 'acf_add_options_page', as the global options-related functions may be unavailable
 		// (in case of the manual include).
@@ -228,7 +123,7 @@ class Settings_Page extends Action implements Hooks_Interface {
 			return;
 		}
 
-		$result_message = $this->get_query_string_arg_for_non_action( 'resultMessage' );
+		$result_message = Query_Arguments::get_string_for_non_action( 'resultMessage' );
 
 		$updated_message = '' === $result_message ?
 			__( 'Settings successfully updated.', 'acf-views' ) :
@@ -327,12 +222,6 @@ class Settings_Page extends Action implements Hooks_Interface {
 
 						$this->settings_data->git_repositories = array();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_LOGS ):
-						$value = $this->get_logger()->get_logs();
-						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_ERROR_LOGS ):
-						$value = $this->get_logger()->get_error_logs();
-						break;
 					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_AUTOMATIC_REPORTS_DISABLED ):
 						$value = $this->settings->is_automatic_reports_disabled();
 						break;
@@ -345,8 +234,8 @@ class Settings_Page extends Action implements Hooks_Interface {
 					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_CLASSES_GENERATION ):
 						$value = $this->settings->get_classes_generation();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_ENHANCED_COMPATIBLE_MODE_ACTIVE ):
-						$value = $this->settings->is_enhanced_compatible_mode_active();
+					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_CPT_ADMIN_OPTIMIZATION_ENABLED ):
+						$value = $this->settings->is_cpt_admin_optimization_enabled();
 						break;
 					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_SASS_TEMPLATE ):
 						$value = $this->settings->get_sass_template();
@@ -388,7 +277,7 @@ class Settings_Page extends Action implements Hooks_Interface {
 		$this->settings->set_template_engine( $this->settings_data->template_engine );
 		$this->settings->set_web_components_type( $this->settings_data->web_components_type );
 		$this->settings->set_classes_generation( $this->settings_data->classes_generation );
-		$this->settings->set_is_enhanced_compatible_mode_active( $this->settings_data->is_enhanced_compatible_mode_active );
+		$this->settings->set_is_cpt_admin_optimization_enabled( $this->settings_data->is_cpt_admin_optimization_enabled );
 		$this->settings->set_sass_template( $this->settings_data->sass_template );
 		$this->settings->set_ts_template( $this->settings_data->ts_template );
 
@@ -425,8 +314,6 @@ class Settings_Page extends Action implements Hooks_Interface {
 		}
 
 		$this->settings->save();
-
-		$this->maybe_echo_dump_file();
 
 		if ( '' === $this->saved_message ) {
 			return;
