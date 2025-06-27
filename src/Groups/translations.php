@@ -379,12 +379,6 @@ __("Sass Template (for File System Storage)", "acf-views");
 __("TypeScript Template (for File System Storage)", "acf-views");
 __("Git repositories", "acf-views");
 __("Git Repositories", "acf-views");
-__("Debugging", "acf-views");
-__("Error logs", "acf-views");
-__("Internal logs", "acf-views");
-__("Generate debug dump", "acf-views");
-__("Include specific Views data in your debug dump", "acf-views");
-__("Include specific Cards data in your debug dump", "acf-views");
 
 // Settings_Data.php : descriptions
 
@@ -400,11 +394,6 @@ __("Controls classes generation in the Default Template for new Views and Cards.
 __("When present, this value is used as the default for the 'style.scss' file of View and Card, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted.", "acf-views");
 __("When present, this value is used as the default for the 'script.ts' file of View and Card. <br> If skipped, 'script.ts' creation will be omitted.", "acf-views");
 __("By saving Views and Cards in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>", "acf-views");
-__("Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation.", "acf-views");
-__("Contains plugin warnings and debug messages if the development mode is enabled. The logs are deleted upon plugin deactivation.", "acf-views");
-__("Turn this on and click 'Save changes' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.", "acf-views");
-__("Select the View items related to your issue to include them in the debug dump.", "acf-views");
-__("Select the Card items related to your issue to include them in the debug dump.", "acf-views");
 
 // Settings_Data.php : buttons
 
@@ -497,12 +486,23 @@ __("Export Views", "acf-views");
 __("Export Cards", "acf-views");
 __("Import", "acf-views");
 __("Select a file to import", "acf-views");
+__("Debugging", "acf-views");
+__("Error logs", "acf-views");
+__("Internal logs", "acf-views");
+__("Generate debug dump", "acf-views");
+__("Include specific Views data in your debug dump", "acf-views");
+__("Include specific Cards data in your debug dump", "acf-views");
 
 // Tools_Data.php : descriptions
 
 __("Select Views to be exported", "acf-views");
 __("Select Cards to be exported", "acf-views");
 __("Note: Views and Cards with the same IDs are overridden.", "acf-views");
+__("Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation.", "acf-views");
+__("Contains plugin warnings and debug messages if the development mode is enabled in <a target='_blank' href='/wp-admin/edit.php?post_type=acf_views&page=acf-views-settings'>the settings</a>. The logs are deleted upon plugin deactivation.", "acf-views");
+__("Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.", "acf-views");
+__("Select the View items related to your issue to include them in the debug dump.", "acf-views");
+__("Select the Card items related to your issue to include them in the debug dump.", "acf-views");
 
 // View_Data.php : labels
 

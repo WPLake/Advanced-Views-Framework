@@ -4,7 +4,7 @@ Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.7.17
+Stable tag: 3.7.18
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -132,7 +132,7 @@ Please make sure you've added it via the built-in Shortcode block, as it won't w
 
 == Changelog ==
 
-= 3.7.18 (2025-) =
+= 3.7.18 (2025-06-27) =
 - Enhancement: Woo - Stock quantity and featured fields support
 - Enhancement: View - labels for default field groups
 - Enhancement: Shortcode - View/Card not found error message
