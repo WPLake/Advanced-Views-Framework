@@ -28,6 +28,19 @@ abstract class Cpt_Meta_Boxes implements Hooks_Interface {
 	}
 
 	public function add_meta_boxes(): void {
+		add_meta_box(
+			'acf-views_support',
+			__( 'Having issues?', 'acf-views' ),
+			function () {
+				$this->html->print_postbox_support();
+			},
+			array(
+				$this->get_cpt_name(),
+			),
+			'side',
+			'low'
+		);
+
 		if ( ! $this->plugin->is_pro_version() ) {
 			add_meta_box(
 				'acf-views_upgrade',
@@ -42,19 +55,6 @@ abstract class Cpt_Meta_Boxes implements Hooks_Interface {
 				'low'
 			);
 		}
-
-		add_meta_box(
-			'acf-views_support',
-			__( 'Having issues?', 'acf-views' ),
-			function () {
-				$this->html->print_postbox_support();
-			},
-			array(
-				$this->get_cpt_name(),
-			),
-			'side',
-			'low'
-		);
 	}
 
 	public function print_mount_points( Cpt_Data $cpt_data ): void {
