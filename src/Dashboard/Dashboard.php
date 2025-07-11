@@ -222,9 +222,9 @@ class Dashboard implements Hooks_Interface {
 				'isLeftBlock' => true,
 				'url'         => Plugin::PRO_VERSION_URL,
 				'isBlank'     => true,
-				'label'       => __( 'Get PRO', 'acf-views' ),
+				'label'       => __( 'Upgrade to Pro', 'acf-views' ),
+				'class'       => 'av-toolbar__upgrade-link',
 				'isActive'    => false,
-				'iconClasses' => 'av-toolbar__external-icon dashicons dashicons-star-filled',
 				'isSecondary' => false,
 			),
 			array(

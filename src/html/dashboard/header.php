@@ -43,6 +43,9 @@ $tabs = $view['tabs'] ?? array();
 			$class   .= $tab['isSecondary'] ?
 				' av-toolbar__tab--secondary' :
 				'';
+			$class   .= key_exists( 'class', $tab ) ?
+				' ' . $tab['class'] :
+				'';
 			$is_blank = $tab['isBlank'] ?? false;
 
 			printf(
