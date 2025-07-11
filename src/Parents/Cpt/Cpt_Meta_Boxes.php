@@ -8,14 +8,17 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Meta_Boxes implements Hooks_Interface {
 	private Html $html;
+	private Plugin $plugin;
 
-	public function __construct( Html $html ) {
-		$this->html = $html;
+	public function __construct( Html $html, Plugin $plugin ) {
+		$this->html   = $html;
+		$this->plugin = $plugin;
 	}
 
 	abstract protected function get_cpt_name(): string;
@@ -25,18 +28,20 @@ abstract class Cpt_Meta_Boxes implements Hooks_Interface {
 	}
 
 	public function add_meta_boxes(): void {
-		add_meta_box(
-			'acf-views_review',
-			__( 'Rate & Review', 'acf-views' ),
-			function () {
-				$this->html->print_postbox_review();
-			},
-			array(
-				$this->get_cpt_name(),
-			),
-			'side',
-			'low'
-		);
+		if ( ! $this->plugin->is_pro_version() ) {
+			add_meta_box(
+				'acf-views_upgrade',
+				__( 'Unlock with Pro', 'acf-views' ),
+				function () {
+					$this->html->print_postbox_upgrade();
+				},
+				array(
+					$this->get_cpt_name(),
+				),
+				'side',
+				'low'
+			);
+		}
 
 		add_meta_box(
 			'acf-views_support',

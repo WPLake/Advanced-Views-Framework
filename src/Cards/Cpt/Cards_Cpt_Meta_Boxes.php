@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cards\Cpt;
 
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
@@ -20,10 +21,11 @@ class Cards_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 
 	public function __construct(
 		Html $html,
+		Plugin $plugin,
 		Cards_Data_Storage $cards_data_storage,
 		Views_Data_Storage $views_data_storage
 	) {
-		parent::__construct( $html );
+		parent::__construct( $html, $plugin );
 
 		$this->cards_data_storage = $cards_data_storage;
 		$this->views_data_storage = $views_data_storage;

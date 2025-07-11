@@ -132,6 +132,9 @@ Please make sure you've added it via the built-in Shortcode block, as it won't w
 
 == Changelog ==
 
+= 3.7.19 (2025-) =
+- UX improvements
+
 = 3.7.18 (2025-06-27) =
 - Enhancement: Woo - Stock quantity and featured fields support
 - Enhancement: View - labels for default field groups

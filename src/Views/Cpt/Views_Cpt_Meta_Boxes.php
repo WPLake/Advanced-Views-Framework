@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
@@ -20,8 +21,8 @@ class Views_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
 	private Views_Data_Storage $views_data_storage;
 
-	public function __construct( Html $html, Views_Data_Storage $views_data_storage, Data_Vendors $data_vendors ) {
-		parent::__construct( $html );
+	public function __construct( Html $html, Plugin $plugin, Views_Data_Storage $views_data_storage, Data_Vendors $data_vendors ) {
+		parent::__construct( $html, $plugin );
 
 		$this->views_data_storage = $views_data_storage;
 		$this->data_vendors       = $data_vendors;

@@ -79,8 +79,13 @@ class Html {
 		);
 	}
 
-	public function print_postbox_review(): void {
-		$this->print( 'postbox/review' );
+	public function print_postbox_upgrade(): void {
+		$this->print(
+			'postbox/upgrade',
+			array(
+				'upgrade_link' => Plugin::PRO_VERSION_URL,
+			)
+		);
 	}
 
 	public function print_postbox_support(): void {

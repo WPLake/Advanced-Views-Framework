@@ -222,6 +222,7 @@ $acf_views = new class() {
 		);
 		$view_cpt_meta_boxes          = new Views_Cpt_Meta_Boxes(
 			$this->html,
+			$this->plugin,
 			$this->views_data_storage,
 			$this->data_vendors
 		);
@@ -318,6 +319,7 @@ $acf_views = new class() {
 		);
 		$cards_cpt_meta_boxes         = new Cards_Cpt_Meta_Boxes(
 			$this->html,
+			$this->plugin,
 			$this->cards_data_storage,
 			$this->views_data_storage
 		);
