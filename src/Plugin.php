@@ -82,15 +82,10 @@ class Plugin implements Hooks_Interface {
 	 * @return array<string,mixed>
 	 */
 	protected function amend_pro_field_label_and_instruction( array $field ): array {
-		$is_pro_field      = key_exists( 'a-pro', $field ) &&
+		$is_pro_field = key_exists( 'a-pro', $field ) &&
 							$this->is_pro_field_locked();
-		$is_acf_pro_field  = true === key_exists( 'a-acf-pro', $field ) &&
-							false === $this->is_acf_plugin_available( true );
-		$is_mb_block_field = true === key_exists( 'a-mb-blocks', $field ) &&
-							false === defined( 'MB_BLOCKS_VER' );
 
-		if ( ! $is_pro_field &&
-			! $is_acf_pro_field ) {
+		if ( ! $is_pro_field ) {
 			return $field;
 		}
 
@@ -104,42 +99,20 @@ class Plugin implements Hooks_Interface {
 
 		$field['instructions'] = $instructions;
 
-		if ( $is_pro_field ) {
-			$field['label'] = $field['label'] . ' (Pro)';
-			if ( 'tab' !== $type ) {
-				$label                 = ! $this->is_pro_version() ?
-					__( 'Upgrade to Pro', 'acf-views' ) :
-					__( 'Activate your license', 'acf-views' );
-				$link                  = ! $this->is_pro_version() ?
-					self::PRO_VERSION_URL :
-					$this->get_admin_url( Dashboard::PAGE_PRO );
-				$field['instructions'] = sprintf(
-					'<a href="%s" target="_blank">%s</a> %s %s',
-					$link,
-					$label,
-					__( 'to unlock.', 'acf-views' ),
-					'<br>' . $field['instructions']
-				);
-			}
-		}
+		if ( 'tab' === $type ) {
+			$field['class'] = ( $field['class'] ?? '' ) . ' acf-views-tab__pro';
+		} else {
+			$link = ! $this->is_pro_version() ?
+				self::PRO_VERSION_URL :
+				$this->get_admin_url( Dashboard::PAGE_PRO );
 
-		if ( $is_acf_pro_field ) {
-			$field['instructions'] = sprintf(
-				'(<a href="%s" target="_blank">%s</a> %s) %s',
-				'https://www.advancedcustomfields.com/pro/',
-				__( 'ACF Pro', 'acf-views' ),
-				__( 'version is required for this feature', 'acf-views' ),
-				$field['instructions']
-			);
-		}
-
-		if ( $is_mb_block_field ) {
-			$field['instructions'] = sprintf(
-				'(<a href="%s" target="_blank">%s</a> %s) %s',
-				'https://metabox.io/plugins/mb-blocks/',
-				__( 'MB Blocks', 'acf-views' ),
-				__( 'extension is required for this feature', 'acf-views' ),
-				$field['instructions']
+			$field['label'] = sprintf(
+				'%s (<a target="_blank" href="%s">%s</a>)',
+				esc_html( $field['label'] ),
+				esc_url( $link ),
+				$this->is_pro_version() ?
+					esc_html__( 'Unlock Pro', 'acf-views' ) :
+					esc_html__( 'Get Pro', 'acf-views' )
 			);
 		}
 
@@ -412,24 +385,16 @@ class Plugin implements Hooks_Interface {
 	 * @return array<string,mixed>
 	 */
 	public function add_class_to_admin_pro_field_classes( array $wrapper, array $field ): array {
-		$is_pro_field       = key_exists( 'a-pro', $field ) &&
+		$is_pro_field = key_exists( 'a-pro', $field ) &&
 								$this->is_pro_field_locked();
-		$is_acf_pro_field   = true === key_exists( 'a-acf-pro', $field ) &&
-								false === $this->is_acf_plugin_available( true );
-		$is_mb_blocks_field = true === key_exists( 'a-mb-blocks', $field ) &&
-								false === defined( 'MB_BLOCKS_VER' );
 
-		if ( false === $is_pro_field &&
-			false === $is_acf_pro_field &&
-			false === $is_mb_blocks_field ) {
-			return $wrapper;
+		if ( $is_pro_field ) {
+			if ( ! key_exists( 'class', $wrapper ) ) {
+				$wrapper['class'] = '';
+			}
+
+			$wrapper['class'] .= ' acf-views-pro';
 		}
-
-		if ( ! key_exists( 'class', $wrapper ) ) {
-			$wrapper['class'] = '';
-		}
-
-		$wrapper['class'] .= ' acf-views-pro';
 
 		return $wrapper;
 	}

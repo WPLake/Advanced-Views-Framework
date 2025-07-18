@@ -227,7 +227,6 @@ class View_Data extends Cpt_Data {
 	 * @label With Gutenberg Block (ACF)
 	 * @instructions If checked, a separate Gutenberg block for this view will be available. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>.
 	 * @a-pro The field must be not required or have default value!
-	 * @a-acf-pro ACF PRO version is necessary for this feature
 	 * @a-deprecated IT'S INVISIBLE FIELD FOR BACK COMPATIBILITY ONLY
 	 */
 	public bool $is_has_gutenberg_block;

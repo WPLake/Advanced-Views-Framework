@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:218
-#: src/Plugin.php:344
+#: src/Plugin.php:191
+#: src/Plugin.php:317
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -165,22 +165,22 @@ msgstr "Carta inviata."
 msgid "Card draft updated."
 msgstr "Bozza della carta aggiornata."
 
-#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:40
+#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:42
 msgid "No related View."
 msgstr "Nessuna Vista correlata."
 
-#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:63
+#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:65
 #: src/Cards/Cpt/Table/Cards_Cpt_Table.php:111
 #: src/Views/Cpt/Table/Views_Cpt_Table.php:130
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:219
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:220
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:67
+#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:69
 msgid "Your Card shortcode is available after publishing."
 msgstr "Il tuo shortcode della Carta sarà disponibile dopo la pubblicazione."
 
-#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:91
+#: src/Cards/Cpt/Cards_Cpt_Meta_Boxes.php:93
 #: src/Cards/Cpt/Table/Cards_Cpt_Table.php:112
 msgid "Related View"
 msgstr "Vista Correlata"
@@ -219,10 +219,6 @@ msgstr "Impostazioni"
 #: src/Tools/Tools.php:241
 msgid "Tools"
 msgstr "Strumenti"
-
-#: src/Dashboard/Dashboard.php:225
-msgid "Get PRO"
-msgstr "Ottieni PRO"
 
 #: src/Dashboard/Dashboard.php:233
 msgid "Demo Import"
@@ -406,7 +402,7 @@ msgid "Advanced Views"
 msgstr "Viste Avanzate"
 
 #: src/Data_Vendors/Common/Data_Vendor_Integration.php:187
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:205
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:206
 msgid "Add new"
 msgstr "Aggiungi nuovo"
 
@@ -1591,7 +1587,7 @@ msgstr "Blocco Meta Box"
 msgid "Pods Block"
 msgstr "Blocco Pods"
 
-#: src/Groups/View_Data.php:312
+#: src/Groups/View_Data.php:311
 msgid "View settings"
 msgstr "Impostazioni della vista"
 
@@ -1727,21 +1723,13 @@ msgstr "\"Carta Telefoni\""
 msgid "\"Most popular phones in 2022\" page"
 msgstr "\"Pagina dei telefoni più popolari nel 2022\""
 
-#: src/html/postbox/review.php:12
-msgid "If you like the Advanced Views plugin consider leaving a rating. We greatly appreciate feedback!"
-msgstr "Se ti piace il plugin Advanced Views, considera di lasciare una valutazione. Apprezziamo molto il feedback!"
-
-#: src/html/postbox/review.php:22
-msgid "Write a review"
-msgstr "Scrivi una recensione"
-
 #: src/html/postbox/shortcodes.php:37
 msgid "Copy to clipboard"
 msgstr "Copia negli appunti"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:79
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:99
-#: src/Plugin.php:200
+#: src/Plugin.php:173
 msgid "Read more"
 msgstr "Leggi di più"
 
@@ -1785,19 +1773,15 @@ msgstr "Effettua"
 msgid "2 minute survey"
 msgstr "un sondaggio di 2 minuti"
 
-#: src/Parents/Cpt/Cpt_Meta_Boxes.php:30
-msgid "Rate & Review"
-msgstr "Valuta & Recensisci"
-
-#: src/Parents/Cpt/Cpt_Meta_Boxes.php:43
+#: src/Parents/Cpt/Cpt_Meta_Boxes.php:33
 msgid "Having issues?"
 msgstr "Hai problemi?"
 
-#: src/Parents/Cpt/Cpt_Meta_Boxes.php:83
+#: src/Parents/Cpt/Cpt_Meta_Boxes.php:88
 msgid "Post Types:"
 msgstr "Tipi di post:"
 
-#: src/Parents/Cpt/Cpt_Meta_Boxes.php:93
+#: src/Parents/Cpt/Cpt_Meta_Boxes.php:98
 msgid "Pages:"
 msgstr "Pagine:"
 
@@ -1877,47 +1861,24 @@ msgstr "Controlla e correggi i permessi dei file per lavorare con Viste e Carte.
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Nota: Non disabilitare la funzione di archiviazione FS prima di risolvere il problema, altrimenti i tuoi dati andranno persi."
 
-#: src/Plugin.php:111
+#: src/Dashboard/Dashboard.php:225
+#: src/html/postbox/upgrade.php:23
 msgid "Upgrade to Pro"
 msgstr "Passa alla versione Pro"
 
-#: src/Plugin.php:112
-msgid "Activate your license"
-msgstr "Attiva la tua licenza"
-
-#: src/Plugin.php:120
-msgid "to unlock."
-msgstr "per sbloccare."
-
-#: src/Plugin.php:130
-msgid "ACF Pro"
-msgstr "ACF Pro"
-
-#: src/Plugin.php:131
-msgid "version is required for this feature"
-msgstr "la versione è richiesta per questa funzionalità"
-
-#: src/Plugin.php:140
-msgid "MB Blocks"
-msgstr "Blocchi MB"
-
-#: src/Plugin.php:141
-msgid "extension is required for this feature"
-msgstr "l'estensione è richiesta per questa funzionalità"
-
-#: src/Plugin.php:185
+#: src/Plugin.php:158
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "Rilevato problema di compatibilità! Il plugin \"Advanced Views\" richiede commenti \"PHPDoc\" nel codice."
 
-#: src/Plugin.php:189
+#: src/Plugin.php:162
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Si prega di cambiare l'opzione \"opcache.save_comments\" nel file php.ini al valore predefinito di \"1\" sul proprio hosting."
 
-#: src/Plugin.php:339
+#: src/Plugin.php:312
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' e 'Advanced Views Pro' non dovrebbero essere attivi contemporaneamente. Abbiamo disattivato automaticamente"
 
-#: src/Plugin.php:345
+#: src/Plugin.php:318
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1999,31 +1960,31 @@ msgstr "Vista inviata."
 msgid "View draft updated."
 msgstr "Bozza della vista aggiornata."
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:76
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:77
 msgid "No assigned ACF Groups."
 msgstr "Nessun Gruppo ACF assegnato."
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:115
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:116
 msgid "No assigned Views."
 msgstr "Nessuna Vista assegnata."
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:168
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:169
 msgid "Not assigned to any Cards."
 msgstr "Non assegnato a nessuna Carta."
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:223
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:224
 msgid "Your View shortcode is available after publishing."
 msgstr "Il tuo shortcode della Vista sarà disponibile dopo la pubblicazione."
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:249
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:250
 msgid "Assigned Groups"
 msgstr "Gruppi Assegnati"
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:263
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:264
 msgid "Assigned Views"
 msgstr "Viste Assegnate"
 
-#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:278
+#: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:279
 msgid "Assigned to Cards"
 msgstr "Assegnato alle Carte"
 
@@ -2737,4 +2698,20 @@ msgstr ""
 
 #: src/Tools/Tools.php:189
 msgid "Action successfully complete"
+msgstr ""
+
+#: src/html/postbox/upgrade.php:13
+msgid "Enable advanced features like repeater fields, AJAX pagination, sliders, and lightboxes."
+msgstr ""
+
+#: src/Parents/Cpt/Cpt_Meta_Boxes.php:47
+msgid "Unlock with Pro"
+msgstr ""
+
+#: src/Plugin.php:114
+msgid "Unlock Pro"
+msgstr ""
+
+#: src/Plugin.php:115
+msgid "Get Pro"
 msgstr ""
