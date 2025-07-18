@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Card_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -108,7 +109,7 @@ class Plugin implements Hooks_Interface {
 
 			$field['label'] = sprintf(
 				'%s (<a target="_blank" href="%s">%s</a>)',
-				esc_html( $field['label'] ),
+				esc_html( string( $field, 'label' ) ),
 				esc_url( $link ),
 				$this->is_pro_version() ?
 					esc_html__( 'Unlock Pro', 'acf-views' ) :

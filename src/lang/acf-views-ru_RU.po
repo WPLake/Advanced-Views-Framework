@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:191
-#: src/Plugin.php:317
+#: src/Plugin.php:192
+#: src/Plugin.php:318
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -1713,7 +1713,7 @@ msgstr "Копировать в буфер обмена"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:79
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:99
-#: src/Plugin.php:173
+#: src/Plugin.php:174
 msgid "Read more"
 msgstr "Читать далее"
 
@@ -1850,19 +1850,19 @@ msgstr "Примечание: Не отключайте функцию хран�
 msgid "Upgrade to Pro"
 msgstr "Обновить до Pro"
 
-#: src/Plugin.php:158
+#: src/Plugin.php:159
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "Обнаружена проблема совместимости! Плагин \"Advanced Views\" требует комментарии \"PHPDoc\" в коде."
 
-#: src/Plugin.php:162
+#: src/Plugin.php:163
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Пожалуйста, измените опцию \"opcache.save_comments\" в вашем файле php.ini на значение по умолчанию \"1\" на вашем хостинге."
 
-#: src/Plugin.php:312
+#: src/Plugin.php:313
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' и 'Advanced Views Pro' не должны быть активны одновременно. Мы автоматически деактивировали"
 
-#: src/Plugin.php:318
+#: src/Plugin.php:319
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -2708,10 +2708,10 @@ msgstr ""
 msgid "Unlock with Pro"
 msgstr ""
 
-#: src/Plugin.php:114
+#: src/Plugin.php:115
 msgid "Unlock Pro"
 msgstr ""
 
-#: src/Plugin.php:115
+#: src/Plugin.php:116
 msgid "Get Pro"
 msgstr ""
