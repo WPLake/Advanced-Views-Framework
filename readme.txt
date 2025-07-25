@@ -130,6 +130,11 @@ You can use the View shortcode inside the Gutenberg Query Loop element.
 
 Please make sure you've added it via the built-in Shortcode block, as it won't work properly with other block types, like Code or Custom HTML.
 
+= Does the plugin have a Git repository? =
+
+Yes, we maintain an [official Git repository](https://github.com/wplake/advanced-views-framework).
+You're welcome to open issues or PRs there.
+
 == Changelog ==
 
 = 3.7.19 (2025-07-18) =
