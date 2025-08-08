@@ -67,7 +67,7 @@ class View_Factory extends Instance_Factory {
 		Source $data_post,
 		string $unique_view_id,
 		int $page_id,
-		View_Data $view_data = null,
+		?View_Data $view_data = null,
 		string $classes = ''
 	): View {
 		$view_data = null !== $view_data ?
