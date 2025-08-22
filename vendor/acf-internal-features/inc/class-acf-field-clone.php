@@ -4,13 +4,20 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 
 	class acf_field_clone extends acf_field {
 
+		/**
+		 * Array of fields being cloned.
+		 *
+		 * @var array
+		 */
+		public $cloning = array();
+
 		// _custom, to hide from groups UI
 		public function __construct() {
 			$this->public = false;
-            
+
 			parent::__construct();
 		}
-        
+
 		/**
 		 * This function will setup the field type data
 		 *
@@ -32,6 +39,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/clone/', 'docs', 'field-type-selection' );
 			$this->tutorial_url  = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/how-to-use-the-clone-field/', 'docs', 'field-type-selection' );
 			$this->pro           = true;
+			$this->supports      = array( 'bindings' => false );
 			$this->defaults      = array(
 				'clone'        => '',
 				'prefix_label' => 0,
@@ -39,7 +47,6 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				'display'      => 'seamless',
 				'layout'       => 'block',
 			);
-			$this->cloning       = array();
 			$this->have_rows     = 'single';
 
 			// register filter
@@ -659,9 +666,9 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 		function render_field_table( $field ) {
 
 			?>
-            <table class="acf-table">
-                <thead>
-                <tr>
+			<table class="acf-table">
+				<thead>
+				<tr>
 					<?php
 					foreach ( $field['sub_fields'] as $sub_field ) :
 
@@ -684,15 +691,15 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 						}
 
 						?>
-                        <th <?php echo acf_esc_attrs( $attrs ); ?>>
+						<th <?php echo acf_esc_attrs( $attrs ); ?>>
 							<?php acf_render_field_label( $sub_field ); ?>
 							<?php acf_render_field_instructions( $sub_field ); ?>
-                        </th>
+						</th>
 					<?php endforeach; ?>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="acf-row">
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="acf-row">
 					<?php
 
 					foreach ( $field['sub_fields'] as $sub_field ) {
@@ -700,9 +707,9 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 					}
 
 					?>
-                </tr>
-                </tbody>
-            </table>
+				</tr>
+				</tbody>
+			</table>
 			<?php
 		}
 
@@ -737,6 +744,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 					'ajax'         => 1,
 					'ajax_action'  => 'acf/fields/clone/query',
 					'placeholder'  => '',
+					'nonce'        => wp_create_nonce( 'acf/fields/clone/query' ),
 				)
 			);
 
@@ -857,12 +865,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				return '';
 			}
 
-			// phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
+            // phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
 			// ajax_fields
 			if ( isset( $_POST['fields'][ $selector ] ) ) {
 				return $this->get_clone_setting_field_choice( acf_sanitize_request_args( $_POST['fields'][ $selector ] ) );
 			}
-			// phpcs:enable WordPress.Security.NonceVerification.Missing
+            // phpcs:enable WordPress.Security.NonceVerification.Missing
 
 			// field
 			if ( acf_is_field_key( $selector ) ) {
@@ -935,19 +943,16 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 
 
 		/**
-		 * description
+		 * AJAX handler for getting potential fields to clone.
 		 *
-		 * @type    function
-		 * @date    17/06/2016
-		 * @since   5.3.8
+		 * @since 5.3.8
 		 *
-		 * @param   $post_id (int)
-		 * @return  $post_id (int)
+		 * @return void
 		 */
-		function ajax_query() {
+		public function ajax_query() {
+			$nonce = acf_request_arg( 'nonce', '' );
 
-			// validate
-			if ( ! acf_verify_ajax() ) {
+			if ( ! acf_verify_ajax( $nonce, 'acf/fields/clone/query' ) ) {
 				die();
 			}
 

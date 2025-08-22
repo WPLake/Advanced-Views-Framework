@@ -137,6 +137,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.7.20 (2025-) =
+- Updated internal dependencies (ACF)
+
 = 3.7.19 (2025-07-18) =
 - UX improvements
 

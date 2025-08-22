@@ -3,7 +3,6 @@
  * ACF_Repeater_Table
  *
  * Helper class for rendering repeater tables.
- *
  */
 class ACF_Repeater_Table {
 
@@ -158,19 +157,21 @@ class ACF_Repeater_Table {
 			'data-min'        => $this->field['min'],
 			'data-max'        => $this->field['max'],
 			'data-pagination' => ! empty( $this->field['pagination'] ),
+			'data-prefix'     => $this->field['prefix'],
 		);
 
 		if ( $this->field['pagination'] ) {
 			$div['data-per_page']   = $this->field['rows_per_page'];
 			$div['data-total_rows'] = $this->field['total_rows'];
 			$div['data-orig_name']  = $this->field['orig_name'];
+			$div['data-nonce']      = wp_create_nonce( 'acf_field_' . $this->field['type'] . '_' . $this->field['key'] );
 		}
 
 		if ( empty( $this->value ) ) {
 			$div['class'] .= ' -empty';
 		}
 		?>
-        <div <?php echo acf_esc_attrs( $div ); ?>>
+		<div <?php echo acf_esc_attrs( $div ); ?>>
 			<?php
 			acf_hidden_input(
 				array(
@@ -180,14 +181,14 @@ class ACF_Repeater_Table {
 				)
 			);
 			?>
-            <table class="acf-table">
+			<table class="acf-table">
 				<?php $this->thead(); ?>
-                <tbody>
+				<tbody>
 				<?php $this->rows(); ?>
-                </tbody>
-            </table>
+				</tbody>
+			</table>
 			<?php $this->table_actions(); ?>
-        </div>
+		</div>
 		<?php
 	}
 
@@ -203,10 +204,10 @@ class ACF_Repeater_Table {
 			return;
 		}
 		?>
-        <thead>
-        <tr>
+		<thead>
+		<tr>
 			<?php if ( $this->show_order ) : ?>
-                <th class="acf-row-handle"></th>
+				<th class="acf-row-handle"></th>
 			<?php endif; ?>
 
 			<?php
@@ -233,17 +234,17 @@ class ACF_Repeater_Table {
 				// Remove "id" to avoid "for" attribute on <label>.
 				$sub_field['id'] = '';
 				?>
-                <th <?php echo acf_esc_attrs( $attrs ); ?>>
+				<th <?php echo acf_esc_attrs( $attrs ); ?>>
 					<?php acf_render_field_label( $sub_field ); ?>
 					<?php acf_render_field_instructions( $sub_field ); ?>
-                </th>
+				</th>
 			<?php endforeach; ?>
 
 			<?php if ( $this->show_remove ) : ?>
-                <th class="acf-row-handle"></th>
+				<th class="acf-row-handle"></th>
 			<?php endif; ?>
-        </tr>
-        </thead>
+		</tr>
+		</thead>
 		<?php
 	}
 
@@ -374,12 +375,12 @@ class ACF_Repeater_Table {
 			$row_num_html = '<div class="acf-order-input-wrap">' . $input . $row_num_html . '</div>';
 		}
 		?>
-        <td class="<?php echo esc_attr( $classes ); ?>" title="<?php echo esc_attr( $title ); ?>">
+		<td class="<?php echo esc_attr( $classes ); ?>" title="<?php echo esc_attr( $title ); ?>">
 			<?php if ( $this->field['collapsed'] ) : ?>
-                <a class="acf-icon -collapse small" href="#" data-event="collapse-row" title="<?php esc_attr_e( 'Click to toggle', 'acf' ); ?>"></a>
+				<a class="acf-icon -collapse small" href="#" data-event="collapse-row" title="<?php esc_attr_e( 'Click to toggle', 'acf' ); ?>"></a>
 			<?php endif; ?>
 			<?php echo $row_num_html; ?><?php //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped where necessary on generation. ?>
-        </td>
+		</td>
 		<?php
 	}
 
@@ -395,11 +396,11 @@ class ACF_Repeater_Table {
 			return;
 		}
 		?>
-        <td class="acf-row-handle remove">
-            <a class="acf-icon -plus small acf-js-tooltip hide-on-shift" href="#" data-event="add-row" title="<?php esc_attr_e( 'Add row', 'acf' ); ?>"></a>
-            <a class="acf-icon -duplicate small acf-js-tooltip show-on-shift" href="#" data-event="duplicate-row" title="<?php esc_attr_e( 'Duplicate row', 'acf' ); ?>"></a>
-            <a class="acf-icon -minus small acf-js-tooltip" href="#" data-event="remove-row" title="<?php esc_attr_e( 'Remove row', 'acf' ); ?>"></a>
-        </td>
+		<td class="acf-row-handle remove">
+			<a class="acf-icon -plus small acf-js-tooltip hide-on-shift" href="#" data-event="add-row" title="<?php esc_attr_e( 'Add row', 'acf' ); ?>"></a>
+			<a class="acf-icon -duplicate small acf-js-tooltip show-on-shift" href="#" data-event="duplicate-row" title="<?php esc_attr_e( 'Duplicate row', 'acf' ); ?>"></a>
+			<a class="acf-icon -minus small acf-js-tooltip" href="#" data-event="remove-row" title="<?php esc_attr_e( 'Remove row', 'acf' ); ?>"></a>
+		</td>
 		<?php
 	}
 
@@ -415,11 +416,11 @@ class ACF_Repeater_Table {
 			return;
 		}
 		?>
-        <div class="acf-actions">
-            <a class="acf-button acf-repeater-add-row button button-primary" href="#" data-event="add-row"><?php echo acf_esc_html( $this->field['button_label'] ); ?></a>
+		<div class="acf-actions">
+			<a class="acf-button acf-repeater-add-row button button-primary" href="#" data-event="add-row"><?php echo acf_esc_html( $this->field['button_label'] ); ?></a>
 			<?php $this->pagination(); ?>
-            <div class="clear"></div>
-        </div>
+			<div class="clear"></div>
+		</div>
 		<?php
 	}
 
@@ -449,16 +450,16 @@ class ACF_Repeater_Table {
 
 		$html_total_pages = sprintf( "<span class='acf-total-pages'>%s</span>", number_format_i18n( $total_pages ) );
 		?>
-        <div class="acf-tablenav tablenav-pages">
-            <a class="first-page button acf-nav" aria-hidden="true" data-event="first-page" title="<?php esc_attr_e( 'First Page', 'acf' ); ?>">
-                <span class="screen-reader-text"><?php esc_html_e( 'First Page', 'acf' ); ?></span>
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-            <a class="prev-page button acf-nav" aria-hidden="true" data-event="prev-page" title="<?php esc_attr_e( 'Previous Page', 'acf' ); ?>">
-                <span class="screen-reader-text"><?php esc_html_e( 'Previous Page', 'acf' ); ?></span>
-                <span aria-hidden="true">&lsaquo;</span>
-            </a>
-            <span class="paging-input">
+		<div class="acf-tablenav tablenav-pages">
+			<a class="first-page button acf-nav" aria-hidden="true" data-event="first-page" title="<?php esc_attr_e( 'First Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'First Page', 'acf' ); ?></span>
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+			<a class="prev-page button acf-nav" aria-hidden="true" data-event="prev-page" title="<?php esc_attr_e( 'Previous Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Previous Page', 'acf' ); ?></span>
+				<span aria-hidden="true">&lsaquo;</span>
+			</a>
+			<span class="paging-input">
 				<label for="current-page-selector" class="screen-reader-text"><?php esc_html_e( 'Current Page', 'acf' ); ?></label>
 				<span class="tablenav-paging-text" title="<?php esc_attr_e( 'Current Page', 'acf' ); ?>">
 				<?php
@@ -471,15 +472,15 @@ class ACF_Repeater_Table {
 				?>
 				</span>
 			</span>
-            <a class="next-page button acf-nav" data-event="next-page" title="<?php esc_attr_e( 'Next Page', 'acf' ); ?>">
-                <span class="screen-reader-text"><?php esc_html_e( 'Next Page', 'acf' ); ?></span>
-                <span aria-hidden="true">&rsaquo;</span>
-            </a>
-            <a class="last-page button acf-nav" data-event="last-page" title="<?php esc_attr_e( 'Last Page', 'acf' ); ?>">
-                <span class="screen-reader-text"><?php esc_html_e( 'Last Page', 'acf' ); ?></span>
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </div>
+			<a class="next-page button acf-nav" data-event="next-page" title="<?php esc_attr_e( 'Next Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Next Page', 'acf' ); ?></span>
+				<span aria-hidden="true">&rsaquo;</span>
+			</a>
+			<a class="last-page button acf-nav" data-event="last-page" title="<?php esc_attr_e( 'Last Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Last Page', 'acf' ); ?></span>
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</div>
 		<?php
 	}
 }

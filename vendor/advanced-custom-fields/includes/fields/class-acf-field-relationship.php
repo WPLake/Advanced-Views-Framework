@@ -51,7 +51,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 				return $choices;
 			}
 			if ( ! empty( $rule_value ) ) {
-				$post_title = get_the_title( $rule_value );
+				$post_title = esc_html( get_the_title( $rule_value ) );
 				$choices    = array( $rule_value => $post_title );
 			}
 			return $choices;
@@ -102,7 +102,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 				$key   = '';
 			}
 
-			if ( ! acf_verify_ajax( $nonce, $key ) ) {
+			if ( ! acf_verify_ajax( $nonce, $key, ! $conditional_logic ) ) {
 				die();
 			}
 
@@ -317,7 +317,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 			}
 
 			// vars
-			$title = acf_get_post_title( $post, $is_search );
+			$title = esc_html( acf_get_post_title( $post, $is_search ) );
 
 			// featured_image
 			if ( acf_in_array( 'featured_image', $field['elements'] ) ) {
@@ -417,7 +417,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 				'data-paged'     => 1,
 				'data-post_type' => '',
 				'data-taxonomy'  => '',
-				'data-nonce'     => wp_create_nonce( $field['key'] ),
+				'data-nonce'     => wp_create_nonce( 'acf_field_' . $this->name . '_' . $field['key'] ),
 			);
 
 			?>

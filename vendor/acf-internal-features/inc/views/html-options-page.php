@@ -1,8 +1,8 @@
 <div class="wrap acf-settings-wrap">
 
-    <h1><?php echo esc_html( $page_title ); ?></h1>
+	<h1><?php echo esc_html( $page_title ); ?></h1>
 
-    <form id="post" method="post" name="post">
+	<form id="post" method="post" name="post">
 
 		<?php
 
@@ -19,28 +19,28 @@
 
 		?>
 
-        <div id="poststuff" class="poststuff">
+		<div id="poststuff" class="poststuff">
 
-            <div id="post-body" class="metabox-holder columns-<?php echo 1 == get_current_screen()->get_columns() ? '1' : '2'; ?>">
+			<div id="post-body" class="metabox-holder columns-<?php echo 1 == get_current_screen()->get_columns() ? '1' : '2'; ?>">
 
-                <div id="postbox-container-1" class="postbox-container">
+				<div id="postbox-container-1" class="postbox-container">
 
 					<?php do_meta_boxes( 'acf_options_page', 'side', null ); ?>
 
-                </div>
+				</div>
 
-                <div id="postbox-container-2" class="postbox-container">
+				<div id="postbox-container-2" class="postbox-container">
 
 					<?php do_meta_boxes( 'acf_options_page', 'normal', null ); ?>
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            <br class="clear">
+			<br class="clear">
 
-        </div>
+		</div>
 
-    </form>
+	</form>
 
 </div>

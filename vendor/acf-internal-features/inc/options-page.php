@@ -282,11 +282,10 @@ endif; // class_exists check
 if ( ! function_exists( 'acf_add_options_page' ) ) :
 
 	// _custom, commented, so users can't call it
-	/* function acf_add_options_page( $page = '' ) {
-
-		 return acf_options_page()->add_page( $page );
-
-	 }*/
+	/*
+	function acf_add_options_page( $page = '' ) {
+		return acf_options_page()->add_page( $page );
+	}*/
 
 endif;
 

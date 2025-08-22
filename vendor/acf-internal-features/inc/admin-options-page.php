@@ -181,7 +181,7 @@ if ( ! class_exists( 'acf_admin_options_page' ) ) :
 					$priority = apply_filters( 'acf/input/meta_box_priority', $priority, $field_group );
 
 					// add meta box
-					add_meta_box( $id, acf_esc_html( $title ), array( $this, 'postbox_acf' ), 'acf_options_page', $context, $priority, $args );
+					add_meta_box( $id, esc_html( $title ), array( $this, 'postbox_acf' ), 'acf_options_page', $context, $priority, $args );
 				}
 				// foreach
 			}
@@ -211,12 +211,12 @@ if ( ! class_exists( 'acf_admin_options_page' ) ) :
 			 */
 			do_action( 'acf/options_page/submitbox_before_major_actions', $this->page );
 			?>
-            <div id="major-publishing-actions">
+			<div id="major-publishing-actions">
 
-                <div id="publishing-action">
-                    <span class="spinner"></span>
-                    <input type="submit" accesskey="p" value="<?php echo esc_attr( $this->page['update_button'] ); ?>" class="button button-primary button-large" id="publish" name="publish">
-                </div>
+				<div id="publishing-action">
+					<span class="spinner"></span>
+					<input type="submit" accesskey="p" value="<?php echo esc_attr( $this->page['update_button'] ); ?>" class="button button-primary button-large" id="publish" name="publish">
+				</div>
 
 				<?php
 				/**
@@ -229,9 +229,9 @@ if ( ! class_exists( 'acf_admin_options_page' ) ) :
 				 */
 				do_action( 'acf/options_page/submitbox_major_actions', $this->page );
 				?>
-                <div class="clear"></div>
+				<div class="clear"></div>
 
-            </div>
+			</div>
 			<?php
 		}
 
@@ -271,13 +271,13 @@ if ( ! class_exists( 'acf_admin_options_page' ) ) :
 			acf_render_fields( $fields, $this->page['post_id'], 'div', $field_group['instruction_placement'] );
 
 			?>
-            <script type="text/javascript">
-                if( typeof acf !== 'undefined' ) {
+			<script type="text/javascript">
+				if( typeof acf !== 'undefined' ) {
 
-                    acf.newPostbox(<?php echo json_encode( $o ); ?>);
+					acf.newPostbox(<?php echo json_encode( $o ); ?>);
 
-                }
-            </script>
+				}
+			</script>
 			<?php
 		}
 

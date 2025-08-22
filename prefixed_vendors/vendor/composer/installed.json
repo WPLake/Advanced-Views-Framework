@@ -434,16 +434,16 @@
         },
         {
             "name": "wpackagist-plugin\/advanced-custom-fields",
-            "version": "6.3.3",
-            "version_normalized": "6.3.3.0",
+            "version": "6.5.0",
+            "version_normalized": "6.5.0.0",
             "source": {
                 "type": "svn",
                 "url": "https:\/\/plugins.svn.wordpress.org\/advanced-custom-fields\/",
-                "reference": "tags\/6.3.3"
+                "reference": "tags\/6.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/downloads.wordpress.org\/plugin\/advanced-custom-fields.6.3.3.zip"
+                "url": "https:\/\/downloads.wordpress.org\/plugin\/advanced-custom-fields.6.5.0.zip"
             },
             "require": {
                 "composer\/installers": "^1.0 || ^2.0"

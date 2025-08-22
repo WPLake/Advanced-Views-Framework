@@ -687,14 +687,30 @@ function acf_verify_nonce( $value ) {
  *
  * @since   5.2.3
  *
- * @param string $nonce  The nonce to check.
- * @param string $action The action of the nonce.
+ * @param string  $nonce           The nonce to check.
+ * @param string  $action          The action of the nonce.
+ * @param boolean $action_is_field If the action is a field, modify the action to match validate the field type.
  * @return boolean
  */
-function acf_verify_ajax( $nonce = '', $action = '' ) {
+function acf_verify_ajax( $nonce = '', $action = '', $action_is_field = false ) {
 	// Bail early if we don't have a nonce to check.
 	if ( empty( $nonce ) && empty( $_REQUEST['nonce'] ) ) {
 		return false;
+	}
+
+	// Build the action if we're trying to validate a specific field nonce.
+	if ( $action_is_field ) {
+		if ( ! acf_is_field_key( $action ) ) {
+			return false;
+		}
+
+		$field = acf_get_field( $action );
+
+		if ( empty( $field['type'] ) ) {
+			return false;
+		}
+
+		$action = 'acf_field_' . $field['type'] . '_' . $action;
 	}
 
 	$nonce_to_check = ! empty( $nonce ) ? $nonce : $_REQUEST['nonce']; // phpcs:ignore WordPress.Security -- We're verifying a nonce here.
@@ -2716,6 +2732,31 @@ function acf_current_user_can_admin() {
 }
 
 /**
+ * Wrapper function for current_user_can( 'edit_post', $post_id ).
+ *
+ * @since 6.3.4
+ *
+ * @param integer $post_id The post ID to check.
+ * @return boolean
+ */
+function acf_current_user_can_edit_post( int $post_id ): bool {
+	/**
+	 * The `edit_post` capability is a meta capability, which
+	 * gets converted to the correct post type object `edit_post`
+	 * equivalent.
+	 *
+	 * If the post type does not have `map_meta_cap` enabled and the user is
+	 * not manually mapping the `edit_post` capability, this will fail
+	 * unless the role has the `edit_post` capability added to a user/role.
+	 *
+	 * However, more (core) stuff will likely break in this scenario.
+	 */
+	$user_can_edit = current_user_can( 'edit_post', $post_id );
+
+	return (bool) apply_filters( 'acf/current_user_can_edit_post', $user_can_edit, $post_id );
+}
+
+/**
  * acf_get_filesize
  *
  * This function will return a numeric value of bytes for a given filesize string
@@ -3949,3 +3990,20 @@ function acf_is_multisite_main_site() {
 	}
 	return false;
 }
+
+/**
+ * Allow filterable permissions metabox callbacks.
+ *
+ * @since   6.3.10
+ *
+ * @param   boolean $enable_meta_box_cb_edit Can the current user edit metabox callbacks.
+ * @return  boolean
+ */
+function acf_settings_enable_meta_box_cb_edit( $enable_meta_box_cb_edit ): bool {
+	if ( ! is_super_admin() ) {
+		return false;
+	}
+
+	return (bool) $enable_meta_box_cb_edit;
+}
+add_filter( 'acf/settings/enable_meta_box_cb_edit', 'acf_settings_enable_meta_box_cb_edit', 1 );

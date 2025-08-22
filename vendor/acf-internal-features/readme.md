@@ -34,4 +34,4 @@ functionalities.
 
 #### 5. Version Compatibility
 
-These dependencies are based on ACF Pro version 6.2.1 and above.
+These dependencies are based on ACF Pro version 6.5.0.1 and above.

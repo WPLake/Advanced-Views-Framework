@@ -53,7 +53,7 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 				return $choices;
 			}
 			if ( ! empty( $rule_value ) ) {
-				$post_title = get_the_title( $rule_value );
+				$post_title = esc_html( get_the_title( $rule_value ) );
 				$choices    = array( $rule_value => $post_title );
 			}
 			return $choices;
@@ -81,7 +81,7 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 				$key   = '';
 			}
 
-			if ( ! acf_verify_ajax( $nonce, $key ) ) {
+			if ( ! acf_verify_ajax( $nonce, $key, ! $conditional_logic ) ) {
 				die();
 			}
 
@@ -392,7 +392,7 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 			$field['ui']      = 1;
 			$field['ajax']    = 1;
 			$field['choices'] = array();
-			$field['nonce']   = wp_create_nonce( $field['key'] );
+			$field['nonce']   = wp_create_nonce( 'acf_field_' . $this->name . '_' . $field['key'] );
 
 			// populate choices if value exists
 			if ( ! empty( $field['value'] ) ) {

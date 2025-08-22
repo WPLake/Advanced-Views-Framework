@@ -48,7 +48,7 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 				return $choices;
 			}
 			if ( ! empty( $rule_value ) ) {
-				$post_title = get_the_title( $rule_value );
+				$post_title = esc_html( get_the_title( $rule_value ) );
 				$choices    = array( $rule_value => $post_title );
 			}
 			return $choices;
@@ -76,7 +76,7 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 				$key   = '';
 			}
 
-			if ( ! acf_verify_ajax( $nonce, $key ) ) {
+			if ( ! acf_verify_ajax( $nonce, $key, ! $conditional_logic ) ) {
 				die();
 			}
 
@@ -314,7 +314,7 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 			$field['type']    = 'select';
 			$field['ui']      = 1;
 			$field['ajax']    = 1;
-			$field['nonce']   = wp_create_nonce( $field['key'] );
+			$field['nonce']   = wp_create_nonce( 'acf_field_' . $this->name . '_' . $field['key'] );
 			$field['choices'] = array();
 
 			// load posts
