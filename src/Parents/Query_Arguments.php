@@ -7,6 +7,10 @@ namespace Org\Wplake\Advanced_Views\Parents;
 defined( 'ABSPATH' ) || exit;
 
 final class Query_Arguments {
+	const SOURCE_GET    = 'get';
+	const SOURCE_POST   = 'post';
+	const SOURCE_SERVER = 'server';
+
 	/**
 	 * @param mixed $value
 	 */
@@ -28,15 +32,15 @@ final class Query_Arguments {
 	/**
 	 * @return array<int|string,mixed>
 	 */
-	private static function get_from_source( string $from ): array {
-		switch ( $from ) {
-			case 'get':
+	private static function get_from_source( string $source ): array {
+		switch ( $source ) {
+			case self::SOURCE_GET:
 				// phpcs:ignore WordPress.Security.NonceVerification
 				return $_GET;
-			case 'post':
+			case self::SOURCE_POST:
 				// phpcs:ignore WordPress.Security.NonceVerification
 				return $_POST;
-			case 'server':
+			case self::SOURCE_SERVER:
 				// phpcs:ignore WordPress.Security.NonceVerification
 				return $_SERVER;
 			default:
