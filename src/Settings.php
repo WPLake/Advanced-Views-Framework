@@ -4,11 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use DateTime;
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-
-defined( 'ABSPATH' ) || exit;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 class Settings {
 	const QUERY_ARG_PAGE_DEV_MODE = 'avf_page-dev-mode';
@@ -17,16 +20,16 @@ class Settings {
 
 	private Options $options;
 
+	/**
+	 * @var array<string|int, mixed>
+	 */
+	protected array $settings;
 	private string $version;
-	private string $license;
-	private string $license_expiration;
 	/**
 	 * @var array<string|int, mixed>
 	 */
 	private array $demo_import;
-	private string $license_used_domains;
-	private string $license_used_dev_domains;
-	private string $license_tier_name;
+
 	private bool $is_dev_mode;
 	private ?bool $is_page_dev_mode;
 	/**
@@ -47,12 +50,9 @@ class Settings {
 	public function __construct( Options $options ) {
 		$this->options = $options;
 
+		$this->settings = array();
+
 		$this->version                            = '';
-		$this->license                            = '';
-		$this->license_expiration                 = '';
-		$this->license_used_domains               = '';
-		$this->license_used_dev_domains           = '';
-		$this->license_tier_name                  = '';
 		$this->template_engine                    = '';
 		$this->web_components_type                = '';
 		$this->classes_generation                 = '';
@@ -70,7 +70,7 @@ class Settings {
 	}
 
 	/**
-	 * @param array<int, mixed> $git_repositories
+	 * @param array<int|string, mixed> $git_repositories
 	 *
 	 * @return array<int, array{id:string,accessToken:string, name:string}>
 	 */
@@ -97,68 +97,49 @@ class Settings {
 
 	public function load(): void {
 		$option_settings = $this->options->get_option( Options::OPTION_SETTINGS );
-		$settings        = is_array( $option_settings ) ?
-			$option_settings :
-			array();
+		$this->settings  = arr( $option_settings );
 
-		$this->version                            = $this->get_string_arg( 'version', $settings );
-		$this->license                            = $this->get_string_arg( 'license', $settings );
-		$this->license_expiration                 = $this->get_string_arg( 'licenseExpiration', $settings );
-		$this->license_used_domains               = $this->get_string_arg( 'licenseUsedDomains', $settings );
-		$this->license_used_dev_domains           = $this->get_string_arg( 'licenseUsedDevDomains', $settings );
-		$this->license_tier_name                  = $this->get_string_arg( 'licenseTierName', $settings );
-		$this->demo_import                        = $this->get_array_arg( 'demoImport', $settings );
-		$this->is_dev_mode                        = $this->get_bool_arg( 'isDevMode', $settings );
-		$this->is_automatic_reports_disabled      = $this->get_bool_arg( 'isWithoutAutomaticReports', $settings );
-		$this->is_automatic_reports_confirmed     = $this->get_bool_arg( 'isAutomaticReportsConfirmed', $settings );
-		$this->web_components_type                = $this->get_string_arg( 'webComponentsType', $settings );
-		$this->template_engine                    = $this->get_string_arg( 'templateEngine', $settings );
-		$this->classes_generation                 = $this->get_string_arg( 'classesGeneration', $settings );
-		$this->is_cpt_admin_optimization_enabled  = $this->get_bool_arg( 'isCptAdminOptimizationEnabled', $settings );
-		$this->sass_template                      = $this->get_string_arg( 'sassTemplate', $settings );
-		$this->ts_template                        = $this->get_string_arg( 'tsTemplate', $settings );
-		$this->live_reload_interval_seconds       = $this->get_int_arg( 'liveReloadIntervalSeconds', $settings );
-		$this->live_reload_inactive_delay_seconds = $this->get_int_arg( 'liveReloadInactiveDelaySeconds', $settings );
+		$this->version                           = string( $this->settings, 'version' );
+		$this->demo_import                       = arr( $this->settings, 'demoImport' );
+		$this->is_dev_mode                       = bool( $this->settings, 'isDevMode' );
+		$this->is_automatic_reports_disabled     = bool( $this->settings, 'isWithoutAutomaticReports' );
+		$this->is_automatic_reports_confirmed    = bool( $this->settings, 'isAutomaticReportsConfirmed' );
+		$this->web_components_type               = string( $this->settings, 'webComponentsType' );
+		$this->template_engine                   = string( $this->settings, 'templateEngine' );
+		$this->classes_generation                = string( $this->settings, 'classesGeneration' );
+		$this->is_cpt_admin_optimization_enabled = bool( $this->settings, 'isCptAdminOptimizationEnabled' );
+		$this->sass_template                     = string( $this->settings, 'sassTemplate' );
+		$this->ts_template                       = string( $this->settings, 'tsTemplate' );
+		// these with defaults.
+		$this->live_reload_interval_seconds       = int( $this->settings, 'liveReloadIntervalSeconds', 5 );
+		$this->live_reload_inactive_delay_seconds = int( $this->settings, 'liveReloadInactiveDelaySeconds', 20 );
 
-		if ( true === isset( $settings['gitRepositories'] ) ) {
-			$this->git_repositories = true === is_array( $settings['gitRepositories'] ) ?
-				$this->validate_git_repositories_array( $settings['gitRepositories'] ) :
-				array();
-		}
-
-		// set defaults if empty.
-		$this->live_reload_interval_seconds       = 0 === $this->live_reload_interval_seconds ?
-			5 :
-			$this->live_reload_interval_seconds;
-		$this->live_reload_inactive_delay_seconds = 0 === $this->live_reload_inactive_delay_seconds ?
-			20 :
-			$this->live_reload_inactive_delay_seconds;
+		$git_repositories       = arr( $this->settings, 'gitRepositories' );
+		$this->git_repositories = $this->validate_git_repositories_array( $git_repositories );
 	}
 
 	public function save(): void {
-		$settings = array(
-			'version'                        => $this->version,
-			'license'                        => $this->license,
-			'licenseExpiration'              => $this->license_expiration,
-			'licenseUsedDomains'             => $this->license_used_domains,
-			'licenseUsedDevDomains'          => $this->license_used_dev_domains,
-			'licenseTierName'                => $this->license_tier_name,
-			'demoImport'                     => $this->demo_import,
-			'isDevMode'                      => $this->is_dev_mode,
-			'gitRepositories'                => $this->git_repositories,
-			'isWithoutAutomaticReports'      => $this->is_automatic_reports_disabled,
-			'isAutomaticReportsConfirmed'    => $this->is_automatic_reports_confirmed,
-			'templateEngine'                 => $this->template_engine,
-			'webComponentsType'              => $this->web_components_type,
-			'classesGeneration'              => $this->classes_generation,
-			'isCptAdminOptimizationEnabled'  => $this->is_cpt_admin_optimization_enabled,
-			'sassTemplate'                   => $this->sass_template,
-			'tsTemplate'                     => $this->ts_template,
-			'liveReloadIntervalSeconds'      => $this->live_reload_interval_seconds,
-			'liveReloadInactiveDelaySeconds' => $this->live_reload_inactive_delay_seconds,
+		$this->settings = array_merge(
+			$this->settings,
+			array(
+				'version'                        => $this->version,
+				'demoImport'                     => $this->demo_import,
+				'isDevMode'                      => $this->is_dev_mode,
+				'gitRepositories'                => $this->git_repositories,
+				'isWithoutAutomaticReports'      => $this->is_automatic_reports_disabled,
+				'isAutomaticReportsConfirmed'    => $this->is_automatic_reports_confirmed,
+				'templateEngine'                 => $this->template_engine,
+				'webComponentsType'              => $this->web_components_type,
+				'classesGeneration'              => $this->classes_generation,
+				'isCptAdminOptimizationEnabled'  => $this->is_cpt_admin_optimization_enabled,
+				'sassTemplate'                   => $this->sass_template,
+				'tsTemplate'                     => $this->ts_template,
+				'liveReloadIntervalSeconds'      => $this->live_reload_interval_seconds,
+				'liveReloadInactiveDelaySeconds' => $this->live_reload_inactive_delay_seconds,
+			)
 		);
 
-		$this->options->update_option( Options::OPTION_SETTINGS, $settings );
+		$this->options->update_option( Options::OPTION_SETTINGS, $this->settings );
 	}
 
 	// setters / getters.
@@ -169,54 +150,6 @@ class Settings {
 
 	public function get_version(): string {
 		return $this->version;
-	}
-
-	public function set_license( string $license ): void {
-		$this->license = $license;
-	}
-
-	public function get_license(): string {
-		return $this->license;
-	}
-
-	public function is_license_expired(): bool {
-		if ( '' === $this->license_expiration ) {
-			return false;
-		}
-
-		$expiration_date = DateTime::createFromFormat( 'Ymd', $this->license_expiration );
-
-		if ( false === $expiration_date ) {
-			return false;
-		}
-
-		return $expiration_date < new DateTime();
-	}
-
-	public function is_license_expires_within_month(): bool {
-		if ( '' === $this->license_expiration ) {
-			return false;
-		}
-
-		$expiration_date = DateTime::createFromFormat( 'Ymd', $this->license_expiration );
-
-		if ( false === $expiration_date ) {
-			return false;
-		}
-
-		$now = new DateTime();
-
-		$month_later = new DateTime();
-		$month_later->modify( '+1 month' );
-
-		return $expiration_date > $now &&
-				$expiration_date < $month_later;
-	}
-
-	public function is_active_license(): bool {
-		return '' !== $this->license &&
-				'' !== $this->license_expiration &&
-				! $this->is_license_expired();
 	}
 
 	public function set_template_engine( string $template_engine ): void {
@@ -241,49 +174,6 @@ class Settings {
 
 	public function get_classes_generation(): string {
 		return $this->classes_generation;
-	}
-
-	public function set_license_expiration( string $license_expiration ): void {
-		$this->license_expiration = $license_expiration;
-	}
-
-	public function get_license_expiration( string $format = '' ): string {
-		if ( '' === $format ||
-			'' === $this->license_expiration ) {
-			return $this->license_expiration;
-		}
-
-		$expiration = DateTime::createFromFormat( 'Ymd', $this->license_expiration );
-
-		if ( false === $expiration ) {
-			return '';
-		}
-
-		return $expiration->format( $format );
-	}
-
-	public function set_license_used_domains( string $license_used_domains ): void {
-		$this->license_used_domains = $license_used_domains;
-	}
-
-	public function get_license_used_domains(): string {
-		return $this->license_used_domains;
-	}
-
-	public function set_license_used_dev_domains( string $license_used_dev_domains ): void {
-		$this->license_used_dev_domains = $license_used_dev_domains;
-	}
-
-	public function get_license_used_dev_domains(): string {
-		return $this->license_used_dev_domains;
-	}
-
-	public function set_license_tier_name( string $license_tier_name ): void {
-		$this->license_tier_name = $license_tier_name;
-	}
-
-	public function get_license_tier_name(): string {
-		return $this->license_tier_name;
 	}
 
 	/**

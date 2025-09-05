@@ -167,29 +167,15 @@ class Upgrades extends Action implements Hooks_Interface {
 	}
 
 	protected function move_options_to_settings(): void {
-		$license = get_option( Options::PREFIX . 'license', '' );
-		$license = is_string( $license ) || is_numeric( $license ) ?
-			(string) $license :
-			'';
-
-		$license_expiration = get_option( Options::PREFIX . 'license_expiration', '' );
-		$license_expiration = is_string( $license_expiration ) ?
-			$license_expiration :
-			'';
-
 		$demo_import = get_option( Options::PREFIX . 'demo_import', array() );
 		$demo_import = is_array( $demo_import ) ?
 			$demo_import :
 			array();
 
-		$this->settings->set_license( $license );
-		$this->settings->set_license_expiration( $license_expiration );
 		$this->settings->set_demo_import( $demo_import );
 
 		$this->settings->save();
 
-		delete_option( Options::PREFIX . 'license' );
-		delete_option( Options::PREFIX . 'license_expiration' );
 		delete_option( Options::PREFIX . 'demo_import' );
 	}
 
