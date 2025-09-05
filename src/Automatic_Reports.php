@@ -474,14 +474,12 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	): void {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
-		$args = array(
-			'action'                 => 'active_installations',
-			'_domain'                => wp_parse_url( get_site_url() )['host'] ?? '',
-			'_version'               => $this->plugin->get_version(),
-			'_isPro'                 => $this->plugin->is_pro_version(),
-			'_license'               => $this->settings->get_license(),
-			'_isActive'              => $is_active,
-			'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
+		$args = array_merge(
+			$this->get_basic_installation_data(),
+			array(
+				'action'    => 'active_installations',
+				'_isActive' => $is_active,
+			)
 		);
 
 		// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
@@ -498,6 +496,18 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 				// we don't need the response, so it's non-blocking.
 				'blocking' => false,
 			)
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_basic_installation_data(): array {
+		return array(
+			'_domain'                => wp_parse_url( get_site_url() )['host'] ?? '',
+			'_version'               => $this->plugin->get_version(),
+			'_isPro'                 => $this->plugin->is_pro_version(),
+			'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
 		);
 	}
 

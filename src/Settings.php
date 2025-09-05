@@ -50,23 +50,8 @@ class Settings {
 	public function __construct( Options $options ) {
 		$this->options = $options;
 
-		$this->settings = array();
-
-		$this->version                            = '';
-		$this->template_engine                    = '';
-		$this->web_components_type                = '';
-		$this->classes_generation                 = '';
-		$this->sass_template                      = '';
-		$this->ts_template                        = '';
-		$this->live_reload_interval_seconds       = 0;
-		$this->live_reload_inactive_delay_seconds = 0;
-		$this->demo_import                        = array();
-		$this->is_dev_mode                        = false;
-		$this->is_page_dev_mode                   = null;
-		$this->git_repositories                   = array();
-		$this->is_automatic_reports_disabled      = false;
-		$this->is_automatic_reports_confirmed     = false;
-		$this->is_cpt_admin_optimization_enabled  = false;
+		// load immediately, it's used everywhere.
+		$this->load();
 	}
 
 	/**
@@ -93,29 +78,6 @@ class Settings {
 		}
 
 		return $valid_git_repositories;
-	}
-
-	public function load(): void {
-		$option_settings = $this->options->get_option( Options::OPTION_SETTINGS );
-		$this->settings  = arr( $option_settings );
-
-		$this->version                           = string( $this->settings, 'version' );
-		$this->demo_import                       = arr( $this->settings, 'demoImport' );
-		$this->is_dev_mode                       = bool( $this->settings, 'isDevMode' );
-		$this->is_automatic_reports_disabled     = bool( $this->settings, 'isWithoutAutomaticReports' );
-		$this->is_automatic_reports_confirmed    = bool( $this->settings, 'isAutomaticReportsConfirmed' );
-		$this->web_components_type               = string( $this->settings, 'webComponentsType' );
-		$this->template_engine                   = string( $this->settings, 'templateEngine' );
-		$this->classes_generation                = string( $this->settings, 'classesGeneration' );
-		$this->is_cpt_admin_optimization_enabled = bool( $this->settings, 'isCptAdminOptimizationEnabled' );
-		$this->sass_template                     = string( $this->settings, 'sassTemplate' );
-		$this->ts_template                       = string( $this->settings, 'tsTemplate' );
-		// these with defaults.
-		$this->live_reload_interval_seconds       = int( $this->settings, 'liveReloadIntervalSeconds', 5 );
-		$this->live_reload_inactive_delay_seconds = int( $this->settings, 'liveReloadInactiveDelaySeconds', 20 );
-
-		$git_repositories       = arr( $this->settings, 'gitRepositories' );
-		$this->git_repositories = $this->validate_git_repositories_array( $git_repositories );
 	}
 
 	public function save(): void {
@@ -308,5 +270,28 @@ class Settings {
 		$this->options->delete_option( Options::OPTION_SETTINGS );
 		$this->options->delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
 		$this->options->delete_transient( Options::TRANSIENT_LICENSE_EXPIRATION_DISMISS );
+	}
+
+	protected function load(): void {
+		$option_settings = $this->options->get_option( Options::OPTION_SETTINGS );
+		$this->settings  = arr( $option_settings );
+
+		$this->version                           = string( $this->settings, 'version' );
+		$this->demo_import                       = arr( $this->settings, 'demoImport' );
+		$this->is_dev_mode                       = bool( $this->settings, 'isDevMode' );
+		$this->is_automatic_reports_disabled     = bool( $this->settings, 'isWithoutAutomaticReports' );
+		$this->is_automatic_reports_confirmed    = bool( $this->settings, 'isAutomaticReportsConfirmed' );
+		$this->web_components_type               = string( $this->settings, 'webComponentsType' );
+		$this->template_engine                   = string( $this->settings, 'templateEngine' );
+		$this->classes_generation                = string( $this->settings, 'classesGeneration' );
+		$this->is_cpt_admin_optimization_enabled = bool( $this->settings, 'isCptAdminOptimizationEnabled' );
+		$this->sass_template                     = string( $this->settings, 'sassTemplate' );
+		$this->ts_template                       = string( $this->settings, 'tsTemplate' );
+		// these with defaults.
+		$this->live_reload_interval_seconds       = int( $this->settings, 'liveReloadIntervalSeconds', 5 );
+		$this->live_reload_inactive_delay_seconds = int( $this->settings, 'liveReloadInactiveDelaySeconds', 20 );
+
+		$git_repositories       = arr( $this->settings, 'gitRepositories' );
+		$this->git_repositories = $this->validate_git_repositories_array( $git_repositories );
 	}
 }

@@ -147,8 +147,6 @@ $acf_views = new class() {
 	private function primary( Current_Screen $current_screen ): void {
 		$this->options  = new Options();
 		$this->settings = new Settings( $this->options );
-		// load right here, as used everywhere.
-		$this->settings->load();
 
 		$uploads_folder = wp_upload_dir()['basedir'] . '/acf-views';
 		$this->logger   = new Logger( $uploads_folder, $this->settings );

@@ -184,8 +184,7 @@ class Plugin implements Hooks_Interface {
 	}
 
 	public function is_pro_field_locked(): bool {
-		return false === $this->is_pro_version() ||
-				false === $this->settings->is_active_license();
+		return true;
 	}
 
 	public function get_name(): string {
