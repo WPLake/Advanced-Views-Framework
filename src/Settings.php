@@ -50,6 +50,8 @@ class Settings {
 	public function __construct( Options $options ) {
 		$this->options = $options;
 
+		$this->is_page_dev_mode = null;
+
 		// load immediately, it's used everywhere.
 		$this->load();
 	}
