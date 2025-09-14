@@ -64,6 +64,7 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors
         'Org\\Wplake\\Advanced_Views\\Assets\\Front_Assets' => __DIR__ . '/../..' . '/../src/Assets/Front_Assets.php',
         'Org\\Wplake\\Advanced_Views\\Assets\\Live_Reloader_Component' => __DIR__ . '/../..' . '/../src/Assets/Live_Reloader_Component.php',
         'Org\\Wplake\\Advanced_Views\\Automatic_Reports' => __DIR__ . '/../..' . '/../src/Automatic_Reports.php',
+        'Org\\Wplake\\Advanced_Views\\Avf_User' => __DIR__ . '/../..' . '/../src/Avf_User.php',
         'Org\\Wplake\\Advanced_Views\\Bridge\\Advanced_Views' => __DIR__ . '/../..' . '/../src/Bridge/Advanced_Views.php',
         'Org\\Wplake\\Advanced_Views\\Bridge\\Interfaces\\Shortcodes\\Card_Shortcode_Interface' => __DIR__ . '/../..' . '/../src/Bridge/Interfaces/Shortcodes/Card_Shortcode_Interface.php',
         'Org\\Wplake\\Advanced_Views\\Bridge\\Interfaces\\Shortcodes\\Shortcode_Interface' => __DIR__ . '/../..' . '/../src/Bridge/Interfaces/Shortcodes/Shortcode_Interface.php',

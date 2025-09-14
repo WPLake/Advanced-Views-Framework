@@ -13,6 +13,7 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Assets\\Front_Assets' => $baseDir . '/../src/Assets/Front_Assets.php',
     'Org\\Wplake\\Advanced_Views\\Assets\\Live_Reloader_Component' => $baseDir . '/../src/Assets/Live_Reloader_Component.php',
     'Org\\Wplake\\Advanced_Views\\Automatic_Reports' => $baseDir . '/../src/Automatic_Reports.php',
+    'Org\\Wplake\\Advanced_Views\\Avf_User' => $baseDir . '/../src/Avf_User.php',
     'Org\\Wplake\\Advanced_Views\\Bridge\\Advanced_Views' => $baseDir . '/../src/Bridge/Advanced_Views.php',
     'Org\\Wplake\\Advanced_Views\\Bridge\\Interfaces\\Shortcodes\\Card_Shortcode_Interface' => $baseDir . '/../src/Bridge/Interfaces/Shortcodes/Card_Shortcode_Interface.php',
     'Org\\Wplake\\Advanced_Views\\Bridge\\Interfaces\\Shortcodes\\Shortcode_Interface' => $baseDir . '/../src/Bridge/Interfaces/Shortcodes/Shortcode_Interface.php',

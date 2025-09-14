@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:192
-#: src/Plugin.php:318
+#: src/Plugin.php:191
+#: src/Plugin.php:317
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -72,7 +72,7 @@ msgstr "Benutzerdefinierte Daten"
 #: src/Cards/Cpt/Cards_Cpt.php:37
 #: src/Cards/Cpt/Cards_Cpt.php:39
 #: src/Cards/Cpt/Cards_Cpt.php:67
-#: src/Dashboard/Dashboard.php:203
+#: src/Dashboard/Dashboard.php:204
 msgid "Cards"
 msgstr "Karten"
 
@@ -101,8 +101,8 @@ msgid "Add New"
 msgstr "Neu hinzufügen"
 
 #: src/Cards/Cpt/Cards_Cpt.php:43
-#: src/Cards/Cpt/Cards_Cpt.php:128
-#: src/Cards/Cpt/Cards_Cpt.php:131
+#: src/Cards/Cpt/Cards_Cpt.php:110
+#: src/Cards/Cpt/Cards_Cpt.php:113
 msgid "Card updated."
 msgstr "Karte aktualisiert."
 
@@ -131,37 +131,37 @@ msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-star
 msgid "(The assigned View determines which fields are displayed)"
 msgstr "(Die zugewiesene Ansicht bestimmt, welche Felder angezeigt werden)"
 
-#: src/Cards/Cpt/Cards_Cpt.php:113
+#: src/Cards/Cpt/Cards_Cpt.php:95
 msgid "Card scheduled for:"
 msgstr "Karte geplant für:"
 
-#: src/Cards/Cpt/Cards_Cpt.php:122
+#: src/Cards/Cpt/Cards_Cpt.php:104
 msgid "Card restored to revision from"
 msgstr "Karte wiederhergestellt zur Revision von"
 
-#: src/Cards/Cpt/Cards_Cpt.php:129
-#: src/Views/Cpt/Views_Cpt.php:105
+#: src/Cards/Cpt/Cards_Cpt.php:111
+#: src/Views/Cpt/Views_Cpt.php:86
 msgid "Custom field updated."
 msgstr "Benutzerdefiniertes Feld aktualisiert."
 
-#: src/Cards/Cpt/Cards_Cpt.php:130
-#: src/Views/Cpt/Views_Cpt.php:106
+#: src/Cards/Cpt/Cards_Cpt.php:112
+#: src/Views/Cpt/Views_Cpt.php:87
 msgid "Custom field deleted."
 msgstr "Benutzerdefiniertes Feld gelöscht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:133
+#: src/Cards/Cpt/Cards_Cpt.php:115
 msgid "Card published."
 msgstr "Karte veröffentlicht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:134
+#: src/Cards/Cpt/Cards_Cpt.php:116
 msgid "Card saved."
 msgstr "Karte gespeichert."
 
-#: src/Cards/Cpt/Cards_Cpt.php:135
+#: src/Cards/Cpt/Cards_Cpt.php:117
 msgid "Card submitted."
 msgstr "Karte eingereicht."
 
-#: src/Cards/Cpt/Cards_Cpt.php:137
+#: src/Cards/Cpt/Cards_Cpt.php:119
 msgid "Card draft updated."
 msgstr "Kartenentwurf aktualisiert."
 
@@ -198,141 +198,141 @@ msgstr "Beschreibung"
 msgid "Last modified"
 msgstr "Zuletzt geändert"
 
-#: src/Dashboard/Dashboard.php:196
+#: src/Dashboard/Dashboard.php:197
 #: src/Views/Cpt/Views_Cpt.php:21
 #: src/Views/Cpt/Views_Cpt.php:25
 #: src/Views/Cpt/Views_Cpt.php:50
-#: src/Views/Cpt/Views_Cpt.php:153
+#: src/Views/Cpt/Views_Cpt.php:134
 msgid "Views"
 msgstr "Ansichten"
 
-#: src/Dashboard/Dashboard.php:210
+#: src/Dashboard/Dashboard.php:211
 #: src/Dashboard/Settings_Page.php:135
 #: src/Dashboard/Settings_Page.php:136
 #: src/Groups/Settings_Data.php:150
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/Dashboard/Dashboard.php:217
+#: src/Dashboard/Dashboard.php:218
 #: src/Groups/Tools_Data.php:168
 #: src/Tools/Tools.php:240
 #: src/Tools/Tools.php:241
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: src/Dashboard/Dashboard.php:233
+#: src/Dashboard/Dashboard.php:234
 msgid "Demo Import"
 msgstr "Demo-Import"
 
-#: src/Dashboard/Dashboard.php:55
 #: src/Dashboard/Dashboard.php:56
-#: src/Dashboard/Dashboard.php:240
+#: src/Dashboard/Dashboard.php:57
+#: src/Dashboard/Dashboard.php:241
 msgid "Docs"
 msgstr "Dokumentation"
 
-#: src/Dashboard/Dashboard.php:249
+#: src/Dashboard/Dashboard.php:250
 msgid "Support"
 msgstr "Support"
 
-#: src/Dashboard/Dashboard.php:47
 #: src/Dashboard/Dashboard.php:48
+#: src/Dashboard/Dashboard.php:49
 msgid "Demo import"
 msgstr "Demo-Import"
 
-#: src/Dashboard/Dashboard.php:68
 #: src/Dashboard/Dashboard.php:69
+#: src/Dashboard/Dashboard.php:70
 msgid "Survey"
 msgstr "Umfrage"
 
-#: src/Tools/Demo_Import.php:85
+#: src/Tools/Demo_Import.php:86
 msgid "Samsung Galaxy A53 (Demo)"
 msgstr "Samsung Galaxy A53 (Demo)"
 
-#: src/Tools/Demo_Import.php:92
+#: src/Tools/Demo_Import.php:93
 msgid "Nokia X20 (Demo)"
 msgstr "Nokia X20 (Demo)"
 
-#: src/Tools/Demo_Import.php:99
+#: src/Tools/Demo_Import.php:100
 msgid "Xiaomi 12T (Demo)"
 msgstr "Xiaomi 12T (Demo)"
 
-#: src/Tools/Demo_Import.php:106
+#: src/Tools/Demo_Import.php:107
 msgid "Article about Samsung (Demo)"
 msgstr "Artikel über Samsung (Demo)"
 
-#: src/Tools/Demo_Import.php:113
+#: src/Tools/Demo_Import.php:114
 msgid "Most popular phones in 2023 (Demo)"
 msgstr "Die beliebtesten Handys im Jahr 2023 (Demo)"
 
-#: src/Tools/Demo_Import.php:127
+#: src/Tools/Demo_Import.php:128
 msgid "Failed to create pages"
 msgstr "Seiten konnten nicht erstellt werden"
 
-#: src/Tools/Demo_Import.php:142
+#: src/Tools/Demo_Import.php:143
 msgid "\"Phone\" Demo View"
 msgstr "\"Telefon\" Demo-Ansicht"
 
-#: src/Tools/Demo_Import.php:146
+#: src/Tools/Demo_Import.php:147
 msgid "Failed to create a View"
 msgstr "Ansicht konnte nicht erstellt werden"
 
-#: src/Tools/Demo_Import.php:157
+#: src/Tools/Demo_Import.php:158
 msgid "\"Phones\" Demo Card"
 msgstr "\"Telefone\" Demo-Karte"
 
-#: src/Tools/Demo_Import.php:161
+#: src/Tools/Demo_Import.php:162
 msgid "Failed to create a Card"
 msgstr "Karte konnte nicht erstellt werden"
 
-#: src/Tools/Demo_Import.php:175
+#: src/Tools/Demo_Import.php:176
 msgid "ACF plugin is not available"
 msgstr "ACF-Plugin ist nicht verfügbar"
 
-#: src/Tools/Demo_Import.php:181
+#: src/Tools/Demo_Import.php:182
 msgid "Advanced Views \"Phone\" Demo Group"
 msgstr "Advanced Views \"Telefon\" Demo-Gruppe"
 
-#: src/Tools/Demo_Import.php:216
+#: src/Tools/Demo_Import.php:217
 msgid "Failed to import an ACF group"
 msgstr "ACF-Gruppe konnte nicht importiert werden"
 
-#: src/Tools/Demo_Import.php:239
+#: src/Tools/Demo_Import.php:240
 msgid "It's a demo View to display fields from the 'Phone' demo ACF Field Group."
 msgstr "Es ist eine Demo-Ansicht, um Felder aus der 'Telefon' Demo-ACF-Feldgruppe anzuzeigen."
 
-#: src/Tools/Demo_Import.php:268
+#: src/Tools/Demo_Import.php:269
 msgid "Brand:"
 msgstr "Marke:"
 
-#: src/Tools/Demo_Import.php:284
+#: src/Tools/Demo_Import.php:285
 msgid "Model:"
 msgstr "Modell:"
 
-#: src/Tools/Demo_Import.php:300
+#: src/Tools/Demo_Import.php:301
 msgid "Price:"
 msgstr "Preis:"
 
-#: src/Tools/Demo_Import.php:316
+#: src/Tools/Demo_Import.php:317
 msgid "Website:"
 msgstr "Webseite:"
 
-#: src/Tools/Demo_Import.php:317
+#: src/Tools/Demo_Import.php:318
 msgid "Visit"
 msgstr "Besuchen"
 
-#: src/Tools/Demo_Import.php:342
+#: src/Tools/Demo_Import.php:343
 msgid "It's a demo Card for 'Phones'"
 msgstr "Es ist eine Demo-Karte für 'Telefone'"
 
-#: src/Tools/Demo_Import.php:422
+#: src/Tools/Demo_Import.php:423
 msgid "\"Phone\" View to show fields of this page"
 msgstr "\"Telefon\" Ansicht, um Felder dieser Seite zu zeigen"
 
-#: src/Tools/Demo_Import.php:443
+#: src/Tools/Demo_Import.php:444
 msgid "'Phone' View with the object-id argument to show Samsung Phone's fields"
 msgstr "'Telefon' Ansicht mit dem object-id Argument, um die Felder des Samsung Telefons anzuzeigen"
 
-#: src/Tools/Demo_Import.php:462
+#: src/Tools/Demo_Import.php:463
 msgid "\"Phones\" Card to show the phones"
 msgstr "\"Telefone\" Karte, um die Telefone anzuzeigen"
 
@@ -388,38 +388,38 @@ msgstr "(ACF)"
 msgid "[PRO only]"
 msgstr "[Nur PRO]"
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:76
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:77
 msgid "Advanced View"
 msgstr "Erweiterte Ansicht"
 
-#: src/Dashboard/Admin_Bar.php:44
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:88
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:326
+#: src/Dashboard/Admin_Bar.php:45
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:89
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:327
 #: src/Data_Vendors/Pods/Pods_Integration.php:216
-#: src/Parents/Cpt/Cpt.php:76
+#: src/Parents/Cpt/Cpt.php:50
 #: src/Views/Cpt/Views_Cpt.php:23
 msgid "Advanced Views"
 msgstr "Erweiterte Ansichten"
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:187
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:188
 #: src/Views/Cpt/Views_Cpt_Meta_Boxes.php:206
 msgid "Add new"
 msgstr "Neu hinzufügen"
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:233
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:234
 msgid "Assigned to Views:"
 msgstr "Zugewiesen zu Ansichten:"
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:234
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:235
 msgid "Not assigned to any Views."
 msgstr "Keiner Ansicht zugewiesen."
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:349
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:350
 #: src/Data_Vendors/Pods/Pods_Integration.php:293
 msgid "Assigned to View"
 msgstr "Zugewiesen zu Ansicht"
 
-#: src/Data_Vendors/Common/Data_Vendor_Integration.php:468
+#: src/Data_Vendors/Common/Data_Vendor_Integration.php:469
 msgid "Views associated with this group contain invalid Custom Markup"
 msgstr "Mit dieser Gruppe verbundene Ansichten enthalten ungültiges benutzerdefiniertes Markup"
 
@@ -1490,8 +1490,8 @@ msgid "Export Cards"
 msgstr "Karten exportieren"
 
 #: src/Groups/translations.php:487
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:178
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:222
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:179
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:223
 msgid "Import"
 msgstr "Importieren"
 
@@ -1727,8 +1727,8 @@ msgstr "\"Beliebteste Telefone in 2022\" Seite"
 msgid "Copy to clipboard"
 msgstr "In die Zwischenablage kopieren"
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:79
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:99
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:80
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:100
 #: src/Plugin.php:174
 msgid "Read more"
 msgstr "Mehr lesen"
@@ -1741,35 +1741,35 @@ msgstr "Wir sind hier, um Ihnen bei Ihren Fragen zu helfen. Der Support erfolgt 
 msgid "Get support"
 msgstr "Unterstützung erhalten"
 
-#: src/Parents/Cpt/Cpt.php:35
+#: src/Parents/Cpt/Cpt.php:79
 msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/templates/file-system-storage\">File system storage</a> is"
 msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/templates/file-system-storage\">Dateisystemspeicher</a> ist"
 
-#: src/Parents/Cpt/Cpt.php:41
+#: src/Parents/Cpt/Cpt.php:85
 msgid "enabled"
 msgstr "aktiviert"
 
-#: src/Parents/Cpt/Cpt.php:42
+#: src/Parents/Cpt/Cpt.php:86
 msgid "disabled"
 msgstr "deaktiviert"
 
-#: src/Parents/Cpt/Cpt.php:71
+#: src/Parents/Cpt/Cpt.php:45
 msgid "Thank you for creating with"
 msgstr "Danke für das Erstellen mit"
 
-#: src/Parents/Cpt/Cpt.php:73
+#: src/Parents/Cpt/Cpt.php:47
 msgid "WordPress"
 msgstr "WordPress"
 
-#: src/Parents/Cpt/Cpt.php:74
+#: src/Parents/Cpt/Cpt.php:48
 msgid "and"
 msgstr "und"
 
-#: src/Parents/Cpt/Cpt.php:80
+#: src/Parents/Cpt/Cpt.php:54
 msgid "Take"
 msgstr "Nehmen Sie"
 
-#: src/Parents/Cpt/Cpt.php:82
+#: src/Parents/Cpt/Cpt.php:56
 msgid "2 minute survey"
 msgstr "2-Minuten-Umfrage"
 
@@ -1798,54 +1798,54 @@ msgstr "Massenvalidierung - Wird verwendet, um das benutzerdefinierte Vorlagenfe
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/Parents/Cpt/Table/Cpt_Table.php:75
-#: src/Parents/Cpt/Table/Cpt_Table.php:299
+#: src/Parents/Cpt/Table/Cpt_Table.php:76
+#: src/Parents/Cpt/Table/Cpt_Table.php:300
 msgid "Clone"
 msgstr "Klonen"
 
-#: src/Parents/Cpt/Table/Cpt_Table.php:115
+#: src/Parents/Cpt/Table/Cpt_Table.php:116
 msgid "Item success cloned."
 msgstr "Element erfolgreich geklont."
 
-#: src/Parents/Cpt/Table/Cpt_Table.php:188
+#: src/Parents/Cpt/Table/Cpt_Table.php:189
 msgid "Search for name, description, labels or view-id."
 msgstr "Suche nach Namen, Beschreibung, Etiketten oder Ansichts-ID."
 
-#: src/Parents/Cpt/Table/Cpt_Table.php:189
+#: src/Parents/Cpt/Table/Cpt_Table.php:190
 msgid "Search for name."
 msgstr "Suche nach Namen."
 
-#: src/Parents/Cpt/Table/Cpt_Table.php:283
+#: src/Parents/Cpt/Table/Cpt_Table.php:284
 msgid "Delete"
 msgstr "Löschen"
 
 #. translators: %s: item title.
-#: src/Parents/Cpt/Table/Cpt_Table.php:400
+#: src/Parents/Cpt/Table/Cpt_Table.php:401
 msgid "Select %s"
 msgstr "Wählen Sie %s"
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:53
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:54
 msgid "FS only"
 msgstr "Nur FS"
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:57
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:58
 msgid "The \"FS only\" tab displays a list of items that do not have a record in the WordPress posts table and cannot be edited using the UI."
 msgstr "Der Tab \"Nur FS\" zeigt eine Liste von Elementen an, die keinen Eintrag in der WordPress-Beitragstabelle haben und nicht über die Benutzeroberfläche bearbeitet werden können."
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:64
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:65
 msgid "If you need to amend such an item, you should \"sync\" it using the \"sync\" row or a bulk action."
 msgstr "Wenn Sie ein solches Element ändern müssen, sollten Sie es mit der \"Sync\"-Zeile oder einer Massenaktion \"synchronisieren\"."
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:71
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:72
 msgid "After doing so, the items will become editable using the UI (but the item data will still be stored in FS)."
 msgstr "Danach werden die Elemente über die Benutzeroberfläche bearbeitbar (die Elementdaten werden jedoch weiterhin in FS gespeichert)."
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:96
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:176
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:97
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:177
 msgid "Sync"
 msgstr "Synchronisieren"
 
-#: src/Parents/Cpt/Table/Fs_Only_Tab.php:158
+#: src/Parents/Cpt/Table/Fs_Only_Tab.php:159
 msgid "items successfully synced"
 msgstr "Elemente erfolgreich synchronisiert"
 
@@ -1861,7 +1861,7 @@ msgstr "Überprüfen und korrigieren Sie Dateiberechtigungen, um mit Ansichten u
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Hinweis: Deaktivieren Sie die FS-Speicherfunktion nicht, bevor Sie sie reparieren, sonst gehen Ihre Daten verloren."
 
-#: src/Dashboard/Dashboard.php:225
+#: src/Dashboard/Dashboard.php:226
 #: src/html/postbox/upgrade.php:23
 msgid "Upgrade to Pro"
 msgstr "Auf Pro upgraden"
@@ -1874,11 +1874,11 @@ msgstr "Kompatibilitätsproblem festgestellt! Das \"Advanced Views\" Plugin erfo
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Bitte ändern Sie die Option \"opcache.save_comments\" in Ihrer php.ini-Datei auf den Standardwert \"1\" bei Ihrem Hosting."
 
-#: src/Plugin.php:313
+#: src/Plugin.php:312
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' und 'Advanced Views Pro' sollten nicht gleichzeitig aktiv sein. Wir haben automatisch deaktiviert"
 
-#: src/Plugin.php:319
+#: src/Plugin.php:318
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1915,8 +1915,8 @@ msgid "Add New View"
 msgstr "Neue Ansicht hinzufügen"
 
 #: src/Views/Cpt/Views_Cpt.php:29
-#: src/Views/Cpt/Views_Cpt.php:104
-#: src/Views/Cpt/Views_Cpt.php:107
+#: src/Views/Cpt/Views_Cpt.php:85
+#: src/Views/Cpt/Views_Cpt.php:88
 msgid "View updated."
 msgstr "Ansicht aktualisiert."
 
@@ -1936,27 +1936,27 @@ msgstr "Ansicht suchen"
 msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the View</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/view-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
 msgstr "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Binden Sie die Ansicht</a> an den Zielort ein, zum Beispiel mit <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/view-shortcode\">dem Shortcode</a>, um Feldwerte des Beitrags, der Seite oder des CPT-Elements anzuzeigen."
 
-#: src/Views/Cpt/Views_Cpt.php:89
+#: src/Views/Cpt/Views_Cpt.php:70
 msgid "View scheduled for:"
 msgstr "Ansicht geplant für:"
 
-#: src/Views/Cpt/Views_Cpt.php:98
+#: src/Views/Cpt/Views_Cpt.php:79
 msgid "View restored to revision from"
 msgstr "Ansicht wiederhergestellt zur Revision von"
 
-#: src/Views/Cpt/Views_Cpt.php:109
+#: src/Views/Cpt/Views_Cpt.php:90
 msgid "View published."
 msgstr "Ansicht veröffentlicht."
 
-#: src/Views/Cpt/Views_Cpt.php:110
+#: src/Views/Cpt/Views_Cpt.php:91
 msgid "View saved."
 msgstr "Ansicht gespeichert."
 
-#: src/Views/Cpt/Views_Cpt.php:111
+#: src/Views/Cpt/Views_Cpt.php:92
 msgid "View submitted."
 msgstr "Ansicht eingereicht."
 
-#: src/Views/Cpt/Views_Cpt.php:113
+#: src/Views/Cpt/Views_Cpt.php:94
 msgid "View draft updated."
 msgstr "Ansichtsentwurf aktualisiert."
 
@@ -2002,7 +2002,7 @@ msgstr "Das Feld \"%1$s\" wird fälschlicherweise als Zeichenkette erwartet. Zei
 msgid "object-id argument contains the wrong value"
 msgstr "object-id Argument enthält den falschen Wert"
 
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:81
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:82
 msgid "Pre-built components"
 msgstr "Vorgefertigte Komponenten"
 
@@ -2040,7 +2040,7 @@ msgid_plural "groups"
 msgstr[0] "Gruppe"
 msgstr[1] "Gruppen"
 
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:84
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:85
 msgid "Import pre-built components."
 msgstr "Vorgefertigte Komponenten importieren."
 
@@ -2048,7 +2048,7 @@ msgstr "Vorgefertigte Komponenten importieren."
 msgid "Meta Fields and their Field Groups along with responsive CSS rules are included."
 msgstr "Metafelder und deren Feldgruppen zusammen mit responsiven CSS-Regeln sind enthalten."
 
-#: src/Parents/Cpt/Table/Pre_Built_Tab.php:91
+#: src/Parents/Cpt/Table/Pre_Built_Tab.php:92
 msgid "Hover on the title and click Import."
 msgstr "Fahren Sie mit der Maus über den Titel und klicken Sie auf Importieren."
 
@@ -2456,25 +2456,25 @@ msgstr ""
 msgid "%s template engine is not available (PHP >= 8.2.0 is required)."
 msgstr ""
 
-#: src/Dashboard/Admin_Bar.php:48
+#: src/Dashboard/Admin_Bar.php:49
 msgid "item"
 msgid_plural "items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Dashboard/Admin_Bar.php:56
+#: src/Dashboard/Admin_Bar.php:57
 msgid "Enable on-page Dev Mode"
 msgstr ""
 
-#: src/Dashboard/Admin_Bar.php:57
+#: src/Dashboard/Admin_Bar.php:58
 msgid "Disable on-page Dev Mode"
 msgstr ""
 
-#: src/Dashboard/Admin_Bar.php:59
+#: src/Dashboard/Admin_Bar.php:60
 msgid "Enable on-page Live Reload"
 msgstr ""
 
-#: src/Dashboard/Admin_Bar.php:60
+#: src/Dashboard/Admin_Bar.php:61
 msgid "Disable on-page Live Reload"
 msgstr ""
 
@@ -2564,7 +2564,7 @@ msgstr ""
 msgid "Add Custom Javascript code to your View. <br><br> By default, the View is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
-#: src/Cards/Cpt/Cards_Cpt.php:101
+#: src/Cards/Cpt/Cards_Cpt.php:83
 msgid "Name your Card here (required)"
 msgstr ""
 
@@ -2588,7 +2588,7 @@ msgstr ""
 msgid "Enter the <a target='_blank' href='https://docs.advanced-views.com/shortcode-attributes/common-arguments#custom-arguments'>custom shortcode argument</a> name which will be used in the query."
 msgstr ""
 
-#: src/Views/Cpt/Views_Cpt.php:126
+#: src/Views/Cpt/Views_Cpt.php:107
 msgid "Name your View here (required)"
 msgstr ""
 
@@ -2618,7 +2618,7 @@ msgstr ""
 msgid "This setting improves loading speed by disabling third-party scripts on View and Card admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on View and Card screens)."
 msgstr ""
 
-#: src/Parents/Cpt/Cpt.php:83
+#: src/Parents/Cpt/Cpt.php:57
 msgid "to improve Advanced Views."
 msgstr ""
 
@@ -2688,7 +2688,7 @@ msgstr ""
 msgid "Card is missing"
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:119
+#: src/Shortcode/Shortcode.php:120
 msgid "AVF shortcode render error:"
 msgstr ""
 
