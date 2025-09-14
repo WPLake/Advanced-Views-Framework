@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template_Engines;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Settings;
@@ -101,8 +102,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 			// @phpcs:ignore
 			echo $html;
 		} catch ( Exception $e ) {
-			$is_admin_user = in_array( 'administrator', wp_get_current_user()->roles, true );
-			$is_debug_mode = $is_admin_user && $this->settings->is_dev_mode();
+			$is_debug_mode = Avf_User::can_manage() && $this->settings->is_dev_mode();
 
 			$error_message = $e->getMessage();
 

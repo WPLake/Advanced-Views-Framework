@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -43,7 +44,7 @@ abstract class Cpt_Table_Tab implements Hooks_Interface {
 		$is_single_sync = '' !== Query_Arguments::get_string_for_non_action( $key_single_action );
 
 		if ( ( false === $is_batch_sync && false === $is_single_sync ) ||
-			false === current_user_can( 'manage_options' ) ) {
+			! Avf_User::can_manage() ) {
 			return array();
 		}
 

@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -39,7 +40,7 @@ class Live_Reloader_Component implements Hooks_Interface {
 	}
 
 	public function set_is_active(): void {
-		$this->is_active = true === current_user_can( 'manage_options' ) &&
+		$this->is_active = Avf_User::can_manage() &&
 							'' !== Query_Arguments::get_string_for_non_action( self::QUERY_ARG );
 	}
 

@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Tools;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -685,7 +686,7 @@ final class Demo_Import implements Hooks_Interface {
 		$av_page = Query_Arguments::get_string_for_non_action( '_av-page', 'post' );
 
 		if ( 'import' !== $av_page ||
-			false === current_user_can( 'manage_options' ) ) {
+			! Avf_User::can_manage() ) {
 			return;
 		}
 

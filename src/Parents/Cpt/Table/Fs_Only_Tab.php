@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
@@ -101,7 +102,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 		$unique_ids = $this->get_action_unique_ids( self::KEY_SINGLE_ACTION, self::KEY_BATCH_ACTION );
 
 		if ( array() === $unique_ids ||
-			false === current_user_can( 'manage_options' ) ) {
+			! Avf_User::can_manage() ) {
 			return;
 		}
 

@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -474,7 +475,7 @@ class Live_Reloader implements Hooks_Interface {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'get_live_reloader_data' ),
 				'permission_callback' => function (): bool {
-					return true === current_user_can( 'manage_options' );
+					return Avf_User::can_manage();
 				},
 			)
 		);

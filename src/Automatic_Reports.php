@@ -157,7 +157,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$nonce_name  = 'av-reports-notice';
 
 		if ( '' !== Query_Arguments::get_string_for_admin_action( $dismiss_key, $nonce_name ) &&
-			true === current_user_can( 'manage_options' ) ) {
+			Avf_User::can_manage() ) {
 			$this->settings->set_is_automatic_reports_confirmed( true );
 			$this->settings->save();
 
@@ -179,7 +179,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			'acf-views'
 		);
 
-		if ( true === current_user_can( 'manage_options' ) ) {
+		if ( Avf_User::can_manage() ) {
 			$hide_url = add_query_arg(
 				array(
 					$dismiss_key => 1,

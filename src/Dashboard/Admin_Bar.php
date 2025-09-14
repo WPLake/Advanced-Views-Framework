@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -34,7 +35,7 @@ class Admin_Bar implements Hooks_Interface {
 	}
 
 	public function add_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ): void {
-		if ( false === current_user_can( 'manage_options' ) ) {
+		if ( ! Avf_User::can_manage() ) {
 			return;
 		}
 

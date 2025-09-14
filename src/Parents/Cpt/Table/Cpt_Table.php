@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
@@ -67,7 +68,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 
 		if ( null === $post ||
 			$this->cpt_name !== $post->post_type ||
-			false === current_user_can( 'manage_options' ) ) {
+			! Avf_User::can_manage() ) {
 			return;
 		}
 

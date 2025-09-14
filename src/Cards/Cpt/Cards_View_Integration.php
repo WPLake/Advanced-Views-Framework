@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cards\Cpt;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -60,7 +61,7 @@ class Cards_View_Integration extends Cpt_Data_Creator implements Hooks_Interface
 			null === $from_post ||
 			Views_Cpt::NAME !== $from_post->post_type ||
 			'publish' !== $from_post->post_status ||
-			false === current_user_can( 'manage_options' ) ) {
+			! Avf_User::can_manage() ) {
 			return;
 		}
 

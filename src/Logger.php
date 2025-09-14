@@ -113,8 +113,8 @@ class Logger implements Hooks_Interface {
 	 */
 	protected function log( string $level, string $message, array $debug_args ): void {
 		if ( 'debug' === $level &&
-			( false === $this->settings->is_dev_mode() ||
-				false === in_array( 'administrator', wp_get_current_user()->roles, true ) ) ) {
+			( ! $this->settings->is_dev_mode() ||
+				! Avf_User::can_manage() ) ) {
 			return;
 		}
 

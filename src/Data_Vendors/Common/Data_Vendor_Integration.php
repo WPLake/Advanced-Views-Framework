@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
@@ -374,7 +375,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 					null === $from_post ||
 					$this->get_vendor_post_type() !== $from_post->post_type ||
 					'publish' !== $from_post->post_status ||
-					false === current_user_can( 'manage_options' ) ) {
+					! Avf_User::can_manage() ) {
 					return;
 				}
 

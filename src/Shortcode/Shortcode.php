@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
@@ -139,11 +140,10 @@ abstract class Shortcode implements Hooks_Interface {
 			$this->rendered_ids[ $unique_id ] = true;
 		}
 
-		$roles    = wp_get_current_user()->roles;
 		$cpt_data = $this->cpt_data_storage->get( $unique_id );
 
 		$is_with_quick_link = true === $this->settings->is_dev_mode() &&
-								true === in_array( 'administrator', $roles, true );
+								Avf_User::can_manage();
 
 		$html = $this->live_reloader_component->get_reloading_component(
 			$cpt_data,
