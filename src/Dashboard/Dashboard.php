@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
@@ -46,7 +47,7 @@ class Dashboard implements Hooks_Interface {
 			sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ),
 			__( 'Demo import', 'acf-views' ),
 			__( 'Demo import', 'acf-views' ),
-			'edit_posts',
+			Avf_User::get_manage_capability(),
 			self::PAGE_DEMO_IMPORT,
 			array( $this, 'get_import_page' )
 		);
@@ -54,7 +55,7 @@ class Dashboard implements Hooks_Interface {
 			sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ),
 			__( 'Docs', 'acf-views' ),
 			__( 'Docs', 'acf-views' ),
-			'edit_posts',
+			Avf_User::get_manage_capability(),
 			self::PAGE_DOCS,
 			function () {
 				printf(
@@ -67,7 +68,7 @@ class Dashboard implements Hooks_Interface {
 			sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ),
 			__( 'Survey', 'acf-views' ),
 			__( 'Survey', 'acf-views' ),
-			'edit_posts',
+			Avf_User::get_manage_capability(),
 			self::PAGE_SURVEY,
 			function () {
 				printf(

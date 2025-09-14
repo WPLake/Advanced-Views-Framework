@@ -138,6 +138,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.7.20 (2025-) =
+- Level up View & Card management capabilities to 'manage_options' (for security reasons)
 - Updated internal dependencies (ACF)
 
 = 3.7.19 (2025-07-18) =

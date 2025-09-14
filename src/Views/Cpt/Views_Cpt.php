@@ -46,35 +46,16 @@ class Views_Cpt extends Cpt {
 		$description .= '<br><br>';
 		$description .= $this->get_storage_label();
 
-		$args = array(
-			'label'               => __( 'Views', 'acf-views' ),
-			'description'         => $description,
-			'labels'              => $labels,
-			// shouldn't be presented in the sitemap and other places.
-			'public'              => false,
-			'show_ui'             => true,
-			'show_in_rest'        => true,
-			'has_archive'         => false,
-			'show_in_menu'        => true,
-			'show_in_nav_menus'   => false,
-			'delete_with_user'    => false,
-			'exclude_from_search' => true,
-			'capability_type'     => 'post',
-			'hierarchical'        => false,
-			'can_export'          => false,
-			'rewrite'             => false,
-			'query_var'           => false,
-			'menu_icon'           => 'dashicons-layout',
-			'supports'            => array( 'title', 'editor' ),
-			'show_in_graphql'     => false,
+		$cpt_args = array(
+			'label'         => __( 'Views', 'acf-views' ),
+			'description'   => $description,
+			'labels'        => $labels,
+			'menu_icon'     => 'dashicons-layout',
 			// right under ACF, which has 80.
-			'menu_position'       => 81,
+			'menu_position' => 81,
 		);
 
-		register_post_type( self::NAME, $args );
-
-		// since WP 6.6 we can disable it straightly.
-		post_type_supports( self::NAME, 'autosave' );
+		$this->register_cpt( $cpt_args );
 	}
 
 	/**

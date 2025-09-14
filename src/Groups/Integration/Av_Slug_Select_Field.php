@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Groups\Integration;
 defined( 'ABSPATH' ) || exit;
 
 use acf_field_select;
+use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
@@ -77,7 +78,7 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 
 		public function ajax_query(): void {
 			// Check for permissions instead of the nonce, as ACF team has changed it 3 times, and it keeps breaking.
-			if ( false === current_user_can( 'edit_posts' ) ) {
+			if ( ! Avf_User::can_manage() ) {
 				wp_die( 'No permissions' );
 			}
 
