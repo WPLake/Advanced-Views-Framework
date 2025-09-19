@@ -103,17 +103,13 @@ class Plugin implements Hooks_Interface {
 		if ( 'tab' === $type ) {
 			$field['class'] = ( $field['class'] ?? '' ) . ' acf-views-tab__pro';
 		} else {
-			$link = ! $this->is_pro_version() ?
-				self::PRO_VERSION_URL :
-				$this->get_admin_url( Dashboard::PAGE_PRO );
-
+			// labels do not support HTML, so we can't use a link.
 			$field['label'] = sprintf(
-				'%s (<a target="_blank" href="%s">%s</a>)',
+				'%s (%s)',
 				esc_html( string( $field, 'label' ) ),
-				esc_url( $link ),
 				$this->is_pro_version() ?
 					esc_html__( 'Unlock Pro', 'acf-views' ) :
-					esc_html__( 'Get Pro', 'acf-views' )
+					esc_html__( 'Upgrade to Pro', 'acf-views' )
 			);
 		}
 
