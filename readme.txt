@@ -4,7 +4,7 @@ Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.7.19
+Stable tag: 3.7.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,7 +137,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.7.20 (2025-) =
+= 3.7.20 (2025-09-19) =
 - Level up View & Card management capabilities to 'manage_options' (for security reasons)
 - Updated internal dependencies (ACF)
 
