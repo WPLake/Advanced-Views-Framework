@@ -32,7 +32,6 @@ use Org\Wplake\Advanced_Views\Cards\{Card_Factory,
 	Query_Builder};
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
-use Org\Wplake\Advanced_Views\Profiler;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -550,8 +549,6 @@ $acf_views = new class() {
 		$settings->set_hooks( $current_screen );
 		$live_reloader->set_hooks( $current_screen );
 		$admin_bar->set_hooks( $current_screen );
-
-		Profiler::set_hooks();
 	}
 
 	private function bridge(): void {
@@ -593,20 +590,7 @@ $acf_views = new class() {
 		}
 	}
 
-	public function init(): void {
-		// skip initialization if PRO already active.
-		if ( class_exists( Plugin::class ) ) {
-			return;
-		}
-
-		require_once __DIR__ . '/prefixed_vendors/vendor/scoper-autoload.php';
-
-		if ( true === version_compare( PHP_VERSION, '8.2.0', '>=' ) ) {
-			require_once __DIR__ . '/prefixed_vendors_php8/vendor/scoper-autoload.php';
-		}
-
-		require_once __DIR__ . '/src/Back_Compatibility/Back_Compatibility.php';
-
+	public function load(): void {
 		$current_screen = new Current_Screen();
 
 		$this->load_translations( $current_screen );
@@ -617,6 +601,25 @@ $acf_views = new class() {
 		$this->integration( $current_screen );
 		$this->others( $current_screen );
 		$this->bridge();
+	}
+
+	public function init(): void {
+		// skip initialization if PRO already active.
+		if ( class_exists( Plugin::class ) ) {
+			return;
+		}
+
+		$start_timestamp = microtime( true );
+
+		require_once __DIR__ . '/prefixed_vendors/vendor/scoper-autoload.php';
+
+		if ( true === version_compare( PHP_VERSION, '8.2.0', '>=' ) ) {
+			require_once __DIR__ . '/prefixed_vendors_php8/vendor/scoper-autoload.php';
+		}
+
+		require_once __DIR__ . '/src/Back_Compatibility/Back_Compatibility.php';
+
+		$this->load();
 
 		register_activation_hook(
 			__FILE__,
@@ -627,6 +630,8 @@ $acf_views = new class() {
 			__FILE__,
 			array( $this, 'deactivation' )
 		);
+
+		Profiler::plugin_loaded( $start_timestamp );
 	}
 };
 

@@ -22,6 +22,7 @@ abstract class Profiler {
 		'calls'              => 0,
 		'estimated_time_sec' => 0,
 	);
+	private static float $plugin_loaded_sec  = 0;
 	private static ?bool $is_profiler_active = null;
 
 	public static function get_callback( string $source, string $hook_name, callable $callback ): callable {
@@ -32,8 +33,9 @@ abstract class Profiler {
 			$callback;
 	}
 
-	public static function set_hooks(): void {
+	public static function plugin_loaded( float $start_timestamp ): void {
 		if ( self::is_active() ) {
+			self::$plugin_loaded_sec = microtime( true ) - $start_timestamp;
 			add_action( 'shutdown', array( self::class, 'print_report' ) );
 		}
 	}
@@ -45,7 +47,7 @@ abstract class Profiler {
 
 		echo '<pre>';
 		// @phpcs:ignore
-		print_r(self::$total_usage );
+		print_r(self::get_total_usage() );
 		echo '</pre>';
 
 		echo '<hr>';
@@ -64,6 +66,18 @@ abstract class Profiler {
 		echo '</pre>';
 
 		echo '</div>';
+	}
+
+	/**
+	 * @return array{estimated_time_sec:float,calls:int, loading_time_sec:float}
+	 */
+	private static function get_total_usage(): array {
+		return array_merge(
+			array(
+				'plugin_loaded_sec' => self::$plugin_loaded_sec,
+			),
+			self::$total_usage,
+		);
 	}
 
 	/**
