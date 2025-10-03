@@ -973,12 +973,10 @@ return new class extends CustomCardData {
 		// all versions since 1.6.0 has a version.
 		$previous_version = $this->settings->get_version();
 
-		// empty means the very first run, no data is available, nothing to fix.
-		if ( '' === $previous_version ) {
-			return;
+		// skip the very first run, no data is available, nothing to fix.
+		if ( strlen( $previous_version ) > 0 ) {
+			$this->upgrade_global_items( $previous_version );
 		}
-
-		$this->upgrade_global_items( $previous_version );
 
 		$this->settings->set_version( $this->plugin->get_version() );
 		$this->settings->save();
