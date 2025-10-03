@@ -487,16 +487,24 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			$args = array_merge( $args, $this->get_report_data() );
 		}
 
-		wp_remote_post(
+		$send_request = Profiler::get_callback(
+			Profiler::SOURCE_NETWORK,
 			self::REQUEST_URL,
-			array(
-				'headers'      => array( 'Content-Type' => 'application/json; charset=utf-8' ),
-				'method'       => 'POST',
-				'body'         => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
-				// we don't need the response, so it's non-blocking.
-					'blocking' => false,
-			)
+			function () use( $args, $deactivation_survey_fields ) {
+				wp_remote_post(
+					self::REQUEST_URL,
+					array(
+						'headers'      => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+						'method'       => 'POST',
+						'body'         => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
+						// we don't need the response, so it's non-blocking.
+							'blocking' => false,
+					)
+				);
+			}
 		);
+
+		call_user_func( $send_request );
 	}
 
 	/**

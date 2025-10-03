@@ -7,6 +7,8 @@ namespace Org\Wplake\Advanced_Views;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Profiler {
+	const SOURCE_NETWORK = '_network';
+
 	/**
 	 * @var array<string,array{time_sec:float,calls:int}>
 	 */
@@ -69,7 +71,7 @@ abstract class Profiler {
 	}
 
 	/**
-	 * @return array{estimated_time_sec:float,calls:int, loading_time_sec:float}
+	 * @return array<string,mixed>
 	 */
 	private static function get_total_usage(): array {
 		return array_merge(
@@ -81,7 +83,7 @@ abstract class Profiler {
 	}
 
 	/**
-	 * @return array<string,array{time_sec:float,calls:int, hooks:string[]}>
+	 * @return array<string,mixed>
 	 */
 	private static function get_classes_total_usage(): array {
 		$classes_total_usage = array();
