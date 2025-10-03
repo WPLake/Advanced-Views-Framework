@@ -14,11 +14,11 @@ abstract class Hookable {
 	 */
 	private static array $class_hooks_usage = array();
 	/**
-	 * @var array{time_sec:float,calls:int}
+	 * @var array{estimated_time_sec:float,calls:int}
 	 */
 	private static array $total_usage        = array(
-		'calls'    => 0,
-		'time_sec' => 0,
+		'calls'              => 0,
+		'estimated_time_sec' => 0,
 	);
 	private static ?bool $is_profiler_active = null;
 
@@ -42,6 +42,15 @@ abstract class Hookable {
 			},
 			$priority,
 			$accepted_args
+		);
+	}
+
+	public static function add_shortcode( string $tag, callable $callback ): void {
+		add_shortcode(
+			$tag,
+			function ( ...$args ) use( $tag, $callback ) {
+				return self::execute_callback( $tag, $callback, $args );
+			}
 		);
 	}
 
@@ -80,7 +89,7 @@ abstract class Hookable {
 	}
 
 	/**
-	 * @return array{time_sec:float,calls:int}
+	 * @return array{estimated_time_sec:float,calls:int}
 	 */
 	public static function get_total_usage(): array {
 		return self::$total_usage;
@@ -88,8 +97,9 @@ abstract class Hookable {
 
 	public static function is_profiler_active(): bool {
 		if ( null === self::$is_profiler_active ) {
-			// @phpcs:ignore
-			self::$is_profiler_active = defined( 'AVF_PROFILER' ) && isset( $_GET['_avf_profiler'] );
+			self::$is_profiler_active = defined( 'AVF_PROFILER' ) &&
+			                            // @phpcs:ignore
+										isset( $_GET['_avf_profiler'] );
 		}
 
 		return self::$is_profiler_active;
@@ -101,7 +111,6 @@ abstract class Hookable {
 	 * @return mixed
 	 */
 	private static function execute_callback( string $hook_name, callable $callback, array $args ) {
-
 		if ( self::is_profiler_active() ) {
 			$start_at = microtime( true );
 
@@ -131,8 +140,9 @@ abstract class Hookable {
 			'calls'    => 0,
 		);
 
-		self::$total_usage['calls']    = self::$total_usage['calls'] + 1;
-		self::$total_usage['time_sec'] = self::$total_usage['time_sec'] + $execution_time_sec;
+		self::$total_usage['calls'] = self::$total_usage['calls'] + 1;
+		// Estimated, as we can't guarantee that the current execution isn't a child to another one.
+		self::$total_usage['estimated_time_sec'] = self::$total_usage['estimated_time_sec'] + $execution_time_sec;
 
 		self::$classes_total_usage[ $class ]['calls']    = self::$classes_total_usage[ $class ]['calls'] + 1;
 		self::$classes_total_usage[ $class ]['time_sec'] = self::$classes_total_usage[ $class ]['time_sec'] + $execution_time_sec;

@@ -318,7 +318,7 @@ abstract class Shortcode extends Hookable implements Hooks_Interface {
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 
-		add_shortcode( static::NAME, array( $this, 'do_shortcode' ) );
-		add_shortcode( static::OLD_NAME, array( $this, 'do_shortcode' ) );
+		self::add_shortcode( static::NAME, array( $this, 'do_shortcode' ) );
+		self::add_shortcode( static::OLD_NAME, array( $this, 'do_shortcode' ) );
 	}
 }
