@@ -11,8 +11,9 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
-class Custom_Acf_Field_Types implements Hooks_Interface {
+class Custom_Acf_Field_Types extends Hookable implements Hooks_Interface {
 
 	private Views_Data_Storage $views_data_storage;
 
@@ -40,7 +41,7 @@ class Custom_Acf_Field_Types implements Hooks_Interface {
 			return;
 		}
 
-		add_action(
+		self::add_action(
 			'acf/include_field_types',
 			array( $this, 'register_av_slug_select_field' )
 		);

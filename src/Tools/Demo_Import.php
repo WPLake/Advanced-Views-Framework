@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt_Save_Actions;
@@ -23,7 +24,7 @@ use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 
-final class Demo_Import implements Hooks_Interface {
+final class Demo_Import extends Hookable implements Hooks_Interface {
 
 	private int $samsung_id;
 	private int $xiaomi_id;
@@ -712,6 +713,6 @@ final class Demo_Import implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'wp_loaded', array( $this, 'maybe_process_form' ) );
+		self::add_action( 'wp_loaded', array( $this, 'maybe_process_form' ) );
 	}
 }

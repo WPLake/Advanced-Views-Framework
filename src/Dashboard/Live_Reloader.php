@@ -17,10 +17,11 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_REST_Request;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Live_Reloader implements Hooks_Interface {
+class Live_Reloader extends Hookable implements Hooks_Interface {
 	use Safe_Array_Arguments;
 
 	private Views_Data_Storage $views_data_storage;
@@ -486,6 +487,6 @@ class Live_Reloader implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+		self::add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 }

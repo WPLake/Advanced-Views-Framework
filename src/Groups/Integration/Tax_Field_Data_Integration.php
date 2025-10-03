@@ -69,7 +69,7 @@ class Tax_Field_Data_Integration extends Acf_Integration {
 	}
 
 	protected function set_field_choices(): void {
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tax_Field_Data::getAcfFieldName( Tax_Field_Data::FIELD_TAXONOMY ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_taxonomy_choices();
@@ -78,7 +78,7 @@ class Tax_Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tax_Field_Data::getAcfFieldName( Tax_Field_Data::FIELD_TERM ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_term_choices();
@@ -87,7 +87,7 @@ class Tax_Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tax_Field_Data::getAcfFieldName( Tax_Field_Data::FIELD_DYNAMIC_TERM ),
 			function ( array $field ) {
 				$field['choices'] = array(
@@ -101,7 +101,7 @@ class Tax_Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tax_Field_Data::getAcfFieldName( Tax_Field_Data::FIELD_META_GROUP ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_group_choices( true );
@@ -110,7 +110,7 @@ class Tax_Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tax_Field_Data::getAcfFieldName( Tax_Field_Data::FIELD_META_FIELD ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_field_choices( true );

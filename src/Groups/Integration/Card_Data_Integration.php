@@ -34,7 +34,7 @@ class Card_Data_Integration extends Acf_Integration {
 	}
 
 	protected function set_field_choices(): void {
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Card_Data::getAcfFieldName( Card_Data::FIELD_ORDER_BY_META_FIELD_GROUP ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_group_choices( true );
@@ -43,7 +43,7 @@ class Card_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Card_Data::getAcfFieldName( Card_Data::FIELD_ORDER_BY_META_FIELD_KEY ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_field_choices( true );
@@ -52,7 +52,7 @@ class Card_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Card_Data::getAcfFieldName( Card_Data::FIELD_POST_TYPES ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_post_type_choices();
@@ -61,7 +61,7 @@ class Card_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Card_Data::getAcfFieldName( Card_Data::FIELD_POST_STATUSES ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_post_status_choices();
@@ -103,6 +103,6 @@ class Card_Data_Integration extends Acf_Integration {
 
 		$view_field_name = Card_Data::getAcfFieldName( Card_Data::FIELD_ACF_VIEW_ID );
 
-		add_action( 'acf/render_field/name=' . $view_field_name, array( $this, 'print_add_new_view_link' ) );
+		self::add_action( 'acf/render_field/name=' . $view_field_name, array( $this, 'print_add_new_view_link' ) );
 	}
 }

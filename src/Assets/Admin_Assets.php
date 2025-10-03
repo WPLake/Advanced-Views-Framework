@@ -24,10 +24,11 @@ use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Views\Source;
 use Org\Wplake\Advanced_Views\Views\View_Factory;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Admin_Assets implements Hooks_Interface {
+class Admin_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @var Plugin
 	 */
@@ -572,7 +573,7 @@ class Admin_Assets implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
+		self::add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
 	}
 }

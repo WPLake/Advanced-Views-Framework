@@ -186,7 +186,7 @@ class Upgrades extends Action implements Hooks_Interface {
 			return false;
 		}
 
-		add_action(
+		self::add_action(
 			'acf/init',
 			function () {
 				$this->move_view_and_card_meta_to_post_content_json();
@@ -493,11 +493,11 @@ class Upgrades extends Action implements Hooks_Interface {
 		// (these early calls are necessary, as they affect the data which is used to work with the items storage)
 
 		if ( $this->is_version_lower( $previous_version, '2.2.0' ) ) {
-			add_action( 'acf/init', array( $this, 'recreate_post_slugs' ), 1 );
+			self::add_action( 'acf/init', array( $this, 'recreate_post_slugs' ), 1 );
 		}
 
 		if ( $this->is_version_lower( $previous_version, '3.0.0' ) ) {
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->fill_unique_id_and_post_title_in_json();
@@ -509,14 +509,14 @@ class Upgrades extends Action implements Hooks_Interface {
 		// 2. Ordinary calls
 
 		if ( $this->is_version_lower( $previous_version, '1.7.0' ) ) {
-			add_action( 'acf/init', array( $this, 'update_markup_identifiers' ) );
+			self::add_action( 'acf/init', array( $this, 'update_markup_identifiers' ) );
 		}
 
 		// twig markup.
 		if ( $this->is_version_lower( $previous_version, '2.0.0' ) ) {
 			$this->replace_post_identifiers();
 			// trigger save to refresh the markup preview.
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$views_count = $this->trigger_save_for_all_views();
@@ -526,24 +526,24 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.1.0' ) ) {
-			add_action(
+			self::add_action(
 				'acf/init',
 				array( $this, 'enable_with_common_classes_and_unnecessary_wrappers_for_all_views' )
 			);
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.2.0' ) ) {
-			add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_cards' ) );
-			add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_view_relationships' ) );
+			self::add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_cards' ) );
+			self::add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_view_relationships' ) );
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.2.2' ) ) {
-			add_action( 'acf/init', array( $this, 'set_digital_id_for_markup_flag_for_views_and_cards' ) );
+			self::add_action( 'acf/init', array( $this, 'set_digital_id_for_markup_flag_for_views_and_cards' ) );
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.2.3' ) ) {
 			// related Views/Cards in post_content_filtered appeared, filled during the save action.
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->trigger_save_for_all_views();
@@ -553,7 +553,7 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.3.0' ) ) {
-			add_action(
+			self::add_action(
 				'init',
 				function () {
 					$this->template_engines->create_templates_dir();
@@ -562,7 +562,7 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.4.0' ) ) {
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->disable_web_components_for_existing_views_and_cards();
@@ -574,7 +574,7 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.4.2' ) ) {
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->replace_post_comments_and_menu_link_fields_to_separate();
@@ -583,7 +583,7 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 
 		if ( $this->is_version_lower( $previous_version, '2.4.5' ) ) {
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->enable_name_back_compatibility_checkbox_for_views_with_gutenberg();
@@ -593,7 +593,7 @@ class Upgrades extends Action implements Hooks_Interface {
 
 		if ( $this->is_version_lower( $previous_version, '3.0.0' ) ) {
 			// theme is loaded since this hook.
-			add_action(
+			self::add_action(
 				'acf/init',
 				function () {
 					$this->remove_old_theme_labels_folder();
@@ -614,7 +614,7 @@ class Upgrades extends Action implements Hooks_Interface {
 			'acf/init' :
 			'after_setup_theme';
 
-		add_action(
+		self::add_action(
 			$action,
 			function () use ( $previous_version ) {
 				if ( true === $this->is_version_lower( $previous_version, '3.3.0' ) ) {
@@ -993,7 +993,14 @@ return new class extends CustomCardData {
 		if ( $db_version !== $code_version ) {
 			// 1. only at this hook can be sure that other plugin's functions are available.
 			// 2. with the priority higher than in the Data_Vendors
-			add_action( 'plugins_loaded', array( $this, 'perform_upgrade' ), Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY + 1 );
+			self::add_action(
+				'plugins_loaded',
+				array(
+					$this,
+					'perform_upgrade',
+				),
+				Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY + 1
+			);
 		}
 	}
 }

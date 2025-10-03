@@ -72,13 +72,13 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			// deactivation survey includes the 'delete data' option, which should be visible even if reports are off
 			// (without the survey for sure).
 			if ( false !== strpos( $request_uri, '/wp-admin/plugins.php' ) ) {
-				add_action( 'admin_footer', array( $this, 'bind_deactivation_survey_popup' ) );
+				self::add_action( 'admin_footer', array( $this, 'bind_deactivation_survey_popup' ) );
 			}
 		}
 
 		if ( true === $this->is_automatic_reports_completely_disabled() ) {
 			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
-			add_action(
+			self::add_action(
 				self::HOOK,
 				function () {
 					// nothing to do.
@@ -88,9 +88,9 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'init', array( $this, 'init' ) );
+		self::add_action( 'init', array( $this, 'init' ) );
 		// CRON job.
-		add_action( self::HOOK, array( $this, 'send_and_schedule_next' ) );
+		self::add_action( self::HOOK, array( $this, 'send_and_schedule_next' ) );
 
 		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
 		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
@@ -99,8 +99,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		);
 
 		$is_activated_after_another_deactivation = is_numeric( $is_activated_after_another_deactivation ) ?
-			(int) $is_activated_after_another_deactivation :
-			0;
+				(int) $is_activated_after_another_deactivation :
+				0;
 
 		if ( 0 !== $is_activated_after_another_deactivation ) {
 			$this->send_active_installation_request();
@@ -117,7 +117,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		if ( true === $is_cpt_list_screen &&
 			false === $this->settings->is_automatic_reports_confirmed() ) {
-			add_action( 'admin_notices', array( $this, 'show_automatic_reports_notice' ) );
+			self::add_action( 'admin_notices', array( $this, 'show_automatic_reports_notice' ) );
 		}
 	}
 
@@ -149,7 +149,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		// WP Cron is unreliable. Execute also within the dashboard (in case the time has come).
-		add_action( 'admin_init', array( $this, 'reschedule_outdated' ) );
+		self::add_action( 'admin_init', array( $this, 'reschedule_outdated' ) );
 	}
 
 	public function show_automatic_reports_notice(): void {
@@ -414,8 +414,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		if ( 'compatibility_issues' === $deactivation_survey_fields['_deactivationReason'] ) {
-			// @phpcs:ignore
-			$deactivation_survey_fields['_debugDump'] = print_r( self::get_environment_data(), true );
+            // @phpcs:ignore
+            $deactivation_survey_fields['_debugDump'] = print_r( self::get_environment_data(), true );
 		}
 
 		$this->send_active_installation_request( false, $deactivation_survey_fields );
@@ -449,13 +449,13 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			'_viewsCount'                    => $this->get_count_of_posts( Views_Cpt::NAME ),
 			'_cardsCount'                    => $this->get_count_of_posts( Cards_Cpt::NAME ),
 			// 'is_plugin_active()' is available only later
-			'_isAcfPro'                      => class_exists( 'acf_pro' ),
+				'_isAcfPro'                  => class_exists( 'acf_pro' ),
 			'_isAcf'                         => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),
 			'_isWoo'                         => class_exists( 'WooCommerce' ),
 			'_isMetaBox'                     => class_exists( 'RW_Meta_Box' ),
 			'_isPods'                        => class_exists( 'Pods' ),
 			// check only for Views, as Views and Cards use the same setting.
-			'_isFsStorageActive'             => $this->views_data_storage->get_file_system()->is_active(),
+				'_isFsStorageActive'         => $this->views_data_storage->get_file_system()->is_active(),
 			'_gitRepositoriesCount'          => count( $this->settings->get_git_repositories() ),
 			'_language'                      => get_bloginfo( 'language' ),
 			'_phpErrors'                     => $error_logs,
@@ -490,11 +490,11 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		wp_remote_post(
 			self::REQUEST_URL,
 			array(
-				'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
-				'method'   => 'POST',
-				'body'     => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
+				'headers'      => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+				'method'       => 'POST',
+				'body'         => (string) wp_json_encode( array_merge( $args, $deactivation_survey_fields ) ),
 				// we don't need the response, so it's non-blocking.
-				'blocking' => false,
+					'blocking' => false,
 			)
 		);
 	}

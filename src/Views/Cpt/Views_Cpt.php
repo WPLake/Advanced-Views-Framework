@@ -144,6 +144,6 @@ class Views_Cpt extends Cpt {
 			return;
 		}
 
-		add_action( 'admin_menu', array( $this, 'change_menu_items' ) );
+		self::add_action( 'admin_menu', array( $this, 'change_menu_items' ) );
 	}
 }

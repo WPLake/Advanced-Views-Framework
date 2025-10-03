@@ -16,10 +16,11 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Front_Assets implements Hooks_Interface {
+class Front_Assets extends Hookable implements Hooks_Interface {
 	const MINIFY_TYPE_CSS = 'css';
 	const MINIFY_TYPE_JS  = 'js';
 
@@ -619,17 +620,17 @@ class Front_Assets implements Hooks_Interface {
 			return;
 		}
 
-		add_filter(
+		self::add_filter(
 			'script_module_loader_src',
 			array( $this, 'catch_interactivity_api_script_url' ),
 			10,
 			2
 		);
-		add_action( 'wp_footer', array( $this, 'enqueue_assets' ) );
+		self::add_action( 'wp_footer', array( $this, 'enqueue_assets' ) );
 		// printCustomAssets() contains ob_get_clean, so must be executed after all other scripts.
-		add_action( 'wp_footer', array( $this, 'print_assets' ), 9999 );
-		add_action( 'wp_head', array( $this, 'print_styles_stub' ) );
+		self::add_action( 'wp_footer', array( $this, 'print_assets' ), 9999 );
+		self::add_action( 'wp_head', array( $this, 'print_styles_stub' ) );
 		// don't use 'get_header', as it doesn't work in blocks theme.
-		add_action( 'template_redirect', array( $this, 'start_buffering' ) );
+		self::add_action( 'template_redirect', array( $this, 'start_buffering' ) );
 	}
 }

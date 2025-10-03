@@ -395,7 +395,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
 		// 2. must be on or later 'after_setup_theme', when FS only Views and Cards are available
-		add_action(
+		self::add_action(
 			'after_setup_theme',
 			function () use (
 				$current_screen,
@@ -509,7 +509,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function set_hooks( Current_Screen $current_screen ): void {
 		// 1. with the higher priority than the default one, to make sure all vendor codes are loaded.
 		// 2. still small, to be earlier than the rest of AVF code listening to this hook
-		add_action(
+		self::add_action(
 			'plugins_loaded',
 			array( $this, 'load_available_vendors' ),
 			self::PLUGINS_LOADED_HOOK_PRIORITY

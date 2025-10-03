@@ -86,8 +86,8 @@ class Acf_Integration extends Data_Vendor_Integration {
 	}
 
 	public function add_tab_to_meta_group(): void {
-		add_filter( 'acf/field_group/additional_group_settings_tabs', array( $this, 'add_tab' ) );
-		add_action( 'acf/field_group/render_group_settings_tab/advanced_views', array( $this, 'render_tab' ), );
+		self::add_filter( 'acf/field_group/additional_group_settings_tabs', array( $this, 'add_tab' ) );
+		self::add_action( 'acf/field_group/render_group_settings_tab/advanced_views', array( $this, 'render_tab' ), );
 	}
 
 	public function get_vendor_name(): string {

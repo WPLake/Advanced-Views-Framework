@@ -19,7 +19,7 @@ class Item_Data_Integration extends Acf_Integration {
 	}
 
 	protected function set_field_choices(): void {
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Item_Data::getAcfFieldName( Item_Data::FIELD_GROUP ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_group_choices();

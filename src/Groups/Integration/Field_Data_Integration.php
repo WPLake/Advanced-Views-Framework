@@ -75,7 +75,7 @@ class Field_Data_Integration extends Acf_Integration {
 			Field_Data::getAcfFieldName( Field_Data::FIELD_KEY ) :
 			Repeater_Field_Data::getAcfFieldName( Repeater_Field_Data::FIELD_KEY );
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . $acf_field_name,
 			function ( array $field ) use ( $acf_key, $target_choices ) {
 				return $this->set_conditional_rules_for_field(
@@ -97,7 +97,7 @@ class Field_Data_Integration extends Acf_Integration {
 		);
 
 		foreach ( $masonry_fields as $masonry_field ) {
-			add_filter(
+			self::add_filter(
 				'acf/load_field/name=' . Field_Data::getAcfFieldName( $masonry_field ),
 				function ( array $field ) {
 					return $this->set_conditional_rules_for_field(
@@ -116,7 +116,7 @@ class Field_Data_Integration extends Acf_Integration {
 		);
 
 		foreach ( $masonry_repeater_fields as $masonry_repeater_field ) {
-			add_filter(
+			self::add_filter(
 				'acf/load_field/name=' . Repeater_Field_Data::getAcfFieldName( $masonry_repeater_field ),
 				function ( array $field ) {
 					return $this->set_conditional_rules_for_field(
@@ -130,7 +130,7 @@ class Field_Data_Integration extends Acf_Integration {
 
 		// repeaterFields tab ('repeater' + 'group').
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Item_Data::getAcfFieldName( Item_Data::FIELD_REPEATER_FIELDS_TAB ),
 			function ( array $field ) {
 				// using exactly the negative (excludeTypes) filter,
@@ -207,7 +207,7 @@ class Field_Data_Integration extends Acf_Integration {
 	}
 
 	protected function set_field_choices(): void {
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Field_Data::getAcfFieldName( Field_Data::FIELD_KEY ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_field_choices();
@@ -216,7 +216,7 @@ class Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Repeater_Field_Data::getAcfFieldName( Repeater_Field_Data::FIELD_KEY ),
 			function ( array $field ) {
 				$field['choices'] = $this->data_vendors->get_sub_field_choices();
@@ -225,7 +225,7 @@ class Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Field_Data::getAcfFieldName( Field_Data::FIELD_IMAGE_SIZE ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_image_sizes();
@@ -234,7 +234,7 @@ class Field_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Repeater_Field_Data::getAcfFieldName( Repeater_Field_Data::FIELD_IMAGE_SIZE ),
 			function ( array $field ) {
 				$field['choices'] = $this->get_image_sizes();
@@ -264,6 +264,6 @@ class Field_Data_Integration extends Acf_Integration {
 		// add link just by type, instead of the name, as the name inside the repeater is long and not readable,
 		// it works both for Field_Data and Repeater_Field_Data cases
 		// (acf[local_acf_views_view__items][row-row-0][local_acf_views_view__items_item_local_acf_views_item__field_local_acf_views_field__acf-view-id]).
-		add_action( 'acf/render_field/type=av_slug_select', array( $this, 'print_add_new_view_link' ) );
+		self::add_action( 'acf/render_field/type=av_slug_select', array( $this, 'print_add_new_view_link' ) );
 	}
 }

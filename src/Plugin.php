@@ -5,16 +5,16 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-class Plugin implements Hooks_Interface {
+class Plugin extends Hookable implements Hooks_Interface {
 	const DOCS_URL          = 'https://docs.advanced-views.com/';
 	const PRO_VERSION_URL   = 'https://advanced-views.com/pro/';
 	const PRO_PRICING_URL   = 'https://advanced-views.com/pro/#tiers';
@@ -425,16 +425,16 @@ class Plugin implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'admin_notices', array( $this, 'maybe_show_compatibility_warnings' ) );
-		add_action( 'activated_plugin', array( $this, 'deactivate_other_instances' ) );
-		add_action( 'pre_current_active_plugins', array( $this, 'show_plugin_deactivated_notice' ) );
+		self::add_action( 'admin_notices', array( $this, 'maybe_show_compatibility_warnings' ) );
+		self::add_action( 'activated_plugin', array( $this, 'deactivate_other_instances' ) );
+		self::add_action( 'pre_current_active_plugins', array( $this, 'show_plugin_deactivated_notice' ) );
 
-		add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
-		add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
+		self::add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
+		self::add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
 
 		if ( true === $current_screen->is_admin_cpt_related( Views_Cpt::NAME, Current_Screen::CPT_ADD ) ||
 			true === $current_screen->is_admin_cpt_related( Cards_Cpt::NAME, Current_Screen::CPT_ADD ) ) {
-			add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
+			self::add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
 		}
 	}
 }

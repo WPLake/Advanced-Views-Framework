@@ -150,7 +150,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 			return;
 		}
 
-		add_filter(
+		self::add_filter(
 			'acf/pre_update_value',
 			function ( $is_updated, $value, $post_id, array $field ): bool {
 				// extra check, as probably it's about another post.
@@ -182,7 +182,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 			return;
 		}
 
-		add_filter(
+		self::add_filter(
 			'acf/pre_load_value',
 			function ( $value, $post_id, $field ) {
 				// extra check, as probably it's about another post.
@@ -294,7 +294,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->settings->set_git_repositories( $git_repositories );
 
 		$is_do_not_track_request_needed = false === $this->settings->is_automatic_reports_disabled() &&
-										true === $this->settings_data->is_automatic_reports_disabled;
+											true === $this->settings_data->is_automatic_reports_disabled;
 
 		$this->settings->set_is_automatic_reports_disabled( $this->settings_data->is_automatic_reports_disabled );
 
@@ -337,10 +337,10 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 		// init, not acf/init, as the method uses 'get_edit_post_link' which will be available only since this hook
 		// (because we sign up the CPTs in this hook).
-		add_action( 'init', array( $this, 'add_page' ) );
-		add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
+		self::add_action( 'init', array( $this, 'add_page' ) );
+		self::add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
 		// priority 20, as it's after the ACF's save_post hook.
-		add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
-		add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
+		self::add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
+		self::add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
 	}
 }

@@ -90,6 +90,6 @@ class Cards_View_Integration extends Cpt_Data_Creator implements Hooks_Interface
 			return;
 		}
 
-		add_action( 'current_screen', array( $this, 'maybe_create_card_for_view' ) );
+		self::add_action( 'current_screen', array( $this, 'maybe_create_card_for_view' ) );
 	}
 }

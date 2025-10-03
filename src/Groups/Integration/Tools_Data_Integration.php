@@ -22,7 +22,7 @@ class Tools_Data_Integration extends Acf_Integration {
 	}
 
 	protected function set_field_choices(): void {
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tools_Data::getAcfFieldName( Tools_Data::FIELD_EXPORT_VIEWS ),
 			function ( array $field ) {
 				$field['choices'] = $this->views_data_storage->get_unique_id_with_name_items_list();
@@ -31,7 +31,7 @@ class Tools_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tools_Data::getAcfFieldName( Tools_Data::FIELD_EXPORT_CARDS ),
 			function ( array $field ) {
 				$field['choices'] = $this->cards_data_storage->get_unique_id_with_name_items_list();
@@ -40,7 +40,7 @@ class Tools_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tools_Data::getAcfFieldName( Tools_Data::FIELD_DUMP_VIEWS ),
 			function ( array $field ) {
 				$field['choices'] = $this->views_data_storage->get_unique_id_with_name_items_list();
@@ -49,7 +49,7 @@ class Tools_Data_Integration extends Acf_Integration {
 			}
 		);
 
-		add_filter(
+		self::add_filter(
 			'acf/load_field/name=' . Tools_Data::getAcfFieldName( Tools_Data::FIELD_DUMP_CARDS ),
 			function ( array $field ) {
 				$field['choices'] = $this->cards_data_storage->get_unique_id_with_name_items_list();

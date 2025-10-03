@@ -138,8 +138,8 @@ final class Card_Shortcode extends Shortcode {
 		parent::set_hooks( $current_screen );
 
 		if ( true === $current_screen->is_ajax() ) {
-			add_action( 'wp_ajax_nopriv_advanced_views', array( $this, 'get_ajax_response' ) );
-			add_action( 'wp_ajax_advanced_views', array( $this, 'get_ajax_response' ) );
+			self::add_action( 'wp_ajax_nopriv_advanced_views', array( $this, 'get_ajax_response' ) );
+			self::add_action( 'wp_ajax_advanced_views', array( $this, 'get_ajax_response' ) );
 		}
 	}
 }

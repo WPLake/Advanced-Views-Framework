@@ -9,10 +9,11 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use WP_Post;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Cpt_Gutenberg_Editor_Settings implements Hooks_Interface {
+class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface {
 	private string $cpt_name;
 
 	public function __construct( string $cpt_name ) {
@@ -175,7 +176,7 @@ class Cpt_Gutenberg_Editor_Settings implements Hooks_Interface {
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
-		add_filter(
+		self::add_filter(
 			'wp_insert_post_data',
 			array( $this, 'avoid_override_post_content_by_gutenberg_and_theme_builders' ),
 			// must be more than the default priority of 10.
@@ -187,11 +188,11 @@ class Cpt_Gutenberg_Editor_Settings implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'post_edit_form_tag', array( $this, 'disable_autocomplete_for_post_edit' ) );
+		self::add_action( 'post_edit_form_tag', array( $this, 'disable_autocomplete_for_post_edit' ) );
 
-		add_action( 'admin_footer', array( $this, 'maybe_show_error_that_gutenberg_editor_is_suppressed' ) );
+		self::add_action( 'admin_footer', array( $this, 'maybe_show_error_that_gutenberg_editor_is_suppressed' ) );
 		// priority '9' is earlier than Jetpack's.
-		add_action(
+		self::add_action(
 			'init',
 			function () use ( $current_screen ) {
 				$this->disable_jetpack_markdown_module( $current_screen );
@@ -199,13 +200,13 @@ class Cpt_Gutenberg_Editor_Settings implements Hooks_Interface {
 			9
 		);
 
-		add_filter(
+		self::add_filter(
 			'classic_editor_plugin_settings',
 			function ( $settings ) use ( $current_screen ) {
 				return $this->classic_editor_plugin_settings_patch( $settings, $current_screen );
 			}
 		);
-		add_filter(
+		self::add_filter(
 			'classic_editor_enabled_editors_for_post_type',
 			array( $this, 'disable_classic_editor_plugin_for_cpt' ),
 			10,
@@ -213,8 +214,8 @@ class Cpt_Gutenberg_Editor_Settings implements Hooks_Interface {
 		);
 
 		// very important to avoid Gutenberg to be suppressed on CPT pages by some theme or plugins (Divi theme, etc).
-		add_filter( 'use_block_editor_for_post_type', array( $this, 'force_gutenberg_for_cpt_pages' ), 99999, 2 );
-		add_filter(
+		self::add_filter( 'use_block_editor_for_post_type', array( $this, 'force_gutenberg_for_cpt_pages' ), 99999, 2 );
+		self::add_filter(
 			'block_editor_settings_all',
 			function ( array $editor_settings ) use ( $current_screen ): array {
 				return $this->disable_gutenberg_auto_save( $editor_settings, $current_screen );

@@ -18,10 +18,11 @@ use WP_List_Table;
 use WP_Post;
 use WP_Post_Type;
 use WP_Query;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt_Table implements Hooks_Interface {
+abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 	private Cpt_Data_Storage $cpt_data_storage;
 	private string $cpt_name;
@@ -329,7 +330,7 @@ abstract class Cpt_Table implements Hooks_Interface {
 		// do not replace if tab is active, but no items are available (to display the not found message).
 		if ( null !== $current_tab_data &&
 			count( $current_tab_data->get_items() ) > 0 ) {
-			add_action( 'admin_footer', array( $this, 'replace_table_items_with_custom' ) );
+			self::add_action( 'admin_footer', array( $this, 'replace_table_items_with_custom' ) );
 		}
 
 		$is_custom_tab_active = null !== $current_tab_data;
@@ -556,22 +557,22 @@ abstract class Cpt_Table implements Hooks_Interface {
 		}
 
 		if ( true === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_LIST ) ) {
-			add_action( 'admin_init', array( $this, 'make_table_actions' ) );
-			add_action( 'admin_notices', array( $this, 'show_action_result_message' ) );
-			add_filter( 'admin_body_class', array( $this, 'add_acf_class_to_body' ) );
-			add_filter( sprintf( 'views_edit-%s', $this->cpt_name ), array( $this, 'modify_table_header' ) );
+			self::add_action( 'admin_init', array( $this, 'make_table_actions' ) );
+			self::add_action( 'admin_notices', array( $this, 'show_action_result_message' ) );
+			self::add_filter( 'admin_body_class', array( $this, 'add_acf_class_to_body' ) );
+			self::add_filter( sprintf( 'views_edit-%s', $this->cpt_name ), array( $this, 'modify_table_header' ) );
 		}
 
-		add_action(
+		self::add_action(
 			sprintf( 'manage_%s_posts_custom_column', $this->cpt_name ),
 			array( $this, 'printTableColumn' ),
 			10,
 			2
 		);
-		add_action( 'pre_get_posts', array( $this, 'add_post_name_to_search' ) );
+		self::add_action( 'pre_get_posts', array( $this, 'add_post_name_to_search' ) );
 
-		add_filter( 'post_row_actions', array( $this, 'get_row_actions' ), 10, 2 );
-		add_filter( sprintf( 'bulk_actions-edit-%s', $this->cpt_name ), array( $this, 'get_bulk_table_actions' ) );
-		add_filter( 'get_the_excerpt', array( $this, 'hide_excerpt_from_extended_list_view' ), 10, 2 );
+		self::add_filter( 'post_row_actions', array( $this, 'get_row_actions' ), 10, 2 );
+		self::add_filter( sprintf( 'bulk_actions-edit-%s', $this->cpt_name ), array( $this, 'get_bulk_table_actions' ) );
+		self::add_filter( 'get_the_excerpt', array( $this, 'hide_excerpt_from_extended_list_view' ), 10, 2 );
 	}
 }

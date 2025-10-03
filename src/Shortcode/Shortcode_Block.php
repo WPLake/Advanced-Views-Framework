@@ -18,10 +18,11 @@ use WP_REST_Request;
 use WP_Block_Template;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Shortcode_Block implements Hooks_Interface {
+final class Shortcode_Block extends Hookable implements Hooks_Interface {
 	private int $context_post_id;
 	/**
 	 * @var string[]
@@ -38,9 +39,9 @@ final class Shortcode_Block implements Hooks_Interface {
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
-		add_filter( 'register_block_type_args', array( $this, 'extend_core_shortcode_block' ), 10, 2 );
+		self::add_filter( 'register_block_type_args', array( $this, 'extend_core_shortcode_block' ), 10, 2 );
 
-		add_filter( 'get_block_templates', array( $this, 'trim_shortcode_brackets' ) );
+		self::add_filter( 'get_block_templates', array( $this, 'trim_shortcode_brackets' ) );
 	}
 
 	/**

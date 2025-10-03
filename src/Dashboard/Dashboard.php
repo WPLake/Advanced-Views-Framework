@@ -11,15 +11,15 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use WP_Screen;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Dashboard implements Hooks_Interface {
+class Dashboard extends Hookable implements Hooks_Interface {
 
 	const PAGE_DEMO_IMPORT = 'demo-import';
 	const PAGE_DOCS        = 'docs';
@@ -163,19 +163,19 @@ class Dashboard implements Hooks_Interface {
 
 		$plugin_slug = $this->plugin->get_slug();
 
-		add_action( 'admin_menu', array( $this, 'add_pages' ) );
+		self::add_action( 'admin_menu', array( $this, 'add_pages' ) );
 
-		add_action(
+		self::add_action(
 			'current_screen',
 			function ( WP_Screen $screen ) {
 				if ( ! in_array( $screen->post_type, array( Views_Cpt::NAME, Cards_Cpt::NAME ), true ) ) {
 					return;
 				}
-				add_action( 'in_admin_header', array( $this, 'get_header' ) );
+				self::add_action( 'in_admin_header', array( $this, 'get_header' ) );
 			}
 		);
 
-		add_filter( "plugin_action_links_{$plugin_slug}", array( $this, 'extend_plugin_action_links' ) );
+		self::add_filter( "plugin_action_links_{$plugin_slug}", array( $this, 'extend_plugin_action_links' ) );
 	}
 
 	/**

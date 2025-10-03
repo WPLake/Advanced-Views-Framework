@@ -170,7 +170,7 @@ class Pods_Integration extends Data_Vendor_Integration {
 	}
 
 	public function add_tab_to_meta_group(): void {
-		add_filter(
+		self::add_filter(
 			'pods_view_output',
 			function ( string $output, string $view_file ): string {
 				if ( false === strpos( $view_file, 'pods/ui/admin/setup-edit.php' ) ) {
@@ -276,7 +276,7 @@ class Pods_Integration extends Data_Vendor_Integration {
 	}
 
 	public function add_column_to_list_table(): void {
-		add_filter(
+		self::add_filter(
 			'pods_ui_pre_init',
 			function ( array $options ): array {
 				$page = Query_Arguments::get_string_for_non_action( 'page' );

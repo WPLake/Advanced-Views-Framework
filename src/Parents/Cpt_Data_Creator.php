@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
-class Cpt_Data_Creator {
+class Cpt_Data_Creator extends Hookable {
 	private Settings $settings;
 
 	public function __construct( Settings $settings ) {

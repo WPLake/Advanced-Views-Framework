@@ -353,7 +353,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	}
 
 	public function maybe_create_view_for_group(): void {
-		add_action(
+		self::add_action(
 			'current_screen',
 			function () {
 				$screen = get_current_screen();
@@ -434,7 +434,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 
 	public function validate_related_views_on_group_change(): void {
 		// with '20', to make sure it's after ACF.
-		add_filter(
+		self::add_filter(
 			'post_updated_messages',
 			function ( array $messages ) {
 				if ( ! key_exists( $this->get_vendor_post_type(), $messages ) ) {
@@ -480,12 +480,12 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 
 	public function add_column_to_list_table(): void {
 		// higher priority, to run after ACF's listener (they don't use 'merge').
-		add_filter(
+		self::add_filter(
 			sprintf( 'manage_%s_posts_columns', $this->get_vendor_post_type() ),
 			array( $this, 'add_related_views_column_to_list' ),
 			20
 		);
-		add_action(
+		self::add_action(
 			sprintf( 'manage_%s_posts_custom_column', $this->get_vendor_post_type() ),
 			array( $this, 'print_related_views_column' ),
 			10,

@@ -12,10 +12,11 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_Post;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Live_Reloader_Component implements Hooks_Interface {
+class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 	const QUERY_ARG = 'avf_live-reload';
 
 	private bool $is_active;
@@ -166,7 +167,7 @@ class Live_Reloader_Component implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'init', array( $this, 'set_is_active' ) );
-		add_action( 'wp_footer', array( $this, 'maybe_enqueue_reloading_js' ) );
+		self::add_action( 'init', array( $this, 'set_is_active' ) );
+		self::add_action( 'wp_footer', array( $this, 'maybe_enqueue_reloading_js' ) );
 	}
 }

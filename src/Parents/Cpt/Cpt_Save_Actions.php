@@ -403,7 +403,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	public function is_my_post( $post_id ): bool {
 		// for 'site-settings' and similar.
 		if ( false === is_numeric( $post_id ) ||
-		0 === $post_id ) {
+			0 === $post_id ) {
 			return false;
 		}
 
@@ -509,7 +509,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			return;
 		}
 
-		add_filter(
+		self::add_filter(
 			'acf/pre_update_value',
 			function ( $is_updated, $value, int $post_id, array $field ): bool {
 				// extra check, as probably it's about another post.
@@ -533,7 +533,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		}
 
 		// priority is 20, as current is with 10.
-		add_action(
+		self::add_action(
 			'acf/save_post',
 			function ( $post_id ) {
 				// check again, as probably it's about another post.
@@ -567,7 +567,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// as it takes resources (to go through all inner objects).
 		$values = array();
 
-		add_filter(
+		self::add_filter(
 			'acf/pre_load_value',
 			function ( $value, $post_id, $field ) use ( &$values ) {
 				// extra check, as probably it's about another post.
@@ -661,16 +661,16 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// for some reason, ACF ajax form validation doesn't work on the wordpress.com hosting.
 		if ( false === $this->plugin->is_wordpress_com_hosting() ) {
 			// priority is 20, to make sure it's run after the ACF's code.
-			add_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
-			add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
+			self::add_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
+			self::add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
 		}
 
-		add_action( 'acf/save_post', array( $this, 'skip_saving_to_post_meta' ) );
-		add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
+		self::add_action( 'acf/save_post', array( $this, 'skip_saving_to_post_meta' ) );
+		self::add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
 		// we need the built-in wp hook to have the latest title.
-		add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
-		add_action( 'trashed_post', array( $this, 'trash' ) );
-		add_action( 'untrashed_post', array( $this, 'unTrash' ) );
-		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
+		self::add_action( 'trashed_post', array( $this, 'trash' ) );
+		self::add_action( 'untrashed_post', array( $this, 'unTrash' ) );
+		self::add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 }

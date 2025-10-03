@@ -6,10 +6,11 @@ namespace Org\Wplake\Advanced_Views\Groups\Integration;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Acf_Integration implements Hooks_Interface {
+class Acf_Integration extends Hookable implements Hooks_Interface {
 	private string $target_cpt_name;
 
 	public function __construct( string $target_cpt_name ) {
@@ -48,7 +49,7 @@ class Acf_Integration implements Hooks_Interface {
 		// Conditional field logic requires fields info to be already available.
 		// It means the data vendor must already be loaded.
 		// 'wp_loaded' is the first one from which MetaBox fields info become available.
-		add_action(
+		self::add_action(
 			'wp_loaded',
 			function () {
 				$this->set_conditional_field_rules();

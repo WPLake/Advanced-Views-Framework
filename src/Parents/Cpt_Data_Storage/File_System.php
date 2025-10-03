@@ -93,7 +93,7 @@ class File_System extends Action implements Hooks_Interface {
 	}
 
 	protected function show_folder_is_not_writable_warning(): void {
-		add_action(
+		self::add_action(
 			'admin_notices',
 			function () {
 				// it's going to be checked in both CPTs, but we need only one notice.
@@ -403,7 +403,7 @@ class File_System extends Action implements Hooks_Interface {
 		// set only if it isn't an external folder.
 		if ( '' === $this->base_folder ) {
 			// theme is loaded since this hook.
-			add_action(
+			self::add_action(
 				'after_setup_theme',
 				function () use ( $current_screen ) {
 					$this->set_base_folder( $current_screen );

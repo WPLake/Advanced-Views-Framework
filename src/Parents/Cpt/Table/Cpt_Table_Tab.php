@@ -9,10 +9,11 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt_Table_Tab implements Hooks_Interface {
+abstract class Cpt_Table_Tab extends Hookable implements Hooks_Interface {
 
 	private Cpt_Table $cpt_table;
 
@@ -76,7 +77,7 @@ abstract class Cpt_Table_Tab implements Hooks_Interface {
 
 		$this->cpt_table->add_new_tab_callback( array( $this, 'add_tab' ) );
 
-		add_action( 'admin_init', array( $this, 'maybe_perform_actions' ) );
-		add_action( 'admin_notices', array( $this, 'maybe_show_action_result_message' ) );
+		self::add_action( 'admin_init', array( $this, 'maybe_perform_actions' ) );
+		self::add_action( 'admin_notices', array( $this, 'maybe_show_action_result_message' ) );
 	}
 }

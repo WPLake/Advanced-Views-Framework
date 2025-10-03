@@ -9,10 +9,11 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt_Meta_Boxes implements Hooks_Interface {
+abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 	private Html $html;
 	private Plugin $plugin;
 
@@ -104,6 +105,6 @@ abstract class Cpt_Meta_Boxes implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		self::add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 	}
 }

@@ -14,10 +14,11 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_REST_Request;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Shortcode implements Hooks_Interface {
+abstract class Shortcode extends Hookable implements Hooks_Interface {
 	const NAME            = '';
 	const OLD_NAME        = '';
 	const REST_ROUTE_NAME = '';
@@ -314,7 +315,7 @@ abstract class Shortcode implements Hooks_Interface {
 
 	public function set_hooks( Current_Screen $current_screen ): void {
 		if ( true === $current_screen->is_admin() ) {
-			add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
+			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 
 		add_shortcode( static::NAME, array( $this, 'do_shortcode' ) );

@@ -21,10 +21,11 @@ use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
 use WP_Filesystem_Base;
 use WP_Post;
 use WP_Query;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Tools implements Hooks_Interface {
+final class Tools extends Hookable implements Hooks_Interface {
 
 	const SLUG = 'acf-views-tools';
 	/**
@@ -73,17 +74,17 @@ final class Tools implements Hooks_Interface {
 
 		// init, not acf/init, as the method uses 'get_edit_post_link' which will be available only since this hook
 		// (because we sign up the CPTs in this hook).
-		add_action( 'init', array( $this, 'add_page' ) );
-		add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
-		add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
+		self::add_action( 'init', array( $this, 'add_page' ) );
+		self::add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
+		self::add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
 		// priority 20, as it's after the ACF's save_post hook.
-		add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
+		self::add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
 		// priority 30, after the process action.
-		add_action( 'acf/save_post', array( $this, 'maybe_echo_export_file' ), 30 );
+		self::add_action( 'acf/save_post', array( $this, 'maybe_echo_export_file' ), 30 );
 	}
 
 	public function maybe_inject_values(): void {
-		add_filter(
+		self::add_filter(
 			'acf/pre_load_value',
 			function ( $value, $post_id, $field ) {
 				// extra check, as probably it's about another post.
@@ -255,7 +256,7 @@ final class Tools implements Hooks_Interface {
 			return;
 		}
 
-		add_filter(
+		self::add_filter(
 			'acf/pre_update_value',
 			function ( $is_updated, $value, $post_id, array $field ): bool {
 				// extra check, as probably it's about another post.

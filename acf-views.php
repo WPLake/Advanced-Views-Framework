@@ -538,6 +538,7 @@ $acf_views = new class() {
 			$this->live_reloader_component,
 			$this->settings
 		);
+		$profiler  = new Profiler();
 
 		$dashboard->set_hooks( $current_screen );
 		$demo_import->set_hooks( $current_screen );
@@ -550,6 +551,7 @@ $acf_views = new class() {
 		$settings->set_hooks( $current_screen );
 		$live_reloader->set_hooks( $current_screen );
 		$admin_bar->set_hooks( $current_screen );
+		$profiler->set_hooks( $current_screen );
 	}
 
 	private function bridge(): void {

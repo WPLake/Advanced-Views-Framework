@@ -58,7 +58,7 @@ class Meta_Box_Integration extends Data_Vendor_Integration {
 	}
 
 	public function add_tab_to_meta_group(): void {
-		add_action(
+		self::add_action(
 			'add_meta_boxes',
 			function () {
 				add_meta_box(

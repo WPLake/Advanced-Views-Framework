@@ -13,10 +13,11 @@ use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Admin_Bar;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Admin_Bar implements Hooks_Interface {
+class Admin_Bar extends Hookable implements Hooks_Interface {
 	private View_Shortcode $view_shortcode;
 	private Card_Shortcode $card_shortcode;
 	private Live_Reloader_Component $live_reloader_component;
@@ -91,6 +92,6 @@ class Admin_Bar implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'admin_bar_menu', array( $this, 'add_admin_bar_menu' ), 81 );
+		self::add_action( 'admin_bar_menu', array( $this, 'add_admin_bar_menu' ), 81 );
 	}
 }

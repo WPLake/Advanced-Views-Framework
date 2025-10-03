@@ -6,10 +6,11 @@ namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use WP_Filesystem_Base;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Logger implements Hooks_Interface {
+class Logger extends Hookable implements Hooks_Interface {
 	const MAX_MESSAGES = 500;
 
 	private string $log_file;

@@ -136,10 +136,10 @@ class Cards_Cpt_Table extends Cpt_Table {
 			return;
 		}
 
-		add_action( 'pre_get_posts', array( $this, 'add_sortable_columns_to_request' ) );
+		self::add_action( 'pre_get_posts', array( $this, 'add_sortable_columns_to_request' ) );
 
-		add_filter( sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ), array( $this, 'get_columns' ) );
-		add_filter(
+		self::add_filter( sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ), array( $this, 'get_columns' ) );
+		self::add_filter(
 			sprintf( 'manage_edit-%s_sortable_columns', $this->get_cpt_name() ),
 			array( $this, 'get_sortable_columns' )
 		);

@@ -9,10 +9,11 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt implements Hooks_Interface {
+abstract class Cpt extends Hookable implements Hooks_Interface {
 	const NAME = '';
 
 	private Cpt_Data_Storage $cpt_data_storage;
@@ -64,15 +65,15 @@ abstract class Cpt implements Hooks_Interface {
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
-		add_action( 'init', array( $this, 'add_cpt' ) );
+		self::add_action( 'init', array( $this, 'add_cpt' ) );
 
 		if ( false === $current_screen->is_admin() ) {
 			return;
 		}
 
-		add_filter( 'admin_footer_text', array( $this, 'print_survey_link' ) );
-		add_filter( 'post_updated_messages', array( $this, 'replace_post_updated_message' ) );
-		add_filter( 'enter_title_here', array( $this, 'get_title_placeholder' ) );
+		self::add_filter( 'admin_footer_text', array( $this, 'print_survey_link' ) );
+		self::add_filter( 'post_updated_messages', array( $this, 'replace_post_updated_message' ) );
+		self::add_filter( 'enter_title_here', array( $this, 'get_title_placeholder' ) );
 	}
 
 	protected function get_storage_label(): string {

@@ -226,6 +226,6 @@ class Template_Engines extends Action implements Hooks_Interface {
 			return;
 		}
 
-		add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
+		self::add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
 	}
 }
