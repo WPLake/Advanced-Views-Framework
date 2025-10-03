@@ -32,6 +32,7 @@ use Org\Wplake\Advanced_Views\Cards\{Card_Factory,
 	Query_Builder};
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
+use Org\Wplake\Advanced_Views\Profiler;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -75,7 +76,6 @@ use Org\Wplake\Advanced_Views\Views\{Cpt\Table\Views_Bulk_Validation_Tab,
 	Cpt\Views_Cpt_Save_Actions,
 	Data_Storage\Views_Data_Storage,
 	Fields\Field_Markup,
-	View,
 	View_Factory,
 	View_Markup};
 
@@ -538,7 +538,6 @@ $acf_views = new class() {
 			$this->live_reloader_component,
 			$this->settings
 		);
-		$profiler  = new Profiler();
 
 		$dashboard->set_hooks( $current_screen );
 		$demo_import->set_hooks( $current_screen );
@@ -551,7 +550,8 @@ $acf_views = new class() {
 		$settings->set_hooks( $current_screen );
 		$live_reloader->set_hooks( $current_screen );
 		$admin_bar->set_hooks( $current_screen );
-		$profiler->set_hooks( $current_screen );
+
+		Profiler::set_hooks();
 	}
 
 	private function bridge(): void {

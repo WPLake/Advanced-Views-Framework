@@ -6,26 +6,46 @@ namespace Org\Wplake\Advanced_Views;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Hookable;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+abstract class Profiler {
+	/**
+	 * @var array<string,array{time_sec:float,calls:int}>
+	 */
+	private static array $classes_total_usage = array();
+	/**
+	 * @var array<string,array<string,array{time_sec:float,calls:int}>>
+	 */
+	private static array $class_hooks_usage = array();
+	/**
+	 * @var array{estimated_time_sec:float,calls:int}
+	 */
+	private static array $total_usage        = array(
+		'calls'              => 0,
+		'estimated_time_sec' => 0,
+	);
+	private static ?bool $is_profiler_active = null;
 
-final class Profiler implements Hooks_Interface {
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( Hookable::is_profiler_active() ) {
-			add_action( 'shutdown', array( $this, 'print_report' ) );
+	public static function get_callback( string $source, string $hook_name, callable $callback ): callable {
+		return self::is_active() ?
+			function ( ...$args ) use( $source, $hook_name, $callback ) {
+				return self::execute_callback( $source, $hook_name, $callback, $args );
+			} :
+			$callback;
+	}
+
+	public static function set_hooks(): void {
+		if ( self::is_active() ) {
+			add_action( 'shutdown', array( self::class, 'print_report' ) );
 		}
 	}
 
-	public function print_report(): void {
-		$total_usage         = Hookable::get_total_usage();
-		$classes_total_usage = Hookable::get_classes_total_usage();
-		$class_hooks_usage   = Hookable::get_class_hooks_usage();
+	public static function print_report(): void {
+		$classes_total_usage = self::get_classes_total_usage();
 
 		echo '<div style="max-width:1000px;margin:0 auto;padding:50px;border:2px solid gray;">';
 
 		echo '<pre>';
 		// @phpcs:ignore
-		print_r($total_usage );
+		print_r(self::$total_usage );
 		echo '</pre>';
 
 		echo '<hr>';
@@ -40,9 +60,86 @@ final class Profiler implements Hooks_Interface {
 
 		echo '<pre>';
 		// @phpcs:ignore
-		print_r($class_hooks_usage );
+		print_r(self::$class_hooks_usage );
 		echo '</pre>';
 
 		echo '</div>';
+	}
+
+	/**
+	 * @return array<string,array{time_sec:float,calls:int, hooks:string[]}>
+	 */
+	private static function get_classes_total_usage(): array {
+		$classes_total_usage = array();
+
+		foreach ( self::$classes_total_usage as $class => $class_total_usage ) {
+			$hooks = self::$class_hooks_usage[ $class ] ?? array();
+
+			$classes_total_usage[ $class ] = array_merge(
+				$class_total_usage,
+				array(
+					'hooks' => array_keys( $hooks ),
+				)
+			);
+		}
+
+		uasort(
+			$classes_total_usage,
+			function ( array $first, array $second ) {
+				return $second['time_sec'] <=> $first['time_sec'];
+			}
+		);
+
+		return $classes_total_usage;
+	}
+
+	private static function is_active(): bool {
+		if ( null === self::$is_profiler_active ) {
+			self::$is_profiler_active = defined( 'AVF_PROFILER' ) &&
+			                            // @phpcs:ignore
+			                            isset( $_GET['_avf_profiler'] );
+		}
+
+		return self::$is_profiler_active;
+	}
+
+	/**
+	 * @param array<string|int,mixed> $args
+	 *
+	 * @return mixed
+	 */
+	private static function execute_callback( string $source, string $hook_name, callable $callback, array $args ) {
+		$start_at = microtime( true );
+
+		$result = call_user_func_array( $callback, $args );
+
+		$execution_time_sec = microtime( true ) - $start_at;
+
+		self::record_call( $source, $hook_name, $execution_time_sec );
+
+		return $result;
+	}
+
+	private static function record_call( string $source, string $hook_name, float $execution_time_sec ): void {
+		self::$classes_total_usage[ $source ]             = self::$classes_total_usage[ $source ] ?? array(
+			'time_sec' => 0,
+			'calls'    => 0,
+			'hooks'    => array(),
+		);
+		self::$class_hooks_usage[ $source ]               = self::$class_hooks_usage[ $source ] ?? array();
+		self::$class_hooks_usage[ $source ][ $hook_name ] = self::$class_hooks_usage[ $source ][ $hook_name ] ?? array(
+			'time_sec' => 0,
+			'calls'    => 0,
+		);
+
+		self::$total_usage['calls'] = self::$total_usage['calls'] + 1;
+		// Estimated, as we can't guarantee that the current execution isn't a child to another one.
+		self::$total_usage['estimated_time_sec'] = self::$total_usage['estimated_time_sec'] + $execution_time_sec;
+
+		self::$classes_total_usage[ $source ]['calls']    = self::$classes_total_usage[ $source ]['calls'] + 1;
+		self::$classes_total_usage[ $source ]['time_sec'] = self::$classes_total_usage[ $source ]['time_sec'] + $execution_time_sec;
+
+		self::$class_hooks_usage[ $source ][ $hook_name ]['calls']    = self::$class_hooks_usage[ $source ][ $hook_name ]['calls'] + 1;
+		self::$class_hooks_usage[ $source ][ $hook_name ]['time_sec'] = self::$class_hooks_usage[ $source ][ $hook_name ]['time_sec'] + $execution_time_sec;
 	}
 }
