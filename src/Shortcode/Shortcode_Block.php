@@ -1,26 +1,18 @@
 <?php
 
-
 declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Shortcode;
 
-use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
-use Org\Wplake\Advanced_Views\Settings;
 use WP_Block;
-use WP_REST_Request;
 use WP_Block_Template;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
-
-defined( 'ABSPATH' ) || exit;
 
 final class Shortcode_Block extends Hookable implements Hooks_Interface {
 	private int $context_post_id;
