@@ -15,10 +15,11 @@ use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_REST_Request;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Shortcode extends Hookable implements Hooks_Interface {
+abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
 	const NAME            = '';
 	const OLD_NAME        = '';
 	const REST_ROUTE_NAME = '';
@@ -51,11 +52,6 @@ abstract class Shortcode extends Hookable implements Hooks_Interface {
 	abstract protected function get_post_type(): string;
 
 	abstract protected function get_unique_id_prefix(): string;
-
-	/**
-	 * @param array<string,string>|string $attrs
-	 */
-	abstract public function render( $attrs ): void;
 
 	/**
 	 * @param string[] $user_roles
@@ -304,13 +300,12 @@ abstract class Shortcode extends Hookable implements Hooks_Interface {
 	}
 
 	/**
-	 * @param array<string,string>|string $attrs
+	 * @param array<string,string>|string $args
 	 */
-	public function do_shortcode( $attrs ): string {
-		ob_start();
-		$this->render( $attrs );
+	public function do_shortcode( $args ): string {
+		$attrs = arr( $args );
 
-		return (string) ob_get_clean();
+		return $this->render_shortcode( $attrs );
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {

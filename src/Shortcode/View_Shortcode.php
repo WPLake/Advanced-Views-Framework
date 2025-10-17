@@ -63,14 +63,7 @@ final class View_Shortcode extends Shortcode {
 		}
 	}
 
-	/**
-	 * @param array<string,mixed>|string $attrs
-	 */
-	public function render( $attrs ): void {
-		$attrs = is_array( $attrs ) ?
-			$attrs :
-			array();
-
+	public function render_shortcode( array $attrs ): string {
 		$view_id = $attrs['view-id'] ?? 0;
 		$view_id = true === is_string( $view_id ) ||
 					true === is_numeric( $view_id ) ?
@@ -93,11 +86,11 @@ final class View_Shortcode extends Shortcode {
 				__( 'View is missing', 'acf-views' )
 			);
 
-			return;
+			return '';
 		}
 
 		if ( ! $this->is_shortcode_available_for_user( wp_get_current_user()->roles, $attrs ) ) {
-			return;
+			return '';
 		}
 
 		// equals to 0 on WooCommerce Shop Page, but in this case pageID can't be gotten with built-in WP functions
@@ -190,7 +183,7 @@ final class View_Shortcode extends Shortcode {
 		 * In this case just return empty string, without any error message (so user can display PostB in PostA without issues)
 		 */
 		if ( isset( $this->displaying_views[ $recursion_key ] ) ) {
-			return;
+			return '';
 		}
 
 		$classes = $attrs['class'] ?? '';
@@ -235,8 +228,7 @@ final class View_Shortcode extends Shortcode {
 
 		unset( $this->displaying_views[ $recursion_key ] );
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->maybe_add_quick_link_and_shadow_css( $html, $view_unique_id, $attrs, false );
+		return $this->maybe_add_quick_link_and_shadow_css( $html, $view_unique_id, $attrs, false );
 	}
 
 	public function get_ajax_response(): void {

@@ -552,8 +552,8 @@ $acf_views = new class() {
 	}
 
 	private function bridge(): void {
-		Advanced_Views::$inner_view_shortcode = $this->view_shortcode;
-		Advanced_Views::$inner_card_shortcode = $this->card_shortcode;
+		Advanced_Views::$layout_renderer         = $this->view_shortcode;
+		Advanced_Views::$post_selection_renderer = $this->card_shortcode;
 	}
 
 	public function activation(): void {

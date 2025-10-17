@@ -6,6 +6,9 @@ namespace Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * @deprecated Use Layout_Shortcode instead.
+ */
 interface View_Shortcode_Interface extends Shortcode_Interface {
 	const OBJECT_OPTIONS = 'options';
 	const OBJECT_TERM    = 'term';

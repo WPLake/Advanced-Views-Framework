@@ -46,16 +46,9 @@ final class Card_Shortcode extends Shortcode {
 		return Card_Data::UNIQUE_ID_PREFIX;
 	}
 
-	/**
-	 * @param array<string,mixed>|string $attrs
-	 */
-	public function render( $attrs ): void {
-		$attrs = true === is_array( $attrs ) ?
-			$attrs :
-			array();
-
+	public function render_shortcode( array $attrs ): string {
 		if ( ! $this->is_shortcode_available_for_user( wp_get_current_user()->roles, $attrs ) ) {
-			return;
+			return '';
 		}
 
 		$card_id        = $attrs['card-id'] ?? '';
@@ -71,7 +64,7 @@ final class Card_Shortcode extends Shortcode {
 				__( 'Card is missing', 'acf-views' )
 			);
 
-			return;
+			return '';
 		}
 
 		$classes = $attrs['class'] ?? '';
@@ -105,8 +98,7 @@ final class Card_Shortcode extends Shortcode {
 
 		$this->get_live_reloader_component()->set_parent_card_id( '' );
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->maybe_add_quick_link_and_shadow_css( $html, $card_unique_id, $attrs, false );
+		return $this->maybe_add_quick_link_and_shadow_css( $html, $card_unique_id, $attrs, false );
 	}
 
 	public function get_ajax_response(): void {
