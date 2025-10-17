@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Bridge;
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\Card_Shortcode_Interface;
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\View_Shortcode_Interface;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Renderer;
 
@@ -33,8 +33,8 @@ class Advanced_Views {
 	 * @param string $name unused argument, just to make the method call human-readable in your code
 	 */
 	// @phpcs:ignore
-	public static function post_selection_shortcode( string $unique_id, string $name ): Post_Selection_Shortcode {
-		$shortcode = new Post_Selection_Shortcode( self::$post_selection_renderer );
+	public static function post_selection_shortcode( string $unique_id, string $name ): Selection_Shortcode {
+		$shortcode = new Selection_Shortcode( self::$post_selection_renderer );
 
 		$shortcode->set_unique_id( $unique_id );
 

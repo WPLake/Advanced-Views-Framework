@@ -39,6 +39,8 @@ abstract class Shortcode_Base implements Shortcode {
 	 * @return static
 	 */
 	public function set_unique_id( string $unique_id ): self {
+		$this->args['id'] = $unique_id;
+
 		$this->unique_id = $unique_id;
 
 		return $this;
