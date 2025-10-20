@@ -41,7 +41,7 @@ class Layout_Settings extends Cpt_Settings {
 	public bool $fields_tab;
 
 	/**
-	 * @item \Org\Wplake\Advanced_Views\Groups\Item_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Item_Settings
 	 * @var Item_Settings[]
 	 * @label Fields
 	 * @instructions Assign fields to your View. <br> Tip: hover mouse on the field number column and drag to reorder.

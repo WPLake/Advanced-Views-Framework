@@ -25,7 +25,7 @@ class Meta_Rule_Settings extends Group {
 	public string $relation;
 	/**
 	 * @var Meta_Field_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Meta_Field_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings
 	 * @button_label Add Field
 	 * @label Fields
 	 * @instructions Fields for the meta rule. Multiple fields are supported

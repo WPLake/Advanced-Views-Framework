@@ -26,7 +26,7 @@ class Tax_Filter_Settings extends Group {
 	public string $relation;
 	/**
 	 * @var Tax_Rule_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Tax_Rule_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Tax_Rule_Settings
 	 * @label Rules
 	 * @instructions Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/query-content/taxonomy-filters-pro'>Read more</a> <br> If you want to see the query that was created by your input, update the Card and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab
 	 * @button_label Add Rule

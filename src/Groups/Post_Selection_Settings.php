@@ -295,7 +295,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public bool $is_use_layout_css;
 	/**
 	 * @var Post_Selection_Layout_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Card_Layout_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings
 	 * @label Layout Rules
 	 * @instructions The rules control the layout of Card items. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
 	 * @button_label Add Rule

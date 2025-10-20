@@ -51,7 +51,7 @@ abstract class Cpt_Settings extends Group {
 	 */
 	public bool $mount_points_tab;
 	/**
-	 * @item \Org\Wplake\Advanced_Views\Groups\Mount_Point_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Mount_Point_Settings
 	 * @var Mount_Point_Settings[]
 	 * @label Mount Points
 	 * @instructions 'Mount' this item to a location that doesn't support shortcodes. Mounting uses 'the_content' theme hook. <a target="_blank" href="https://docs.advanced-views.com/display-content/mount-points-pro">Read more</a>

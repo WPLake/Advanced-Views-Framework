@@ -25,7 +25,7 @@ class Tax_Rule_Settings extends Group {
 	public string $relation;
 	/**
 	 * @var Tax_Field_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Tax_Field_Data
+	 * @item \Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings
 	 * @button_label Add Taxonomy
 	 * @label Taxonomies
 	 * @instructions Taxonomies for the taxonomy rule. Multiple taxonomies are supported
