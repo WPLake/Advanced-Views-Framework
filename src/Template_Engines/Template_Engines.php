@@ -4,14 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template_Engines;
 
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;

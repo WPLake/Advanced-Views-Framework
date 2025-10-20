@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;

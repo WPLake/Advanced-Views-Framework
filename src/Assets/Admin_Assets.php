@@ -4,10 +4,10 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
-use Org\Wplake\Advanced_Views\Cards\Card_Factory;
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Selections\Card_Factory;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
@@ -19,11 +19,11 @@ use Org\Wplake\Advanced_Views\Groups\Tax_Field_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
-use Org\Wplake\Advanced_Views\Views\Source;
-use Org\Wplake\Advanced_Views\Views\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Layouts\View_Factory;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;

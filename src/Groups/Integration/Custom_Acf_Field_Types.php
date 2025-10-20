@@ -6,11 +6,11 @@ namespace Org\Wplake\Advanced_Views\Groups\Integration;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 class Custom_Acf_Field_Types extends Hookable implements Hooks_Interface {

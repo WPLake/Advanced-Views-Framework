@@ -12,8 +12,8 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
-use Org\Wplake\Advanced_Views\Views\Field_Meta;
-use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 
 defined( 'ABSPATH' ) || exit;
 

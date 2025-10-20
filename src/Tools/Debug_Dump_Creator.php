@@ -7,12 +7,12 @@ namespace Org\Wplake\Advanced_Views\Tools;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Data;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
 use WP_Query;
 use WP_Post;
 

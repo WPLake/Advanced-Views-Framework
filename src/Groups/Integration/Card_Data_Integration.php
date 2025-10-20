@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups\Integration;
 
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;

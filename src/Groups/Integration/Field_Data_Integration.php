@@ -13,7 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Data;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Data;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
 
 class Field_Data_Integration extends Acf_Integration {
 	use Safe_Array_Arguments;

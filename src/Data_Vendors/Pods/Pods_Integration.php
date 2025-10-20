@@ -10,9 +10,9 @@ use Org\Wplake\Advanced_Views\Groups\Item_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
-use Org\Wplake\Advanced_Views\Views\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\View_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
 

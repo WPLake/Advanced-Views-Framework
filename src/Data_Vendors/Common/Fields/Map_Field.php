@@ -9,9 +9,9 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Meta_Box_Data_Vendor;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
 use Org\Wplake\Advanced_Views\Groups\Field_Data;
 use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Views\Fields\Markup_Field_Data;
-use Org\Wplake\Advanced_Views\Views\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
+use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 
 defined( 'ABSPATH' ) || exit;
 

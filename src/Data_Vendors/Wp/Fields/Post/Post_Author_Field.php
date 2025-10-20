@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\User_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Views\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 
 defined( 'ABSPATH' ) || exit;
 

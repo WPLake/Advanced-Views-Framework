@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Cards\Card_Factory;
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Selections\Card_Factory;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Card_Data;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;

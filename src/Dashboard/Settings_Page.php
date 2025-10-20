@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Cards\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Settings_Data;
@@ -18,8 +18,8 @@ use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
 use WP_Post;
 use WP_Query;
 

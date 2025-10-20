@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
 use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Views\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use DateTime;
 
 defined( 'ABSPATH' ) || exit;

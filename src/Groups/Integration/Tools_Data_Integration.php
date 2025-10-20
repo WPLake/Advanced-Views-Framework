@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups\Integration;
 
-use Org\Wplake\Advanced_Views\Cards\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Data;
-use Org\Wplake\Advanced_Views\Views\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
 
 defined( 'ABSPATH' ) || exit;
 

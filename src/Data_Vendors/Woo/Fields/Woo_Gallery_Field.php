@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Gallery_Field;
-use Org\Wplake\Advanced_Views\Views\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 
 defined( 'ABSPATH' ) || exit;
 

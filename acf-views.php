@@ -18,7 +18,7 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
-use Org\Wplake\Advanced_Views\Cards\{Card_Factory,
+use Org\Wplake\Advanced_Views\Selections\{Card_Factory,
 	Card_Markup,
 	Cpt\Cards_Cpt,
 	Cpt\Cards_Cpt_Meta_Boxes,
@@ -67,7 +67,7 @@ use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader as GroupsLoader;
-use Org\Wplake\Advanced_Views\Views\{Cpt\Table\Views_Bulk_Validation_Tab,
+use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Views_Bulk_Validation_Tab,
 	Cpt\Table\Views_Cpt_Table,
 	Cpt\Table\Views_Pre_Built_Tab,
 	Cpt\Views_Cpt,

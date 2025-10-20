@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Views\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
