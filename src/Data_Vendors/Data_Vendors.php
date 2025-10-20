@@ -25,12 +25,12 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -82,7 +82,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	protected function load_integration_instance(
 		Current_Screen $current_screen,
 		Data_Vendor_Integration_Interface $integration_instance,
-		Layouts_Data_Storage $views_data_storage
+		Layouts_Settings_Storage $views_data_storage
 	): void {
 		// functions below only for the admin part.
 		if ( false === $current_screen->is_admin() ) {
@@ -386,11 +386,11 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function make_integration_instances(
 		Current_Screen $current_screen,
 		Item_Settings $item_data,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
 		Layout_Factory $view_factory,
 		Repeater_Field_Settings $repeater_field_data,
-		View_Shortcode $view_shortcode,
+		Layout_Shortcode $view_shortcode,
 		Settings $settings
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded

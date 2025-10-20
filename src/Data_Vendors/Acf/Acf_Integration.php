@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Acf;
 
-use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration;
+use Org\Wplake\Advanced_Views\Data_Vendors\Common\Settings_Vendor_Integration;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
-class Acf_Integration extends Data_Vendor_Integration {
+class Acf_Integration extends Settings_Vendor_Integration {
 	protected function get_vendor_post_type(): string {
 		return 'acf-field-group';
 	}

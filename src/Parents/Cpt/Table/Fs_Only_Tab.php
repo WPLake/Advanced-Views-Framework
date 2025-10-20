@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
@@ -19,9 +19,9 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 	const KEY_SINGLE_ACTION  = self::KEY_PREFIX . 'id';
 	const KEY_RESULT_MESSAGE = self::KEY_PREFIX . 'result-ids';
 
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 
-	public function __construct( Cpt_Table $cpt_table, Cpt_Data_Storage $cards_data_storage ) {
+	public function __construct( Cpt_Table $cpt_table, Cpt_Settings_Storage $cards_data_storage ) {
 		parent::__construct( $cpt_table );
 
 		$this->cpt_data_storage = $cards_data_storage;

@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -22,7 +22,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
 final class Demo_Import extends Hookable implements Hooks_Interface {
 
@@ -42,14 +42,14 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 	private bool $is_import_request;
 	private Item_Settings $item;
 	private Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions;
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 
 	public function __construct(
 		Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions,
 		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
-		Post_Selections_Data_Storage $cards_data_storage,
-		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Settings $settings,
 		Item_Settings $item
 	) {

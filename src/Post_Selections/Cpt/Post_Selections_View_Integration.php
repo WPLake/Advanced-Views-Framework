@@ -5,29 +5,29 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
-class Post_Selections_View_Integration extends Cpt_Data_Creator implements Hooks_Interface {
+class Post_Selections_View_Integration extends Cpt_Settings_Creator implements Hooks_Interface {
 
 	const ARGUMENT_FROM  = '_from';
 	const NONCE_MAKE_NEW = 'av-make-card';
 
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions;
 
 	public function __construct(
-		Post_Selections_Data_Storage $cards_data_storage,
-		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions,
 		Settings $settings
 	) {

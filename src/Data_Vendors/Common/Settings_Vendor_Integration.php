@@ -9,42 +9,42 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_Vendor_Integration_Interface {
+abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implements Data_Vendor_Integration_Interface {
 	use Safe_Array_Arguments;
 
 	const NONCE_ADD_NEW = 'av-add-new';
 	const ARGUMENT_FROM = '_from-group';
 
 	private Item_Settings $item;
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Data_Vendors $data_vendors;
 	private Layouts_Cpt_Save_Actions $views_cpt_save_actions;
 	private Layout_Factory $view_factory;
 	private Data_Vendor_Interface $data_vendor;
-	private View_Shortcode $view_shortcode;
+	private Layout_Shortcode $view_shortcode;
 
 	public function __construct(
 		Item_Settings $item,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
 		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
 		Layout_Factory $view_factory,
 		Data_Vendor_Interface $data_vendor,
-		View_Shortcode $view_shortcode,
+		Layout_Shortcode $view_shortcode,
 		Settings $settings
 	) {
 		parent::__construct( $settings );
@@ -334,7 +334,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 		return $this->data_vendor->get_group_key( $from_post->post_name );
 	}
 
-	public function get_views_data_storage(): Layouts_Data_Storage {
+	public function get_views_data_storage(): Layouts_Settings_Storage {
 		return $this->views_data_storage;
 	}
 

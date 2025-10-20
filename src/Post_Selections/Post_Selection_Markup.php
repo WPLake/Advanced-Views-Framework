@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -126,7 +126,7 @@ class Post_Selection_Markup {
 	protected function print_shortcode( Post_Selection_Settings $card_data ): void {
 		$template_generator = $this->template_engines->get_template_generator( $card_data->template_engine );
 
-		printf( '[%s', esc_html( View_Shortcode::NAME ) );
+		printf( '[%s', esc_html( Layout_Shortcode::NAME ) );
 		$template_generator->print_array_item_attribute( 'view-id', '_card', 'view_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 

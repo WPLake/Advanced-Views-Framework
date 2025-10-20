@@ -4,12 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -21,8 +23,6 @@ defined( 'ABSPATH' ) || exit;
  * FYI: built-in WordPress growth counter was removed https://meta.trac.wordpress.org/ticket/6511
  */
 class Automatic_Reports extends Action implements Hooks_Interface {
-
-	const HOOK          = Layouts_Cpt::NAME . '_refresh';
 	const DELAY_MIN_HR  = 12;
 	const DELAY_MAX_HRS = 48;
 	const REQUEST_URL   = 'https://wplake.org/wp-json/wplake/v1/plugin_analytics';
@@ -30,14 +30,14 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	private Options $options;
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
 		Settings $settings,
 		Options $options,
-		Layouts_Data_Storage $views_data_storage
+		Layouts_Settings_Storage $views_data_storage
 	) {
 		parent::__construct( $logger );
 
@@ -45,6 +45,10 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$this->settings           = $settings;
 		$this->options            = $options;
 		$this->views_data_storage = $views_data_storage;
+	}
+
+	public static function hook(): string {
+		return Layouts_Feature::cpt_name() . '_refresh';
 	}
 
 	/**
@@ -79,7 +83,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		if ( true === $this->is_automatic_reports_completely_disabled() ) {
 			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
 			self::add_action(
-				self::HOOK,
+				self::hook(),
 				function () {
 					// nothing to do.
 				}
@@ -90,7 +94,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		self::add_action( 'init', array( $this, 'init' ) );
 		// CRON job.
-		self::add_action( self::HOOK, array( $this, 'send_and_schedule_next' ) );
+		self::add_action( self::hook(), array( $this, 'send_and_schedule_next' ) );
 
 		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
 		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
@@ -107,11 +111,11 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			Current_Screen::CPT_LIST
 		) ||
 								true === $current_screen->is_admin_cpt_related(
-									Post_Selections_Cpt::NAME,
+									Post_Selections_Feature::cpt_name(),
 									Current_Screen::CPT_LIST
 								);
 
@@ -123,7 +127,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 	// WP Cron is unreliable. Execute also within the dashboard (in case the time has come).
 	public function reschedule_outdated(): void {
-		$check_time = wp_next_scheduled( self::HOOK );
+		$check_time = wp_next_scheduled( self::hook() );
 
 		if ( false !== $check_time &&
 			$check_time > time() ) {
@@ -132,7 +136,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		if ( false !== $check_time ) {
 			// firstly, unschedule the outdated event.
-			wp_unschedule_event( $check_time, self::HOOK );
+			wp_unschedule_event( $check_time, self::hook() );
 		}
 
 		// then send and schedule the next.
@@ -140,7 +144,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	}
 
 	public function init(): void {
-		$check_time = wp_next_scheduled( self::HOOK );
+		$check_time = wp_next_scheduled( self::hook() );
 
 		if ( false === $check_time ) {
 			$this->schedule_next();
@@ -446,8 +450,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		$args = array(
-			'_viewsCount'                    => $this->get_count_of_posts( Layouts_Cpt::NAME ),
-			'_cardsCount'                    => $this->get_count_of_posts( Post_Selections_Cpt::NAME ),
+			'_viewsCount'                    => $this->get_count_of_posts( Layouts_Feature::cpt_name() ),
+			'_cardsCount'                    => $this->get_count_of_posts( Post_Selections_Feature::cpt_name() ),
 			// 'is_plugin_active()' is available only later
 				'_isAcfPro'                  => class_exists( 'acf_pro' ),
 			'_isAcf'                         => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),
@@ -523,17 +527,17 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		// next_check_time in seconds. Randomly to avoid DDOS.
 		$next_check_time = time() + wp_rand( self::DELAY_MIN_HR * 3600, self::DELAY_MAX_HRS * 3600 );
 
-		wp_schedule_single_event( $next_check_time, self::HOOK );
+		wp_schedule_single_event( $next_check_time, self::hook() );
 	}
 
 	protected function un_schedule(): void {
-		$check_time = wp_next_scheduled( self::HOOK );
+		$check_time = wp_next_scheduled( self::hook() );
 
 		if ( false === $check_time ) {
 			return;
 		}
 
-		wp_unschedule_event( $check_time, self::HOOK );
+		wp_unschedule_event( $check_time, self::hook() );
 	}
 
 	// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.

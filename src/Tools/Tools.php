@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
@@ -17,7 +17,7 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Filesystem_Base;
 use WP_Post;
 use WP_Query;
@@ -33,8 +33,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 	 */
 	private array $values;
 	private Tools_Settings $tools_data;
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Plugin $plugin;
 	private Logger $logger;
 	private Debug_Dump_Creator $debug_dump_creator;
@@ -48,8 +48,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 
 	public function __construct(
 		Tools_Settings $tools_data,
-		Post_Selections_Data_Storage $cards_data_storage,
-		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Plugin $plugin,
 		Logger $logger,
 		Debug_Dump_Creator $debug_dump_creator

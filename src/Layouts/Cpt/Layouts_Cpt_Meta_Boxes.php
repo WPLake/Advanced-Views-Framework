@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
@@ -11,17 +13,18 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 
-	public function __construct( Html $html, Plugin $plugin, Layouts_Data_Storage $views_data_storage, Data_Vendors $data_vendors ) {
+	public function __construct( Html $html, Plugin $plugin, Layouts_Settings_Storage $views_data_storage, Data_Vendors $data_vendors ) {
 		parent::__construct( $html, $plugin );
 
 		$this->views_data_storage = $views_data_storage;
@@ -29,7 +32,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	protected function get_cpt_name(): string {
-		return Layouts_Cpt::NAME;
+		return Layouts_Feature::cpt_name();
 	}
 
 	protected function print_link_with_js_hover( string $url, string $title ): void {
@@ -147,7 +150,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		$query = $wpdb->prepare(
 			"SELECT * from {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish'
                       AND FIND_IN_SET(%s,post_content_filtered) > 0",
-			Post_Selections_Cpt::NAME,
+			Post_Selections_Feature::cpt_name(),
 			$view_data->get_unique_id()
 		);
 		// @phpcs:ignore
@@ -215,6 +218,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	public function add_meta_boxes(): void {
+
 		add_meta_box(
 			'acf-views_shortcode',
 			__( 'Shortcode', 'acf-views' ),
@@ -232,7 +236,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$short_view_unique_id,
 					false,
-					View_Shortcode::NAME,
+					Layouts_Feature::shortcode(),
 					get_the_title( $post ),
 					false,
 					$view_data->is_for_internal_usage_only()

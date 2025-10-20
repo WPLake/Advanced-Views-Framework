@@ -5,12 +5,14 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
@@ -24,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 	private string $cpt_name;
 	/**
 	 * @var Tab_Data[]
@@ -39,7 +41,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	private ?string $current_search_value;
 	private ?int $pagination_per_page;
 
-	public function __construct( Cpt_Data_Storage $cpt_data_storage, string $name ) {
+	public function __construct( Cpt_Settings_Storage $cpt_data_storage, string $name ) {
 		$this->cpt_data_storage  = $cpt_data_storage;
 		$this->cpt_name          = $name;
 		$this->tabs              = array();
@@ -51,7 +53,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$this->pagination_per_page  = null;
 	}
 
-	abstract protected function print_column( string $column_name, Cpt_Settings $cpt_data ): void;
+	abstract protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void;
 
 	protected function get_action_clone(): string {
 		return $this->cpt_name . '_clone';
@@ -197,6 +199,17 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		);
 	}
 
+	protected function get_column_prefix(): string {
+		return $this->get_cpt_name() . '_';
+	}
+
+	/**
+	 * @param array<string,string> $columns
+	 *
+	 * @return array<string,string>
+	 */
+	abstract public function get_columns( array $columns ): array;
+
 	/**
 	 * @param array<string, string|int> $extra_args
 	 */
@@ -236,7 +249,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$post_type = $query->query_vars['post_type'] ?? '';
 
 		if ( ! is_admin() ||
-			! in_array( $post_type, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) ||
+			! in_array( $post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ||
 			! $query->is_main_query() ||
 			! $query->is_search() ) {
 			return;
@@ -249,7 +262,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$prefix = Layouts_Cpt::NAME === $post_type ?
+		$prefix = Layouts_Feature::cpt_name() === $post_type ?
 			Layout_Settings::UNIQUE_ID_PREFIX :
 			Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
@@ -416,7 +429,9 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 					// All other columns.
 					default:
-						$this->print_column( $column_name, $cpt_data );
+						$short_column_name = substr( $column_name, strlen( $this->get_column_prefix() ) );
+
+						$this->print_column( $short_column_name, $cpt_data );
 						break;
 				}
 				printf( '</%s>', esc_html( $el ) );
@@ -435,7 +450,8 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$unique_id = get_post( $post_id )->post_name ?? '';
 		$cpt_data  = $this->cpt_data_storage->get( $unique_id );
 
-		$this->print_column( $column_name, $cpt_data );
+		$short_column_name = substr( $column_name, strlen( $this->get_column_prefix() ) );
+		$this->print_column( $short_column_name, $cpt_data );
 	}
 
 	/**
@@ -555,6 +571,18 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		if ( false === $current_screen->is_admin() ) {
 			return;
 		}
+
+		self::add_filter(
+			sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ),
+			function ( array $columns ): array {
+				$column_prefix = $this->get_column_prefix();
+
+				return array_map(
+					fn( $column ) => $column_prefix . $column,
+					$this->get_columns( $columns )
+				);
+			}
+		);
 
 		if ( true === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_LIST ) ) {
 			self::add_action( 'admin_init', array( $this, 'make_table_actions' ) );

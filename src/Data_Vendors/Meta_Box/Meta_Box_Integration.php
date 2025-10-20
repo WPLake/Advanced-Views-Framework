@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box;
 
-use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration;
+use Org\Wplake\Advanced_Views\Data_Vendors\Common\Settings_Vendor_Integration;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
-class Meta_Box_Integration extends Data_Vendor_Integration {
+class Meta_Box_Integration extends Settings_Vendor_Integration {
 	protected function get_vendor_post_type(): string {
 		return 'meta-box';
 	}

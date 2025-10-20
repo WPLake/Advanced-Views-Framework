@@ -5,25 +5,25 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
-	private Layouts_Data_Storage $views_data_storage;
-	private Post_Selections_Data_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
-		Post_Selections_Data_Storage $cards_data_storage,
-		Layouts_Data_Storage $views_data_storage
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage
 	) {
 		parent::__construct( $html, $plugin );
 
@@ -76,7 +76,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$card_unique_id,
 					false,
-					Card_Shortcode::NAME,
+					Post_Selection_Shortcode::NAME,
 					get_the_title( $post ),
 					true
 				);

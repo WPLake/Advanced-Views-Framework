@@ -7,12 +7,13 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance;
@@ -30,7 +31,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	use Safe_Array_Arguments;
 
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 	private Plugin $plugin;
 	/**
 	 * @var array<string|int, mixed>
@@ -49,7 +50,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	public function __construct(
 		Logger $logger,
-		Cpt_Data_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_data_storage,
 		Plugin $plugin,
 		Cpt_Settings $cpt_data,
 		Front_Assets $front_assets
@@ -146,9 +147,9 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		// it must be before the frontAssets generation, otherwise CSS may already be not empty even for the first save.
 		if ( '' === $cpt_data->css_code &&
-		     Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
+			Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
 			// by default, Web component is inline, which is wrong, we expect it to be block.
-			$id                 = Layouts_Cpt::NAME === $this->get_cpt_name() ?
+			$id                 = Layouts_Feature::cpt_name() === $this->get_cpt_name() ?
 				'view' :
 				'card';
 			$cpt_data->css_code = sprintf( "#%s {\n\tdisplay: block;\n}\n", $id );

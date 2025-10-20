@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
@@ -14,11 +15,11 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -31,11 +32,11 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	private Html $html;
 	private Layout_Settings $view_data;
 	private Layout_Factory $view_factory;
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 
 	public function __construct(
 		Logger $logger,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Plugin $plugin,
 		Layout_Settings $view_data,
 		Front_Assets $front_assets,
@@ -58,7 +59,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	protected function get_cpt_name(): string {
-		return Layouts_Cpt::NAME;
+		return Layouts_Feature::cpt_name();
 	}
 
 	protected function get_custom_markup_acf_field_name(): string {
@@ -194,7 +195,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$view_data->get_unique_id( true ),
 			false,
-			View_Shortcode::NAME,
+			Layouts_Feature::shortcode(),
 			get_the_title( $view_id ),
 			false,
 			$view_data->is_for_internal_usage_only()

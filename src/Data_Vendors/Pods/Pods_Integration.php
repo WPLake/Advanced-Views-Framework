@@ -4,32 +4,32 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Pods;
 
-use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration;
+use Org\Wplake\Advanced_Views\Data_Vendors\Common\Settings_Vendor_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
-class Pods_Integration extends Data_Vendor_Integration {
+class Pods_Integration extends Settings_Vendor_Integration {
 
 	private Pods_Data_Vendor $pods_data_vendor;
 
 	public function __construct(
 		Item_Settings $item,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
 		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
 		Layout_Factory $view_factory,
 		Pods_Data_Vendor $data_vendor,
-		View_Shortcode $view_shortcode,
+		Layout_Shortcode $view_shortcode,
 		Settings $settings
 	) {
 		parent::__construct(

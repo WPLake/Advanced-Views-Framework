@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -40,7 +42,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		// otherwise it'll lead to a fatal error in the WP playground.
 		if ( false === $is_update ||
 			false === key_exists( 'post_type', $data ) ||
-			false === in_array( $data['post_type'], array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) ) {
+			false === in_array( $data['post_type'], array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ) {
 			return $data;
 		}
 

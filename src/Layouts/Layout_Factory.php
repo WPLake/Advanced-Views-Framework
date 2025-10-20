@@ -9,14 +9,14 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
 
 class Layout_Factory extends Instance_Factory {
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Layout_Markup $view_markup;
 	private Template_Engines $template_engines;
 	private Field_Markup $fields;
@@ -24,7 +24,7 @@ class Layout_Factory extends Instance_Factory {
 
 	public function __construct(
 		Front_Assets $front_assets,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Layout_Markup $view_markup,
 		Template_Engines $template_engines,
 		Field_Markup $fields,
@@ -55,7 +55,7 @@ class Layout_Factory extends Instance_Factory {
 		return $this->template_engines;
 	}
 
-	protected function get_views_data_storage(): Layouts_Data_Storage {
+	protected function get_views_data_storage(): Layouts_Settings_Storage {
 		return $this->views_data_storage;
 	}
 

@@ -9,7 +9,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Upgrades;
 
@@ -20,14 +20,14 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 	const KEY_RESULT_ITEMS  = '';
 	const KEY_RESULT_GROUPS = '';
 
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 	private Data_Vendors $data_vendors;
 	private Upgrades $upgrades;
 	private Logger $logger;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Cpt_Data_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_data_storage,
 		Data_Vendors $data_vendors,
 		Upgrades $upgrades,
 		Logger $logger
@@ -300,7 +300,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		echo '</div>';
 	}
 
-	protected function get_cpt_data_storage(): Cpt_Data_Storage {
+	protected function get_cpt_data_storage(): Cpt_Settings_Storage {
 		return $this->cpt_data_storage;
 	}
 

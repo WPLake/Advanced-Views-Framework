@@ -4,10 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -21,7 +23,7 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -33,16 +35,16 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	 * @var Plugin
 	 */
 	private $plugin;
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Layout_Factory $view_factory;
 	private Post_Selection_Factory $card_factory;
 	private Data_Vendors $data_vendors;
 
 	public function __construct(
 		Plugin $plugin,
-		Post_Selections_Data_Storage $cards_data_storage,
-		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Layout_Factory $view_factory,
 		Post_Selection_Factory $card_factory,
 		Data_Vendors $data_vendors
@@ -66,7 +68,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		global $post;
 
-		if ( ! $this->plugin->is_cpt_screen( Layouts_Cpt::NAME ) ||
+		if ( ! $this->plugin->is_cpt_screen( Layouts_Feature::cpt_name() ) ||
 			'publish' !== $post->post_status ) {
 			return $js_data;
 		}
@@ -116,7 +118,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		global $post;
 
-		if ( ! $this->plugin->is_cpt_screen( Post_Selections_Cpt::NAME ) ||
+		if ( ! $this->plugin->is_cpt_screen( Post_Selections_Feature::cpt_name() ) ||
 			'publish' !== $post->post_status ) {
 			return $js_data;
 		}
@@ -144,7 +146,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 	protected function enqueue_code_editor(): void {
 		wp_enqueue_script(
-			Layouts_Cpt::NAME . '_ace',
+			Layouts_Feature::cpt_name() . '_ace',
 			$this->plugin->get_assets_url( 'admin/code-editor/ace.js' ),
 			array(),
 			$this->plugin->get_version(),
@@ -157,10 +159,10 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $extensions as $extension ) {
 			wp_enqueue_script(
-				Layouts_Cpt::NAME . '_ace-' . $extension,
+				Layouts_Feature::cpt_name() . '_ace-' . $extension,
 				$this->plugin->get_assets_url( 'admin/code-editor/' . $extension . '.js' ),
 				array(
-					Layouts_Cpt::NAME . '_ace',
+					Layouts_Feature::cpt_name() . '_ace',
 				),
 				$this->plugin->get_version(),
 				array(
@@ -263,7 +265,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	protected function get_js_data_for_cpt_item_page(): array {
 		global $post;
 
-		$is_view      = Layouts_Cpt::NAME === $post->post_type;
+		$is_view      = Layouts_Feature::cpt_name() === $post->post_type;
 		$is_published = 'publish' === $post->post_status;
 
 		if ( $is_view ) {
@@ -294,7 +296,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		$is_our_add_screen = null !== $screen &&
 							'post' === $screen->base &&
 							'add' === $screen->action &&
-							in_array( $screen->post_type, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true );
+							in_array( $screen->post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true );
 
 		// if permalink structure isn't set (?id=x), then the first postbox request is required
 		// (otherwise the post status will left 'auto-draft').
@@ -471,29 +473,29 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 				$this->enqueue_code_editor();
 
 				wp_enqueue_style(
-					Layouts_Cpt::NAME . '_cpt-item',
+					Layouts_Feature::cpt_name() . '_cpt-item',
 					$this->plugin->get_assets_url( 'admin/css/cpt-item.min.css' ),
 					array(),
 					$this->plugin->get_version()
 				);
 				// jquery is necessary for select2 events.
 				wp_enqueue_script(
-					Layouts_Cpt::NAME . '_cpt-item',
+					Layouts_Feature::cpt_name() . '_cpt-item',
 					$this->get_cpt_item_js_file_url(),
 					// make sure acf and ACE editor are loaded.
-					array( 'jquery', 'acf-input', Layouts_Cpt::NAME . '_ace', 'wp-api-fetch' ),
+					array( 'jquery', 'acf-input', Layouts_Feature::cpt_name() . '_ace', 'wp-api-fetch' ),
 					$this->plugin->get_version(),
 					array(
 						'in_footer' => true,
 						// in footer, so if we need to include others, like 'ace.js' we can include in header.
 					)
 				);
-				wp_localize_script( Layouts_Cpt::NAME . '_cpt-item', 'acf_views', $js_data );
+				wp_localize_script( Layouts_Feature::cpt_name() . '_cpt-item', 'acf_views', $js_data );
 				break;
 			// 'edit' means 'list page'
 			case 'edit':
 				wp_enqueue_style(
-					Layouts_Cpt::NAME . '_list-page',
+					Layouts_Feature::cpt_name() . '_list-page',
 					$this->plugin->get_assets_url( 'admin/css/list-page.min.css' ),
 					array(),
 					$this->plugin->get_version()
@@ -502,7 +504,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			case 'acf_views_page_acf-views-tools':
 			case 'acf_views_page_acf-views-settings':
 				wp_enqueue_style(
-					Layouts_Cpt::NAME . '_tools',
+					Layouts_Feature::cpt_name() . '_tools',
 					$this->plugin->get_assets_url( 'admin/css/tools.min.css' ),
 					array(),
 					$this->plugin->get_version()
@@ -513,7 +515,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		// 'dashboard' for all the custom pages (but not for edit/add pages)
 		if ( 0 === strpos( $current_base, 'acf_views_page_' ) ) {
 			wp_enqueue_style(
-				Layouts_Cpt::NAME . '_page',
+				Layouts_Feature::cpt_name() . '_page',
 				$this->plugin->get_assets_url( 'admin/css/dashboard.min.css' ),
 				array(),
 				$this->plugin->get_version()
@@ -522,7 +524,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		// plugin-header for all the pages without exception.
 		wp_enqueue_style(
-			Layouts_Cpt::NAME . '_common',
+			Layouts_Feature::cpt_name() . '_common',
 			$this->plugin->get_assets_url( 'admin/css/common.min.css' ),
 			array(),
 			$this->plugin->get_version()
@@ -536,8 +538,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			null;
 
 		if ( null === $current_screen ||
-			( ! in_array( $current_screen->id, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) &&
-				! in_array( $current_screen->post_type, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) ) ) {
+			( ! in_array( $current_screen->id, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) &&
+				! in_array( $current_screen->post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ) ) {
 			return false;
 		}
 
@@ -561,7 +563,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		}
 
 		wp_enqueue_style(
-			Layouts_Cpt::NAME . '_editor',
+			Layouts_Feature::cpt_name() . '_editor',
 			$this->plugin->get_assets_url( 'admin/css/editor.min.css' ),
 			array(),
 			$this->plugin->get_version()

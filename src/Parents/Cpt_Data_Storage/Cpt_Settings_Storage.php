@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt_Data_Storage extends Item_Management {
+abstract class Cpt_Settings_Storage extends Item_Management {
 	/**
 	 * @return array<string,string>
 	 */

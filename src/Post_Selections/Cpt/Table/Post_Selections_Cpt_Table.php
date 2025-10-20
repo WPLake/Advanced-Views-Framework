@@ -4,10 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
@@ -18,16 +19,16 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt_Table extends Cpt_Table {
-	const COLUMN_DESCRIPTION   = Post_Selections_Cpt::NAME . '_description';
-	const COLUMN_SHORTCODE     = Post_Selections_Cpt::NAME . '_shortcode';
-	const COLUMN_RELATED_VIEW  = Post_Selections_Cpt::NAME . '_relatedView';
-	const COLUMN_LAST_MODIFIED = Post_Selections_Cpt::NAME . '_lastModified';
+	const COLUMN_DESCRIPTION   = 'description';
+	const COLUMN_SHORTCODE     = 'shortcode';
+	const COLUMN_RELATED_VIEW  = 'relatedView';
+	const COLUMN_LAST_MODIFIED = 'lastModified';
 
 	private Html $html;
 	private Post_Selections_Cpt_Meta_Boxes $cards_meta_boxes;
 
 	public function __construct(
-		Post_Selections_Data_Storage $cards_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
 		string $name,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $cards_cpt_meta_boxes
@@ -38,14 +39,14 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 		$this->cards_meta_boxes = $cards_cpt_meta_boxes;
 	}
 
-	protected function print_column( string $column_name, Cpt_Settings $cpt_data ): void {
+	protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void {
 		if ( false === ( $cpt_data instanceof Post_Selection_Settings ) ) {
 			return;
 		}
 
 		$card_data = $cpt_data;
 
-		switch ( $column_name ) {
+		switch ( $short_column_name ) {
 			case self::COLUMN_DESCRIPTION:
 				echo esc_html( $card_data->description );
 				break;
@@ -53,7 +54,7 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$card_data->get_unique_id( true ),
 					true,
-					Card_Shortcode::NAME,
+					Post_Selections_Feature::shortcode(),
 					$card_data->title,
 					true
 				);
@@ -137,8 +138,6 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 		}
 
 		self::add_action( 'pre_get_posts', array( $this, 'add_sortable_columns_to_request' ) );
-
-		self::add_filter( sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ), array( $this, 'get_columns' ) );
 		self::add_filter(
 			sprintf( 'manage_edit-%s_sortable_columns', $this->get_cpt_name() ),
 			array( $this, 'get_sortable_columns' )

@@ -11,7 +11,6 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt extends Cpt {
-	const NAME = 'acf_views';
 
 	public function add_cpt(): void {
 		// translators: %1$s - link opening tag, %2$s - link closing tag.
@@ -80,7 +79,7 @@ class Layouts_Cpt extends Cpt {
 			$restored_message .= ' ' . wp_post_revision_title( $revision, false );
 		}
 
-		$messages[ self::NAME ] = array(
+		$messages[ $this->get_cpt_name() ] = array(
 			0  => '', // Unused. Messages start at index 1.
 			1  => __( 'View updated.', 'acf-views' ),
 			2  => __( 'Custom field updated.', 'acf-views' ),
@@ -100,7 +99,7 @@ class Layouts_Cpt extends Cpt {
 	public function get_title_placeholder( string $title ): string {
 		$screen = get_current_screen()->post_type ?? '';
 
-		if ( self::NAME !== $screen ) {
+		if ( $this->get_cpt_name() !== $screen ) {
 			return $title;
 		}
 
@@ -108,7 +107,7 @@ class Layouts_Cpt extends Cpt {
 	}
 
 	public function change_menu_items(): void {
-		$url = sprintf( 'edit.php?post_type=%s', self::NAME );
+		$url = sprintf( 'edit.php?post_type=%s', $this->get_cpt_name() );
 
 		global $submenu;
 

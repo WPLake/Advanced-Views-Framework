@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
@@ -17,14 +17,14 @@ class Post_Selection_Factory extends Instance_Factory {
 	private Query_Builder $query_builder;
 	private Post_Selection_Markup $card_markup;
 	private Template_Engines $template_engines;
-	private Post_Selections_Data_Storage $cards_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
 
 	public function __construct(
 		Front_Assets $front_assets,
 		Query_Builder $query_builder,
 		Post_Selection_Markup $card_markup,
 		Template_Engines $template_engines,
-		Post_Selections_Data_Storage $cards_data_storage
+		Post_Selections_Settings_Storage $cards_data_storage
 	) {
 		parent::__construct( $front_assets );
 
@@ -53,7 +53,7 @@ class Post_Selection_Factory extends Instance_Factory {
 		return $this->make( $this->cards_data_storage->get( $unique_id ) )->get_template_variables_for_validation();
 	}
 
-	protected function get_cards_data_storage(): Post_Selections_Data_Storage {
+	protected function get_cards_data_storage(): Post_Selections_Settings_Storage {
 		return $this->cards_data_storage;
 	}
 

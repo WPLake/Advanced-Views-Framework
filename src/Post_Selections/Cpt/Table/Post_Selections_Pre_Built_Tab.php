@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -18,13 +18,13 @@ use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
-	private Post_Selections_Data_Storage $cards_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
 	private Layouts_Pre_Built_Tab $views_pre_built_tab;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Post_Selections_Data_Storage $cards_data_storage,
-		Post_Selections_Data_Storage $external_cards_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Post_Selections_Settings_Storage $external_cards_data_storage,
 		Data_Vendors $data_vendors,
 		Upgrades $upgrades,
 		Logger $logger,

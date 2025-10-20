@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 
 defined( 'ABSPATH' ) || exit;
@@ -13,12 +13,12 @@ defined( 'ABSPATH' ) || exit;
 abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	const NAME = 'bulk_validation';
 
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 	private Fs_Only_Tab $fs_only_cpt_table_tab;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Cpt_Data_Storage $cards_data_storage,
+		Cpt_Settings_Storage $cards_data_storage,
 		Fs_Only_Tab $fs_only_cpt_table_tab
 	) {
 		parent::__construct( $cpt_table );

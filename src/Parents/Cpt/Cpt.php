@@ -6,7 +6,8 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -14,11 +15,11 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt extends Hookable implements Hooks_Interface {
-	const NAME = '';
+	private Cpt_Settings_Storage $cpt_data_storage;
+	private Plugin_Feature $plugin_feature;
 
-	private Cpt_Data_Storage $cpt_data_storage;
-
-	public function __construct( Cpt_Data_Storage $cpt_data_storage ) {
+	public function __construct( Plugin_Feature $plugin_feature, Cpt_Settings_Storage $cpt_data_storage ) {
+		$this->plugin_feature   = $plugin_feature;
 		$this->cpt_data_storage = $cpt_data_storage;
 	}
 
@@ -37,7 +38,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		$current_screen = get_current_screen();
 
 		if ( null === $current_screen ||
-			static::NAME !== $current_screen->post_type ) {
+			$this->get_cpt_name() !== $current_screen->post_type ) {
 			return $html;
 		}
 
@@ -76,6 +77,10 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		self::add_filter( 'enter_title_here', array( $this, 'get_title_placeholder' ) );
 	}
 
+	protected function get_cpt_name(): string {
+		return $this->plugin_feature::cpt_name();
+	}
+
 	protected function get_storage_label(): string {
 		$description  = __(
 			'<a target="_blank" href="https://docs.advanced-views.com/templates/file-system-storage">File system storage</a> is',
@@ -91,7 +96,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 	}
 
 	protected function inject_add_new_item_link( string $label_template ): string {
-		$relative_url = sprintf( 'post-new.php?post_type=%s', static::NAME );
+		$relative_url = sprintf( 'post-new.php?post_type=%s', $this->get_cpt_name() );
 		$absolute_url = admin_url( $relative_url );
 
 		$opening_tag = sprintf(
@@ -149,9 +154,9 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		$cpt_args = array_merge( $default_args, $args );
 
 		// @phpstan-ignore-next-line
-		register_post_type( static::NAME, $cpt_args );
+		register_post_type( $this->get_cpt_name(), $cpt_args );
 
 		// since WP 6.6 we can disable it straightly.
-		post_type_supports( self::NAME, 'autosave' );
+		post_type_supports( $this->get_cpt_name(), 'autosave' );
 	}
 }

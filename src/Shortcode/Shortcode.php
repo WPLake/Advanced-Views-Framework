@@ -8,39 +8,40 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_REST_Request;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
-	const NAME            = '';
-	const OLD_NAME        = '';
-	const REST_ROUTE_NAME = '';
-
 	private Instance_Factory $instance_factory;
 	private Settings $settings;
-	private Cpt_Data_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_data_storage;
 	private Front_Assets $front_assets;
 	private Live_Reloader_Component $live_reloader_component;
 	/**
 	 * @var array<string,true>
 	 */
 	private array $rendered_ids;
+	protected Plugin_Feature $plugin_feature;
 
 	public function __construct(
+		Plugin_Feature $feature,
 		Settings $settings,
-		Cpt_Data_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_data_storage,
 		Instance_Factory $instance_factory,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component
 	) {
+		$this->plugin_feature          = $feature;
 		$this->rendered_ids            = array();
 		$this->settings                = $settings;
 		$this->cpt_data_storage        = $cpt_data_storage;
@@ -49,7 +50,9 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		$this->live_reloader_component = $live_reloader_component;
 	}
 
-	abstract protected function get_post_type(): string;
+	protected function get_post_type(): string {
+		return $this->plugin_feature::cpt_name();
+	}
 
 	abstract protected function get_unique_id_prefix(): string;
 
@@ -120,6 +123,10 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		);
 	}
 
+	protected function get_shortcode_name(): string {
+		return $this->plugin_feature::shortcode();
+	}
+
 	protected function get_live_reloader_component(): Live_Reloader_Component {
 		return $this->live_reloader_component;
 	}
@@ -181,7 +188,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		}
 
 		if ( false === $is_with_quick_link &&
-		     Cpt_Settings::WEB_COMPONENT_NONE === $cpt_data->web_component ) {
+			Cpt_Settings::WEB_COMPONENT_NONE === $cpt_data->web_component ) {
 			return $html;
 		}
 
@@ -251,52 +258,13 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	public function register_rest_route(): void {
-		register_rest_route(
-			'advanced_views/v1',
-			static::REST_ROUTE_NAME . '/(?P<unique_id>[a-z0-9]+)',
-			array(
-				'methods'             => 'POST',
-				'args'                => array(
-					'unique_id' => array(
-						/**
-						 * @param mixed $param
-						 */
-						'validate_callback' => function ( $param ): bool {
-							if ( false === is_string( $param ) &&
-							false === is_numeric( $param ) ) {
-								return false;
-							}
-
-							$param = (string) $param;
-
-							return '' !== $this->cpt_data_storage->get_unique_id_from_shortcode_id(
-								$param,
-								$this->get_post_type()
-							);
-						},
-					),
-				),
-				'permission_callback' => function (): bool {
-					// available to all by default.
-					return true;
-				},
-				/**
-				 * @return array<string,mixed>
-				 */
-				'callback'            => function ( WP_REST_Request $request ): array {
-					$short_unique_id = $request->get_param( 'unique_id' );
-
-					// already validated above.
-					if ( false === is_string( $short_unique_id ) ) {
-						return array();
-					}
-
-					$unique_id = $this->get_unique_id_prefix() . $short_unique_id;
-
-					return $this->instance_factory->get_rest_api_response( $unique_id, $request );
-				},
-			)
-		);
+		foreach ( $this->plugin_feature::rest_route_names() as $route_name ) {
+			register_rest_route(
+				'advanced_views/v1',
+				$route_name . '/(?P<unique_id>[a-z0-9]+)',
+				$this->get_rest_route_args()
+			);
+		}
 	}
 
 	/**
@@ -313,7 +281,56 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 
-		self::add_shortcode( static::NAME, array( $this, 'do_shortcode' ) );
-		self::add_shortcode( static::OLD_NAME, array( $this, 'do_shortcode' ) );
+		foreach ( $this->plugin_feature::shortcodes() as $shortcode ) {
+			self::add_shortcode( $shortcode, array( $this, 'do_shortcode' ) );
+		}
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	protected function get_rest_route_args(): array {
+		return array(
+			'methods'             => 'POST',
+			'args'                => array(
+				'unique_id' => array(
+					/**
+					 * @param mixed $param
+					 */
+					'validate_callback' => function ( $param ): bool {
+						if ( false === is_string( $param ) &&
+							false === is_numeric( $param ) ) {
+							return false;
+						}
+
+						$param = (string) $param;
+
+						return '' !== $this->cpt_data_storage->get_unique_id_from_shortcode_id(
+							$param,
+							$this->get_post_type()
+						);
+					},
+				),
+			),
+			'permission_callback' => function (): bool {
+				// available to all by default.
+				return true;
+			},
+			/**
+			 * @return array<string,mixed>
+			 */
+			'callback'            => function ( WP_REST_Request $request ): array {
+				$short_unique_id = $request->get_param( 'unique_id' );
+
+				// already validated above.
+				if ( false === is_string( $short_unique_id ) ) {
+					return array();
+				}
+
+				$unique_id = $this->get_unique_id_prefix() . $short_unique_id;
+
+				return $this->instance_factory->get_rest_api_response( $unique_id, $request );
+			},
+		);
 	}
 }

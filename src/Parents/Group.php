@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Group extends AcfGroup {
-	const GROUP_NAME_PREFIX = 'local_' . Layouts_Cpt::NAME . '_';
+	const GROUP_NAME_PREFIX = 'local_acf_views_';
 
 	// to keep back compatibility.
 	const FIELD_NAME_PREFIX = '';

@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Upgrades;
 
@@ -24,7 +24,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	const KEY_BATCH_ACTION  = self::KEY_PREFIX . 'items';
 	const KEY_SINGLE_ACTION = self::KEY_PREFIX . 'id';
 
-	private Cpt_Data_Storage $external_cpt_data_storage;
+	private Cpt_Settings_Storage $external_cpt_data_storage;
 	/**
 	 * Used to avoid potential recursion (if user made the recursion setup)
 	 *
@@ -34,8 +34,8 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Cpt_Data_Storage $cpt_data_storage,
-		Cpt_Data_Storage $external_cpt_data_storage,
+		Cpt_Settings_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $external_cpt_data_storage,
 		Data_Vendors $data_vendors,
 		Upgrades $upgrades,
 		Logger $logger

@@ -53,12 +53,12 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -235,12 +235,12 @@ class Wp_Data_Vendor extends Data_Vendor {
 
 	public function make_integration_instance(
 		Item_Settings $item_data,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
 		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
 		Layout_Factory $view_factory,
 		Repeater_Field_Settings $repeater_field_data,
-		View_Shortcode $view_shortcode,
+		Layout_Shortcode $view_shortcode,
 		Settings $settings
 	): ?Data_Vendor_Integration_Interface {
 		return null;

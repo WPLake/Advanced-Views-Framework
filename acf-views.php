@@ -18,6 +18,8 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -28,7 +30,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Cpt\Table\Post_Selections_Cpt_Table,
 	Cpt\Table\Post_Selections_Pre_Built_Tab,
 	Data_Storage\Post_Selection_Fs_Fields,
-	Data_Storage\Post_Selections_Data_Storage,
+	Data_Storage\Post_Selections_Settings_Storage,
 	Query_Builder};
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
@@ -61,9 +63,9 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
-use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader as GroupsLoader;
@@ -73,7 +75,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Cpt\Layouts_Cpt,
 	Cpt\Layouts_Cpt_Meta_Boxes,
 	Cpt\Layouts_Cpt_Save_Actions,
-	Data_Storage\Layouts_Data_Storage,
+	Data_Storage\Layouts_Settings_Storage,
 	Fields\Field_Markup,
 	Layout_Factory,
 	Layout_Markup};
@@ -82,8 +84,8 @@ defined( 'ABSPATH' ) || exit;
 
 $acf_views = new class() {
 	private Html $html;
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	private Template_Engines $template_engines;
 	private Plugin $plugin;
 	private Item_Settings $item;
@@ -98,8 +100,8 @@ $acf_views = new class() {
 	private Settings $settings;
 	private Front_Assets $front_assets;
 	private Data_Vendors $data_vendors;
-	private View_Shortcode $view_shortcode;
-	private Card_Shortcode $card_shortcode;
+	private Layout_Shortcode $view_shortcode;
+	private Post_Selection_Shortcode $card_shortcode;
 	private Upgrades $upgrades;
 	private Automatic_Reports $automatic_reports;
 	private Logger $logger;
@@ -124,8 +126,8 @@ $acf_views = new class() {
 
 	private function acf_groups( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_ajax() &&
-			false === $current_screen->is_admin_cpt_related( Layouts_Cpt::NAME ) &&
-			false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::NAME ) ) {
+			false === $current_screen->is_admin_cpt_related( Layouts_Feature::cpt_name() ) &&
+			false === $current_screen->is_admin_cpt_related( Post_Selections_Feature::cpt_name() ) ) {
 			return;
 		}
 
@@ -156,21 +158,21 @@ $acf_views = new class() {
 
 		$this->html = new Html();
 
-		$cards_file_system        = new File_System( $this->logger, 'cards' );
-		$this->cards_data_storage = new Post_Selections_Data_Storage(
+		$cards_file_system        = new File_System( $this->logger, Post_Selections_Feature::folder_name() );
+		$this->cards_data_storage = new Post_Selections_Settings_Storage(
 			$this->logger,
 			$cards_file_system,
 			new Post_Selection_Fs_Fields(),
-			new Db_Management( $this->logger, $cards_file_system, Post_Selections_Cpt::NAME, 'card_' ),
+			new Db_Management( $this->logger, $cards_file_system, Post_Selections_Feature::cpt_name(), Post_Selections_Feature::slug_prefix() ),
 			$this->card_data
 		);
 
-		$views_file_system        = new File_System( $this->logger, 'views' );
-		$this->views_data_storage = new Layouts_Data_Storage(
+		$views_file_system        = new File_System( $this->logger, Layouts_Feature::folder_name() );
+		$this->views_data_storage = new Layouts_Settings_Storage(
 			$this->logger,
 			$views_file_system,
 			new Fs_Fields(),
-			new Db_Management( $this->logger, $views_file_system, Layouts_Cpt::NAME, 'view_' ),
+			new Db_Management( $this->logger, $views_file_system, Layouts_Feature::cpt_name(), Layouts_Feature::slug_prefix() ),
 			$this->view_data
 		);
 
@@ -235,10 +237,10 @@ $acf_views = new class() {
 			$this->view_factory
 		);
 
-		$views_cpt                           = new Layouts_Cpt( $this->views_data_storage );
+		$views_cpt                           = new Layouts_Cpt( new Layouts_Feature(), $this->views_data_storage );
 		$views_cpt_table                     = new Layouts_Cpt_Table(
 			$this->views_data_storage,
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			$this->html,
 			$view_cpt_meta_boxes
 		);
@@ -258,11 +260,11 @@ $acf_views = new class() {
 		$views_pre_built_db_management = new Db_Management(
 			$this->logger,
 			$views_pre_built_file_system,
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			'view_',
 			true
 		);
-		$views_pre_built_data_storage  = new Layouts_Data_Storage(
+		$views_pre_built_data_storage  = new Layouts_Settings_Storage(
 			$this->logger,
 			$views_pre_built_file_system,
 			new Fs_Fields(),
@@ -278,11 +280,12 @@ $acf_views = new class() {
 			$this->logger
 		);
 
-		$views_cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Layouts_Cpt::NAME );
-		$views_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Layouts_Cpt::NAME );
-		$shortcode_block                     = new Shortcode_Block( array( View_Shortcode::NAME, View_Shortcode::OLD_NAME ) );
+		$views_cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Layouts_Feature::cpt_name() );
+		$views_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Layouts_Feature::cpt_name() );
+		$shortcode_block                     = new Shortcode_Block( Layouts_Feature::shortcodes() );
 
-		$this->view_shortcode = new View_Shortcode(
+		$this->view_shortcode = new Layout_Shortcode(
+			new Layouts_Feature(),
 			$this->settings,
 			$this->views_data_storage,
 			$this->front_assets,
@@ -334,11 +337,12 @@ $acf_views = new class() {
 		);
 
 		$cards_cpt                           = new Post_Selections_Cpt(
+			new Post_Selections_Feature(),
 			$this->cards_data_storage
 		);
 		$cards_cpt_table                     = new Post_Selections_Cpt_Table(
 			$this->cards_data_storage,
-			Post_Selections_Cpt::NAME,
+			Post_Selections_Feature::cpt_name(),
 			$this->html,
 			$cards_cpt_meta_boxes
 		);
@@ -358,11 +362,11 @@ $acf_views = new class() {
 		$cards_pre_built_db_management    = new Db_Management(
 			$this->logger,
 			$cards_pre_built_file_system,
-			Post_Selections_Cpt::NAME,
+			Post_Selections_Feature::cpt_name(),
 			'card_',
 			true
 		);
-		$cards_pre_built_cpt_data_storage = new Post_Selections_Data_Storage(
+		$cards_pre_built_cpt_data_storage = new Post_Selections_Settings_Storage(
 			$this->logger,
 			$cards_pre_built_file_system,
 			new Post_Selection_Fs_Fields(),
@@ -379,8 +383,8 @@ $acf_views = new class() {
 			$this->views_pre_built_tab
 		);
 
-		$cards_cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Post_Selections_Cpt::NAME );
-		$cards_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Post_Selections_Cpt::NAME );
+		$cards_cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Post_Selections_Feature::cpt_name() );
+		$cards_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Post_Selections_Feature::cpt_name() );
 
 		$cards_views_integration = new Post_Selections_View_Integration(
 			$this->cards_data_storage,
@@ -388,7 +392,8 @@ $acf_views = new class() {
 			$this->cards_cpt_save_actions,
 			$this->settings
 		);
-		$this->card_shortcode    = new Card_Shortcode(
+		$this->card_shortcode    = new Post_Selection_Shortcode(
+			new Post_Selections_Feature(),
 			$this->settings,
 			$this->cards_data_storage,
 			$this->front_assets,
@@ -413,23 +418,23 @@ $acf_views = new class() {
 		$acf_dependency = new Acf_Dependency( $this->plugin );
 
 		$view_data_integration = new Layout_Settings_Integration(
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			$this->data_vendors
 		);
 		$field_integration     = new Field_Settings_Integration(
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			$this->data_vendors
 		);
 		$card_data_integration = new Post_Selection_Settings_Integration(
-			Post_Selections_Cpt::NAME,
+			Post_Selections_Feature::cpt_name(),
 			$this->data_vendors
 		);
-		$item_data_integration = new Item_Settings_Integration( Layouts_Cpt::NAME, $this->data_vendors );
+		$item_data_integration = new Item_Settings_Integration( Layouts_Feature::cpt_name(), $this->data_vendors );
 		// metaField is a part of the Meta Filter, so we use 'cardsCpt' here.
-		$meta_field_data_integration   = new Meta_Field_Settings_Integration( Post_Selections_Cpt::NAME, $this->data_vendors );
-		$views_mount_point_integration = new Mount_Point_Settings_Integration( Layouts_Cpt::NAME );
-		$cards_mount_point_integration = new Mount_Point_Settings_Integration( Post_Selections_Cpt::NAME );
-		$tax_field_data_integration    = new Tax_Field_Settings_Integration( Post_Selections_Cpt::NAME, $this->data_vendors );
+		$meta_field_data_integration   = new Meta_Field_Settings_Integration( Post_Selections_Feature::cpt_name(), $this->data_vendors );
+		$views_mount_point_integration = new Mount_Point_Settings_Integration( Layouts_Feature::cpt_name() );
+		$cards_mount_point_integration = new Mount_Point_Settings_Integration( Post_Selections_Feature::cpt_name() );
+		$tax_field_data_integration    = new Tax_Field_Settings_Integration( Post_Selections_Feature::cpt_name(), $this->data_vendors );
 		$tools_data_integration        = new Tools_Settings_Integration(
 			$this->views_data_storage,
 			$this->cards_data_storage

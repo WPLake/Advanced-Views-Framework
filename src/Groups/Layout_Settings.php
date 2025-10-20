@@ -17,7 +17,8 @@ class Layout_Settings extends Cpt_Settings {
 	const CUSTOM_GROUP_NAME           = self::GROUP_NAME_PREFIX . 'view';
 	const LOCATION_RULES              = array(
 		array(
-			'post_type == ' . Layouts_Cpt::NAME,
+			// todo CPT name is hardcoded.
+			'post_type == acf_views',
 		),
 	);
 	const FIELD_GROUP                 = 'group';

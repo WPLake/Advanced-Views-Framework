@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Acf;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
@@ -37,8 +39,8 @@ class Acf_Dependency extends Hookable implements Hooks_Interface {
 
 	public function set_hooks( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_admin() ||
-			( false === $current_screen->is_admin_cpt_related( Layouts_Cpt::NAME ) &&
-				false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::NAME ) &&
+			( false === $current_screen->is_admin_cpt_related( Layouts_Feature::cpt_name() ) &&
+				false === $current_screen->is_admin_cpt_related( Post_Selections_Feature::cpt_name() ) &&
 				false === $current_screen->is_ajax() ) ) {
 			return;
 		}

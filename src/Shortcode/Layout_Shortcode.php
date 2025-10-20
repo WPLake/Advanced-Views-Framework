@@ -7,28 +7,28 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use WP_Comment;
 use WP_Term;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-final class View_Shortcode extends Shortcode {
-	const NAME            = 'avf_view';
-	const OLD_NAME        = 'acf_views';
-	const REST_ROUTE_NAME = 'view';
+final class Layout_Shortcode extends Shortcode {
 
 	use Safe_Array_Arguments;
 
 	private Layout_Factory $view_factory;
-	private Layouts_Data_Storage $views_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
 	/**
 	 * Used to avoid recursion with post_object/relationship fields
 	 *
@@ -38,14 +38,15 @@ final class View_Shortcode extends Shortcode {
 	private Shortcode_Block $shortcode_block;
 
 	public function __construct(
+		Plugin_Feature $plugin_feature,
 		Settings $settings,
-		Layouts_Data_Storage $views_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
 		Layout_Factory $view_factory,
 		Shortcode_Block $block_shortcodes
 	) {
-		parent::__construct( $settings, $views_data_storage, $view_factory, $front_assets, $live_reloader_component );
+		parent::__construct( $plugin_feature, $settings, $views_data_storage, $view_factory, $front_assets, $live_reloader_component );
 
 		$this->views_data_storage = $views_data_storage;
 		$this->view_factory       = $view_factory;
@@ -77,11 +78,11 @@ final class View_Shortcode extends Shortcode {
 			(string) $object_id :
 			'';
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Layouts_Cpt::NAME );
+		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
 			$this->print_error_markup(
-				self::NAME,
+				$this->get_shortcode_name(),
 				$attrs,
 				__( 'View is missing', 'acf-views' )
 			);
@@ -168,7 +169,7 @@ final class View_Shortcode extends Shortcode {
 
 		if ( '' === $data_post_id ) {
 			$this->print_error_markup(
-				self::NAME,
+				$this->get_shortcode_name(),
 				$attrs,
 				__( 'object-id argument contains the wrong value', 'acf-views' )
 			);
@@ -239,7 +240,7 @@ final class View_Shortcode extends Shortcode {
 			return;
 		}
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Layouts_Cpt::NAME );
+		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
 			wp_json_encode(
@@ -254,10 +255,6 @@ final class View_Shortcode extends Shortcode {
 
 		echo wp_json_encode( $response );
 		exit;
-	}
-
-	protected function get_post_type(): string {
-		return Layouts_Cpt::NAME;
 	}
 
 	protected function get_unique_id_prefix(): string {

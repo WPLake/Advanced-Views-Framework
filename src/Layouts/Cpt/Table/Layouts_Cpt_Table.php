@@ -5,30 +5,31 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt_Table extends Cpt_Table {
-	const COLUMN_DESCRIPTION    = Layouts_Cpt::NAME . '_description';
-	const COLUMN_SHORTCODE      = Layouts_Cpt::NAME . '_shortcode';
-	const COLUMN_LAST_MODIFIED  = Layouts_Cpt::NAME . '_lastModified';
-	const COLUMN_RELATED_GROUPS = Layouts_Cpt::NAME . '_relatedGroups';
-	const COLUMN_RELATED_CARDS  = Layouts_Cpt::NAME . '_relatedCards';
+	const COLUMN_DESCRIPTION    = 'description';
+	const COLUMN_SHORTCODE      = 'shortcode';
+	const COLUMN_LAST_MODIFIED  = 'lastModified';
+	const COLUMN_RELATED_GROUPS = 'relatedGroups';
+	const COLUMN_RELATED_CARDS  = 'relatedCards';
 
 	private Html $html;
 	private Layouts_Cpt_Meta_Boxes $views_meta_boxes;
 
 	public function __construct(
-		Cpt_Data_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_data_storage,
 		string $name,
 		Html $html,
 		Layouts_Cpt_Meta_Boxes $views_cpt_meta_boxes
@@ -43,14 +44,14 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		return $this->views_meta_boxes;
 	}
 
-	protected function print_column( string $column_name, Cpt_Settings $cpt_data ): void {
+	protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void {
 		if ( false === ( $cpt_data instanceof Layout_Settings ) ) {
 			return;
 		}
 
 		$view_data = $cpt_data;
 
-		switch ( $column_name ) {
+		switch ( $short_column_name ) {
 			case self::COLUMN_DESCRIPTION:
 				echo esc_html( $view_data->description );
 				break;
@@ -58,7 +59,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$view_data->get_unique_id( true ),
 					true,
-					View_Shortcode::NAME,
+					Layouts_Feature::shortcode(),
 					$view_data->title,
 					false,
 					$view_data->is_for_internal_usage_only()
@@ -143,7 +144,6 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		}
 
 		self::add_action( 'pre_get_posts', array( $this, 'add_sortable_columns_to_request' ) );
-		self::add_filter( sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ), array( $this, 'get_columns' ) );
 
 		self::add_filter(
 			sprintf( 'manage_edit-%s_sortable_columns', $this->get_cpt_name() ),

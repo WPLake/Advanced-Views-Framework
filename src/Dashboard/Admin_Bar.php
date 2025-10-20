@@ -6,26 +6,27 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Admin_Bar;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
 class Admin_Bar extends Hookable implements Hooks_Interface {
-	private View_Shortcode $view_shortcode;
-	private Card_Shortcode $card_shortcode;
+	private Layout_Shortcode $view_shortcode;
+	private Post_Selection_Shortcode $card_shortcode;
 	private Live_Reloader_Component $live_reloader_component;
 	private Settings $settings;
 
 	public function __construct(
-		View_Shortcode $view_shortcode,
-		Card_Shortcode $card_shortcode,
+		Layout_Shortcode $view_shortcode,
+		Post_Selection_Shortcode $card_shortcode,
 		Live_Reloader_Component $live_reloader_component,
 		Settings $settings
 	) {
@@ -65,7 +66,7 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 			array(
 				'id'    => 'acf-views',
 				'title' => $title,
-				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ) ),
+				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Layouts_Feature::cpt_name() ) ),
 			),
 			array(
 				'parent' => 'acf-views',

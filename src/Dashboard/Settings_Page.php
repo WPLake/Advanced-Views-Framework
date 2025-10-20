@@ -7,8 +7,7 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
@@ -19,7 +18,7 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Post;
 use WP_Query;
 
@@ -34,8 +33,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	private array $values;
 	private Plugin_Settings $settings_data;
 	private Settings $settings;
-	private Layouts_Data_Storage $views_data_storage;
-	private Post_Selections_Data_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
 	private Automatic_Reports $automatic_reports;
@@ -44,8 +43,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		Logger $logger,
 		Plugin_Settings $settings_data,
 		Settings $settings,
-		Layouts_Data_Storage $views_data_storage,
-		Post_Selections_Data_Storage $cards_data_storage,
+		Layouts_Settings_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
 		Git_Repository $git_repository,
 		Automatic_Reports $automatic_reports
 	) {

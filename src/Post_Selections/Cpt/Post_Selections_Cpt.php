@@ -4,7 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
@@ -13,17 +14,15 @@ defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt extends Cpt {
 
-	const NAME = 'acf_cards';
+	private Post_Selections_Settings_Storage $card_data_storage;
 
-	private Post_Selections_Data_Storage $card_data_storage;
-
-	public function __construct( Post_Selections_Data_Storage $cards_data_storage ) {
-		parent::__construct( $cards_data_storage );
+	public function __construct( Plugin_Feature $plugin_feature, Post_Selections_Settings_Storage $cards_data_storage ) {
+		parent::__construct( $plugin_feature, $cards_data_storage );
 
 		$this->card_data_storage = $cards_data_storage;
 	}
 
-	protected function get_cards_data_storage(): Post_Selections_Data_Storage {
+	protected function get_cards_data_storage(): Post_Selections_Settings_Storage {
 		return $this->card_data_storage;
 	}
 

@@ -6,16 +6,16 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
-use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_REST_Request;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
@@ -24,17 +24,17 @@ defined( 'ABSPATH' ) || exit;
 class Live_Reloader extends Hookable implements Hooks_Interface {
 	use Safe_Array_Arguments;
 
-	private Layouts_Data_Storage $views_data_storage;
-	private Post_Selections_Data_Storage $cards_data_storage;
-	private View_Shortcode $view_shortcode;
-	private Card_Shortcode $card_shortcode;
+	private Layouts_Settings_Storage $views_data_storage;
+	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layout_Shortcode $view_shortcode;
+	private Post_Selection_Shortcode $card_shortcode;
 	private int $request_post_id;
 
 	public function __construct(
-		Layouts_Data_Storage $views_data_storage,
-		Post_Selections_Data_Storage $cards_data_storage,
-		View_Shortcode $view_shortcode,
-		Card_Shortcode $card_shortcode
+		Layouts_Settings_Storage $views_data_storage,
+		Post_Selections_Settings_Storage $cards_data_storage,
+		Layout_Shortcode $view_shortcode,
+		Post_Selection_Shortcode $card_shortcode
 	) {
 		$this->views_data_storage = $views_data_storage;
 		$this->cards_data_storage = $cards_data_storage;
@@ -133,11 +133,11 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 		$new_code_hashes = $cpt_data->get_code_hashes();
 		$is_css_changed  = $this->get_string_arg( Cpt_Settings::HASH_CSS, $old_code_hashes ) !==
-		                   $new_code_hashes[ Cpt_Settings::HASH_CSS ];
+							$new_code_hashes[ Cpt_Settings::HASH_CSS ];
 		$is_js_changed   = $this->get_string_arg( Cpt_Settings::HASH_JS, $old_code_hashes ) !==
-		                   $new_code_hashes[ Cpt_Settings::HASH_JS ];
+							$new_code_hashes[ Cpt_Settings::HASH_JS ];
 		$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $old_code_hashes ) !==
-		                   $new_code_hashes[ Cpt_Settings::HASH_HTML ];
+							$new_code_hashes[ Cpt_Settings::HASH_HTML ];
 
 		$response = array(
 			'codeHashes' => $new_code_hashes,
@@ -175,7 +175,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 	 */
 	protected function is_page_reload_required( Cpt_Settings $cpt_data, array $code_hashes, bool $is_gutenberg_block ): bool {
 		$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $code_hashes ) !==
-		                   $cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ];
+							$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ];
 
 		// 1. HTML changed for gutenberg blocks or on non-post related pages
 		if ( true === $is_html_changed &&
@@ -189,7 +189,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 		// so if it's added later dynamically, it's just hidden. Confirmed by local tests and also by others:
 		// see https://stackoverflow.com/questions/67932949/html-template-shadow-dom-not-rendering-within-handlebars-template.
 		$is_css_changed = $this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
-		                  $cpt_data->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
+							$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
 
 		// 2. Html or CSS changed for elements with the Declarative Shadow DOM.
 		return true === $is_declarative_shadow_dom &&
@@ -202,13 +202,13 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 	protected function is_html_force_change_required( Cpt_Settings $cpt_data, array $code_hashes ): bool {
 		// 1. JS change required HTML update (so web component will be created and processed by the new JS).
 		$is_js_changed = $this->get_string_arg( Cpt_Settings::HASH_JS, $code_hashes ) !==
-		                 $cpt_data->get_code_hashes()[ Cpt_Settings::HASH_JS ];
+						$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_JS ];
 
 		// 2. CSS changes when JS shadow root is enabled require HTML update (as CSS is inside HTML in that case).
 		// (Declarative shadow root requires full page reloading, so that in the other place).
 		$is_css_in_js_shadow_dom_changed = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_data->web_component &&
-		                                   $this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
-		                                   $cpt_data->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
+											$this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
+											$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
 
 		return true === $is_js_changed ||
 				true === $is_css_in_js_shadow_dom_changed;
@@ -321,7 +321,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 				$this->cards_data_storage->get( $unique_id );
 
 			$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $code_hashes ) !==
-			                   $cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ] ||
+								$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ] ||
 			true === $this->is_html_force_change_required( $cpt_data, $code_hashes );
 
 			if ( false === $cpt_data->isLoaded() ||

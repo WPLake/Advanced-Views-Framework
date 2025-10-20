@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -397,9 +398,13 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	public function get_admin_url(
 		string $page = '',
-		string $cpt_name = Layouts_Cpt::NAME,
+		?string $cpt_name = null,
 		string $base = 'edit.php'
 	): string {
+		$cpt_name = is_null( $cpt_name ) ?
+			Layouts_Feature::cpt_name() :
+			$cpt_name;
+
 		$page_arg = '' !== $page ?
 			'&page=' . $page :
 			'';
