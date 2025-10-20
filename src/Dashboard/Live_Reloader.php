@@ -127,7 +127,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 		array $old_code_hashes,
 		bool $is_assets_only
 	): array {
-		$shortcode = true === ( $cpt_data instanceof View_Data ) ?
+		$renderer = true === ( $cpt_data instanceof View_Data ) ?
 			$this->view_shortcode :
 			$this->card_shortcode;
 
@@ -164,11 +164,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 				$shortcode_arguments['object-id'] = $this->request_post_id;
 			}
 
-			ob_start();
-			$shortcode->render( $shortcode_arguments );
-			$html = (string) ob_get_clean();
-
-			$response['html'] = $html;
+			$response['html'] = $renderer->render_shortcode( $shortcode_arguments );
 		}
 
 		return $response;

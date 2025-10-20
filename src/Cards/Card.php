@@ -99,22 +99,22 @@ class Card extends Instance {
 	}
 
 	/**
-	 * @param mixed $php_code_return
+	 * @param mixed $controller
 	 *
 	 * @return array<string,mixed>
 	 */
-	protected function get_ajax_response_args( $php_code_return ): array {
+	protected function get_ajax_response_args( $controller ): array {
 		// nothing in the Lite version.
 		return array();
 	}
 
 	/**
-	 * @param mixed $php_code_return
+	 * @param mixed $controller
 	 *
 	 * @return array<string,mixed>
 	 */
 	// @phpstan-ignore-next-line
-	public function get_rest_api_response_args( WP_REST_Request $request, $php_code_return ): array {
+	public function get_rest_api_response_args( WP_REST_Request $request, $controller ): array {
 		// nothing in the Lite version.
 		return array();
 	}

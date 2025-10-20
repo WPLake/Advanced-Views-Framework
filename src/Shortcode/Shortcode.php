@@ -55,7 +55,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 	/**
 	 * @param string[] $user_roles
-	 * @param array<string,mixed> $shortcode_args
+	 * @param mixed[] $shortcode_args
 	 */
 	protected function is_shortcode_available_for_user( array $user_roles, array $shortcode_args ): bool {
 		$user_with_roles = $shortcode_args['user-with-roles'] ?? '';
@@ -99,7 +99,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	/**
-	 * @param array<string,mixed> $args
+	 * @param mixed[] $args
 	 */
 	protected function print_error_markup( string $shortcode, array $args, string $error ): void {
 		$attrs = array();
@@ -125,7 +125,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	/**
-	 * @param array<string,mixed> $shortcode_arguments
+	 * @param mixed[] $shortcode_arguments
 	 */
 	public function maybe_add_quick_link_and_shadow_css(
 		string $html,

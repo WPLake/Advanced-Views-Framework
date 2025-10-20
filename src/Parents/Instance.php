@@ -38,19 +38,19 @@ abstract class Instance {
 	): bool;
 
 	/**
-	 * @param mixed $php_code_return
+	 * @param mixed $controller
 	 *
 	 * @return array<string,mixed>
 	 */
-	abstract protected function get_ajax_response_args( $php_code_return ): array;
+	abstract protected function get_ajax_response_args( $controller ): array;
 
 	/**
-	 * @param mixed $php_code_return
+	 * @param mixed $controller
 	 *
 	 * @return array<string,mixed>
 	 */
 	// @phpstan-ignore-next-line
-	abstract protected function get_rest_api_response_args( WP_REST_Request $request, $php_code_return ): array;
+	abstract protected function get_rest_api_response_args( WP_REST_Request $request, $controller ): array;
 
 	protected function get_classes(): string {
 		$classes  = '';
