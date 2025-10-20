@@ -6,10 +6,10 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 
@@ -26,51 +26,51 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 
 	abstract protected function print_common_js_code( string $var_name ): void;
 
-	abstract protected function print_common_css_code( string $field_selector, Cpt_Data $cpt_data ): void;
+	abstract protected function print_common_css_code( string $field_selector, Cpt_Settings $cpt_data ): void;
 
-	abstract public function is_target_card( Card_Data $card_data ): bool;
+	abstract public function is_target_card( Post_Selection_Settings $card_data ): bool;
 
 	protected function set_card_field_id( string $card_field_id ): void {
 		$this->card_field_id = $card_field_id;
 	}
 
-	protected function is_web_component_required_for_card( Card_Data $card_data ): bool {
+	protected function is_web_component_required_for_card( Post_Selection_Settings $card_data ): bool {
 		return $this->is_with_web_component() &&
 				$this->is_target_card( $card_data );
 	}
 
-	protected function print_js_code( string $var_name, Field_Data $field_data, View_Data $view_data ): void {
+	protected function print_js_code( string $var_name, Field_Settings $field_data, Layout_Settings $view_data ): void {
 		$this->print_common_js_code( $var_name );
 	}
 
 	protected function print_css_code(
 		string $field_selector,
-		Field_Data $field_data,
-		View_Data $view_data
+		Field_Settings $field_data,
+		Layout_Settings $view_data
 	): void {
 		$this->print_common_css_code( $field_selector, $view_data );
 	}
 
-	public function get_card_items_wrapper_class( Card_Data $card_data ): string {
+	public function get_card_items_wrapper_class( Post_Selection_Settings $card_data ): string {
 		return '';
 	}
 
 	/**
 	 * @return Html_Wrapper[]
 	 */
-	public function get_card_item_outers( Card_Data $card_data ): array {
+	public function get_card_item_outers( Post_Selection_Settings $card_data ): array {
 		return array();
 	}
 
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_card_shortcode_attrs( Card_Data $card_data ): array {
+	public function get_card_shortcode_attrs( Post_Selection_Settings $card_data ): array {
 		return array();
 	}
 
-	public function is_web_component_required( Cpt_Data $cpt_data ): bool {
-		return $cpt_data instanceof Card_Data ?
+	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
+		return $cpt_data instanceof Post_Selection_Settings ?
 			$this->is_web_component_required_for_card( $cpt_data ) :
 			parent::is_web_component_required( $cpt_data );
 	}
@@ -78,13 +78,13 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 	/**
 	 * @return array{css:array<string,string>,js:array<string,string>}
 	 */
-	public function generate_code( Cpt_Data $cpt_data ): array {
+	public function generate_code( Cpt_Settings $cpt_data ): array {
 		$code = array(
 			'css' => array(),
 			'js'  => array(),
 		);
 
-		if ( ! ( $cpt_data instanceof Card_Data ) ) {
+		if ( ! ( $cpt_data instanceof Post_Selection_Settings ) ) {
 			return parent::generate_code( $cpt_data );
 		}
 

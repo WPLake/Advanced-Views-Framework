@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Lightbox_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -193,8 +193,8 @@ class Image_Field extends Markup_Field {
 
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return $view_data->is_with_unnecessary_wrappers;
@@ -204,15 +204,15 @@ class Image_Field extends Markup_Field {
 	 * @return string[]
 	 */
 	public function get_conditional_fields( Field_Meta_Interface $field_meta ): array {
-		$conditional_fields = array( Field_Data::FIELD_IMAGE_SIZE );
+		$conditional_fields = array( Field_Settings::FIELD_IMAGE_SIZE );
 
 		// repeatable fields aren't supported (they've markup like a repeater field).
 		if ( null === $field_meta->get_self_repeatable_meta() ) {
 			$conditional_fields = array_merge(
 				$conditional_fields,
 				array(
-					Field_Data::FIELD_LIGHTBOX_TYPE,
-					Field_Data::FIELD_GALLERY_WITH_LIGHT_BOX,
+					Field_Settings::FIELD_LIGHTBOX_TYPE,
+					Field_Settings::FIELD_GALLERY_WITH_LIGHT_BOX,
 				)
 			);
 		}
@@ -220,7 +220,7 @@ class Image_Field extends Markup_Field {
 		return array_merge( parent::get_conditional_fields( $field_meta ), $conditional_fields );
 	}
 
-	public function get_front_assets( Field_Data $field_data ): array {
+	public function get_front_assets( Field_Settings $field_data ): array {
 		$front_assets = array();
 
 		switch ( $field_data->lightbox_type ) {

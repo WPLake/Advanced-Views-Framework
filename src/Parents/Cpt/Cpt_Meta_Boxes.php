@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -58,7 +58,7 @@ abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	public function print_mount_points( Cpt_Data $cpt_data ): void {
+	public function print_mount_points( Cpt_Settings $cpt_data ): void {
 		$post_types      = array();
 		$safe_post_links = array();
 

@@ -7,19 +7,19 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
-use Org\Wplake\Advanced_Views\Groups\Settings_Data;
+use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use WP_Post;
 use WP_Query;
 
@@ -32,20 +32,20 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	 * @var array<string,mixed>
 	 */
 	private array $values;
-	private Settings_Data $settings_data;
+	private Plugin_Settings $settings_data;
 	private Settings $settings;
-	private Views_Data_Storage $views_data_storage;
-	private Cards_Data_Storage $cards_data_storage;
+	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Data_Storage $cards_data_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
 	private Automatic_Reports $automatic_reports;
 
 	public function __construct(
 		Logger $logger,
-		Settings_Data $settings_data,
+		Plugin_Settings $settings_data,
 		Settings $settings,
-		Views_Data_Storage $views_data_storage,
-		Cards_Data_Storage $cards_data_storage,
+		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Data_Storage $cards_data_storage,
 		Git_Repository $git_repository,
 		Automatic_Reports $automatic_reports
 	) {
@@ -134,7 +134,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 				'slug'            => self::SLUG,
 				'page_title'      => __( 'Settings', 'acf-views' ),
 				'menu_title'      => __( 'Settings', 'acf-views' ),
-				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ),
+				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ),
 				'position'        => 2,
 				'update_button'   => __( 'Save changes', 'acf-views' ),
 				'updated_message' => $updated_message,
@@ -162,7 +162,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 				// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
 				// also check to make sure it's array (can be empty string).
-				if ( Settings_Data::getAcfFieldName( Settings_Data::FIELD_GIT_REPOSITORIES ) === $field_name &&
+				if ( Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES ) === $field_name &&
 					true === is_array( $value ) ) {
 					$value = Group::convertRepeaterFieldValues( $field_name, $value );
 				}
@@ -194,13 +194,13 @@ final class Settings_Page extends Action implements Hooks_Interface {
 				$value      = '';
 
 				switch ( $field_name ) {
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_DEV_MODE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_DEV_MODE ):
 						$value = $this->settings->is_dev_mode();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_FILE_SYSTEM_STORAGE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_FILE_SYSTEM_STORAGE ):
 						$value = '' !== $this->views_data_storage->get_file_system()->get_base_folder();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_GIT_REPOSITORIES ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES ):
 						$this->settings_data->git_repositories = array();
 
 						foreach ( $this->settings->get_git_repositories() as $git_repository_data ) {
@@ -213,7 +213,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 							$this->settings_data->git_repositories[] = $git_repository;
 						}
 
-						$git_repositories_field_name = Settings_Data::getAcfFieldName( Settings_Data::FIELD_GIT_REPOSITORIES );
+						$git_repositories_field_name = Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES );
 						$value                       = $this->settings_data->getFieldValues()[ $git_repositories_field_name ] ?? array();
 
 						$value = true === is_array( $value ) ?
@@ -222,31 +222,31 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 						$this->settings_data->git_repositories = array();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_AUTOMATIC_REPORTS_DISABLED ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_AUTOMATIC_REPORTS_DISABLED ):
 						$value = $this->settings->is_automatic_reports_disabled();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_TEMPLATE_ENGINE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_TEMPLATE_ENGINE ):
 						$value = $this->settings->get_template_engine();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_WEB_COMPONENTS_TYPE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_WEB_COMPONENTS_TYPE ):
 						$value = $this->settings->get_web_components_type();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_CLASSES_GENERATION ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_CLASSES_GENERATION ):
 						$value = $this->settings->get_classes_generation();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_IS_CPT_ADMIN_OPTIMIZATION_ENABLED ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_CPT_ADMIN_OPTIMIZATION_ENABLED ):
 						$value = $this->settings->is_cpt_admin_optimization_enabled();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_SASS_TEMPLATE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_SASS_TEMPLATE ):
 						$value = $this->settings->get_sass_template();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_TS_TEMPLATE ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_TS_TEMPLATE ):
 						$value = $this->settings->get_ts_template();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_LIVE_RELOAD_INTERVAL_SECONDS ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_LIVE_RELOAD_INTERVAL_SECONDS ):
 						$value = $this->settings->get_live_reload_interval_seconds();
 						break;
-					case Settings_Data::getAcfFieldName( Settings_Data::FIELD_LIVE_RELOAD_INACTIVE_DELAY_SECONDS ):
+					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_LIVE_RELOAD_INACTIVE_DELAY_SECONDS ):
 						$value = $this->settings->get_live_reload_inactive_delay_seconds();
 						break;
 				}

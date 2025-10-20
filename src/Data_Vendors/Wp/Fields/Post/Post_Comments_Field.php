@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -86,7 +86,7 @@ class Post_Comments_Field extends Markup_Field {
 	 */
 	protected function get_item_twig_args(
 		?WP_Comment $comment,
-		Field_Data $field_data,
+		Field_Settings $field_data,
 		bool $is_for_validation = false
 	): array {
 		if ( $is_for_validation ||
@@ -217,8 +217,8 @@ class Post_Comments_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;

@@ -7,14 +7,14 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use WP_Comment;
 use WP_Term;
 
@@ -27,8 +27,8 @@ final class View_Shortcode extends Shortcode {
 
 	use Safe_Array_Arguments;
 
-	private View_Factory $view_factory;
-	private Views_Data_Storage $views_data_storage;
+	private Layout_Factory $view_factory;
+	private Layouts_Data_Storage $views_data_storage;
 	/**
 	 * Used to avoid recursion with post_object/relationship fields
 	 *
@@ -39,10 +39,10 @@ final class View_Shortcode extends Shortcode {
 
 	public function __construct(
 		Settings $settings,
-		Views_Data_Storage $views_data_storage,
+		Layouts_Data_Storage $views_data_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
-		View_Factory $view_factory,
+		Layout_Factory $view_factory,
 		Shortcode_Block $block_shortcodes
 	) {
 		parent::__construct( $settings, $views_data_storage, $view_factory, $front_assets, $live_reloader_component );
@@ -77,7 +77,7 @@ final class View_Shortcode extends Shortcode {
 			(string) $object_id :
 			'';
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Views_Cpt::NAME );
+		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Layouts_Cpt::NAME );
 
 		if ( '' === $view_unique_id ) {
 			$this->print_error_markup(
@@ -239,7 +239,7 @@ final class View_Shortcode extends Shortcode {
 			return;
 		}
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Views_Cpt::NAME );
+		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, Layouts_Cpt::NAME );
 
 		if ( '' === $view_unique_id ) {
 			wp_json_encode(
@@ -257,11 +257,11 @@ final class View_Shortcode extends Shortcode {
 	}
 
 	protected function get_post_type(): string {
-		return Views_Cpt::NAME;
+		return Layouts_Cpt::NAME;
 	}
 
 	protected function get_unique_id_prefix(): string {
-		return View_Data::UNIQUE_ID_PREFIX;
+		return Layout_Settings::UNIQUE_ID_PREFIX;
 	}
 
 	// get_page_by_path() requires post_type, but we don't know it, so use the direct query.

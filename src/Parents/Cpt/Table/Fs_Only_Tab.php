@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 
@@ -163,7 +163,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 			'</div>';
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Data $cpt_data ): void {
+	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
 		$url = add_query_arg(
 			array(
 				self::KEY_SINGLE_ACTION => $cpt_data->get_unique_id(),

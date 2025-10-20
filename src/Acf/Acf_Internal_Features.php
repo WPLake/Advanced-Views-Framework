@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Acf;
 
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
@@ -70,8 +70,8 @@ class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 
 	public function set_hooks( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_admin() ||
-			( false === $current_screen->is_admin_cpt_related( Views_Cpt::NAME ) &&
-				false === $current_screen->is_admin_cpt_related( Cards_Cpt::NAME ) &&
+			( false === $current_screen->is_admin_cpt_related( Layouts_Cpt::NAME ) &&
+				false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::NAME ) &&
 				false === $current_screen->is_ajax() ) ) {
 			return;
 		}

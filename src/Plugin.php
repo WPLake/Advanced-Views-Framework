@@ -4,11 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -345,28 +345,28 @@ class Plugin extends Hookable implements Hooks_Interface {
 		$field_name = $field['key'] ?? '';
 
 		switch ( $field_name ) {
-			case View_Data::getAcfFieldName( View_Data::FIELD_TEMPLATE_ENGINE ):
-			case Card_Data::getAcfFieldName( Card_Data::FIELD_TEMPLATE_ENGINE ):
+			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_ENGINE ):
+			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_ENGINE ):
 				$field['value'] = $this->settings->get_template_engine();
 				break;
-			case View_Data::getAcfFieldName( View_Data::FIELD_WEB_COMPONENT ):
-			case Card_Data::getAcfFieldName( Card_Data::FIELD_WEB_COMPONENT ):
+			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_WEB_COMPONENT ):
+			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_WEB_COMPONENT ):
 				$web_components_type = $this->settings->get_web_components_type();
 
 				if ( '' !== $web_components_type ) {
 					$field['value'] = $web_components_type;
 				}
 				break;
-			case View_Data::getAcfFieldName( View_Data::FIELD_CLASSES_GENERATION ):
-			case Card_Data::getAcfFieldName( Card_Data::FIELD_CLASSES_GENERATION ):
+			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CLASSES_GENERATION ):
+			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CLASSES_GENERATION ):
 				$field['value'] = $this->settings->get_classes_generation();
 				break;
-			case View_Data::getAcfFieldName( View_Data::FIELD_SASS_CODE ):
-			case Card_Data::getAcfFieldName( Card_Data::FIELD_SASS_CODE ):
+			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_SASS_CODE ):
+			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_SASS_CODE ):
 				$field['value'] = $this->settings->get_sass_template();
 				break;
-			case View_Data::getAcfFieldName( View_Data::FIELD_TS_CODE ):
-			case Card_Data::getAcfFieldName( Card_Data::FIELD_TS_CODE ):
+			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TS_CODE ):
+			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TS_CODE ):
 				$field['value'] = $this->settings->get_ts_template();
 				break;
 		}
@@ -397,7 +397,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	public function get_admin_url(
 		string $page = '',
-		string $cpt_name = Views_Cpt::NAME,
+		string $cpt_name = Layouts_Cpt::NAME,
 		string $base = 'edit.php'
 	): string {
 		$page_arg = '' !== $page ?
@@ -432,8 +432,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 		self::add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
 		self::add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
 
-		if ( true === $current_screen->is_admin_cpt_related( Views_Cpt::NAME, Current_Screen::CPT_ADD ) ||
-			true === $current_screen->is_admin_cpt_related( Cards_Cpt::NAME, Current_Screen::CPT_ADD ) ) {
+		if ( true === $current_screen->is_admin_cpt_related( Layouts_Cpt::NAME, Current_Screen::CPT_ADD ) ||
+			true === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::NAME, Current_Screen::CPT_ADD ) ) {
 			self::add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
 		}
 	}

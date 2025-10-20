@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
 class Options {
-	const PREFIX                                = Views_Cpt::NAME . '_';
+	const PREFIX                                = Layouts_Cpt::NAME . '_';
 	const OPTION_SETTINGS                       = self::PREFIX . 'settings';
 	const TRANSIENT_DEACTIVATED_OTHER_INSTANCES = self::PREFIX . 'deactivated_other_instances';
 	const TRANSIENT_LICENSE_EXPIRATION_DISMISS  = self::PREFIX . 'license_expiration_dismiss';

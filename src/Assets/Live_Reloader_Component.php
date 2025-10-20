@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Assets;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -69,7 +69,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 	/**
 	 * @param array<string,mixed> $shortcode_arguments
 	 */
-	public function get_reloading_component( Cpt_Data $cpt_data, array $shortcode_arguments, bool $is_gutenberg_block ): string {
+	public function get_reloading_component( Cpt_Settings $cpt_data, array $shortcode_arguments, bool $is_gutenberg_block ): string {
 		if ( false === $this->is_active ) {
 			return '';
 		}

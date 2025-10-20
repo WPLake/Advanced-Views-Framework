@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Upgrades;
@@ -63,13 +63,13 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		// sort by names asc.
 		usort(
 			$all_pre_built_items,
-			function ( Cpt_Data $a, Cpt_Data $b ) {
+			function ( Cpt_Settings $a, Cpt_Settings $b ) {
 				return strcasecmp( $a->title, $b->title );
 			}
 		);
 
 		/**
-		 * @var Cpt_Data[] $current_pre_built_items
+		 * @var Cpt_Settings[] $current_pre_built_items
 		 */
 		$current_pre_built_items = $this->apply_array_pagination(
 			$all_pre_built_items,
@@ -209,7 +209,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		exit;
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Data $cpt_data ): void {
+	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
 		$url = add_query_arg(
 			array(
 				self::KEY_SINGLE_ACTION => $cpt_data->get_unique_id(),

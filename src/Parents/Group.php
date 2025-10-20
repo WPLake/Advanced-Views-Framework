@@ -7,12 +7,12 @@ namespace Org\Wplake\Advanced_Views\Parents;
 use Exception;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\AcfGroup;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Group extends AcfGroup {
-	const GROUP_NAME_PREFIX = 'local_' . Views_Cpt::NAME . '_';
+	const GROUP_NAME_PREFIX = 'local_' . Layouts_Cpt::NAME . '_';
 
 	// to keep back compatibility.
 	const FIELD_NAME_PREFIX = '';

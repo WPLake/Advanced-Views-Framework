@@ -5,15 +5,15 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_List_Table;
 use WP_Post;
 use WP_Post_Type;
@@ -51,7 +51,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$this->pagination_per_page  = null;
 	}
 
-	abstract protected function print_column( string $column_name, Cpt_Data $cpt_data ): void;
+	abstract protected function print_column( string $column_name, Cpt_Settings $cpt_data ): void;
 
 	protected function get_action_clone(): string {
 		return $this->cpt_name . '_clone';
@@ -236,7 +236,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$post_type = $query->query_vars['post_type'] ?? '';
 
 		if ( ! is_admin() ||
-			! in_array( $post_type, array( Views_Cpt::NAME, Cards_Cpt::NAME ), true ) ||
+			! in_array( $post_type, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) ||
 			! $query->is_main_query() ||
 			! $query->is_search() ) {
 			return;
@@ -249,9 +249,9 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$prefix = Views_Cpt::NAME === $post_type ?
-			View_Data::UNIQUE_ID_PREFIX :
-			Card_Data::UNIQUE_ID_PREFIX;
+		$prefix = Layouts_Cpt::NAME === $post_type ?
+			Layout_Settings::UNIQUE_ID_PREFIX :
+			Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
 		$query->set( 's', '' );
 		$query->set( 'name', $prefix . $search );

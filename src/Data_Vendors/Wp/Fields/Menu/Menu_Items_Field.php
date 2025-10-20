@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Link_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -324,8 +324,8 @@ class Menu_Items_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;
@@ -342,8 +342,8 @@ class Menu_Items_Field extends Markup_Field {
 		return array_merge(
 			parent::get_conditional_fields( $field_meta ),
 			array(
-				Field_Data::FIELD_IS_LINK_TARGET_BLANK,
-				Field_Data::FIELD_ACF_VIEW_ID,
+				Field_Settings::FIELD_IS_LINK_TARGET_BLANK,
+				Field_Settings::FIELD_ACF_VIEW_ID,
 			)
 		);
 	}

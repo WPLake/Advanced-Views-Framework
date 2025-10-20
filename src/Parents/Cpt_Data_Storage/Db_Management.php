@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use WP_Error;
 use WP_Post;
 use WP_Query;
@@ -198,7 +198,7 @@ class Db_Management extends Action {
 		return $post_id;
 	}
 
-	public function make_post_for_fs_only_item( Cpt_Data $cpt_data ): void {
+	public function make_post_for_fs_only_item( Cpt_Settings $cpt_data ): void {
 		$post_id = $this->make_new_post( $cpt_data->get_unique_id(), 'publish', $cpt_data->title );
 
 		if ( 0 === $post_id ) {
@@ -258,7 +258,7 @@ class Db_Management extends Action {
 		return $this->post_type;
 	}
 
-	public function maybe_assign_unique_id( int $post_id, Cpt_Data $cpt_data ): void {
+	public function maybe_assign_unique_id( int $post_id, Cpt_Settings $cpt_data ): void {
 		$current_slug = get_post( $post_id )->post_name ?? '';
 
 		if ( 0 === strpos( $current_slug, $this->unique_id_prefix ) ) {
@@ -343,7 +343,7 @@ class Db_Management extends Action {
 		);
 	}
 
-	public function delete_and_bypass_trash( Cpt_Data $cpt_data ): void {
+	public function delete_and_bypass_trash( Cpt_Settings $cpt_data ): void {
 		// 1. remove in DB (if post is present)
 		if ( 0 !== $cpt_data->get_post_id() ) {
 			wp_delete_post( $cpt_data->get_post_id(), true );

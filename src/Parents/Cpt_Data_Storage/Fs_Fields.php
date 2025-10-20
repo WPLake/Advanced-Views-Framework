@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
@@ -25,7 +25,7 @@ class Fs_Fields {
 	}
 
 	// returns the data.json content, without the defaults and template fields.
-	protected function get_data_json( Cpt_Data $cpt_data ): string {
+	protected function get_data_json( Cpt_Settings $cpt_data ): string {
 		$template_fs_field_names = $this->get_template_fs_field_names_without_json();
 
 		$tmp = array();
@@ -48,7 +48,7 @@ class Fs_Fields {
 		return $data_json;
 	}
 
-	protected function get_multilingual_strings_file_content( Cpt_Data $cpt_data ): string {
+	protected function get_multilingual_strings_file_content( Cpt_Settings $cpt_data ): string {
 		$file_lines = array();
 
 		foreach ( $cpt_data->get_multilingual_strings() as $text_domain => $labels ) {
@@ -68,7 +68,7 @@ class Fs_Fields {
 				join( "\n", $file_lines );
 	}
 
-	protected function get_links_md_content( Cpt_Data $cpt_data ): string {
+	protected function get_links_md_content( Cpt_Settings $cpt_data ): string {
 		return sprintf(
 			'[Edit "%s" in WordPress](%s)',
 			$cpt_data->title,
@@ -109,7 +109,7 @@ class Fs_Fields {
 	 * @return array<string, string>
 	 */
 	public function get_fs_field_values(
-		Cpt_Data $cpt_data,
+		Cpt_Settings $cpt_data,
 		bool $is_bulk_refresh = false,
 		bool $is_skip_auto_generated = false
 	): array {
@@ -159,7 +159,7 @@ class Fs_Fields {
 	/**
 	 * @param array<string,mixed> $fs_field_values
 	 */
-	public function set_fs_fields( Cpt_Data $cpt_data, array $fs_field_values ): void {
+	public function set_fs_fields( Cpt_Settings $cpt_data, array $fs_field_values ): void {
 		foreach ( $fs_field_values as $field_file => $field_value ) {
 			// ignore complex field types.
 			if ( false === is_string( $field_value ) &&
@@ -171,7 +171,7 @@ class Fs_Fields {
 		}
 	}
 
-	public function set_fs_field( Cpt_Data $cpt_data, string $field_file, string $field_value ): void {
+	public function set_fs_field( Cpt_Settings $cpt_data, string $field_file, string $field_value ): void {
 		switch ( $field_file ) {
 			case 'default.twig':
 				if ( Template_Engines::TWIG === $cpt_data->template_engine ) {

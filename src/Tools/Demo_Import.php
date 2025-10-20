@@ -9,49 +9,49 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post\Post_Fields;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Demo_Group;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 
 final class Demo_Import extends Hookable implements Hooks_Interface {
 
 	private int $samsung_id;
 	private int $xiaomi_id;
 	private int $nokia_id;
-	private ?View_Data $phone_view_data;
-	private ?Card_Data $phones_card_data;
+	private ?Layout_Settings $phone_view_data;
+	private ?Post_Selection_Settings $phones_card_data;
 	private int $samsung_article_id;
 	private int $phones_article_id;
 	private int $group_id;
 
 	private string $error;
 	private bool $is_processed;
-	private Views_Cpt_Save_Actions $views_cpt_save_actions;
+	private Layouts_Cpt_Save_Actions $views_cpt_save_actions;
 	private Settings $settings;
 	private bool $is_import_request;
-	private Item_Data $item;
-	private Cards_Cpt_Save_Actions $cards_cpt_save_actions;
-	private Cards_Data_Storage $cards_data_storage;
-	private Views_Data_Storage $views_data_storage;
+	private Item_Settings $item;
+	private Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions;
+	private Post_Selections_Data_Storage $cards_data_storage;
+	private Layouts_Data_Storage $views_data_storage;
 
 	public function __construct(
-		Cards_Cpt_Save_Actions $cards_cpt_save_actions,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		Cards_Data_Storage $cards_data_storage,
-		Views_Data_Storage $views_data_storage,
+		Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Post_Selections_Data_Storage $cards_data_storage,
+		Layouts_Data_Storage $views_data_storage,
 		Settings $settings,
-		Item_Data $item
+		Item_Settings $item
 	) {
 		$this->views_cpt_save_actions = $views_cpt_save_actions;
 		$this->cards_cpt_save_actions = $cards_cpt_save_actions;
@@ -249,7 +249,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 
 		$title_link_item             = $this->item->getDeepClone();
 		$title_link_item->group      = Post_Fields::GROUP_NAME;
-		$title_link_item->field->key = Field_Data::create_field_key(
+		$title_link_item->field->key = Field_Settings::create_field_key(
 			Post_Fields::GROUP_NAME,
 			Post_Fields::FIELD_TITLE_LINK
 		);
@@ -268,7 +268,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$brand_item               = $this->item->getDeepClone();
 		$brand_item->group        = $group_key;
 		$brand_item->field->label = __( 'Brand:', 'acf-views' );
-		$brand_item->field->key   = Field_Data::create_field_key( $group_key, $field_key );
+		$brand_item->field->key   = Field_Settings::create_field_key( $group_key, $field_key );
 		$brand_item->field->id    = 'brand';
 		$view->items[]            = $brand_item;
 
@@ -284,7 +284,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$model_item               = $this->item->getDeepClone();
 		$model_item->group        = $group_key;
 		$model_item->field->label = __( 'Model:', 'acf-views' );
-		$model_item->field->key   = Field_Data::create_field_key( $group_key, $field_key );
+		$model_item->field->key   = Field_Settings::create_field_key( $group_key, $field_key );
 		$model_item->field->id    = 'model';
 		$view->items[]            = $model_item;
 
@@ -300,7 +300,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$price_item               = $this->item->getDeepClone();
 		$price_item->group        = $group_key;
 		$price_item->field->label = __( 'Price:', 'acf-views' );
-		$price_item->field->key   = Field_Data::create_field_key( $group_key, $field_key );
+		$price_item->field->key   = Field_Settings::create_field_key( $group_key, $field_key );
 		$price_item->field->id    = 'price';
 		$view->items[]            = $price_item;
 
@@ -317,7 +317,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$website_item->group             = $group_key;
 		$website_item->field->label      = __( 'Website:', 'acf-views' );
 		$website_item->field->link_label = __( 'Visit', 'acf-views' );
-		$website_item->field->key        = Field_Data::create_field_key( $group_key, $field_key );
+		$website_item->field->key        = Field_Settings::create_field_key( $group_key, $field_key );
 		$website_item->field->id         = 'website';
 		$view->items[]                   = $website_item;
 

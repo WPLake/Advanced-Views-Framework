@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -27,7 +27,7 @@ abstract class Cpt_Table_Tab extends Hookable implements Hooks_Interface {
 
 	abstract public function maybe_show_action_result_message(): void;
 
-	abstract public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Data $cpt_data ): void;
+	abstract public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void;
 
 	protected function get_cpt_name(): string {
 		return $this->cpt_table->get_cpt_name();

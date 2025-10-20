@@ -5,9 +5,9 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 
@@ -24,21 +24,21 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 
 	protected function print_css_code(
 		string $field_selector,
-		Field_Data $field_data,
-		View_Data $view_data
+		Field_Settings $field_data,
+		Layout_Settings $view_data
 	): void {
 	}
 
 	protected function print_js_code(
 		string $var_name,
-		Field_Data $field_data,
-		View_Data $view_data
+		Field_Settings $field_data,
+		Layout_Settings $view_data
 	): void {
 	}
 
 	protected function get_item_selector(
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		bool $is_full,
 		bool $is_with_magic_selector,
 		string $target = 'field'
@@ -77,13 +77,13 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 	/**
 	 * @return array{css:array<string,string>,js:array<string,string>}
 	 */
-	public function generate_code( Cpt_Data $cpt_data ): array {
+	public function generate_code( Cpt_Settings $cpt_data ): array {
 		$code = array(
 			'css' => array(),
 			'js'  => array(),
 		);
 
-		if ( ! ( $cpt_data instanceof View_Data ) ) {
+		if ( ! ( $cpt_data instanceof Layout_Settings ) ) {
 			return $code;
 		}
 
@@ -153,18 +153,18 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 		return '';
 	}
 
-	public function get_row_wrapper_tag( Field_Data $field_data, string $row_type ): string {
+	public function get_row_wrapper_tag( Field_Settings $field_data, string $row_type ): string {
 		return '';
 	}
 
-	public function get_field_wrapper_tag( Field_Data $field_data, string $row_type ): string {
+	public function get_field_wrapper_tag( Field_Settings $field_data, string $row_type ): string {
 		return '';
 	}
 
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_field_wrapper_attrs( Field_Data $field_data, string $field_id ): array {
+	public function get_field_wrapper_attrs( Field_Settings $field_data, string $field_id ): array {
 		return array();
 	}
 
@@ -172,8 +172,8 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 	 * @return Html_Wrapper[]
 	 */
 	public function get_field_outers(
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		string $field_id,
 		string $row_type
 	): array {
@@ -184,15 +184,15 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 	 * @return Html_Wrapper[]
 	 */
 	public function get_item_outers(
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		string $field_id,
 		string $item_id
 	): array {
 		return array();
 	}
 
-	public function get_inner_variable_attributes( Field_Data $field_data, string $field_id ): array {
+	public function get_inner_variable_attributes( Field_Settings $field_data, string $field_id ): array {
 		return array();
 	}
 
@@ -200,9 +200,9 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 		return false;
 	}
 
-	public function is_web_component_required( Cpt_Data $cpt_data ): bool {
-		if ( ! ( $cpt_data instanceof View_Data ) ||
-			! $this->is_with_web_component() ) {
+	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
+		if ( ! ( $cpt_data instanceof Layout_Settings ) ||
+		     ! $this->is_with_web_component() ) {
 			return false;
 		}
 

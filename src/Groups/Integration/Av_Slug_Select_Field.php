@@ -10,7 +10,7 @@ use acf_field_select;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 
 if ( true === class_exists( 'acf_field_select' ) ) {
 	/**
@@ -21,10 +21,10 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 	class Av_Slug_Select_Field extends acf_field_select {
 		use Safe_Array_Arguments;
 
-		private Views_Data_Storage $views_data_storage;
+		private Layouts_Data_Storage $views_data_storage;
 
 		// @phpstan-ignore-next-line
-		public function __construct( Views_Data_Storage $views_data_storage ) {
+		public function __construct( Layouts_Data_Storage $views_data_storage ) {
 			// @phpstan-ignore-next-line
 			$this->public             = false;
 			$this->views_data_storage = $views_data_storage;

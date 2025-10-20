@@ -5,9 +5,9 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 
@@ -33,7 +33,7 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 		$this->maps = array();
 	}
 
-	protected function is_google_map_selector_inner( Field_Data $field_data ): bool {
+	protected function is_google_map_selector_inner( Field_Settings $field_data ): bool {
 		return false;
 	}
 
@@ -74,8 +74,8 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 		return $css_code;
 	}
 
-	public function maybe_activate( Cpt_Data $cpt_data ): void {
-		if ( ! ( $cpt_data instanceof View_Data ) ) {
+	public function maybe_activate( Cpt_Settings $cpt_data ): void {
+		if ( ! ( $cpt_data instanceof Layout_Settings ) ) {
 			return;
 		}
 
@@ -85,7 +85,7 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 		);
 
 		/**
-		 * @var Field_Data[] $target_fields
+		 * @var Field_Settings[] $target_fields
 		 */
 		$target_fields = array_merge( $target_fields, $target_sub_fields );
 

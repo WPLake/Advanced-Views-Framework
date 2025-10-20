@@ -8,8 +8,8 @@ use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Masonry_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Macy_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Splide_Front_Asset;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -93,8 +93,8 @@ class Gallery_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;
@@ -108,14 +108,14 @@ class Gallery_Field extends Markup_Field {
 
 		// repeatable fields aren't supported (they've markup like a repeater field).
 		if ( null === $field_meta->get_self_repeatable_meta() ) {
-			$conditional_fields[] = Field_Data::FIELD_GALLERY_TYPE;
-			$conditional_fields[] = Field_Data::FIELD_SLIDER_TYPE;
+			$conditional_fields[] = Field_Settings::FIELD_GALLERY_TYPE;
+			$conditional_fields[] = Field_Settings::FIELD_SLIDER_TYPE;
 		}
 
 		return array_merge( parent::get_conditional_fields( $field_meta ), $conditional_fields );
 	}
 
-	public function get_front_assets( Field_Data $field_data ): array {
+	public function get_front_assets( Field_Settings $field_data ): array {
 		$front_assets = $this->image_field->get_front_assets( $field_data );
 
 		switch ( $field_data->gallery_type ) {

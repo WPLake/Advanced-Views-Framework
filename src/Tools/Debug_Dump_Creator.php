@@ -7,22 +7,22 @@ namespace Org\Wplake\Advanced_Views\Tools;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
-use Org\Wplake\Advanced_Views\Groups\Tools_Data;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
+use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use WP_Query;
 use WP_Post;
 
 final class Debug_Dump_Creator {
-	private Tools_Data $tools_data;
+	private Tools_Settings $tools_data;
 	private Logger $logger;
-	private Views_Data_Storage $views_data_storage;
-	private Cards_Data_Storage $cards_data_storage;
+	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Data_Storage $cards_data_storage;
 
-	public function __construct( Tools_Data $tools_data, Logger $logger, Views_Data_Storage $views_data_storage, Cards_Data_Storage $cards_data_storage ) {
+	public function __construct( Tools_Settings $tools_data, Logger $logger, Layouts_Data_Storage $views_data_storage, Post_Selections_Data_Storage $cards_data_storage ) {
 		$this->tools_data         = $tools_data;
 		$this->logger             = $logger;
 		$this->views_data_storage = $views_data_storage;
@@ -107,10 +107,10 @@ final class Debug_Dump_Creator {
 		$export_data = array();
 
 		$views_to_export = array() !== $this->tools_data->dump_views ?
-			$this->get_posts( Views_Cpt::NAME, $this->tools_data->dump_views ) :
+			$this->get_posts( Layouts_Cpt::NAME, $this->tools_data->dump_views ) :
 			array();
 		$cards_to_export = array() !== $this->tools_data->dump_cards ?
-			$this->get_posts( Cards_Cpt::NAME, $this->tools_data->dump_cards ) :
+			$this->get_posts( Post_Selections_Cpt::NAME, $this->tools_data->dump_cards ) :
 			array();
 
 		foreach ( $views_to_export as $view_post ) {

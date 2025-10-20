@@ -6,13 +6,13 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Pods;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
-use Org\Wplake\Advanced_Views\Layouts\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
 
@@ -23,11 +23,11 @@ class Pods_Integration extends Data_Vendor_Integration {
 	private Pods_Data_Vendor $pods_data_vendor;
 
 	public function __construct(
-		Item_Data $item,
-		Views_Data_Storage $views_data_storage,
+		Item_Settings $item,
+		Layouts_Data_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		View_Factory $view_factory,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Layout_Factory $view_factory,
 		Pods_Data_Vendor $data_vendor,
 		View_Shortcode $view_shortcode,
 		Settings $settings
@@ -237,7 +237,7 @@ class Pods_Integration extends Data_Vendor_Integration {
 	/**
 	 * @param mixed $pod
 	 *
-	 * @return View_Data[]
+	 * @return Layout_Settings[]
 	 */
 	protected function get_related_acf_views( string $pod_name, $pod ): array {
 		if ( false === is_object( $pod ) ||

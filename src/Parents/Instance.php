@@ -13,10 +13,10 @@ defined( 'ABSPATH' ) || exit;
 abstract class Instance {
 	private string $template;
 	private Template_Engines $template_engines;
-	private Cpt_Data $cpt_data;
+	private Cpt_Settings $cpt_data;
 	private string $classes;
 
-	public function __construct( Template_Engines $template_engines, Cpt_Data $cpt_data, string $template, string $classes = '' ) {
+	public function __construct( Template_Engines $template_engines, Cpt_Settings $cpt_data, string $template, string $classes = '' ) {
 		$this->template_engines = $template_engines;
 		$this->cpt_data         = $cpt_data;
 		$this->template         = $template;

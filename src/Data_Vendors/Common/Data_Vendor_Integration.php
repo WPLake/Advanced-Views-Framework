@@ -7,17 +7,17 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Post;
 
@@ -29,20 +29,20 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	const NONCE_ADD_NEW = 'av-add-new';
 	const ARGUMENT_FROM = '_from-group';
 
-	private Item_Data $item;
-	private Views_Data_Storage $views_data_storage;
+	private Item_Settings $item;
+	private Layouts_Data_Storage $views_data_storage;
 	private Data_Vendors $data_vendors;
-	private Views_Cpt_Save_Actions $views_cpt_save_actions;
-	private View_Factory $view_factory;
+	private Layouts_Cpt_Save_Actions $views_cpt_save_actions;
+	private Layout_Factory $view_factory;
 	private Data_Vendor_Interface $data_vendor;
 	private View_Shortcode $view_shortcode;
 
 	public function __construct(
-		Item_Data $item,
-		Views_Data_Storage $views_data_storage,
+		Item_Settings $item,
+		Layouts_Data_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		View_Factory $view_factory,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Layout_Factory $view_factory,
 		Data_Vendor_Interface $data_vendor,
 		View_Shortcode $view_shortcode,
 		Settings $settings
@@ -70,7 +70,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	 */
 	abstract protected function fill_field_id_and_type( array $field, string &$field_id, string &$field_type ): void;
 
-	protected function get_block_description( View_Data $view_data ): string {
+	protected function get_block_description( Layout_Settings $view_data ): string {
 		return sprintf(
 			'%s (%s, id = %s).',
 			$view_data->description,
@@ -79,7 +79,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 		);
 	}
 
-	protected function get_block_id( View_Data $view_data ): string {
+	protected function get_block_id( Layout_Settings $view_data ): string {
 		return true === $view_data->is_gutenberg_block_with_digital_id ?
 			sprintf( 'acf-views-block-%s', $view_data->getSource() ) :
 			sprintf( 'acf-view-%s', $view_data->get_unique_id( true ) );
@@ -93,7 +93,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	 * @param array<string,mixed>|null $local_data
 	 */
 	protected function render_view(
-		View_Data $view_data,
+		Layout_Settings $view_data,
 		int $post_id,
 		?array $local_data = null
 	): void {
@@ -144,9 +144,9 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	protected function add_item_to_view(
 		string $group_id,
 		array $field,
-		View_Data $view_data,
+		Layout_Settings $view_data,
 		array $supported_field_types
-	): ?Item_Data {
+	): ?Item_Settings {
 		$field_id   = '';
 		$field_type = '';
 
@@ -189,7 +189,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 
 		$url = add_query_arg(
 			array(
-				'post_type'         => Views_Cpt::NAME,
+				'post_type'         => Layouts_Cpt::NAME,
 				self::ARGUMENT_FROM => $from,
 				'_wpnonce'          => wp_create_nonce( self::NONCE_ADD_NEW ),
 			),
@@ -215,7 +215,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	}
 
 	/**
-	 * @param View_Data[] $related_views
+	 * @param Layout_Settings[] $related_views
 	 * @param array<string,string> $add_new_link_args
 	 */
 	protected function print_related_acf_views(
@@ -272,7 +272,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	}
 
 	/**
-	 * @param View_Data[] $related_views
+	 * @param Layout_Settings[] $related_views
 	 *
 	 * @throws Exception
 	 */
@@ -285,7 +285,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	}
 
 	/**
-	 * @param View_Data[] $related_views
+	 * @param Layout_Settings[] $related_views
 	 *
 	 * @return string[]
 	 * @throws Exception
@@ -334,7 +334,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 		return $this->data_vendor->get_group_key( $from_post->post_name );
 	}
 
-	public function get_views_data_storage(): Views_Data_Storage {
+	public function get_views_data_storage(): Layouts_Data_Storage {
 		return $this->views_data_storage;
 	}
 
@@ -370,7 +370,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 				$is_add_screen = 'post' === $screen->base &&
 								'add' === $screen->action;
 
-				if ( Views_Cpt::NAME !== $screen->post_type ||
+				if ( Layouts_Cpt::NAME !== $screen->post_type ||
 					false === $is_add_screen ||
 					null === $from_post ||
 					$this->get_vendor_post_type() !== $from_post->post_type ||
@@ -494,7 +494,7 @@ abstract class Data_Vendor_Integration extends Cpt_Data_Creator implements Data_
 	}
 
 	/**
-	 * @param View_Data[] $view_data_items
+	 * @param Layout_Settings[] $view_data_items
 	 *
 	 * @return void
 	 */

@@ -11,8 +11,8 @@ use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -93,7 +93,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return $imports;
 	}
 
-	protected function print_component_js( Cpt_Data $cpt_data, string $js_code ): void {
+	protected function print_component_js( Cpt_Settings $cpt_data, string $js_code ): void {
 		$tag_name                   = $cpt_data->get_tag_name();
 		$is_wp_interactivity_in_use = $cpt_data->is_wp_interactivity_in_use();
 
@@ -124,7 +124,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$is_with_shadow_dom = Cpt_Data::WEB_COMPONENT_SHADOW_DOM === $cpt_data->web_component;
+		$is_with_shadow_dom = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_data->web_component;
 		$box_shadow_js      = true === $is_with_shadow_dom ?
 			'var html=this.innerHTML;this.attachShadow({mode:"open"});this.shadowRoot.innerHTML=html;' :
 			'';
@@ -323,9 +323,9 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		echo '<!--advanced-views:styles-->';
 	}
 
-	public function add_asset( Cpt_Data $cpt_data ): void {
+	public function add_asset( Cpt_Settings $cpt_data ): void {
 		$css_code = $this->minify_code(
-			$cpt_data->get_css_code( Cpt_Data::CODE_MODE_DISPLAY ),
+			$cpt_data->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
 			self::MINIFY_TYPE_CSS
 		);
 		$js_code  = $this->minify_code( $cpt_data->get_js_code(), self::MINIFY_TYPE_JS );
@@ -457,7 +457,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,array{css:array<string,string>,js:array<string,string>}>
 	 */
-	public function generate_code( Cpt_Data $cpt_data ): array {
+	public function generate_code( Cpt_Settings $cpt_data ): array {
 		$code = array();
 
 		foreach ( $this->assets as $asset ) {
@@ -474,7 +474,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return $code;
 	}
 
-	public function is_web_component_required( Cpt_Data $cpt_data ): bool {
+	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
 		foreach ( $this->assets as $asset ) {
 			if ( ! $asset->is_web_component_required( $cpt_data ) ) {
 				continue;
@@ -502,7 +502,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		);
 	}
 
-	public function get_card_items_wrapper_class( Card_Data $card_data ): string {
+	public function get_card_items_wrapper_class( Post_Selection_Settings $card_data ): string {
 		$classes = array();
 
 		foreach ( $this->assets as $asset ) {
@@ -526,7 +526,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return Html_Wrapper[]
 	 */
-	public function get_card_item_outers( Card_Data $card_data ): array {
+	public function get_card_item_outers( Post_Selection_Settings $card_data ): array {
 		/**
 		 * @var Html_Wrapper[] $outers
 		 */
@@ -563,7 +563,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_card_shortcode_attrs( Card_Data $card_data ): array {
+	public function get_card_shortcode_attrs( Post_Selection_Settings $card_data ): array {
 		$attrs = array();
 
 		foreach ( $this->assets as $asset ) {

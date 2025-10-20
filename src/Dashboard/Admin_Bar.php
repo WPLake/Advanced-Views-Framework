@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Shortcode\Card_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use WP_Admin_Bar;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -65,7 +65,7 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 			array(
 				'id'    => 'acf-views',
 				'title' => $title,
-				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ) ),
+				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ) ),
 			),
 			array(
 				'parent' => 'acf-views',

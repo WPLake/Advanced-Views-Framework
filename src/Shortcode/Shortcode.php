@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
@@ -152,7 +152,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 		if ( true === $cpt_data->is_css_internal() ) {
 			$shadow_css = $this->front_assets->minify_code(
-				$cpt_data->get_css_code( Cpt_Data::CODE_MODE_DISPLAY ),
+				$cpt_data->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
 				Front_Assets::MINIFY_TYPE_CSS
 			);
 			$shadow_css = sprintf(
@@ -161,7 +161,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			);
 		}
 
-		if ( Cpt_Data::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $cpt_data->web_component ) {
+		if ( Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $cpt_data->web_component ) {
 			$template_opening_tag = '<template shadowrootmode="open">';
 
 			// use strpos instead of str_replace, as we need to replace the first occurrence only,
@@ -181,12 +181,12 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		}
 
 		if ( false === $is_with_quick_link &&
-			Cpt_Data::WEB_COMPONENT_NONE === $cpt_data->web_component ) {
+		     Cpt_Settings::WEB_COMPONENT_NONE === $cpt_data->web_component ) {
 			return $html;
 		}
 
 		$html           = trim( $html );
-		$last_tag_regex = Cpt_Data::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE !== $cpt_data->web_component ?
+		$last_tag_regex = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE !== $cpt_data->web_component ?
 			'/<\/[a-z0-9\-_]+>$/' :
 			'/<\/template>/';
 

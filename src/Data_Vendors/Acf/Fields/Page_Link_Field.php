@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Acf\Fields;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Link_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\List_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -95,8 +95,8 @@ class Page_Link_Field extends List_Field {
 		return array_merge(
 			parent::get_conditional_fields( $field_meta ),
 			array(
-				Field_Data::FIELD_LINK_LABEL,
-				Field_Data::FIELD_IS_LINK_TARGET_BLANK,
+				Field_Settings::FIELD_LINK_LABEL,
+				Field_Settings::FIELD_IS_LINK_TARGET_BLANK,
 			)
 		);
 	}

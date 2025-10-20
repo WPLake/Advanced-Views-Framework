@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Acf\Acf_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Meta_Box_Data_Vendor;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -297,8 +297,8 @@ class Map_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return $view_data->is_with_unnecessary_wrappers ||
@@ -311,17 +311,17 @@ class Map_Field extends Markup_Field {
 	 */
 	public function get_conditional_fields( Field_Meta_Interface $field_meta ): array {
 		$args = array(
-			Field_Data::FIELD_MAP_MARKER_ICON,
-			Field_Data::FIELD_MAP_MARKER_ICON_TITLE,
+			Field_Settings::FIELD_MAP_MARKER_ICON,
+			Field_Settings::FIELD_MAP_MARKER_ICON_TITLE,
 		);
 
 		if ( Acf_Data_Vendor::NAME === $field_meta->get_vendor_name() ) {
 			$args = array_merge(
 				$args,
 				array(
-					Field_Data::FIELD_MAP_ADDRESS_FORMAT,
-					Field_Data::FIELD_IS_MAP_WITH_ADDRESS,
-					Field_Data::FIELD_IS_MAP_WITHOUT_GOOGLE_MAP,
+					Field_Settings::FIELD_MAP_ADDRESS_FORMAT,
+					Field_Settings::FIELD_IS_MAP_WITH_ADDRESS,
+					Field_Settings::FIELD_IS_MAP_WITHOUT_GOOGLE_MAP,
 				)
 			);
 		}
@@ -329,7 +329,7 @@ class Map_Field extends Markup_Field {
 		return array_merge( parent::get_conditional_fields( $field_meta ), $args );
 	}
 
-	public function get_front_assets( Field_Data $field_data ): array {
+	public function get_front_assets( Field_Settings $field_data ): array {
 		$front_assets = array();
 
 		if ( Acf_Data_Vendor::NAME === $field_data->get_field_meta()->get_vendor_name() &&

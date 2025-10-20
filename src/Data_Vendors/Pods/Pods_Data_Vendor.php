@@ -23,17 +23,17 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\User_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Data_Vendors\Pods\Fields\Pods_Pick_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Pods\Fields\Pods_Upload_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use Pods_Migrate_Packages;
 
@@ -405,12 +405,12 @@ class Pods_Data_Vendor extends Data_Vendor {
 	}
 
 	public function make_integration_instance(
-		Item_Data $item_data,
-		Views_Data_Storage $views_data_storage,
+		Item_Settings $item_data,
+		Layouts_Data_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		View_Factory $view_factory,
-		Repeater_Field_Data $repeater_field_data,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Layout_Factory $view_factory,
+		Repeater_Field_Settings $repeater_field_data,
 		View_Shortcode $view_shortcode,
 		Settings $settings
 	): ?Data_Vendor_Integration_Interface {
@@ -682,10 +682,10 @@ class Pods_Data_Vendor extends Data_Vendor {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Data $field_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		Source $source,
-		?Item_Data $item_data = null,
+		?Item_Settings $item_data = null,
 		bool $is_formatted = false,
 		?array $local_data = null
 	) {

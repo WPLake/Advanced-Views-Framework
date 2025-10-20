@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
@@ -28,7 +28,7 @@ abstract class Markup_Field implements Markup_Field_Interface {
 	}
 
 	protected function get_field_class( string $suffix, Markup_Field_Data $markup_data ): string {
-		if ( Cpt_Data::CLASS_GENERATION_NONE === $markup_data->get_view_data()->classes_generation ) {
+		if ( Cpt_Settings::CLASS_GENERATION_NONE === $markup_data->get_view_data()->classes_generation ) {
 			return '';
 		}
 
@@ -55,7 +55,7 @@ abstract class Markup_Field implements Markup_Field_Interface {
 	}
 
 	// method is kept for backward compatibility, use the View->getItemClass() instead.
-	protected function get_item_class( string $suffix, View_Data $view_data, Field_Data $field ): string {
+	protected function get_item_class( string $suffix, Layout_Settings $view_data, Field_Settings $field ): string {
 		return $view_data->get_item_class( $suffix, $field );
 	}
 
@@ -78,7 +78,7 @@ abstract class Markup_Field implements Markup_Field_Interface {
 		return false;
 	}
 
-	public function get_front_assets( Field_Data $field_data ): array {
+	public function get_front_assets( Field_Settings $field_data ): array {
 		return array();
 	}
 }

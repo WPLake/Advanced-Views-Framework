@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\User_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 
@@ -49,7 +49,7 @@ class Post_Author_Field extends User_Field {
 		return array_merge(
 			parent::get_conditional_fields( $field_meta ),
 			array(
-				Field_Data::FIELD_ACF_VIEW_ID,
+				Field_Settings::FIELD_ACF_VIEW_ID,
 			)
 		);
 	}

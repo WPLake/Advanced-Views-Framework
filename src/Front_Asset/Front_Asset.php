@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -80,7 +80,7 @@ abstract class Front_Asset implements Front_Asset_Interface {
 	}
 
 	protected function get_wp_handle( string $handle ): string {
-		return Views_Cpt::NAME . '_' . $handle;
+		return Layouts_Cpt::NAME . '_' . $handle;
 	}
 
 	protected function get_plugin(): Plugin {

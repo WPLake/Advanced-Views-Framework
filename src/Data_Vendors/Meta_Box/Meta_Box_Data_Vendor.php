@@ -23,16 +23,16 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_File_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_Gallery_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_Image_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_Taxonomy_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\View_Shortcode;
 use RWMB_Field;
 
@@ -83,7 +83,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 * @return array<string,string>
 	 */
 	protected function get_field_request_args(
-		Field_Data $field_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		Source $source,
 		&$source_id
@@ -156,7 +156,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 
 			$field_key = '' === $parent_choice_value ?
 				$this->get_field_key( $group_id, $field_id ) :
-				Field_Data::create_field_key( $parent_choice_value, $field_id );
+				Field_Settings::create_field_key( $parent_choice_value, $field_id );
 
 			if ( true === $is_meta_format ) {
 				$value = new Field_Meta( $this->get_name(), $field_id );
@@ -260,7 +260,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 *
 	 * @return mixed
 	 */
-	protected function format_group_item_value( $raw_value, Field_Data $field_data, Field_Meta_Interface $field_meta, Source $source ) {
+	protected function format_group_item_value( $raw_value, Field_Settings $field_data, Field_Meta_Interface $field_meta, Source $source ) {
 		/**
 		 * Hand fix for maps.
 		 * https://docs.metabox.io/fields/osm/#outputting-a-map-in-a-group
@@ -286,7 +286,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 *
 	 * @return array<int|string,mixed>
 	 */
-	protected function format_group_value( $raw_value, Field_Data $field_data, Field_Meta_Interface $field_meta, Item_Data $item_data, Source $source ): array {
+	protected function format_group_value( $raw_value, Field_Settings $field_data, Field_Meta_Interface $field_meta, Item_Settings $item_data, Source $source ): array {
 		$raw_value = true === is_array( $raw_value ) ?
 			$raw_value :
 			array();
@@ -348,12 +348,12 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	}
 
 	public function make_integration_instance(
-		Item_Data $item_data,
-		Views_Data_Storage $views_data_storage,
+		Item_Settings $item_data,
+		Layouts_Data_Storage $views_data_storage,
 		Data_Vendors $data_vendors,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		View_Factory $view_factory,
-		Repeater_Field_Data $repeater_field_data,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Layout_Factory $view_factory,
+		Repeater_Field_Settings $repeater_field_data,
 		View_Shortcode $view_shortcode,
 		Settings $settings
 	): ?Data_Vendor_Integration_Interface {
@@ -594,10 +594,10 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Data $field_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		Source $source,
-		?Item_Data $item_data = null,
+		?Item_Settings $item_data = null,
 		bool $is_formatted = false,
 		?array $local_data = null
 	) {

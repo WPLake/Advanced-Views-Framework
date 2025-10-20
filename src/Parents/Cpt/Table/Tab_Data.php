@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 
 class Tab_Data {
 	private Cpt_Table_Tab $cpt_table_tab;
@@ -18,7 +18,7 @@ class Tab_Data {
 	private string $label_in_brackets;
 	private int $total_items_count;
 	/**
-	 * @var Cpt_Data[]
+	 * @var Cpt_Settings[]
 	 */
 	private array $items;
 	private string $remote_source;
@@ -41,7 +41,7 @@ class Tab_Data {
 		$this->bulk_actions         = array();
 	}
 
-	public function print_row_title( Cpt_Data $cpt_data ): void {
+	public function print_row_title( Cpt_Settings $cpt_data ): void {
 		$this->cpt_table_tab->print_row_title( $this, $cpt_data );
 	}
 
@@ -86,14 +86,14 @@ class Tab_Data {
 	}
 
 	/**
-	 * @return Cpt_Data[]
+	 * @return Cpt_Settings[]
 	 */
 	public function get_items(): array {
 		return $this->items;
 	}
 
 	/**
-	 * @param Cpt_Data[] $items
+	 * @param Cpt_Settings[] $items
 	 */
 	public function set_items( array $items ): void {
 		$this->items = $items;

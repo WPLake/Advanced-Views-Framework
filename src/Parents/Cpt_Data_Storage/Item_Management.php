@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,23 +31,23 @@ abstract class Item_Management extends Action {
 		$this->db_management = $db_management;
 	}
 
-	abstract public function replace( string $unique_id, Cpt_Data $cpt_data ): void;
+	abstract public function replace( string $unique_id, Cpt_Settings $cpt_data ): void;
 
 	abstract public function get(
 		string $unique_id,
 		bool $is_force_from_db = false,
 		bool $is_force_from_fs = false
-	): Cpt_Data;
+	): Cpt_Settings;
 
 	abstract public function create_new(
 		string $post_status,
 		string $title,
 		?int $author_id = null,
 		?string $unique_id = null
-	): ?Cpt_Data;
+	): ?Cpt_Settings;
 
 	protected function load(
-		Cpt_Data $cpt_data,
+		Cpt_Settings $cpt_data,
 		string $unique_id,
 		bool $is_force_from_db = false,
 		bool $is_force_from_fs = false
@@ -133,12 +133,12 @@ abstract class Item_Management extends Action {
 		// save the minimum data
 		// (otherwise next '->get()' call won't load the unique id for the CptData).
 
-		$unique_id_field_name = Views_Cpt::NAME === $this->db_management->get_post_type() ?
-			View_Data::getAcfFieldName( View_Data::FIELD_UNIQUE_ID ) :
-			Card_Data::getAcfFieldName( Card_Data::FIELD_UNIQUE_ID );
-		$title_field_name     = Views_Cpt::NAME === $this->db_management->get_post_type() ?
-			View_Data::getAcfFieldName( View_Data::FIELD_TITLE ) :
-			Card_Data::getAcfFieldName( Card_Data::FIELD_TITLE );
+		$unique_id_field_name = Layouts_Cpt::NAME === $this->db_management->get_post_type() ?
+			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_UNIQUE_ID ) :
+			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_UNIQUE_ID );
+		$title_field_name     = Layouts_Cpt::NAME === $this->db_management->get_post_type() ?
+			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) :
+			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE );
 
 		$json = wp_json_encode(
 			array(
@@ -183,9 +183,9 @@ abstract class Item_Management extends Action {
 	public function get_unique_id_from_shortcode_id( string $id, string $post_type ): string {
 		// A) short unique id.
 		if ( 13 === strlen( $id ) ) {
-			$id_prefix = Views_Cpt::NAME === $post_type ?
-				View_Data::UNIQUE_ID_PREFIX :
-				Card_Data::UNIQUE_ID_PREFIX;
+			$id_prefix = Layouts_Cpt::NAME === $post_type ?
+				Layout_Settings::UNIQUE_ID_PREFIX :
+				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
 			$unique_id = $id_prefix . $id;
 
@@ -209,7 +209,7 @@ abstract class Item_Management extends Action {
 		return $post->post_name;
 	}
 
-	public function save( Cpt_Data $cpt_data, bool $is_force_to_db = false ): void {
+	public function save( Cpt_Settings $cpt_data, bool $is_force_to_db = false ): void {
 		$trashed_post_ids = $this->db_management->get_trashed_post_ids();
 
 		// trashed posts are saved to DB only.
@@ -261,7 +261,7 @@ abstract class Item_Management extends Action {
 		}
 	}
 
-	public function rename( Cpt_Data $cpt_data, string $new_title ): void {
+	public function rename( Cpt_Settings $cpt_data, string $new_title ): void {
 		$cpt_data->title = $new_title;
 
 		if ( false === $this->file_system->is_active() ) {
@@ -335,7 +335,7 @@ abstract class Item_Management extends Action {
 		);
 	}
 
-	public function delete_and_bypass_trash( Cpt_Data $cpt_data ): void {
+	public function delete_and_bypass_trash( Cpt_Settings $cpt_data ): void {
 		// 1. remove in FS (optionally)
 		if ( true === $this->file_system->is_active() ) {
 			$this->file_system->delete_item( $cpt_data->get_unique_id( true ) );

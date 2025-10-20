@@ -5,10 +5,10 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Upgrades;
@@ -40,7 +40,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		$this->logger           = $logger;
 	}
 
-	abstract protected function get_cpt_data( string $unique_id ): Cpt_Data;
+	abstract protected function get_cpt_data( string $unique_id ): Cpt_Settings;
 
 	/**
 	 * @param array<string,string> $field_values
@@ -68,9 +68,9 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		// 1. get item, maybe it's already exists (then we'll override it)
 		$cpt_data = $this->cpt_data_storage->get( $unique_id );
 
-		$title = $data_json[ View_Data::getAcfFieldName( View_Data::FIELD_TITLE ) ] ?? '';
+		$title = $data_json[ Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) ] ?? '';
 		$title = '' === $title ?
-			( $data_json[ Card_Data::getAcfFieldName( Card_Data::FIELD_TITLE ) ] ?? '' ) :
+			( $data_json[ Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE ) ] ?? '' ) :
 			$title;
 		$title = true === is_string( $title ) ?
 			$title :
@@ -158,7 +158,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 			// while in this class we have only the single one.
 			$cpt_data = $this->get_cpt_data( $unique_id );
 
-			if ( true === ( $cpt_data instanceof View_Data ) ) {
+			if ( true === ( $cpt_data instanceof Layout_Settings ) ) {
 				++$views_count;
 			} else {
 				++$cards_count;
@@ -206,7 +206,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 				// while in this class we have only the single one.
 				$cpt_data = $this->get_cpt_data( $unique_id );
 
-				if ( false === ( $cpt_data instanceof View_Data ) ) {
+				if ( false === ( $cpt_data instanceof Layout_Settings ) ) {
 					continue;
 				}
 
@@ -243,7 +243,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 				// while in this class we have only the single one.
 				$cpt_data = $this->get_cpt_data( $unique_id );
 
-				if ( false === ( $cpt_data instanceof Card_Data ) ) {
+				if ( false === ( $cpt_data instanceof Post_Selection_Settings ) ) {
 					continue;
 				}
 

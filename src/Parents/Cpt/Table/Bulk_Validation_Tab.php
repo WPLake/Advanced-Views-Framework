@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 
@@ -30,7 +30,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	abstract protected function make_validation_instance( string $unique_id ): Instance;
 
 	/**
-	 * @return Cpt_Data[]
+	 * @return Cpt_Settings[]
 	 */
 	protected function get_items_with_wrong_custom_template( string $search_value ): array {
 		$cpt_data_items_with_wrong_custom_template = array();
@@ -106,7 +106,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 		// nothing to do here.
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Data $cpt_data ): void {
+	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
 		if ( true === $this->cpt_data_storage->is_fs_only_item( $cpt_data->get_unique_id() ) ) {
 			$this->fs_only_cpt_table_tab->print_row_title( $cpt_table_tab_data, $cpt_data );
 

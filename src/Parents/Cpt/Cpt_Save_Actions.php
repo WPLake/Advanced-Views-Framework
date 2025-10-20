@@ -7,11 +7,11 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Data_Storage;
 use Org\Wplake\Advanced_Views\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -19,7 +19,7 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Post;
 use WP_REST_Request;
 
@@ -36,7 +36,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @var array<string|int, mixed>
 	 */
 	private array $field_values;
-	private Cpt_Data $validation_data;
+	private Cpt_Settings $validation_data;
 	/**
 	 * @var string[]
 	 */
@@ -51,7 +51,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		Logger $logger,
 		Cpt_Data_Storage $cpt_data_storage,
 		Plugin $plugin,
-		Cpt_Data $cpt_data,
+		Cpt_Settings $cpt_data,
 		Front_Assets $front_assets
 	) {
 		parent::__construct( $logger );
@@ -73,7 +73,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	abstract protected function make_validation_instance(): Instance;
 
-	abstract protected function update_markup( Cpt_Data $cpt_data ): void;
+	abstract protected function update_markup( Cpt_Settings $cpt_data ): void;
 
 	/**
 	 * @param WP_REST_Request $request
@@ -134,7 +134,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 *
 	 * @throws Exception
 	 */
-	public function perform_save_actions( $post_id, bool $is_skip_save = false ): ?Cpt_Data {
+	public function perform_save_actions( $post_id, bool $is_skip_save = false ): ?Cpt_Settings {
 		if ( false === $this->is_my_post( $post_id ) ) {
 			return null;
 		}
@@ -146,9 +146,9 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		// it must be before the frontAssets generation, otherwise CSS may already be not empty even for the first save.
 		if ( '' === $cpt_data->css_code &&
-			Cpt_Data::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
+		     Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
 			// by default, Web component is inline, which is wrong, we expect it to be block.
-			$id                 = Views_Cpt::NAME === $this->get_cpt_name() ?
+			$id                 = Layouts_Cpt::NAME === $this->get_cpt_name() ?
 				'view' :
 				'card';
 			$cpt_data->css_code = sprintf( "#%s {\n\tdisplay: block;\n}\n", $id );
@@ -278,8 +278,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->validation_data;
 
-		$view_php_code_field = View_Data::getAcfFieldName( View_Data::FIELD_PHP_VARIABLES );
-		$card_php_code_field = Card_Data::getAcfFieldName( Card_Data::FIELD_EXTRA_QUERY_ARGUMENTS );
+		$view_php_code_field = Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES );
+		$card_php_code_field = Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS );
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
 		if ( true === in_array( $field_name, array( $view_php_code_field, $card_php_code_field ), true ) ) {
@@ -383,8 +383,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$view_php_code_field = View_Data::getAcfFieldName( View_Data::FIELD_PHP_VARIABLES );
-		$card_php_code_field = Card_Data::getAcfFieldName( Card_Data::FIELD_EXTRA_QUERY_ARGUMENTS );
+		$view_php_code_field = Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES );
+		$card_php_code_field = Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS );
 
 		// to avoid issues with security plugins, like WordFence.
 		if ( true === in_array( $field_name, array( $view_php_code_field, $card_php_code_field ), true ) &&

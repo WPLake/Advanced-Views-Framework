@@ -4,14 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template_Engines;
 
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
@@ -131,7 +131,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 		// show only on the list pages of Views & Cards.
 		if ( null === $screen ||
-			! in_array( $screen->post_type, array( Views_Cpt::NAME, Cards_Cpt::NAME ), true ) ||
+			! in_array( $screen->post_type, array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ), true ) ||
 			'edit' !== $screen->base ) {
 			return;
 		}

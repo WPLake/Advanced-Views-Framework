@@ -6,18 +6,18 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Tools;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\Tools_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use WP_Filesystem_Base;
 use WP_Post;
 use WP_Query;
@@ -32,9 +32,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 	 * @var array<string,mixed>
 	 */
 	private array $values;
-	private Tools_Data $tools_data;
-	private Cards_Data_Storage $cards_data_storage;
-	private Views_Data_Storage $views_data_storage;
+	private Tools_Settings $tools_data;
+	private Post_Selections_Data_Storage $cards_data_storage;
+	private Layouts_Data_Storage $views_data_storage;
 	private Plugin $plugin;
 	private Logger $logger;
 	private Debug_Dump_Creator $debug_dump_creator;
@@ -47,9 +47,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 	private ?WP_Filesystem_Base $wp_filesystem;
 
 	public function __construct(
-		Tools_Data $tools_data,
-		Cards_Data_Storage $cards_data_storage,
-		Views_Data_Storage $views_data_storage,
+		Tools_Settings $tools_data,
+		Post_Selections_Data_Storage $cards_data_storage,
+		Layouts_Data_Storage $views_data_storage,
 		Plugin $plugin,
 		Logger $logger,
 		Debug_Dump_Creator $debug_dump_creator
@@ -96,10 +96,10 @@ final class Tools extends Hookable implements Hooks_Interface {
 				$value      = '';
 
 				switch ( $field_name ) {
-					case Tools_Data::getAcfFieldName( Tools_Data::FIELD_LOGS ):
+					case Tools_Settings::getAcfFieldName( Tools_Settings::FIELD_LOGS ):
 						$value = $this->logger->get_logs();
 						break;
-					case Tools_Data::getAcfFieldName( Tools_Data::FIELD_ERROR_LOGS ):
+					case Tools_Settings::getAcfFieldName( Tools_Settings::FIELD_ERROR_LOGS ):
 						$value = $this->logger->get_error_logs();
 						break;
 				}
@@ -124,14 +124,14 @@ final class Tools extends Hookable implements Hooks_Interface {
 		$view_ids          = array_filter(
 			$ids,
 			function ( $id ) {
-				return false !== strpos( $id, View_Data::UNIQUE_ID_PREFIX );
+				return false !== strpos( $id, Layout_Settings::UNIQUE_ID_PREFIX );
 			}
 		);
 		$count_of_view_ids = count( $view_ids );
 		$card_ids          = array_filter(
 			$ids,
 			function ( $id ) {
-				return false !== strpos( $id, Card_Data::UNIQUE_ID_PREFIX );
+				return false !== strpos( $id, Post_Selection_Settings::UNIQUE_ID_PREFIX );
 			}
 		);
 		$count_of_card_ids = count( $card_ids );
@@ -240,7 +240,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 				'slug'            => self::SLUG,
 				'page_title'      => __( 'Tools', 'acf-views' ),
 				'menu_title'      => __( 'Tools', 'acf-views' ),
-				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Views_Cpt::NAME ),
+				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ),
 				'position'        => 2,
 				'update_button'   => __( 'Process', 'acf-views' ),
 				'updated_message' => $updated_message,
@@ -369,10 +369,10 @@ final class Tools extends Hookable implements Hooks_Interface {
 								array() !== $this->tools_data->export_cards;
 
 		$view_posts = $is_views_in_export ?
-			$this->get_posts( Views_Cpt::NAME, $this->tools_data->export_views ) :
+			$this->get_posts( Layouts_Cpt::NAME, $this->tools_data->export_views ) :
 			array();
 		$card_posts = $is_cards_in_export ?
-			$this->get_posts( Cards_Cpt::NAME, $this->tools_data->export_cards ) :
+			$this->get_posts( Post_Selections_Cpt::NAME, $this->tools_data->export_cards ) :
 			array();
 
 		foreach ( $view_posts as $view_post ) {
@@ -515,15 +515,15 @@ final class Tools extends Hookable implements Hooks_Interface {
 				continue;
 			}
 
-			$post_type    = false !== strpos( $unique_id, View_Data::UNIQUE_ID_PREFIX ) ?
-				Views_Cpt::NAME :
-				Cards_Cpt::NAME;
-			$data_storage = Views_Cpt::NAME === $post_type ?
+			$post_type    = false !== strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX ) ?
+				Layouts_Cpt::NAME :
+				Post_Selections_Cpt::NAME;
+			$data_storage = Layouts_Cpt::NAME === $post_type ?
 				$this->views_data_storage :
 				$this->cards_data_storage;
-			$title_field  = Views_Cpt::NAME === $post_type ?
-				View_Data::getAcfFieldName( View_Data::FIELD_TITLE ) :
-				Card_Data::getAcfFieldName( Card_Data::FIELD_TITLE );
+			$title_field  = Layouts_Cpt::NAME === $post_type ?
+				Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) :
+				Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE );
 			$title        = $details[ $title_field ] ?? '';
 			$title        = is_string( $title ) ?
 				$title :
@@ -538,7 +538,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 				$cpt_data;
 
 			if ( null === $cpt_data ) {
-				if ( Views_Cpt::NAME === $post_type ) {
+				if ( Layouts_Cpt::NAME === $post_type ) {
 					$fail_view_unique_ids[] = $unique_id;
 				} else {
 					$fail_card_unique_ids[] = $unique_id;
@@ -554,7 +554,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 
 			// there is no sense to call the 'performSaveActions' method.
 
-			if ( Views_Cpt::NAME === $post_type ) {
+			if ( Layouts_Cpt::NAME === $post_type ) {
 				$success_view_ids[] = $cpt_data->get_post_id();
 			} else {
 				$success_card_ids[] = $cpt_data->get_post_id();

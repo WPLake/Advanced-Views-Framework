@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -132,7 +132,7 @@ abstract class Cpt_Data_Storage extends Item_Management {
 	}
 
 	/**
-	 * @return Cpt_Data[]
+	 * @return Cpt_Settings[]
 	 */
 	public function get_fs_only_items( string $search_value, int $page_number, int $per_page ): array {
 		$fs_only_cpt_data_items = array();
@@ -183,7 +183,7 @@ abstract class Cpt_Data_Storage extends Item_Management {
 	}
 
 	/**
-	 * @return Cpt_Data[]
+	 * @return Cpt_Settings[]
 	 */
 	public function get_all(): array {
 		$items = array();

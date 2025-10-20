@@ -11,14 +11,14 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Woo_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View;
+use Org\Wplake\Advanced_Views\Layouts\Layout;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -161,8 +161,8 @@ class Field_Markup {
 
 	protected function print_row_wrapper(
 		string $field_name_class,
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		string $type,
 		string $row_class,
 		int &$tab_number,
@@ -170,7 +170,7 @@ class Field_Markup {
 	): void {
 		$row_classes = '';
 
-		if ( View_Data::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
+		if ( Layout_Settings::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
 			$row_classes .= $field_name_class;
 
 			if ( true === $view_data->is_with_common_classes ) {
@@ -209,14 +209,14 @@ class Field_Markup {
 	}
 
 	protected function print_label(
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		int &$tabs_number,
 		string $field_id
 	): void {
 		$label_class = '';
 
-		if ( View_Data::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
+		if ( Layout_Settings::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
 			$label_class .= $view_data->get_bem_name() . '__' . $field_data->id . '-label';
 
 			$label_class .= $view_data->is_with_common_classes ?
@@ -243,8 +243,8 @@ class Field_Markup {
 	 */
 	protected function get_field_outers(
 		array $field_assets,
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		string $field_id,
 		string $row_type
 	): array {
@@ -311,12 +311,12 @@ class Field_Markup {
 
 	/**
 	 * @param View_Front_Asset_Interface[] $field_assets
-	 * @param Field_Data $field_data
+	 * @param Field_Settings $field_data
 	 * @param string $row_type
 	 *
 	 * @return string
 	 */
-	protected function get_field_wrapper_tag( array $field_assets, Field_Data $field_data, string $row_type ): string {
+	protected function get_field_wrapper_tag( array $field_assets, Field_Settings $field_data, string $row_type ): string {
 		foreach ( $field_assets as $field_asset ) {
 			$tag = $field_asset->get_field_wrapper_tag( $field_data, $row_type );
 
@@ -340,14 +340,14 @@ class Field_Markup {
 		string $field_id,
 		int &$tabs_number,
 		bool $is_with_row_wrapper,
-		View_Data $view_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		Field_Settings $field_data,
 		string $field_name_class,
 		string $tag
 	): void {
 		$field_classes = '';
 
-		if ( View_Data::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
+		if ( Layout_Settings::CLASS_GENERATION_NONE !== $view_data->classes_generation ) {
 			if ( true === $is_with_row_wrapper ) {
 				$field_classes .= $view_data->get_bem_name() . '__' . $field_data->id . '-field';
 				$field_classes .= $view_data->is_with_common_classes ?
@@ -403,9 +403,9 @@ class Field_Markup {
 	 */
 	public function print_field_markup(
 		array $field_assets,
-		View_Data $view_data,
-		?Item_Data $item_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		?Item_Settings $item_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta,
 		int &$tabs_number,
 		string $field_id,
@@ -476,9 +476,9 @@ class Field_Markup {
 	public function print_row_markup(
 		string $row_type,
 		string $row_suffix,
-		View_Data $view_data,
-		?Item_Data $item_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		?Item_Settings $item_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		int $tabs_number,
 		string $field_id,
@@ -597,8 +597,8 @@ class Field_Markup {
 
 	/**
 	 * @param View_Front_Asset_Interface[] $field_assets
-	 * @param View_Data $view_data
-	 * @param Field_Data $field
+	 * @param Layout_Settings $view_data
+	 * @param Field_Settings $field
 	 * @param Field_Meta_Interface $field_meta
 	 * @param string $row_type
 	 *
@@ -606,8 +606,8 @@ class Field_Markup {
 	 */
 	public function is_with_field_wrapper(
 		array $field_assets,
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta,
 		string $row_type
 	): bool {
@@ -628,8 +628,8 @@ class Field_Markup {
 	}
 
 	public function is_with_row_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return $view_data->is_with_unnecessary_wrappers ||
@@ -647,11 +647,11 @@ class Field_Markup {
 	 * @return array<string,mixed>
 	 */
 	public function get_field_twig_args(
-		View_Data $view_data,
-		?Item_Data $item,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		?Item_Settings $item,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta,
-		View $view,
+		Layout $view,
 		Source $source,
 		$field_value,
 		bool $is_for_validation = false,

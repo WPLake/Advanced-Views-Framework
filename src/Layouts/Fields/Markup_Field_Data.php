@@ -8,9 +8,9 @@ namespace Org\Wplake\Advanced_Views\Layouts\Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 
@@ -27,9 +27,9 @@ class Markup_Field_Data extends Template_Field_Data {
 	private Template_Generator $template_generator;
 
 	public function __construct(
-		View_Data $view_data,
-		?Item_Data $item_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		?Item_Settings $item_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		Field_Markup $field_markup,
 		Markup_Field_Interface $field_instance,

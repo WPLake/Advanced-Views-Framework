@@ -8,12 +8,12 @@ defined( 'ABSPATH' ) || exit;
 
 use DateTime;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\Item_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\View;
+use Org\Wplake\Advanced_Views\Layouts\Layout;
 
 class Variable_Field_Data extends Template_Field_Data {
 	/**
@@ -29,15 +29,15 @@ class Variable_Field_Data extends Template_Field_Data {
 	 * @var mixed $value
 	 */
 	private $value;
-	private View $view;
+	private Layout $view;
 
 	public function __construct(
-		View_Data $view_data,
-		?Item_Data $item_data,
-		Field_Data $field_data,
+		Layout_Settings $view_data,
+		?Item_Settings $item_data,
+		Field_Settings $field_data,
 		Field_Meta_Interface $field_meta,
 		Field_Markup $field_markup,
-		View $view,
+		Layout $view,
 		Source $source,
 		Markup_Field_Interface $field_instance
 	) {
@@ -104,7 +104,7 @@ class Variable_Field_Data extends Template_Field_Data {
 		return $this->source;
 	}
 
-	public function get_view(): View {
+	public function get_view(): Layout {
 		return $this->view;
 	}
 }

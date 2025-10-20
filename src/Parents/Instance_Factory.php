@@ -21,7 +21,7 @@ abstract class Instance_Factory {
 	 */
 	abstract protected function get_template_variables_for_validation( string $unique_id ): array;
 
-	protected function add_used_cpt_data( Cpt_Data $cpt_data ): void {
+	protected function add_used_cpt_data( Cpt_Settings $cpt_data ): void {
 		$this->front_assets->add_asset( $cpt_data );
 	}
 

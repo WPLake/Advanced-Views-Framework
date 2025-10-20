@@ -8,8 +8,8 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\File_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Gallery_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Image_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
@@ -87,8 +87,8 @@ class Pods_Upload_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		View_Data $view_data,
-		Field_Data $field,
+		Layout_Settings $view_data,
+		Field_Settings $field,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return $this->get_field_instance( $field_meta )->is_with_field_wrapper( $view_data, $field, $field_meta );
@@ -98,7 +98,7 @@ class Pods_Upload_Field extends Markup_Field {
 		return $this->get_field_instance( $field_meta )->get_conditional_fields( $field_meta );
 	}
 
-	public function get_front_assets( Field_Data $field_data ): array {
+	public function get_front_assets( Field_Settings $field_data ): array {
 		return $this->get_field_instance( $field_data->get_field_meta() )->get_front_assets( $field_data );
 	}
 }

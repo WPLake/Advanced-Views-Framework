@@ -6,11 +6,11 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Selections\Card_Factory;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode;
 use Org\Wplake\Advanced_Views\Settings;
@@ -22,15 +22,15 @@ final class Card_Shortcode extends Shortcode {
 	const OLD_NAME        = 'acf_cards';
 	const REST_ROUTE_NAME = 'card';
 
-	protected Card_Factory $card_factory;
-	protected Cards_Data_Storage $cards_data_storage;
+	protected Post_Selection_Factory $card_factory;
+	protected Post_Selections_Data_Storage $cards_data_storage;
 
 	public function __construct(
 		Settings $settings,
-		Cards_Data_Storage $cards_data_storage,
+		Post_Selections_Data_Storage $cards_data_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
-		Card_Factory $card_factory
+		Post_Selection_Factory $card_factory
 	) {
 		parent::__construct( $settings, $cards_data_storage, $card_factory, $front_assets, $live_reloader_component );
 
@@ -39,11 +39,11 @@ final class Card_Shortcode extends Shortcode {
 	}
 
 	protected function get_post_type(): string {
-		return Cards_Cpt::NAME;
+		return Post_Selections_Cpt::NAME;
 	}
 
 	protected function get_unique_id_prefix(): string {
-		return Card_Data::UNIQUE_ID_PREFIX;
+		return Post_Selection_Settings::UNIQUE_ID_PREFIX;
 	}
 
 	public function render_shortcode( array $attrs ): string {
@@ -55,7 +55,7 @@ final class Card_Shortcode extends Shortcode {
 		$card_id        = is_string( $card_id ) ?
 			$card_id :
 			'';
-		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, Cards_Cpt::NAME );
+		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, Post_Selections_Cpt::NAME );
 
 		if ( '' === $card_unique_id ) {
 			$this->print_error_markup(
@@ -109,7 +109,7 @@ final class Card_Shortcode extends Shortcode {
 			return;
 		}
 
-		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, Cards_Cpt::NAME );
+		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, Post_Selections_Cpt::NAME );
 
 		if ( '' === $card_unique_id ) {
 			wp_json_encode(

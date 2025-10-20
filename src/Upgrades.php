@@ -5,24 +5,24 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Selections\Data_Storage\Cards_Data_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Data_Storage;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment_Items\Comment_Item_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu\Menu_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu_Item\Menu_Item_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post\Post_Fields;
-use Org\Wplake\Advanced_Views\Groups\Card_Data;
-use Org\Wplake\Advanced_Views\Groups\Field_Data;
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use WP_Filesystem_Base;
 use WP_Post;
 use WP_Query;
@@ -32,10 +32,10 @@ defined( 'ABSPATH' ) || exit;
 class Upgrades extends Action implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
-	private Views_Data_Storage $views_data_storage;
-	private Cards_Data_Storage $cards_data_storage;
-	private Views_Cpt_Save_Actions $views_cpt_save_actions;
-	private Cards_Cpt_Save_Actions $cards_cpt_save_actions;
+	private Layouts_Data_Storage $views_data_storage;
+	private Post_Selections_Data_Storage $cards_data_storage;
+	private Layouts_Cpt_Save_Actions $views_cpt_save_actions;
+	private Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions;
 	private Template_Engines $template_engines;
 	private ?WP_Filesystem_Base $wp_filesystem;
 
@@ -67,15 +67,15 @@ class Upgrades extends Action implements Hooks_Interface {
 		return $this->wp_filesystem;
 	}
 
-	protected function get_views_data_storage(): Views_Data_Storage {
+	protected function get_views_data_storage(): Layouts_Data_Storage {
 		return $this->views_data_storage;
 	}
 
-	protected function get_cards_data_storage(): Cards_Data_Storage {
+	protected function get_cards_data_storage(): Post_Selections_Data_Storage {
 		return $this->cards_data_storage;
 	}
 
-	protected function get_views_cpt_save_actions(): Views_Cpt_Save_Actions {
+	protected function get_views_cpt_save_actions(): Layouts_Cpt_Save_Actions {
 		return $this->views_cpt_save_actions;
 	}
 
@@ -129,7 +129,7 @@ class Upgrades extends Action implements Hooks_Interface {
 
 	protected function move_view_and_card_meta_to_post_content_json(): void {
 		$query_args = array(
-			'post_type'      => array( Views_Cpt::NAME, Cards_Cpt::NAME ),
+			'post_type'      => array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ),
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -144,13 +144,13 @@ class Upgrades extends Action implements Hooks_Interface {
 		foreach ( $my_posts as $my_post ) {
 			$post_id = $my_post->ID;
 
-			$data = Views_Cpt::NAME === $my_post->post_type ?
+			$data = Layouts_Cpt::NAME === $my_post->post_type ?
 				$this->views_data_storage->get( $my_post->post_name ) :
 				$this->cards_data_storage->get( $my_post->post_name );
 
 			$data->load( $my_post->ID );
 
-			if ( Views_Cpt::NAME === $my_post->post_type ) {
+			if ( Layouts_Cpt::NAME === $my_post->post_type ) {
 				$this->views_data_storage->save( $data );
 			} else {
 				$this->cards_data_storage->save( $data );
@@ -207,8 +207,8 @@ class Upgrades extends Action implements Hooks_Interface {
 		$my_posts = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->posts} WHERE post_type IN (%s,%s) AND post_content != ''",
-				Views_Cpt::NAME,
-				Cards_Cpt::NAME
+				Layouts_Cpt::NAME,
+				Post_Selections_Cpt::NAME
 			)
 		);
 
@@ -248,7 +248,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	 */
 	protected function get_all_views(): array {
 		$query_args = array(
-			'post_type'      => Views_Cpt::NAME,
+			'post_type'      => Layouts_Cpt::NAME,
 			'posts_per_page' => - 1,
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 		);
@@ -266,7 +266,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	 */
 	protected function get_all_cards(): array {
 		$query_args = array(
-			'post_type'      => Cards_Cpt::NAME,
+			'post_type'      => Post_Selections_Cpt::NAME,
 			'posts_per_page' => - 1,
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 		);
@@ -299,7 +299,7 @@ class Upgrades extends Action implements Hooks_Interface {
 		return count( $posts );
 	}
 
-	protected function replace_view_id_to_unique_id_in_view( View_Data $view_data ): bool {
+	protected function replace_view_id_to_unique_id_in_view( Layout_Settings $view_data ): bool {
 		$is_changed = false;
 
 		foreach ( $view_data->items as $item ) {
@@ -325,13 +325,13 @@ class Upgrades extends Action implements Hooks_Interface {
 		$cpt_data_items = array_merge( $this->get_all_views(), $this->get_all_cards() );
 
 		foreach ( $cpt_data_items as $cpt_data_item ) {
-			$cpt_date = Views_Cpt::NAME === $cpt_data_item->post_type ?
+			$cpt_date = Layouts_Cpt::NAME === $cpt_data_item->post_type ?
 				$this->views_data_storage->get( $cpt_data_item->post_name ) :
 				$this->cards_data_storage->get( $cpt_data_item->post_name );
 
 			$cpt_date->is_without_web_component = true;
 
-			if ( Views_Cpt::NAME === $cpt_data_item->post_type ) {
+			if ( Layouts_Cpt::NAME === $cpt_data_item->post_type ) {
 				$this->views_data_storage->save( $cpt_date );
 			} else {
 				$this->cards_data_storage->save( $cpt_date );
@@ -373,14 +373,14 @@ class Upgrades extends Action implements Hooks_Interface {
 	protected function replace_post_comments_and_menu_link_fields_to_separate(): void {
 		$views = $this->get_all_views();
 
-		$old_comments_key = Field_Data::create_field_key( Post_Fields::GROUP_NAME, '_post_comments' );
-		$new_comments_key = Field_Data::create_field_key(
+		$old_comments_key = Field_Settings::create_field_key( Post_Fields::GROUP_NAME, '_post_comments' );
+		$new_comments_key = Field_Settings::create_field_key(
 			Comment_Item_Fields::GROUP_NAME,
 			Comment_Item_Fields::FIELD_LIST
 		);
 
-		$old_menu_link_key = Field_Data::create_field_key( Menu_Fields::GROUP_NAME, '_menu_link' );
-		$new_menu_link_key = Field_Data::create_field_key( Menu_Item_Fields::GROUP_NAME, Menu_Item_Fields::FIELD_LINK );
+		$old_menu_link_key = Field_Settings::create_field_key( Menu_Fields::GROUP_NAME, '_menu_link' );
+		$new_menu_link_key = Field_Settings::create_field_key( Menu_Item_Fields::GROUP_NAME, Menu_Item_Fields::FIELD_LINK );
 
 		foreach ( $views as $view ) {
 			$view_data      = $this->views_data_storage->get( $view->post_name );
@@ -434,10 +434,10 @@ class Upgrades extends Action implements Hooks_Interface {
 		}
 	}
 
-	protected function move_is_without_web_component_to_select( Cpt_Data $cpt_data, bool $is_batch = false ): void {
+	protected function move_is_without_web_component_to_select( Cpt_Settings $cpt_data, bool $is_batch = false ): void {
 		$cpt_data->web_component = true === $cpt_data->is_without_web_component ?
-			Cpt_Data::WEB_COMPONENT_NONE :
-			Cpt_Data::WEB_COMPONENT_CLASSIC;
+			Cpt_Settings::WEB_COMPONENT_NONE :
+			Cpt_Settings::WEB_COMPONENT_CLASSIC;
 		// set to the default, so it isn't saved to json anymore.
 		$cpt_data->is_without_web_component = false;
 
@@ -625,10 +625,10 @@ class Upgrades extends Action implements Hooks_Interface {
 	}
 
 	public function set_dependencies(
-		Views_Data_Storage $views_data_storage,
-		Cards_Data_Storage $cards_data_storage,
-		Views_Cpt_Save_Actions $views_cpt_save_actions,
-		Cards_Cpt_Save_Actions $cards_cpt_save_actions
+		Layouts_Data_Storage $views_data_storage,
+		Post_Selections_Data_Storage $cards_data_storage,
+		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
+		Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions
 	): void {
 		$this->views_data_storage     = $views_data_storage;
 		$this->cards_data_storage     = $cards_data_storage;
@@ -641,7 +641,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	 */
 	public function set_digital_id_for_markup_flag_for_views_and_cards(): void {
 		$query_args = array(
-			'post_type'      => array( Views_Cpt::NAME, Cards_Cpt::NAME ),
+			'post_type'      => array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ),
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -652,13 +652,13 @@ class Upgrades extends Action implements Hooks_Interface {
 		$posts = $query->get_posts();
 
 		foreach ( $posts as $post ) {
-			$cpt_data = Views_Cpt::NAME === $post->post_type ?
+			$cpt_data = Layouts_Cpt::NAME === $post->post_type ?
 				$this->views_data_storage->get( $post->post_name ) :
 				$this->cards_data_storage->get( $post->post_name );
 
 			$cpt_data->is_markup_with_digital_id = true;
 
-			if ( Views_Cpt::NAME === $post->post_type ) {
+			if ( Layouts_Cpt::NAME === $post->post_type ) {
 				$this->views_data_storage->save( $cpt_data );
 			} else {
 				$this->cards_data_storage->save( $cpt_data );
@@ -668,7 +668,7 @@ class Upgrades extends Action implements Hooks_Interface {
 
 	public function recreate_post_slugs(): void {
 		$query_args = array(
-			'post_type'      => array( Views_Cpt::NAME, Cards_Cpt::NAME ),
+			'post_type'      => array( Layouts_Cpt::NAME, Post_Selections_Cpt::NAME ),
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -679,9 +679,9 @@ class Upgrades extends Action implements Hooks_Interface {
 		$posts = $query->get_posts();
 
 		foreach ( $posts as $post ) {
-			$prefix = Views_Cpt::NAME === $post->post_type ?
-				View_Data::UNIQUE_ID_PREFIX :
-				Card_Data::UNIQUE_ID_PREFIX;
+			$prefix = Layouts_Cpt::NAME === $post->post_type ?
+				Layout_Settings::UNIQUE_ID_PREFIX :
+				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
 			$post_name = uniqid( $prefix );
 
@@ -700,7 +700,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	public function replace_view_id_to_unique_id_in_cards(): void {
 		$query = new WP_Query(
 			array(
-				'post_type'      => Cards_Cpt::NAME,
+				'post_type'      => Post_Selections_Cpt::NAME,
 				'post_status'    => array( 'publish', 'draft', 'trash' ),
 				'posts_per_page' => - 1,
 			)
@@ -728,7 +728,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	public function replace_view_id_to_unique_id_in_view_relationships(): void {
 		$query = new WP_Query(
 			array(
-				'post_type'      => Views_Cpt::NAME,
+				'post_type'      => Layouts_Cpt::NAME,
 				'post_status'    => array( 'publish', 'draft', 'trash' ),
 				'posts_per_page' => - 1,
 			)
@@ -754,7 +754,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	 */
 	public function enable_with_common_classes_and_unnecessary_wrappers_for_all_views(): void {
 		$query_args = array(
-			'post_type'      => Views_Cpt::NAME,
+			'post_type'      => Layouts_Cpt::NAME,
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -779,7 +779,7 @@ class Upgrades extends Action implements Hooks_Interface {
 	 */
 	public function update_markup_identifiers(): void {
 		$query_args = array(
-			'post_type'      => Views_Cpt::NAME,
+			'post_type'      => Layouts_Cpt::NAME,
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -948,14 +948,14 @@ return new class extends CustomCardData {
 		$cpt_posts = array_merge( $views, $cards );
 
 		foreach ( $cpt_posts as $cpt_post ) {
-			$cpt_data = Views_Cpt::NAME === $cpt_post->post_type ?
+			$cpt_data = Layouts_Cpt::NAME === $cpt_post->post_type ?
 				$this->views_data_storage->get( $cpt_post->post_name ) :
 				$this->cards_data_storage->get( $cpt_post->post_name );
 
 			$cpt_data->unique_id = $cpt_post->post_name;
 			$cpt_data->title     = $cpt_post->post_title;
 
-			if ( Views_Cpt::NAME === $cpt_post->post_type ) {
+			if ( Layouts_Cpt::NAME === $cpt_post->post_type ) {
 				$this->views_data_storage->save( $cpt_data );
 			} else {
 				$this->cards_data_storage->save( $cpt_data );
@@ -963,7 +963,7 @@ return new class extends CustomCardData {
 		}
 	}
 
-	public function upgrade_imported_item( string $previous_version, Cpt_Data $cpt_data ): void {
+	public function upgrade_imported_item( string $previous_version, Cpt_Settings $cpt_data ): void {
 		if ( $this->is_version_lower( $previous_version, '3.3.0' ) ) {
 			$this->move_is_without_web_component_to_select( $cpt_data );
 		}

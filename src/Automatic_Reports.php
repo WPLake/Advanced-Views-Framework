@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Selections\Cpt\Cards_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Views_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Views_Data_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Data_Storage;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Automatic_Reports extends Action implements Hooks_Interface {
 
-	const HOOK          = Views_Cpt::NAME . '_refresh';
+	const HOOK          = Layouts_Cpt::NAME . '_refresh';
 	const DELAY_MIN_HR  = 12;
 	const DELAY_MAX_HRS = 48;
 	const REQUEST_URL   = 'https://wplake.org/wp-json/wplake/v1/plugin_analytics';
@@ -30,14 +30,14 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	private Options $options;
-	private Views_Data_Storage $views_data_storage;
+	private Layouts_Data_Storage $views_data_storage;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
 		Settings $settings,
 		Options $options,
-		Views_Data_Storage $views_data_storage
+		Layouts_Data_Storage $views_data_storage
 	) {
 		parent::__construct( $logger );
 
@@ -107,11 +107,11 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
-			Views_Cpt::NAME,
+			Layouts_Cpt::NAME,
 			Current_Screen::CPT_LIST
 		) ||
 								true === $current_screen->is_admin_cpt_related(
-									Cards_Cpt::NAME,
+									Post_Selections_Cpt::NAME,
 									Current_Screen::CPT_LIST
 								);
 
@@ -446,8 +446,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		$args = array(
-			'_viewsCount'                    => $this->get_count_of_posts( Views_Cpt::NAME ),
-			'_cardsCount'                    => $this->get_count_of_posts( Cards_Cpt::NAME ),
+			'_viewsCount'                    => $this->get_count_of_posts( Layouts_Cpt::NAME ),
+			'_cardsCount'                    => $this->get_count_of_posts( Post_Selections_Cpt::NAME ),
 			// 'is_plugin_active()' is available only later
 				'_isAcfPro'                  => class_exists( 'acf_pro' ),
 			'_isAcf'                         => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),

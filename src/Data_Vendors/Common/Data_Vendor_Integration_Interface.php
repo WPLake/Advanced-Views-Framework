@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
-use Org\Wplake\Advanced_Views\Groups\View_Data;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use DateTime;
 
@@ -20,7 +20,7 @@ interface Data_Vendor_Integration_Interface {
 	public function validate_related_views_on_group_change(): void;
 
 	/**
-	 * @param View_Data[] $view_data_items
+	 * @param Layout_Settings[] $view_data_items
 	 */
 	public function signup_gutenberg_blocks( array $view_data_items ): void;
 
