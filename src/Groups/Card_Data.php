@@ -419,9 +419,9 @@ class Card_Data extends Cpt_Data {
 
 declare(strict_types=1);
 
-use Org\Wplake\Advanced_Views\Pro\Bridge\Cards\Custom_Card_Data;
+use Org\Wplake\Advanced_Views\Pro\Bridge\Controllers\Selection\Selection_Controller_Base;
 
-return new class extends Custom_Card_Data {
+return new class extends Selection_Controller_Base {
     /**
      * @return array<string,mixed>
      */

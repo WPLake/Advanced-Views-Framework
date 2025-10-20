@@ -249,9 +249,9 @@ class View_Data extends Cpt_Data {
 
 declare(strict_types=1);
 
-use Org\Wplake\Advanced_Views\Pro\Bridge\Views\Custom_View_Data;
+use Org\Wplake\Advanced_Views\Pro\Bridge\Controllers\Layout\Layout_Controller_Base;
 
-return new class extends Custom_View_Data {
+return new class extends Layout_Controller_Base {
     /**
      * @return array<string,mixed>
      */
