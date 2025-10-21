@@ -29,7 +29,7 @@ abstract class Profiler {
 
 	public static function get_callback( string $source, string $hook_name, callable $callback ): callable {
 		return self::is_active() ?
-			function ( ...$args ) use( $source, $hook_name, $callback ) {
+			function ( ...$args ) use ( $source, $hook_name, $callback ) {
 				return self::execute_callback( $source, $hook_name, $callback, $args );
 			} :
 			$callback;

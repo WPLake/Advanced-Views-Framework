@@ -494,7 +494,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$send_request = Profiler::get_callback(
 			Profiler::SOURCE_NETWORK,
 			self::REQUEST_URL,
-			function () use( $args, $deactivation_survey_fields ) {
+			function () use ( $args, $deactivation_survey_fields ) {
 				wp_remote_post(
 					self::REQUEST_URL,
 					array(

@@ -199,7 +199,7 @@ final class Shortcode_Block extends Hookable implements Hooks_Interface {
 
 		return (string) preg_replace_callback(
 			$pattern,
-			function ( array $matches ) use( $block_name ) {
+			function ( array $matches ) use ( $block_name ) {
 				$shortcode = $matches[1] ?? '';
 
 				$shortcode_without_brackets = trim( $shortcode, '[] ' );

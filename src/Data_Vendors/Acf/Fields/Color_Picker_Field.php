@@ -66,7 +66,7 @@ class Color_Picker_Field extends Markup_Field {
 			$args['value'] = $value;
 		} else {
 			// value is just bool, as 'red' can be zero, but still be a value.
-			$args['value'] = ! ! ( $value['red'] ?? '' );
+			$args['value'] = (bool) ( $value['red'] ?? '' );
 			$args['red']   = (string) ( $value['red'] ?? '' );
 			$args['green'] = (string) ( $value['green'] ?? '' );
 			$args['blue']  = (string) ( $value['blue'] ?? '' );

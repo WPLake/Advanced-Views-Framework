@@ -202,7 +202,7 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 
 	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
 		if ( ! ( $cpt_data instanceof Layout_Settings ) ||
-		     ! $this->is_with_web_component() ) {
+			! $this->is_with_web_component() ) {
 			return false;
 		}
 

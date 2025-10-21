@@ -70,7 +70,7 @@ class Map_Field extends Markup_Field {
 		}
 
 		if ( ! $variable_field_data->get_field_meta()->is_multiple() ) {
-			$args['value'] = ! ! ( $value['lat'] ?? '' );
+			$args['value'] = (bool) ( $value['lat'] ?? '' );
 			$args['zoom']  = (string) ( $value['zoom'] ?? '16' );
 			$args['lat']   = (string) ( $value['lat'] ?? '' );
 			$args['lng']   = (string) ( $value['lng'] ?? '' );
