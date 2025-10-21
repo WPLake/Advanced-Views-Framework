@@ -4,11 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -66,7 +66,7 @@ class Post_Selections_Cpt extends Cpt {
 			'label'        => __( 'Cards', 'acf-views' ),
 			'description'  => $description,
 			'labels'       => $labels,
-			'show_in_menu' => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ),
+			'show_in_menu' => sprintf( 'edit.php?post_type=%s', Layouts_Feature::cpt_name() ),
 			'menu_icon'    => 'dashicons-layout',
 		);
 

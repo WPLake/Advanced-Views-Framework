@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Groups\Integration;
+namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Current_Screen;

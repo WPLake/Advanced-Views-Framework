@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Groups\Integration;
+namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -13,8 +13,6 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 class Field_Settings_Integration extends Acf_Integration {
 	use Safe_Array_Arguments;

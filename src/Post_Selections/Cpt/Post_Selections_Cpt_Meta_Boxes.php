@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -32,7 +33,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	protected function get_cpt_name(): string {
-		return Post_Selections_Cpt::NAME;
+		return Post_Selections_Feature::cpt_name();
 	}
 
 	public function print_related_acf_view_meta_box(
@@ -82,7 +83,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				);
 			},
 			array(
-				Post_Selections_Cpt::NAME,
+				Post_Selections_Feature::cpt_name(),
 			),
 			'side',
 			'high'
@@ -97,7 +98,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->print_related_acf_view_meta_box( $card_data );
 			},
 			array(
-				Post_Selections_Cpt::NAME,
+				Post_Selections_Feature::cpt_name(),
 			),
 			'side',
 			'core'

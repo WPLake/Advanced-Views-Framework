@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Groups\Integration;
+namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;

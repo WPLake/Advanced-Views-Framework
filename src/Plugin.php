@@ -4,12 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -437,8 +436,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 		self::add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
 		self::add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
 
-		if ( true === $current_screen->is_admin_cpt_related( Layouts_Cpt::NAME, Current_Screen::CPT_ADD ) ||
-			true === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::NAME, Current_Screen::CPT_ADD ) ) {
+		if ( true === $current_screen->is_admin_cpt_related( Layouts_Feature::cpt_name(), Current_Screen::CPT_ADD ) ||
+			true === $current_screen->is_admin_cpt_related( Post_Selections_Feature::cpt_name(), Current_Screen::CPT_ADD ) ) {
 			self::add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
 		}
 	}

@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
@@ -13,7 +14,6 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
@@ -189,7 +189,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 
 		$url = add_query_arg(
 			array(
-				'post_type'         => Layouts_Cpt::NAME,
+				'post_type'         => Layouts_Feature::cpt_name(),
 				self::ARGUMENT_FROM => $from,
 				'_wpnonce'          => wp_create_nonce( self::NONCE_ADD_NEW ),
 			),
@@ -370,7 +370,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 				$is_add_screen = 'post' === $screen->base &&
 								'add' === $screen->action;
 
-				if ( Layouts_Cpt::NAME !== $screen->post_type ||
+				if ( Layouts_Feature::cpt_name() !== $screen->post_type ||
 					false === $is_add_screen ||
 					null === $from_post ||
 					$this->get_vendor_post_type() !== $from_post->post_type ||

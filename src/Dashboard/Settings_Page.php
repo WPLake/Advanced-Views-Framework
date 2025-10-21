@@ -5,6 +5,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Exception;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -17,7 +18,6 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
 defined( 'ABSPATH' ) || exit;
@@ -131,7 +131,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 				'slug'            => self::SLUG,
 				'page_title'      => __( 'Settings', 'acf-views' ),
 				'menu_title'      => __( 'Settings', 'acf-views' ),
-				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ),
+				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Layouts_Feature::cpt_name() ),
 				'position'        => 2,
 				'update_button'   => __( 'Save changes', 'acf-views' ),
 				'updated_message' => $updated_message,

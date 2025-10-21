@@ -40,18 +40,20 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Tools\Tools;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Groups_Integration\{
+	Post_Selection_Settings_Integration,
+	Custom_Acf_Field_Types,
+	Field_Settings_Integration,
+	Item_Settings_Integration,
+	Meta_Field_Settings_Integration,
+	Mount_Point_Settings_Integration,
+	Tax_Field_Settings_Integration,
+	Tools_Settings_Integration,
+	Layout_Settings_Integration,
+};
 use Org\Wplake\Advanced_Views\Groups\{Post_Selection_Settings,
 	Field_Settings,
 	Git_Repository,
-	Integration\Post_Selection_Settings_Integration,
-	Integration\Custom_Acf_Field_Types,
-	Integration\Field_Settings_Integration,
-	Integration\Item_Settings_Integration,
-	Integration\Meta_Field_Settings_Integration,
-	Integration\Mount_Point_Settings_Integration,
-	Integration\Tax_Field_Settings_Integration,
-	Integration\Tools_Settings_Integration,
-	Integration\Layout_Settings_Integration,
 	Item_Settings,
 	Repeater_Field_Settings,
 	Plugin_Settings,

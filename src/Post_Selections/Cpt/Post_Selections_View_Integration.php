@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings_Creator;
@@ -11,7 +13,6 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
 defined( 'ABSPATH' ) || exit;
@@ -56,10 +57,10 @@ class Post_Selections_View_Integration extends Cpt_Settings_Creator implements H
 		$is_add_screen = 'post' === $screen->base &&
 						'add' === $screen->action;
 
-		if ( Post_Selections_Cpt::NAME !== $screen->post_type ||
+		if ( Post_Selections_Feature::cpt_name() !== $screen->post_type ||
 			false === $is_add_screen ||
 			null === $from_post ||
-			Layouts_Cpt::NAME !== $from_post->post_type ||
+			Layouts_Feature::cpt_name() !== $from_post->post_type ||
 			'publish' !== $from_post->post_status ||
 			! Avf_User::can_manage() ) {
 			return;

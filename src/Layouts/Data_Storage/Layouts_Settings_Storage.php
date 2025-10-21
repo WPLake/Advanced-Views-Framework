@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Data_Storage;
 
+use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -12,7 +13,6 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Post;
 use WP_Query;
 
@@ -94,7 +94,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 		$query = $wpdb->prepare(
 			"SELECT * from {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish'
                       AND FIND_IN_SET(%s,post_content_filtered) > 0",
-			Layouts_Cpt::NAME,
+			Layouts_Feature::cpt_name(),
 			$meta_group_id
 		);
 		/**
@@ -137,7 +137,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 		// 1. perform a query for all views in the DB,
 		// (it's faster than parsing json for all and finding the ones with the feature)
 		$args     = array(
-			'post_type'                                  => Layouts_Cpt::NAME,
+			'post_type'                                  => Layouts_Feature::cpt_name(),
 			'post_status'                                => 'publish',
 			'posts_per_page'                             => - 1,
 			Layout_Settings::POST_FIELD_IS_HAS_GUTENBERG => Layout_Settings::POST_VALUE_IS_HAS_GUTENBERG,

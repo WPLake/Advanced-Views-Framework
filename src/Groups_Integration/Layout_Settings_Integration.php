@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Groups\Integration;
+namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;

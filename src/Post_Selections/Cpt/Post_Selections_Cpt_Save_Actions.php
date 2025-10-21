@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
@@ -63,7 +64,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	protected function get_cpt_name(): string {
-		return Post_Selections_Cpt::NAME;
+		return Post_Selections_Feature::cpt_name();
 	}
 
 	protected function get_custom_markup_acf_field_name(): string {

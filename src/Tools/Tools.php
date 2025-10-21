@@ -6,7 +6,6 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Tools;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -16,7 +15,6 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Filesystem_Base;
 use WP_Post;
@@ -236,7 +234,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 				'slug'            => self::SLUG,
 				'page_title'      => __( 'Tools', 'acf-views' ),
 				'menu_title'      => __( 'Tools', 'acf-views' ),
-				'parent_slug'     => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::NAME ),
+				'parent_slug'     => sprintf( 'edit.php?post_type=%s', \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() ),
 				'position'        => 2,
 				'update_button'   => __( 'Process', 'acf-views' ),
 				'updated_message' => $updated_message,
@@ -365,10 +363,10 @@ final class Tools extends Hookable implements Hooks_Interface {
 								array() !== $this->tools_settings->export_cards;
 
 		$view_posts = $is_views_in_export ?
-			$this->get_posts( Layouts_Cpt::NAME, $this->tools_settings->export_views ) :
+			$this->get_posts( \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name(), $this->tools_settings->export_views ) :
 			array();
 		$card_posts = $is_cards_in_export ?
-			$this->get_posts( Post_Selections_Cpt::NAME, $this->tools_settings->export_cards ) :
+			$this->get_posts( \Org\Wplake\Advanced_Views\Features\Post_Selections_Feature::cpt_name(), $this->tools_settings->export_cards ) :
 			array();
 
 		foreach ( $view_posts as $view_post ) {
@@ -512,12 +510,12 @@ final class Tools extends Hookable implements Hooks_Interface {
 			}
 
 			$post_type    = false !== strpos( $unique_id, (string) Layout_Settings::UNIQUE_ID_PREFIX ) ?
-				Layouts_Cpt::NAME :
-				Post_Selections_Cpt::NAME;
-			$data_storage = Layouts_Cpt::NAME === $post_type ?
+				\Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() :
+				\Org\Wplake\Advanced_Views\Features\Post_Selections_Feature::cpt_name();
+			$data_storage = \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() === $post_type ?
 				$this->layouts_settings_storage :
 				$this->post_selections_settings_storage;
-			$title_field  = Layouts_Cpt::NAME === $post_type ?
+			$title_field  = \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() === $post_type ?
 				Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) :
 				Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE );
 			$title        = $details[ $title_field ] ?? '';
@@ -534,7 +532,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 				$cpt_data;
 
 			if ( null === $cpt_data ) {
-				if ( Layouts_Cpt::NAME === $post_type ) {
+				if ( \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() === $post_type ) {
 					$fail_view_unique_ids[] = $unique_id;
 				} else {
 					$fail_card_unique_ids[] = $unique_id;
@@ -550,7 +548,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 
 			// there is no sense to call the 'performSaveActions' method.
 
-			if ( Layouts_Cpt::NAME === $post_type ) {
+			if ( \Org\Wplake\Advanced_Views\Features\Layouts_Feature::cpt_name() === $post_type ) {
 				$success_view_ids[] = $cpt_data->get_post_id();
 			} else {
 				$success_card_ids[] = $cpt_data->get_post_id();
