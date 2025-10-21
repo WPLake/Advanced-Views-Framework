@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Parents;
+namespace Org\Wplake\Advanced_Views\Groups\Parents;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Mount_Point_Settings;

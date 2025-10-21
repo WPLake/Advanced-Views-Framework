@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Layouts;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 

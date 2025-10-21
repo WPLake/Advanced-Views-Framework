@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Import_Result;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Upgrades;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 

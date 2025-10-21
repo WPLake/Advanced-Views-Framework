@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Import_Result;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 
 defined( 'ABSPATH' ) || exit;
 

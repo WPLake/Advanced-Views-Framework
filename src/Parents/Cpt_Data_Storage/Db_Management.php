@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use WP_Error;
 use WP_Post;
 use WP_Query;

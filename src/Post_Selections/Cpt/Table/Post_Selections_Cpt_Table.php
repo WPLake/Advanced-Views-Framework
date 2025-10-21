@@ -13,7 +13,7 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;

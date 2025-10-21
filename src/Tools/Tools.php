@@ -123,16 +123,12 @@ final class Tools extends Hookable implements Hooks_Interface {
 		$ids               = array_keys( $this->export_data );
 		$view_ids          = array_filter(
 			$ids,
-			function ( $id ) {
-				return false !== strpos( $id, Layout_Settings::UNIQUE_ID_PREFIX );
-			}
+			fn($id) => false !== strpos( $id, (string) Layout_Settings::UNIQUE_ID_PREFIX )
 		);
 		$count_of_view_ids = count( $view_ids );
 		$card_ids          = array_filter(
 			$ids,
-			function ( $id ) {
-				return false !== strpos( $id, Post_Selection_Settings::UNIQUE_ID_PREFIX );
-			}
+			fn($id) => false !== strpos( $id, (string) Post_Selection_Settings::UNIQUE_ID_PREFIX )
 		);
 		$count_of_card_ids = count( $card_ids );
 
@@ -354,12 +350,12 @@ final class Tools extends Hookable implements Hooks_Interface {
 			$query_args['post_name__in'] = $slugs;
 		}
 
-		$query = new WP_Query( $query_args );
+		$wp_query = new WP_Query( $query_args );
 
 		/**
 		 * @var WP_Post[]
 		 */
-		return $query->get_posts();
+		return $wp_query->get_posts();
 	}
 
 	protected function export(): void {
@@ -515,7 +511,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 				continue;
 			}
 
-			$post_type    = false !== strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX ) ?
+			$post_type    = false !== strpos( $unique_id, (string) Layout_Settings::UNIQUE_ID_PREFIX ) ?
 				Layouts_Cpt::NAME :
 				Post_Selections_Cpt::NAME;
 			$data_storage = Layouts_Cpt::NAME === $post_type ?

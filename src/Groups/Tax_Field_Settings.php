@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups;
 
-use Org\Wplake\Advanced_Views\Parents\Group;
+use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 
 defined( 'ABSPATH' ) || exit;
 

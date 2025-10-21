@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Groups;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;

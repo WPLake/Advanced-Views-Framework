@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Groups;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Tools\Tools;
-use Org\Wplake\Advanced_Views\Parents\Group;
+use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 
 defined( 'ABSPATH' ) || exit;
 

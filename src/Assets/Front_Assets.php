@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
