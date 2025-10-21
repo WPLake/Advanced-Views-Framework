@@ -208,7 +208,9 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		if ( key_exists( 'fields', $group_json ) &&
 			is_array( $group_json['fields'] ) ) {
 			foreach ( $group_json['fields'] as &$field ) {
-				$field['key'] = uniqid( 'field_' );
+				if ( is_array( $field ) ) {
+					$field['key'] = uniqid( 'field_' );
+				}
 			}
 		}
 

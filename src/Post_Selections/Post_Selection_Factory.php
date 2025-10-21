@@ -62,7 +62,7 @@ class Post_Selection_Factory extends Instance_Factory {
 	}
 
 	/**
-	 * @param array<string,mixed> $custom_arguments
+	 * @param mixed[] $custom_arguments
 	 */
 	public function make_and_print_html(
 		Post_Selection_Settings $post_selection_settings,

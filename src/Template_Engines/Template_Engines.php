@@ -120,6 +120,9 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 			WP_Filesystem();
 
+			/**
+			 * @var WP_Filesystem_Base $wp_filesystem
+			 */
 			$this->wp_filesystem_base = $wp_filesystem;
 		}
 

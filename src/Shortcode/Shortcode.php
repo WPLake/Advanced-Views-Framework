@@ -199,10 +199,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 		preg_match_all( $last_tag_regex, $html, $matches, PREG_OFFSET_CAPTURE );
 
-		$is_last_tag_not_defined = array() === $matches ||
-									// @phpstan-ignore-next-line
-									false === is_array( $matches[0] ) ||
-									0 === count( $matches[0] );
+		$is_last_tag_not_defined = 0 === count( $matches[0] );
 
 		if ( true === $is_last_tag_not_defined ) {
 			return $html;

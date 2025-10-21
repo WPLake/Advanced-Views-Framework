@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
