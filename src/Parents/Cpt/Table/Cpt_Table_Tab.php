@@ -27,7 +27,7 @@ abstract class Cpt_Table_Tab extends Hookable implements Hooks_Interface {
 
 	abstract public function maybe_show_action_result_message(): void;
 
-	abstract public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void;
+	abstract public function print_row_title( Tab_Data $tab_data, Cpt_Settings $cpt_settings ): void;
 
 	protected function get_cpt_name(): string {
 		return $this->cpt_table->get_cpt_name();

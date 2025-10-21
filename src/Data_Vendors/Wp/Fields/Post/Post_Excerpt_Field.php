@@ -19,12 +19,12 @@ class Post_Excerpt_Field extends Markup_Field {
 	use Custom_Field;
 
 	// custom modification to avoid issues (see body for the details).
-	protected function get_excerpt( string $text, WP_Post $post ): string {
+	protected function get_excerpt( string $text, WP_Post $wp_post ): string {
 		$raw_excerpt = $text;
 
 		if ( '' === trim( $text ) ) {
-			$post = get_post( $post );
-			$text = get_the_content( '', false, $post );
+			$wp_post = get_post( $wp_post );
+			$text    = get_the_content( '', false, $wp_post );
 
 			$text = strip_shortcodes( $text );
 			$text = excerpt_remove_blocks( $text );
@@ -135,8 +135,8 @@ class Post_Excerpt_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;

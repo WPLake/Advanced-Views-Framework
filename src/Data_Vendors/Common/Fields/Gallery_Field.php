@@ -23,10 +23,10 @@ class Gallery_Field extends Markup_Field {
 		$this->image_field = $image_field;
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_data ): void {
-		$markup_data->set_is_with_field_wrapper( true );
+	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$markup_field_data->set_is_with_field_wrapper( true );
 
-		$this->image_field->print_markup( $item_id, $markup_data );
+		$this->image_field->print_markup( $item_id, $markup_field_data );
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
@@ -93,8 +93,8 @@ class Gallery_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;
@@ -115,10 +115,10 @@ class Gallery_Field extends Markup_Field {
 		return array_merge( parent::get_conditional_fields( $field_meta ), $conditional_fields );
 	}
 
-	public function get_front_assets( Field_Settings $field_data ): array {
-		$front_assets = $this->image_field->get_front_assets( $field_data );
+	public function get_front_assets( Field_Settings $field_settings ): array {
+		$front_assets = $this->image_field->get_front_assets( $field_settings );
 
-		switch ( $field_data->gallery_type ) {
+		switch ( $field_settings->gallery_type ) {
 			case 'masonry':
 				$front_assets[] = Acf_Views_Masonry_Front_Asset::NAME;
 				break;
@@ -130,10 +130,10 @@ class Gallery_Field extends Markup_Field {
 				break;
 		}
 
-		if ( 'splide_v4' === $field_data->slider_type ) {
+		if ( 'splide_v4' === $field_settings->slider_type ) {
 			$front_assets[] = Splide_Front_Asset::NAME;
 		}
 
-		return array_merge( parent::get_front_assets( $field_data ), $front_assets );
+		return array_merge( parent::get_front_assets( $field_settings ), $front_assets );
 	}
 }

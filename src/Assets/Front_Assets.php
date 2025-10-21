@@ -93,15 +93,15 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return $imports;
 	}
 
-	protected function print_component_js( Cpt_Settings $cpt_data, string $js_code ): void {
-		$tag_name                   = $cpt_data->get_tag_name();
-		$is_wp_interactivity_in_use = $cpt_data->is_wp_interactivity_in_use();
+	protected function print_component_js( Cpt_Settings $cpt_settings, string $js_code ): void {
+		$tag_name                   = $cpt_settings->get_tag_name();
+		$is_wp_interactivity_in_use = $cpt_settings->is_wp_interactivity_in_use();
 
 		if ( true === $is_wp_interactivity_in_use ) {
 			$this->is_custom_interactivity_api_import_map_required = true;
 		}
 
-		if ( false === $cpt_data->is_web_component() ) {
+		if ( false === $cpt_settings->is_web_component() ) {
 			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $js_code;
 
@@ -111,9 +111,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		// dashes to camelCase.
 		$component_name = preg_replace_callback(
 			'/-([a-z0-9])/',
-			function ( $matches ) {
-				return strtoupper( $matches[1] );
-			},
+			fn( $matches ) => strtoupper( $matches[1] ),
 			$tag_name
 		);
 
@@ -124,7 +122,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$is_with_shadow_dom = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_data->web_component;
+		$is_with_shadow_dom = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_settings->web_component;
 		$box_shadow_js      = true === $is_with_shadow_dom ?
 			'var html=this.innerHTML;this.attachShadow({mode:"open"});this.shadowRoot.innerHTML=html;' :
 			'';
@@ -201,8 +199,8 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 			$media_condition = trim( $media_query[1] ?? '' );
 			$media_content   = trim( $media_query[2] ?? '' );
 
-			$media_rules[ $media_condition ]  = $media_rules[ $media_condition ] ?? '';
-			$media_rules[ $media_condition ] .= $media_content;
+			$media_rules[ $media_condition ] ??= '';
+			$media_rules[ $media_condition ]  .= $media_content;
 		}
 
 		// 2. remove all the media queries from the primary css.
@@ -270,25 +268,19 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		// remove all multiline comments.
 		$code_without_comments = preg_replace( '|\/\*[\s\S]+\*\/|U', '', $code );
-		$code                  = null !== $code_without_comments ?
-			$code_without_comments :
-			$code;
+		$code                  = $code_without_comments ?? $code;
 
 		// remove all single line comments.
 		// \s at the begin is used to make sure url's aren't affected, e.g. 'url(http://example.com)' in CSS.
 		$code_without_comments = preg_replace( '|[\s]+\/\/(.?)+\n|', '', $code );
-		$code                  = null !== $code_without_comments ?
-			$code_without_comments :
-			$code;
+		$code                  = $code_without_comments ?? $code;
 
 		// remove unnecessary spaces.
 		$code = str_replace( array( "\t", "\n", "\r" ), '', $code );
 
 		// replace multiple spaces with one.
 		$code_without_extra_spaces = preg_replace( '|\s+|', ' ', $code );
-		$code                      = null !== $code_without_extra_spaces ?
-			$code_without_extra_spaces :
-			$code;
+		$code                      = $code_without_extra_spaces ?? $code;
 
 		$code = str_replace( ': ', ':', $code );
 		$code = str_replace( '; ', ';', $code );
@@ -323,28 +315,28 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		echo '<!--advanced-views:styles-->';
 	}
 
-	public function add_asset( Cpt_Settings $cpt_data ): void {
+	public function add_asset( Cpt_Settings $cpt_settings ): void {
 		$css_code = $this->minify_code(
-			$cpt_data->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
+			$cpt_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
 			self::MINIFY_TYPE_CSS
 		);
-		$js_code  = $this->minify_code( $cpt_data->get_js_code(), self::MINIFY_TYPE_JS );
+		$js_code  = $this->minify_code( $cpt_settings->get_js_code(), self::MINIFY_TYPE_JS );
 
 		if ( '' !== $css_code &&
-			false === $cpt_data->is_css_internal() ) {
-			$this->include_css_code[ $cpt_data->get_unique_id() ] = $css_code;
+			false === $cpt_settings->is_css_internal() ) {
+			$this->include_css_code[ $cpt_settings->get_unique_id() ] = $css_code;
 		}
 
 		if ( '' !== $js_code ) {
 			ob_start();
-			$this->print_component_js( $cpt_data, $js_code );
+			$this->print_component_js( $cpt_settings, $js_code );
 			$inline_js_code = (string) ob_get_clean();
 
-			$this->inline_js_code[ $cpt_data->get_unique_id() ] = $inline_js_code;
+			$this->inline_js_code[ $cpt_settings->get_unique_id() ] = $inline_js_code;
 		}
 
 		foreach ( $this->assets as $asset ) {
-			$asset->maybe_activate( $cpt_data );
+			$asset->maybe_activate( $cpt_settings );
 		}
 	}
 
@@ -457,11 +449,11 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,array{css:array<string,string>,js:array<string,string>}>
 	 */
-	public function generate_code( Cpt_Settings $cpt_data ): array {
+	public function generate_code( Cpt_Settings $cpt_settings ): array {
 		$code = array();
 
 		foreach ( $this->assets as $asset ) {
-			$asset_code = $asset->generate_code( $cpt_data );
+			$asset_code = $asset->generate_code( $cpt_settings );
 
 			if ( 0 === count( $asset_code['js'] ) &&
 				0 === count( $asset_code['css'] ) ) {
@@ -474,9 +466,9 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return $code;
 	}
 
-	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
+	public function is_web_component_required( Cpt_Settings $cpt_settings ): bool {
 		foreach ( $this->assets as $asset ) {
-			if ( ! $asset->is_web_component_required( $cpt_data ) ) {
+			if ( ! $asset->is_web_component_required( $cpt_settings ) ) {
 				continue;
 			}
 
@@ -496,22 +488,20 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		return array_filter(
 			$front_assets_by_name,
-			function ( $asset ) {
-				return $asset instanceof View_Front_Asset_Interface;
-			}
+			fn( $asset ) => $asset instanceof View_Front_Asset_Interface
 		);
 	}
 
-	public function get_card_items_wrapper_class( Post_Selection_Settings $card_data ): string {
+	public function get_card_items_wrapper_class( Post_Selection_Settings $post_selection_settings ): string {
 		$classes = array();
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $card_data ) ) {
+				! $asset->is_target_card( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$class = $asset->get_card_items_wrapper_class( $card_data );
+			$class = $asset->get_card_items_wrapper_class( $post_selection_settings );
 
 			if ( '' === $class ) {
 				continue;
@@ -526,7 +516,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return Html_Wrapper[]
 	 */
-	public function get_card_item_outers( Post_Selection_Settings $card_data ): array {
+	public function get_card_item_outers( Post_Selection_Settings $post_selection_settings ): array {
 		/**
 		 * @var Html_Wrapper[] $outers
 		 */
@@ -534,11 +524,11 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $card_data ) ) {
+				! $asset->is_target_card( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$asset_outers = $asset->get_card_item_outers( $card_data );
+			$asset_outers = $asset->get_card_item_outers( $post_selection_settings );
 
 			if ( array() === $asset_outers ) {
 				continue;
@@ -563,16 +553,16 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_card_shortcode_attrs( Post_Selection_Settings $card_data ): array {
+	public function get_card_shortcode_attrs( Post_Selection_Settings $post_selection_settings ): array {
 		$attrs = array();
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $card_data ) ) {
+				! $asset->is_target_card( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$attrs = array_merge( $attrs, $asset->get_card_shortcode_attrs( $card_data ) );
+			$attrs = array_merge( $attrs, $asset->get_card_shortcode_attrs( $post_selection_settings ) );
 		}
 
 		return $attrs;

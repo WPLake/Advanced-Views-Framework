@@ -87,18 +87,18 @@ class Pods_Upload_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
-		return $this->get_field_instance( $field_meta )->is_with_field_wrapper( $view_data, $field, $field_meta );
+		return $this->get_field_instance( $field_meta )->is_with_field_wrapper( $layout_settings, $field_settings, $field_meta );
 	}
 
 	public function get_conditional_fields( Field_Meta_Interface $field_meta ): array {
 		return $this->get_field_instance( $field_meta )->get_conditional_fields( $field_meta );
 	}
 
-	public function get_front_assets( Field_Settings $field_data ): array {
-		return $this->get_field_instance( $field_data->get_field_meta() )->get_front_assets( $field_data );
+	public function get_front_assets( Field_Settings $field_settings ): array {
+		return $this->get_field_instance( $field_settings->get_field_meta() )->get_front_assets( $field_settings );
 	}
 }

@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
 	private Instance_Factory $instance_factory;
 	private Settings $settings;
-	private Cpt_Settings_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Front_Assets $front_assets;
 	private Live_Reloader_Component $live_reloader_component;
 	/**
@@ -34,17 +34,17 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	protected Plugin_Feature $plugin_feature;
 
 	public function __construct(
-		Plugin_Feature $feature,
+		Plugin_Feature $plugin_feature,
 		Settings $settings,
-		Cpt_Settings_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_settings_storage,
 		Instance_Factory $instance_factory,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component
 	) {
-		$this->plugin_feature          = $feature;
+		$this->plugin_feature          = $plugin_feature;
 		$this->rendered_ids            = array();
 		$this->settings                = $settings;
-		$this->cpt_data_storage        = $cpt_data_storage;
+		$this->cpt_settings_storage    = $cpt_settings_storage;
 		$this->instance_factory        = $instance_factory;
 		$this->front_assets            = $front_assets;
 		$this->live_reloader_component = $live_reloader_component;
@@ -144,7 +144,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			$this->rendered_ids[ $unique_id ] = true;
 		}
 
-		$cpt_data = $this->cpt_data_storage->get( $unique_id );
+		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
 		$is_with_quick_link = true === $this->settings->is_dev_mode() &&
 								Avf_User::can_manage();
@@ -305,22 +305,21 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 						$param = (string) $param;
 
-						return '' !== $this->cpt_data_storage->get_unique_id_from_shortcode_id(
+						return '' !== $this->cpt_settings_storage->get_unique_id_from_shortcode_id(
 							$param,
 							$this->get_post_type()
 						);
 					},
 				),
 			),
-			'permission_callback' => function (): bool {
+			'permission_callback' => fn(): bool =>
 				// available to all by default.
-				return true;
-			},
+				true,
 			/**
 			 * @return array<string,mixed>
 			 */
-			'callback'            => function ( WP_REST_Request $request ): array {
-				$short_unique_id = $request->get_param( 'unique_id' );
+			'callback'            => function ( WP_REST_Request $wprest_request ): array {
+				$short_unique_id = $wprest_request->get_param( 'unique_id' );
 
 				// already validated above.
 				if ( false === is_string( $short_unique_id ) ) {
@@ -329,7 +328,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 				$unique_id = $this->get_unique_id_prefix() . $short_unique_id;
 
-				return $this->instance_factory->get_rest_api_response( $unique_id, $request );
+				return $this->instance_factory->get_rest_api_response( $unique_id, $wprest_request );
 			},
 		);
 	}

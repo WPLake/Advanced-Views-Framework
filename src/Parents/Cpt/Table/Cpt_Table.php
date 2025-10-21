@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -15,7 +14,6 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_List_Table;
 use WP_Post;
 use WP_Post_Type;
@@ -26,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
-	private Cpt_Settings_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 	private string $cpt_name;
 	/**
 	 * @var Tab_Data[]
@@ -41,11 +39,11 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	private ?string $current_search_value;
 	private ?int $pagination_per_page;
 
-	public function __construct( Cpt_Settings_Storage $cpt_data_storage, string $name ) {
-		$this->cpt_data_storage  = $cpt_data_storage;
-		$this->cpt_name          = $name;
-		$this->tabs              = array();
-		$this->add_tab_callbacks = array();
+	public function __construct( Cpt_Settings_Storage $cpt_settings_storage, string $name ) {
+		$this->cpt_settings_storage = $cpt_settings_storage;
+		$this->cpt_name             = $name;
+		$this->tabs                 = array();
+		$this->add_tab_callbacks    = array();
 
 		$this->current_tab          = null;
 		$this->current_page_number  = null;
@@ -53,7 +51,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$this->pagination_per_page  = null;
 	}
 
-	abstract protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void;
+	abstract protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void;
 
 	protected function get_action_clone(): string {
 		return $this->cpt_name . '_clone';
@@ -75,11 +73,11 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$origin_cpt_data = $this->cpt_data_storage->get( $post->post_name );
+		$origin_cpt_data = $this->cpt_settings_storage->get( $post->post_name );
 		$title           = $origin_cpt_data->title . ' ' . __( 'Clone', 'acf-views' );
 
 		// 1. make the new instance
-		$cpt_data = $this->cpt_data_storage->create_new( 'draft', $title, (int) $post->post_author );
+		$cpt_data = $this->cpt_settings_storage->create_new( 'draft', $title, (int) $post->post_author );
 
 		if ( null === $cpt_data ) {
 			return;
@@ -95,7 +93,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$cpt_data->title     = $title;
 
 		// 4. save
-		$this->cpt_data_storage->save( $cpt_data );
+		$this->cpt_settings_storage->save( $cpt_data );
 
 		wp_safe_redirect(
 			$this->get_tab_url(
@@ -120,7 +118,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			'</p></div>';
 	}
 
-	protected function print_post_type_description( WP_Post_Type $post_type ): void {
+	protected function print_post_type_description( WP_Post_Type $wp_post_type ): void {
 		$current_tab_data = $this->get_current_tab_data();
 
 		if ( null !== $current_tab_data &&
@@ -132,10 +130,10 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		if ( '' !== $post_type->description ) {
+		if ( '' !== $wp_post_type->description ) {
 			// don't use esc_html as it contains links.
 			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			printf( '<p>%s</p>', $post_type->description );
+			printf( '<p>%s</p>', $wp_post_type->description );
 		}
 	}
 
@@ -245,17 +243,17 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		return array_merge( array_slice( $items, 0, $pos ), $new_items, array_slice( $items, $pos ) );
 	}
 
-	public function add_post_name_to_search( WP_Query $query ): void {
-		$post_type = $query->query_vars['post_type'] ?? '';
+	public function add_post_name_to_search( WP_Query $wp_query ): void {
+		$post_type = $wp_query->query_vars['post_type'] ?? '';
 
 		if ( ! is_admin() ||
 			! in_array( $post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ||
-			! $query->is_main_query() ||
-			! $query->is_search() ) {
+			! $wp_query->is_main_query() ||
+			! $wp_query->is_search() ) {
 			return;
 		}
 
-		$search = $query->query_vars['s'];
+		$search = $wp_query->query_vars['s'];
 
 		if ( 13 !== strlen( $search ) ||
 			false === preg_match( '/^[a-z0-9]+$/', $search ) ) {
@@ -266,16 +264,16 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			Layout_Settings::UNIQUE_ID_PREFIX :
 			Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
-		$query->set( 's', '' );
-		$query->set( 'name', $prefix . $search );
+		$wp_query->set( 's', '' );
+		$wp_query->set( 'name', $prefix . $search );
 	}
 
 	public function make_table_actions(): void {
 		$this->maybe_clone_item();
 
-		if ( true === $this->cpt_data_storage->get_file_system()->is_active() ) {
-			$this->cpt_data_storage->delete_db_only_items();
-			$this->cpt_data_storage->rewrite_links_md_for_all_items();
+		if ( true === $this->cpt_settings_storage->get_file_system()->is_active() ) {
+			$this->cpt_settings_storage->delete_db_only_items();
+			$this->cpt_settings_storage->rewrite_links_md_for_all_items();
 		}
 	}
 
@@ -288,8 +286,8 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	 *
 	 * @return array<string,string>
 	 */
-	public function get_row_actions( array $actions, WP_Post $view ): array {
-		if ( $this->cpt_name !== $view->post_type ) {
+	public function get_row_actions( array $actions, WP_Post $wp_post ): array {
+		if ( $this->cpt_name !== $wp_post->post_type ) {
 			return $actions;
 		}
 
@@ -306,7 +304,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$clone_link = $this->get_tab_url(
 			'',
 			array(
-				$this->get_action_clone() => $view->ID,
+				$this->get_action_clone() => $wp_post->ID,
 				'_wpnonce'                => wp_create_nonce( 'bulk-posts' ),
 			)
 		);
@@ -448,7 +446,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 	public function printTableColumn( string $column_name, int $post_id ): void {
 		$unique_id = get_post( $post_id )->post_name ?? '';
-		$cpt_data  = $this->cpt_data_storage->get( $unique_id );
+		$cpt_data  = $this->cpt_settings_storage->get( $unique_id );
 
 		$short_column_name = substr( $column_name, strlen( $this->get_column_prefix() ) );
 		$this->print_column( $short_column_name, $cpt_data );
@@ -469,8 +467,8 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		return $current_tab_data->get_bulk_actions();
 	}
 
-	public function hide_excerpt_from_extended_list_view( string $excerpt, WP_Post $post ): string {
-		if ( $this->cpt_name !== $post->post_type ) {
+	public function hide_excerpt_from_extended_list_view( string $excerpt, WP_Post $wp_post ): string {
+		if ( $this->cpt_name !== $wp_post->post_type ) {
 			return $excerpt;
 		}
 
@@ -495,8 +493,8 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		return $this->cpt_name;
 	}
 
-	public function add_tab( Tab_Data $cpt_table_tab_data ): void {
-		$this->tabs[] = $cpt_table_tab_data;
+	public function add_tab( Tab_Data $tab_data ): void {
+		$this->tabs[] = $tab_data;
 	}
 
 	public function get_current_tab(): string {

@@ -19,7 +19,7 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Settings_Storage extends Cpt_Settings_Storage {
-	private Layout_Settings $view_data;
+	private Layout_Settings $layout_settings;
 	/**
 	 * @var array<string,Layout_Settings>
 	 */
@@ -28,19 +28,19 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 	public function __construct(
 		Logger $logger,
 		File_System $file_system,
-		Fs_Fields $view_fs_fields,
+		Fs_Fields $fs_fields,
 		Db_Management $db_management,
-		Layout_Settings $view_data
+		Layout_Settings $layout_settings
 	) {
-		parent::__construct( $logger, $file_system, $view_fs_fields, $db_management );
+		parent::__construct( $logger, $file_system, $fs_fields, $db_management );
 
-		$this->view_data = $view_data->getDeepClone();
-		$this->items     = array();
+		$this->layout_settings = $layout_settings->getDeepClone();
+		$this->items           = array();
 	}
 
-	public function replace( string $unique_id, Cpt_Settings $cpt_data ): void {
-		if ( $cpt_data instanceof Layout_Settings ) {
-			$this->items[ $unique_id ] = $cpt_data;
+	public function replace( string $unique_id, Cpt_Settings $cpt_settings ): void {
+		if ( $cpt_settings instanceof Layout_Settings ) {
+			$this->items[ $unique_id ] = $cpt_settings;
 		}
 	}
 
@@ -56,7 +56,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 			return $this->items[ $unique_id ];
 		}
 
-		$view_data = $this->view_data->getDeepClone();
+		$view_data = $this->layout_settings->getDeepClone();
 
 		$this->load( $view_data, $unique_id, $is_force_from_db, $is_force_from_fs );
 
@@ -111,9 +111,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 
 		$items_without_posts = array_filter(
 			$this->get_db_management()->get_post_ids(),
-			function ( $post_id ) {
-				return 0 === $post_id;
-			}
+			fn( $post_id ) => 0 === $post_id
 		);
 
 		foreach ( array_keys( $items_without_posts ) as $unique_id ) {
@@ -138,17 +136,17 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 
 		// 1. perform a query for all views in the DB,
 		// (it's faster than parsing json for all and finding the ones with the feature)
-		$args  = array(
+		$args     = array(
 			'post_type'                                  => Layouts_Cpt::NAME,
 			'post_status'                                => 'publish',
 			'posts_per_page'                             => - 1,
 			Layout_Settings::POST_FIELD_IS_HAS_GUTENBERG => Layout_Settings::POST_VALUE_IS_HAS_GUTENBERG,
 		);
-		$query = new WP_Query( $args );
+		$wp_query = new WP_Query( $args );
 		/**
 		 * @var WP_Post[] $posts
 		 */
-		$posts = $query->get_posts();
+		$posts = $wp_query->get_posts();
 
 		foreach ( $posts as $post ) {
 			$views[] = $this->get( $post->post_name );
@@ -158,9 +156,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 
 		$items_without_posts = array_filter(
 			$this->get_db_management()->get_post_ids(),
-			function ( $post_id ) {
-				return 0 === $post_id;
-			}
+			fn( $post_id ) => 0 === $post_id
 		);
 
 		foreach ( array_keys( $items_without_posts ) as $unique_id ) {

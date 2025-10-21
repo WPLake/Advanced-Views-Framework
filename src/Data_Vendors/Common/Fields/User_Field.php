@@ -41,8 +41,8 @@ class User_Field extends List_Field {
 		);
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_data ): void {
-		$this->link_field->print_markup( $item_id, $markup_data );
+	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$this->link_field->print_markup( $item_id, $markup_field_data );
 	}
 
 	/**

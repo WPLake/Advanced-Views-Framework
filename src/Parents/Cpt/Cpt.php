@@ -15,12 +15,12 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt extends Hookable implements Hooks_Interface {
-	private Cpt_Settings_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Plugin_Feature $plugin_feature;
 
-	public function __construct( Plugin_Feature $plugin_feature, Cpt_Settings_Storage $cpt_data_storage ) {
-		$this->plugin_feature   = $plugin_feature;
-		$this->cpt_data_storage = $cpt_data_storage;
+	public function __construct( Plugin_Feature $plugin_feature, Cpt_Settings_Storage $cpt_settings_storage ) {
+		$this->plugin_feature       = $plugin_feature;
+		$this->cpt_settings_storage = $cpt_settings_storage;
 	}
 
 	abstract public function add_cpt(): void;
@@ -87,7 +87,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 			'acf-views'
 		);
 		$description .= ' ';
-		$description .= true === $this->cpt_data_storage->get_file_system()->is_active() ?
+		$description .= true === $this->cpt_settings_storage->get_file_system()->is_active() ?
 			__( 'enabled', 'acf-views' )
 			: __( 'disabled', 'acf-views' );
 		$description .= '.';

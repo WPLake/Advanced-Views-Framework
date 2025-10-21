@@ -33,7 +33,7 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 		$this->maps = array();
 	}
 
-	protected function is_google_map_selector_inner( Field_Settings $field_data ): bool {
+	protected function is_google_map_selector_inner( Field_Settings $field_settings ): bool {
 		return false;
 	}
 
@@ -74,14 +74,14 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 		return $css_code;
 	}
 
-	public function maybe_activate( Cpt_Settings $cpt_data ): void {
-		if ( ! ( $cpt_data instanceof Layout_Settings ) ) {
+	public function maybe_activate( Cpt_Settings $cpt_settings ): void {
+		if ( ! ( $cpt_settings instanceof Layout_Settings ) ) {
 			return;
 		}
 
-		list( $target_fields, $target_sub_fields ) = $this->get_data_vendors()->get_fields_by_front_asset(
+		[$target_fields, $target_sub_fields] = $this->get_data_vendors()->get_fields_by_front_asset(
 			static::NAME,
-			$cpt_data
+			$cpt_settings
 		);
 
 		/**
@@ -102,7 +102,7 @@ class Acf_Views_Maps_Front_Asset extends View_Front_Asset {
 
 			$is_with_google_map = true;
 			$is_inner_target    = $this->is_google_map_selector_inner( $map_field );
-			$this->maps[]       = $cpt_data->get_item_selector( $map_field, 'map', $is_inner_target );
+			$this->maps[]       = $cpt_settings->get_item_selector( $map_field, 'map', $is_inner_target );
 		}
 
 		// only google map requires it.

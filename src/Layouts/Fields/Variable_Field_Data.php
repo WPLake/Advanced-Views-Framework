@@ -29,21 +29,21 @@ class Variable_Field_Data extends Template_Field_Data {
 	 * @var mixed $value
 	 */
 	private $value;
-	private Layout $view;
+	private Layout $layout;
 
 	public function __construct(
-		Layout_Settings $view_data,
-		?Item_Settings $item_data,
-		Field_Settings $field_data,
+		Layout_Settings $layout_settings,
+		?Item_Settings $item_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Field_Markup $field_markup,
-		Layout $view,
+		Layout $layout,
 		Source $source,
-		Markup_Field_Interface $field_instance
+		Markup_Field_Interface $markup_field
 	) {
-		parent::__construct( $view_data, $item_data, $field_data, $field_meta, $field_markup, $field_instance );
+		parent::__construct( $layout_settings, $item_settings, $field_settings, $field_meta, $field_markup, $markup_field );
 
-		$this->view                   = $view;
+		$this->layout                 = $layout;
 		$this->source                 = $source;
 		$this->formatted_value        = null;
 		$this->is_set_formatted_value = false;
@@ -70,7 +70,7 @@ class Variable_Field_Data extends Template_Field_Data {
 		}
 
 		// get the formatted value on fly (as it's used for some fields only, and shouldn't be called for all fields).
-		return $this->view->get_field_value(
+		return $this->layout->get_field_value(
 			$this->get_field_data(),
 			$this->get_field_meta(),
 			$this->get_item_data(),
@@ -83,7 +83,7 @@ class Variable_Field_Data extends Template_Field_Data {
 			return null;
 		}
 
-		return $this->view->convert_string_to_date_time( $this->get_field_meta(), $this->value );
+		return $this->layout->convert_string_to_date_time( $this->get_field_meta(), $this->value );
 	}
 
 	/**
@@ -105,6 +105,6 @@ class Variable_Field_Data extends Template_Field_Data {
 	}
 
 	public function get_view(): Layout {
-		return $this->view;
+		return $this->layout;
 	}
 }

@@ -21,7 +21,7 @@ class Field_Meta implements Field_Meta_Interface {
 	private bool $is_multiple;
 	private bool $is_repeater;
 	private bool $is_group;
-	private ?Field_Meta_Interface $self_repeatable_meta;
+	private ?Field_Meta_Interface $field_meta;
 	/**
 	 * @var string|string[]
 	 */
@@ -36,24 +36,24 @@ class Field_Meta implements Field_Meta_Interface {
 	private bool $is_ui_only;
 
 	public function __construct( string $vendor_name, string $field_id ) {
-		$this->vendor_name          = $vendor_name;
-		$this->field_id             = $field_id;
-		$this->name                 = '';
-		$this->type                 = '';
-		$this->return_format        = '';
-		$this->choices              = array();
-		$this->is_field_exist       = false;
-		$this->display_format       = '';
-		$this->is_multiple          = false;
-		$this->is_repeater          = false;
-		$this->is_group             = false;
-		$this->self_repeatable_meta = null;
-		$this->default_value        = '';
-		$this->custom_args          = array();
-		$this->zoom                 = 0;
-		$this->center_lat           = '';
-		$this->center_lng           = '';
-		$this->is_ui_only           = false;
+		$this->vendor_name    = $vendor_name;
+		$this->field_id       = $field_id;
+		$this->name           = '';
+		$this->type           = '';
+		$this->return_format  = '';
+		$this->choices        = array();
+		$this->is_field_exist = false;
+		$this->display_format = '';
+		$this->is_multiple    = false;
+		$this->is_repeater    = false;
+		$this->is_group       = false;
+		$this->field_meta     = null;
+		$this->default_value  = '';
+		$this->custom_args    = array();
+		$this->zoom           = 0;
+		$this->center_lat     = '';
+		$this->center_lng     = '';
+		$this->is_ui_only     = false;
 	}
 
 	public function is_field_exist(): bool {
@@ -122,7 +122,7 @@ class Field_Meta implements Field_Meta_Interface {
 	}
 
 	public function get_self_repeatable_meta(): ?Field_Meta_Interface {
-		return $this->self_repeatable_meta;
+		return $this->field_meta;
 	}
 
 	/**
@@ -200,8 +200,8 @@ class Field_Meta implements Field_Meta_Interface {
 		$this->is_group = $is_group;
 	}
 
-	public function set_self_repeatable_meta( ?Field_Meta_Interface $self_repeatable_meta ): void {
-		$this->self_repeatable_meta = $self_repeatable_meta;
+	public function set_self_repeatable_meta( ?Field_Meta_Interface $field_meta ): void {
+		$this->field_meta = $field_meta;
 	}
 
 	/**

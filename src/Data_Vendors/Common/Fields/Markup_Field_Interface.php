@@ -31,8 +31,8 @@ interface Markup_Field_Interface {
 	public function get_conditional_fields( Field_Meta_Interface $field_meta ): array;
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool;
 
@@ -45,5 +45,5 @@ interface Markup_Field_Interface {
 	/**
 	 * @return string[]
 	 */
-	public function get_front_assets( Field_Settings $field_data ): array;
+	public function get_front_assets( Field_Settings $field_settings ): array;
 }

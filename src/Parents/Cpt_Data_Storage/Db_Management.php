@@ -61,9 +61,7 @@ class Db_Management extends Action {
 		if ( true === $this->file_system->is_active() ) {
 			$short_unique_ids = array_keys( $this->file_system->get_item_folders() );
 			$unique_ids       = array_map(
-				function ( string $short_unique_id ) {
-					return $this->unique_id_prefix . $short_unique_id;
-				},
+				fn( string $short_unique_id ) => $this->unique_id_prefix . $short_unique_id,
 				$short_unique_ids
 			);
 
@@ -198,25 +196,25 @@ class Db_Management extends Action {
 		return $post_id;
 	}
 
-	public function make_post_for_fs_only_item( Cpt_Settings $cpt_data ): void {
-		$post_id = $this->make_new_post( $cpt_data->get_unique_id(), 'publish', $cpt_data->title );
+	public function make_post_for_fs_only_item( Cpt_Settings $cpt_settings ): void {
+		$post_id = $this->make_new_post( $cpt_settings->get_unique_id(), 'publish', $cpt_settings->title );
 
 		if ( 0 === $post_id ) {
 			return;
 		}
 
 		// now the cptData has the postId.
-		$cpt_data->setSource( $post_id );
+		$cpt_settings->setSource( $post_id );
 
 		// update the cache.
 		if ( true === $this->is_read_post_ids ) {
-			$this->post_ids[ $cpt_data->get_unique_id() ] = $post_id;
+			$this->post_ids[ $cpt_settings->get_unique_id() ] = $post_id;
 		}
 
 		// update the post fields.
 		$this->update_post_without_renaming(
 			array_merge(
-				$cpt_data->get_exposed_post_fields(),
+				$cpt_settings->get_exposed_post_fields(),
 				array(
 					'ID' => $post_id,
 				)
@@ -258,7 +256,7 @@ class Db_Management extends Action {
 		return $this->post_type;
 	}
 
-	public function maybe_assign_unique_id( int $post_id, Cpt_Settings $cpt_data ): void {
+	public function maybe_assign_unique_id( int $post_id, Cpt_Settings $cpt_settings ): void {
 		$current_slug = get_post( $post_id )->post_name ?? '';
 
 		if ( 0 === strpos( $current_slug, $this->unique_id_prefix ) ) {
@@ -274,8 +272,8 @@ class Db_Management extends Action {
 			)
 		);
 
-		$cpt_data->unique_id = $unique_id;
-		$cpt_data->setSource( $post_id );
+		$cpt_settings->unique_id = $unique_id;
+		$cpt_settings->setSource( $post_id );
 
 		// we always need to update the cache, even the IDs aren't read it
 		// otherwise it'll call read later, and the id will be missing (as the item missing in FS).
@@ -343,10 +341,10 @@ class Db_Management extends Action {
 		);
 	}
 
-	public function delete_and_bypass_trash( Cpt_Settings $cpt_data ): void {
+	public function delete_and_bypass_trash( Cpt_Settings $cpt_settings ): void {
 		// 1. remove in DB (if post is present)
-		if ( 0 !== $cpt_data->get_post_id() ) {
-			wp_delete_post( $cpt_data->get_post_id(), true );
+		if ( 0 !== $cpt_settings->get_post_id() ) {
+			wp_delete_post( $cpt_settings->get_post_id(), true );
 		}
 
 		// 2. remove in cache (if present)
@@ -355,7 +353,7 @@ class Db_Management extends Action {
 			return;
 		}
 
-		$unique_id = $cpt_data->get_unique_id();
+		$unique_id = $cpt_settings->get_unique_id();
 
 		if ( key_exists( $unique_id, $this->post_ids ) ) {
 			unset( $this->post_ids[ $unique_id ] );

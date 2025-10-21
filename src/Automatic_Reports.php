@@ -6,11 +6,9 @@ namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Query;
 
@@ -30,21 +28,21 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	private Options $options;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
 		Settings $settings,
 		Options $options,
-		Layouts_Settings_Storage $views_data_storage
+		Layouts_Settings_Storage $layouts_settings_storage
 	) {
 		parent::__construct( $logger );
 
-		$this->plugin             = $plugin;
-		$this->settings           = $settings;
-		$this->options            = $options;
-		$this->views_data_storage = $views_data_storage;
+		$this->plugin                   = $plugin;
+		$this->settings                 = $settings;
+		$this->options                  = $options;
+		$this->layouts_settings_storage = $layouts_settings_storage;
 	}
 
 	public static function hook(): string {
@@ -84,7 +82,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
 			self::add_action(
 				self::hook(),
-				function () {
+				function (): void {
 					// nothing to do.
 				}
 			);
@@ -432,9 +430,9 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		);
-		$query      = new WP_Query( $query_args );
+		$wp_query   = new WP_Query( $query_args );
 
-		return $query->found_posts;
+		return $wp_query->found_posts;
 	}
 
 	/**
@@ -459,7 +457,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			'_isMetaBox'                     => class_exists( 'RW_Meta_Box' ),
 			'_isPods'                        => class_exists( 'Pods' ),
 			// check only for Views, as Views and Cards use the same setting.
-				'_isFsStorageActive'         => $this->views_data_storage->get_file_system()->is_active(),
+				'_isFsStorageActive'         => $this->layouts_settings_storage->get_file_system()->is_active(),
 			'_gitRepositoriesCount'          => count( $this->settings->get_git_repositories() ),
 			'_language'                      => get_bloginfo( 'language' ),
 			'_phpErrors'                     => $error_logs,
@@ -494,7 +492,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$send_request = Profiler::get_callback(
 			Profiler::SOURCE_NETWORK,
 			self::REQUEST_URL,
-			function () use ( $args, $deactivation_survey_fields ) {
+			function () use ( $args, $deactivation_survey_fields ): void {
 				wp_remote_post(
 					self::REQUEST_URL,
 					array(

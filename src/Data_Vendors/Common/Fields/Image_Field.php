@@ -15,18 +15,18 @@ use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 defined( 'ABSPATH' ) || exit;
 
 class Image_Field extends Markup_Field {
-	protected function print_inner_attributes( string $field_id, Markup_Field_Data $markup_data ): void {
+	protected function print_inner_attributes( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$inner_attributes = array();
 
-		foreach ( $markup_data->get_field_assets() as $field_asset ) {
+		foreach ( $markup_field_data->get_field_assets() as $field_asset ) {
 			$inner_attributes = array_merge(
 				$inner_attributes,
-				$field_asset->get_inner_variable_attributes( $markup_data->get_field_data(), $field_id )
+				$field_asset->get_inner_variable_attributes( $markup_field_data->get_field_data(), $field_id )
 			);
 		}
 
 		foreach ( $inner_attributes as $name => $variable_info ) {
-			$markup_data->get_template_generator()->print_array_item_attribute(
+			$markup_field_data->get_template_generator()->print_array_item_attribute(
 				$name,
 				$variable_info['field_id'],
 				$variable_info['item_key']
@@ -193,11 +193,11 @@ class Image_Field extends Markup_Field {
 
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
-		return $view_data->is_with_unnecessary_wrappers;
+		return $layout_settings->is_with_unnecessary_wrappers;
 	}
 
 	/**
@@ -220,10 +220,10 @@ class Image_Field extends Markup_Field {
 		return array_merge( parent::get_conditional_fields( $field_meta ), $conditional_fields );
 	}
 
-	public function get_front_assets( Field_Settings $field_data ): array {
+	public function get_front_assets( Field_Settings $field_settings ): array {
 		$front_assets = array();
 
-		switch ( $field_data->lightbox_type ) {
+		switch ( $field_settings->lightbox_type ) {
 			case 'simple':
 				$front_assets[] = Acf_Views_Lightbox_Front_Asset::NAME;
 				break;
@@ -232,6 +232,6 @@ class Image_Field extends Markup_Field {
 				break;
 		}
 
-		return array_merge( parent::get_front_assets( $field_data ), $front_assets );
+		return array_merge( parent::get_front_assets( $field_settings ), $front_assets );
 	}
 }

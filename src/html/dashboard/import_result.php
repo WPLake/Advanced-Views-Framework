@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 
-$view = $view ?? array();
+$view ??= array();
 
 $demo_import = $view['demoImport'] ?? null;
 

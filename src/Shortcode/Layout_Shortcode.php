@@ -7,13 +7,11 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
@@ -27,8 +25,8 @@ final class Layout_Shortcode extends Shortcode {
 
 	use Safe_Array_Arguments;
 
-	private Layout_Factory $view_factory;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Layout_Factory $layout_factory;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 	/**
 	 * Used to avoid recursion with post_object/relationship fields
 	 *
@@ -40,17 +38,17 @@ final class Layout_Shortcode extends Shortcode {
 	public function __construct(
 		Plugin_Feature $plugin_feature,
 		Settings $settings,
-		Layouts_Settings_Storage $views_data_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
-		Layout_Factory $view_factory,
-		Shortcode_Block $block_shortcodes
+		Layout_Factory $layout_factory,
+		Shortcode_Block $shortcode_block
 	) {
-		parent::__construct( $plugin_feature, $settings, $views_data_storage, $view_factory, $front_assets, $live_reloader_component );
+		parent::__construct( $plugin_feature, $settings, $layouts_settings_storage, $layout_factory, $front_assets, $live_reloader_component );
 
-		$this->views_data_storage = $views_data_storage;
-		$this->view_factory       = $view_factory;
-		$this->shortcode_block    = $block_shortcodes;
+		$this->layouts_settings_storage = $layouts_settings_storage;
+		$this->layout_factory           = $layout_factory;
+		$this->shortcode_block          = $shortcode_block;
 
 		$this->displaying_views = array();
 	}
@@ -78,7 +76,7 @@ final class Layout_Shortcode extends Shortcode {
 			(string) $object_id :
 			'';
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
+		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
 			$this->print_error_markup(
@@ -216,7 +214,7 @@ final class Layout_Shortcode extends Shortcode {
 		$local_data = $this->get_array_arg_if_present( 'local-data', $attrs );
 
 		ob_start();
-		$this->view_factory->make_and_print_html(
+		$this->layout_factory->make_and_print_html(
 			$source,
 			$view_unique_id,
 			$current_page_id,
@@ -240,7 +238,7 @@ final class Layout_Shortcode extends Shortcode {
 			return;
 		}
 
-		$view_unique_id = $this->views_data_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
+		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
 			wp_json_encode(
@@ -251,7 +249,7 @@ final class Layout_Shortcode extends Shortcode {
 			exit;
 		}
 
-		$response = $this->view_factory->get_ajax_response( $view_unique_id );
+		$response = $this->layout_factory->get_ajax_response( $view_unique_id );
 
 		echo wp_json_encode( $response );
 		exit;

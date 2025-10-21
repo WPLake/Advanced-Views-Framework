@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -14,7 +13,6 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -22,13 +20,13 @@ defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 
-	public function __construct( Html $html, Plugin $plugin, Layouts_Settings_Storage $views_data_storage, Data_Vendors $data_vendors ) {
+	public function __construct( Html $html, Plugin $plugin, Layouts_Settings_Storage $layouts_settings_storage, Data_Vendors $data_vendors ) {
 		parent::__construct( $html, $plugin );
 
-		$this->views_data_storage = $views_data_storage;
-		$this->data_vendors       = $data_vendors;
+		$this->layouts_settings_storage = $layouts_settings_storage;
+		$this->data_vendors             = $data_vendors;
 	}
 
 	protected function get_cpt_name(): string {
@@ -56,10 +54,10 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	/**
 	 * @return string[]
 	 */
-	protected function get_related_view_unique_ids( Layout_Settings $view_data ): array {
+	protected function get_related_view_unique_ids( Layout_Settings $layout_settings ): array {
 		$related_view_ids = array();
 
-		foreach ( $view_data->items as $item ) {
+		foreach ( $layout_settings->items as $item ) {
 			if ( '' === $item->field->acf_view_id ) {
 				continue;
 			}
@@ -71,10 +69,10 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	public function print_related_groups_meta_box(
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		bool $is_skip_not_found_message = false
 	): void {
-		$used_meta_group_ids = $view_data->get_used_meta_group_ids();
+		$used_meta_group_ids = $layout_settings->get_used_meta_group_ids();
 
 		if ( array() === $used_meta_group_ids ) {
 			$message = __( 'No assigned ACF Groups.', 'acf-views' );
@@ -110,10 +108,10 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	public function print_related_views_meta_box(
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		bool $is_skip_not_found_message = false
 	): void {
-		$related_view_unique_ids = $this->get_related_view_unique_ids( $view_data );
+		$related_view_unique_ids = $this->get_related_view_unique_ids( $layout_settings );
 
 		if ( array() === $related_view_unique_ids ) {
 			$message = __( 'No assigned Views.', 'acf-views' );
@@ -129,11 +127,11 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		$counter         = 0;
 
 		foreach ( $related_view_unique_ids as $related_view_unique_id ) {
-			$view_data = $this->views_data_storage->get( $related_view_unique_id );
+			$layout_settings = $this->layouts_settings_storage->get( $related_view_unique_id );
 
 			$this->print_link_with_js_hover(
-				$view_data->get_edit_post_link(),
-				$view_data->title
+				$layout_settings->get_edit_post_link(),
+				$layout_settings->title
 			);
 
 			if ( $counter !== $last_item_index ) {
@@ -144,14 +142,14 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		}
 	}
 
-	public function print_related_acf_cards_meta_box( Layout_Settings $view_data, bool $is_list_look = false ): void {
+	public function print_related_acf_cards_meta_box( Layout_Settings $layout_settings, bool $is_list_look = false ): void {
 		global $wpdb;
 
 		$query = $wpdb->prepare(
 			"SELECT * from {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish'
                       AND FIND_IN_SET(%s,post_content_filtered) > 0",
 			Post_Selections_Feature::cpt_name(),
-			$view_data->get_unique_id()
+			$layout_settings->get_unique_id()
 		);
 		// @phpcs:ignore
 		$related_cards = $wpdb->get_results( $query );
@@ -161,9 +159,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		 * @var WP_Post[] $related_cards
 		 */
 		$related_cards = array_map(
-			function ( $related_card ) {
-				return get_post( $related_card->ID );
-			},
+			fn( $related_card ) => get_post( $related_card->ID ),
 			$related_cards
 		);
 
@@ -193,7 +189,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			echo '<br><br>';
 		}
 
-		$post_id = $view_data->get_post_id();
+		$post_id = $layout_settings->get_post_id();
 
 		// only if post is present.
 		if ( 0 !== $post_id ) {
@@ -222,7 +218,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_shortcode',
 			__( 'Shortcode', 'acf-views' ),
-			function ( $post ) {
+			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
 					echo esc_html( __( 'Your View shortcode is available after publishing.', 'acf-views' ) );
@@ -230,7 +226,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 					return;
 				}
 
-				$view_data            = $this->views_data_storage->get( $post->post_name );
+				$view_data            = $this->layouts_settings_storage->get( $post->post_name );
 				$short_view_unique_id = $view_data->get_unique_id( true );
 
 				$this->get_html()->print_postbox_shortcode(
@@ -252,8 +248,8 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_related_groups',
 			__( 'Assigned Groups', 'acf-views' ),
-			function ( WP_Post $post ) {
-				$view_data = $this->views_data_storage->get( $post->post_name );
+			function ( WP_Post $wp_post ): void {
+				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 				$this->print_related_groups_meta_box( $view_data );
 			},
 			array(
@@ -266,8 +262,8 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_related_views',
 			__( 'Assigned Views', 'acf-views' ),
-			function ( WP_Post $post ) {
-				$view_data = $this->views_data_storage->get( $post->post_name );
+			function ( WP_Post $wp_post ): void {
+				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 
 				$this->print_related_views_meta_box( $view_data );
 			},
@@ -281,8 +277,8 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_related_cards',
 			__( 'Assigned to Cards', 'acf-views' ),
-			function ( WP_Post $post ) {
-				$view_data = $this->views_data_storage->get( $post->post_name );
+			function ( WP_Post $wp_post ): void {
+				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 
 				$this->print_related_acf_cards_meta_box( $view_data );
 			},

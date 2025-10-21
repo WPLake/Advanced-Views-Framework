@@ -55,8 +55,8 @@ class Comment_Author_Name_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;

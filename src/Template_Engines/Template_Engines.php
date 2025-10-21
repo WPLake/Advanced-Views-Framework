@@ -25,7 +25,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 	 * @var array<string, Template_Engine_Interface|null>
 	 */
 	private array $template_engines;
-	private ?WP_Filesystem_Base $wp_filesystem;
+	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin $plugin;
 	private Settings $settings;
 	/**
@@ -40,7 +40,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		$this->plugin              = $plugin;
 		$this->settings            = $settings;
 		$this->template_engines    = array();
-		$this->wp_filesystem       = null;
+		$this->wp_filesystem_base  = null;
 		$this->template_generators = array();
 	}
 
@@ -113,17 +113,17 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 	// public for tests only.
 	public function get_wp_filesystem(): WP_Filesystem_Base {
-		if ( null === $this->wp_filesystem ) {
+		if ( null === $this->wp_filesystem_base ) {
 			global $wp_filesystem;
 
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 
 			WP_Filesystem();
 
-			$this->wp_filesystem = $wp_filesystem;
+			$this->wp_filesystem_base = $wp_filesystem;
 		}
 
-		return $this->wp_filesystem;
+		return $this->wp_filesystem_base;
 	}
 
 	public function show_templates_dir_is_not_writable_warning(): void {

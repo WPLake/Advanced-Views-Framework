@@ -76,7 +76,7 @@ interface Field_Meta_Interface {
 
 	public function set_is_group( bool $is_group ): void;
 
-	public function set_self_repeatable_meta( ?Field_Meta_Interface $self_repeatable_meta ): void;
+	public function set_self_repeatable_meta( ?Field_Meta_Interface $field_meta ): void;
 
 	/**
 	 * @param string|string[] $default_value

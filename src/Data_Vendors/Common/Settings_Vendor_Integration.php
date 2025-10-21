@@ -29,33 +29,33 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	const NONCE_ADD_NEW = 'av-add-new';
 	const ARGUMENT_FROM = '_from-group';
 
-	private Item_Settings $item;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Item_Settings $item_settings;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Data_Vendors $data_vendors;
-	private Layouts_Cpt_Save_Actions $views_cpt_save_actions;
-	private Layout_Factory $view_factory;
+	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
+	private Layout_Factory $layout_factory;
 	private Data_Vendor_Interface $data_vendor;
-	private Layout_Shortcode $view_shortcode;
+	private Layout_Shortcode $layout_shortcode;
 
 	public function __construct(
-		Item_Settings $item,
-		Layouts_Settings_Storage $views_data_storage,
+		Item_Settings $item_settings,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
-		Layout_Factory $view_factory,
+		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Factory $layout_factory,
 		Data_Vendor_Interface $data_vendor,
-		Layout_Shortcode $view_shortcode,
+		Layout_Shortcode $layout_shortcode,
 		Settings $settings
 	) {
 		parent::__construct( $settings );
 
-		$this->item                   = $item;
-		$this->views_data_storage     = $views_data_storage;
-		$this->data_vendors           = $data_vendors;
-		$this->views_cpt_save_actions = $views_cpt_save_actions;
-		$this->view_factory           = $view_factory;
-		$this->data_vendor            = $data_vendor;
-		$this->view_shortcode         = $view_shortcode;
+		$this->item_settings            = $item_settings;
+		$this->layouts_settings_storage = $layouts_settings_storage;
+		$this->data_vendors             = $data_vendors;
+		$this->layouts_cpt_save_actions = $layouts_cpt_save_actions;
+		$this->layout_factory           = $layout_factory;
+		$this->data_vendor              = $data_vendor;
+		$this->layout_shortcode         = $layout_shortcode;
 	}
 
 	abstract protected function get_vendor_post_type(): string;
@@ -63,26 +63,26 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	/**
 	 * @return array<int,array<string,mixed>>
 	 */
-	abstract protected function get_group_fields( WP_Post $group ): array;
+	abstract protected function get_group_fields( WP_Post $wp_post ): array;
 
 	/**
 	 * @param array<string,mixed> $field
 	 */
 	abstract protected function fill_field_id_and_type( array $field, string &$field_id, string &$field_type ): void;
 
-	protected function get_block_description( Layout_Settings $view_data ): string {
+	protected function get_block_description( Layout_Settings $layout_settings ): string {
 		return sprintf(
 			'%s (%s, id = %s).',
-			$view_data->description,
+			$layout_settings->description,
 			__( 'Advanced View', 'acf-views' ),
-			$view_data->get_unique_id( true ),
+			$layout_settings->get_unique_id( true ),
 		);
 	}
 
-	protected function get_block_id( Layout_Settings $view_data ): string {
-		return true === $view_data->is_gutenberg_block_with_digital_id ?
-			sprintf( 'acf-views-block-%s', $view_data->getSource() ) :
-			sprintf( 'acf-view-%s', $view_data->get_unique_id( true ) );
+	protected function get_block_id( Layout_Settings $layout_settings ): string {
+		return true === $layout_settings->is_gutenberg_block_with_digital_id ?
+			sprintf( 'acf-views-block-%s', $layout_settings->getSource() ) :
+			sprintf( 'acf-view-%s', $layout_settings->get_unique_id( true ) );
 	}
 
 	protected function getBlockCategory(): string {
@@ -93,7 +93,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	 * @param array<string,mixed>|null $local_data
 	 */
 	protected function render_view(
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		int $post_id,
 		?array $local_data = null
 	): void {
@@ -104,9 +104,9 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		$source->set_user_id( get_current_user_id() );
 
 		ob_start();
-		$this->view_factory->make_and_print_html(
+		$this->layout_factory->make_and_print_html(
 			$source,
-			$view_data->get_unique_id(),
+			$layout_settings->get_unique_id(),
 			$post_id,
 			true,
 			'',
@@ -116,7 +116,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		$html = (string) ob_get_clean();
 
 		// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->view_shortcode->maybe_add_quick_link_and_shadow_css( $html, $view_data->get_unique_id(), array(), true );
+		echo $this->layout_shortcode->maybe_add_quick_link_and_shadow_css( $html, $layout_settings->get_unique_id(), array(), true );
 	}
 
 	protected function print_link_with_js_hover( string $url, string $title ): void {
@@ -144,7 +144,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	protected function add_item_to_view(
 		string $group_id,
 		array $field,
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		array $supported_field_types
 	): ?Item_Settings {
 		$field_id   = '';
@@ -156,14 +156,14 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			return null;
 		}
 
-		$item = $this->item->getDeepClone();
+		$item = $this->item_settings->getDeepClone();
 
 		// we could use the group field on the level, but it less clear for beginners,
 		// as they may wonder how to add fields from other groups, like WP.
 		$item->group      = $group_id;
 		$item->field->key = $item->field::create_field_key( $group_id, $field_id );
 
-		$view_data->items[] = $item;
+		$layout_settings->items[] = $item;
 
 		return $item;
 	}
@@ -219,14 +219,14 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	 * @param array<string,string> $add_new_link_args
 	 */
 	protected function print_related_acf_views(
-		?WP_Post $group,
+		?WP_Post $wp_post,
 		bool $is_list_look = false,
 		array $related_views = array(),
 		array $add_new_link_args = array()
 	): void {
-		$related_views = null !== $group ?
-			$this->views_data_storage->get_all_with_meta_group_in_use(
-				$this->data_vendor->get_group_key( $group->post_name )
+		$related_views = null !== $wp_post ?
+			$this->layouts_settings_storage->get_all_with_meta_group_in_use(
+				$this->data_vendor->get_group_key( $wp_post->post_name )
 			) :
 			$related_views;
 
@@ -256,8 +256,8 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 
 		// ignore on the creation page +
 		// if post is missing (Pods).
-		if ( null === $group ||
-			'publish' !== $group->post_status ) {
+		if ( null === $wp_post ||
+			'publish' !== $wp_post->post_status ) {
 			return;
 		}
 
@@ -268,7 +268,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 
 		echo '<br><br>';
 
-		$this->print_add_new_link( $group->ID, '', $add_new_link_args );
+		$this->print_add_new_link( $wp_post->ID, '', $add_new_link_args );
 	}
 
 	/**
@@ -279,8 +279,8 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	protected function update_markup_preview( array $related_views ): void {
 		foreach ( $related_views as $related_view_data ) {
 			// update the markup preview in all the cases (even if View has custom, Preview must be fresh for copy/paste).
-			$this->views_cpt_save_actions->update_markup( $related_view_data );
-			$this->views_data_storage->save( $related_view_data );
+			$this->layouts_cpt_save_actions->update_markup( $related_view_data );
+			$this->layouts_settings_storage->save( $related_view_data );
 		}
 	}
 
@@ -297,8 +297,8 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			// update the markup preview in all the cases (even if View has custom, Preview must be fresh for copy/paste)
 			// also, it's necessary to update the markupPreview before the validation
 			// as the validation uses the markupPreview as 'canonical' for the 'array' type validation.
-			$this->views_cpt_save_actions->update_markup( $related_view_data );
-			$this->views_data_storage->save( $related_view_data );
+			$this->layouts_cpt_save_actions->update_markup( $related_view_data );
+			$this->layouts_settings_storage->save( $related_view_data );
 
 			$custom_markup = trim( $related_view_data->custom_markup );
 
@@ -306,7 +306,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 				continue;
 			}
 
-			$view          = $this->view_factory->make( new Source(), $related_view_data->get_unique_id(), 0 );
+			$view          = $this->layout_factory->make( new Source(), $related_view_data->get_unique_id(), 0 );
 			$is_with_error = '' !== $view->get_markup_validation_error();
 
 			if ( ! $is_with_error ) {
@@ -330,12 +330,12 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	/**
 	 * @param array<string,mixed> $field
 	 */
-	protected function get_group_key_by_from_post( WP_Post $from_post, array $field ): string {
-		return $this->data_vendor->get_group_key( $from_post->post_name );
+	protected function get_group_key_by_from_post( WP_Post $wp_post, array $field ): string {
+		return $this->data_vendor->get_group_key( $wp_post->post_name );
 	}
 
 	public function get_views_data_storage(): Layouts_Settings_Storage {
-		return $this->views_data_storage;
+		return $this->layouts_settings_storage;
 	}
 
 	/**
@@ -355,7 +355,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	public function maybe_create_view_for_group(): void {
 		self::add_action(
 			'current_screen',
-			function () {
+			function (): void {
 				$screen = get_current_screen();
 
 				if ( null === $screen ) {
@@ -379,7 +379,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 					return;
 				}
 
-				$view_data = $this->views_data_storage->create_new( 'publish', $from_post->post_title );
+				$view_data = $this->layouts_settings_storage->create_new( 'publish', $from_post->post_title );
 
 				if ( null === $view_data ) {
 					return;
@@ -410,7 +410,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 				}
 
 				// it'll save the data above too.
-				$this->views_cpt_save_actions->perform_save_actions( $view_data->get_post_id() );
+				$this->layouts_cpt_save_actions->perform_save_actions( $view_data->get_post_id() );
 
 				wp_safe_redirect( $view_data->get_edit_post_link( 'redirect' ) );
 				exit;
@@ -449,7 +449,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 					return $messages;
 				}
 
-				$related_views = $this->views_data_storage->get_all_with_meta_group_in_use(
+				$related_views = $this->layouts_settings_storage->get_all_with_meta_group_in_use(
 					$this->data_vendor->get_group_key( $post->post_name )
 				);
 

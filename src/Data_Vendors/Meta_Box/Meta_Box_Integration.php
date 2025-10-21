@@ -17,12 +17,12 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 	/**
 	 * @return array<int,array<string,mixed>>
 	 */
-	protected function get_group_fields( WP_Post $group ): array {
+	protected function get_group_fields( WP_Post $wp_post ): array {
 		if ( false === function_exists( 'rwmb_get_registry' ) ) {
 			return array();
 		}
 
-		$fields = rwmb_get_registry( 'meta_box' )->get_by( array( 'id' => $group->post_name ) );
+		$fields = rwmb_get_registry( 'meta_box' )->get_by( array( 'id' => $wp_post->post_name ) );
 
 		$fields = true === is_array( $fields ) &&
 					count( $fields ) > 0 ?
@@ -60,7 +60,7 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 	public function add_tab_to_meta_group(): void {
 		self::add_action(
 			'add_meta_boxes',
-			function () {
+			function (): void {
 				add_meta_box(
 					'advanced_views',
 					$this->get_tab_label(),
@@ -72,8 +72,8 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 		);
 	}
 
-	public function render_meta_box( WP_Post $post ): void {
-		$this->print_related_acf_views( $post );
+	public function render_meta_box( WP_Post $wp_post ): void {
+		$this->print_related_acf_views( $wp_post );
 	}
 
 	public function get_vendor_name(): string {

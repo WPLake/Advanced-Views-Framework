@@ -19,20 +19,20 @@ class Map_Field extends Markup_Field {
 	protected function print_map_marker_attributes(
 		string $field_id,
 		string $item_id,
-		Markup_Field_Data $markup_data
+		Markup_Field_Data $markup_field_data
 	): void {
 		printf(
 			'class="%s"',
 			esc_html(
 				$this->get_item_class(
 					'map-marker',
-					$markup_data->get_view_data(),
-					$markup_data->get_field_data()
+					$markup_field_data->get_view_data(),
+					$markup_field_data->get_field_data()
 				)
 			),
 		);
-		$markup_data->get_template_generator()->print_array_item_attribute( 'data-lat', $item_id, 'lat' );
-		$markup_data->get_template_generator()->print_array_item_attribute( 'data-lng', $item_id, 'lng' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'data-lat', $item_id, 'lat' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'data-lng', $item_id, 'lng' );
 	}
 
 	/**
@@ -94,15 +94,15 @@ class Map_Field extends Markup_Field {
 	/**
 	 * @return array<string, mixed>
 	 */
-	protected function get_template_args_for_os( Variable_Field_Data $twig_args_data ): array {
+	protected function get_template_args_for_os( Variable_Field_Data $variable_field_data ): array {
 		$args = array(
-			'value' => $twig_args_data->get_field_data()->is_map_with_address ?
+			'value' => $variable_field_data->get_field_data()->is_map_with_address ?
 				array() :
 				false,
 			'map'   => '',
 		);
 
-		switch ( $twig_args_data->get_field_meta()->get_return_format() ) {
+		switch ( $variable_field_data->get_field_meta()->get_return_format() ) {
 			case 'leaflet':
 			case 'osm':
 				// used formatted value, as output already made by the plugin, and we just need to show it.
@@ -110,18 +110,18 @@ class Map_Field extends Markup_Field {
 					$args,
 					array(
 						// todo it doesn't work if return format is not set to 'leaflet js' (e.g. the default 'Raw data' value).
-						'map' => $twig_args_data->get_formatted_value(),
+						'map' => $variable_field_data->get_formatted_value(),
 					)
 				);
 				break;
 		}
 
 		// if withAddress, will be filled in the Pro class.
-		if ( ! $twig_args_data->get_field_data()->is_map_with_address ) {
-			$markers       = is_array( $twig_args_data->get_value() ) &&
-							key_exists( 'markers', $twig_args_data->get_value() ) &&
-							is_array( $twig_args_data->get_value()['markers'] ) ?
-				$twig_args_data->get_value()['markers'] :
+		if ( ! $variable_field_data->get_field_data()->is_map_with_address ) {
+			$markers       = is_array( $variable_field_data->get_value() ) &&
+							key_exists( 'markers', $variable_field_data->get_value() ) &&
+							is_array( $variable_field_data->get_value()['markers'] ) ?
+				$variable_field_data->get_value()['markers'] :
 				array();
 			$args['value'] = array() !== $markers;
 		}
@@ -186,14 +186,14 @@ class Map_Field extends Markup_Field {
 		);
 	}
 
-	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_data ): void {
-		if ( 'open_street_map' === $markup_data->get_field_meta()->get_type() ) {
-			$markup_data->get_template_generator()->print_array_item( $field_id, 'map', true );
+	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
+			$markup_field_data->get_template_generator()->print_array_item( $field_id, 'map', true );
 
 			return;
 		}
 
-		$current_tabs_number = $markup_data->get_tabs_number();
+		$current_tabs_number = $markup_field_data->get_tabs_number();
 		$attributes_map      = array(
 			'data-zoom'       => 'zoom',
 			'data-center-lat' => 'center_lat',
@@ -203,44 +203,44 @@ class Map_Field extends Markup_Field {
 		printf(
 			'<div class="%s" style="width:100%%;height:400px;"',
 			esc_html(
-				$this->get_field_class( 'map', $markup_data )
+				$this->get_field_class( 'map', $markup_field_data )
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$markup_data->get_template_generator()->print_array_item_attribute( $attribute, $field_id, $key );
+			$markup_field_data->get_template_generator()->print_array_item_attribute( $attribute, $field_id, $key );
 		}
 		echo '>';
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 
-		if ( true === $markup_data->get_field_data()->is_visible_when_empty &&
-			false === $markup_data->get_field_meta()->is_multiple() ) {
-			$markup_data->get_template_generator()->print_if_for_array_item( $field_id, 'value' );
+		if ( true === $markup_field_data->get_field_data()->is_visible_when_empty &&
+			false === $markup_field_data->get_field_meta()->is_multiple() ) {
+			$markup_field_data->get_template_generator()->print_if_for_array_item( $field_id, 'value' );
 			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 		}
 
-		if ( $markup_data->get_field_meta()->is_multiple() ) {
-			$markup_data->get_template_generator()->print_for_of_array_item( $field_id, 'value', 'marker' );
+		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
+			$markup_field_data->get_template_generator()->print_for_of_array_item( $field_id, 'value', 'marker' );
 			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 		}
 
-		$item_id = false === $markup_data->get_field_meta()->is_multiple() ?
+		$item_id = false === $markup_field_data->get_field_meta()->is_multiple() ?
 			$field_id :
 			'marker';
 
 		echo '<div ';
-		$this->print_map_marker_attributes( $field_id, $item_id, $markup_data );
+		$this->print_map_marker_attributes( $field_id, $item_id, $markup_field_data );
 		echo '></div>';
 
-		if ( true === $markup_data->get_field_meta()->is_multiple() ) {
+		if ( true === $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n";
 			echo esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_data->get_template_generator()->print_end_for();
+			$markup_field_data->get_template_generator()->print_end_for();
 		}
 
-		if ( true === $markup_data->get_field_data()->is_visible_when_empty &&
-			false === $markup_data->get_field_meta()->is_multiple() ) {
+		if ( true === $markup_field_data->get_field_data()->is_visible_when_empty &&
+			false === $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_data->get_template_generator()->print_end_if();
+			$markup_field_data->get_template_generator()->print_end_if();
 		}
 
 		echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
@@ -297,11 +297,11 @@ class Map_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
-		return $view_data->is_with_unnecessary_wrappers ||
+		return $layout_settings->is_with_unnecessary_wrappers ||
 				( Acf_Data_Vendor::NAME === $field_meta->get_vendor_name() && 'open_street_map' === $field_meta->get_type() ) ||
 				Meta_Box_Data_Vendor::NAME === $field_meta->get_vendor_name();
 	}
@@ -329,14 +329,14 @@ class Map_Field extends Markup_Field {
 		return array_merge( parent::get_conditional_fields( $field_meta ), $args );
 	}
 
-	public function get_front_assets( Field_Settings $field_data ): array {
+	public function get_front_assets( Field_Settings $field_settings ): array {
 		$front_assets = array();
 
-		if ( Acf_Data_Vendor::NAME === $field_data->get_field_meta()->get_vendor_name() &&
-			false === $field_data->is_map_without_google_map ) {
+		if ( Acf_Data_Vendor::NAME === $field_settings->get_field_meta()->get_vendor_name() &&
+			false === $field_settings->is_map_without_google_map ) {
 			$front_assets[] = Acf_Views_Maps_Front_Asset::NAME;
 		}
 
-		return array_merge( parent::get_front_assets( $field_data ), $front_assets );
+		return array_merge( parent::get_front_assets( $field_settings ), $front_assets );
 	}
 }

@@ -23,7 +23,7 @@ class Pods_Pick_Field extends Markup_Field {
 	private User_Field $user_field;
 	private Post_Object_Field $post_object_field;
 	private Taxonomy_Field $taxonomy_field;
-	private File_Field $field_field;
+	private File_Field $file_field;
 
 	public function __construct(
 		Select_Field $select_field,
@@ -36,7 +36,7 @@ class Pods_Pick_Field extends Markup_Field {
 		$this->user_field        = $user_field;
 		$this->post_object_field = $post_object_field;
 		$this->taxonomy_field    = $taxonomy_field;
-		$this->field_field       = $file_field;
+		$this->file_field        = $file_field;
 	}
 
 	protected function get_field_instance( Field_Meta_Interface $field_meta ): Markup_Field {
@@ -48,7 +48,7 @@ class Pods_Pick_Field extends Markup_Field {
 			case 'user':
 				return $this->user_field;
 			case 'media':
-				return $this->field_field;
+				return $this->file_field;
 		}
 
 		// comment & nav_menu aren't supported (atm there is no single instance for them).
@@ -61,10 +61,10 @@ class Pods_Pick_Field extends Markup_Field {
 	 *
 	 * @return mixed
 	 */
-	protected function get_instance_value( Markup_Field $field_instance, $value ) {
-		if ( $field_instance instanceof Post_Object_Field ||
-			$field_instance instanceof User_Field ||
-			$field_instance instanceof File_Field ) {
+	protected function get_instance_value( Markup_Field $markup_field, $value ) {
+		if ( $markup_field instanceof Post_Object_Field ||
+			$markup_field instanceof User_Field ||
+			$markup_field instanceof File_Field ) {
 			if ( false === is_array( $value ) ) {
 				return 0;
 			}
@@ -75,7 +75,7 @@ class Pods_Pick_Field extends Markup_Field {
 			return 0 !== $id ?
 				$id :
 				$this->get_int_arg( 'id', $value );
-		} elseif ( $field_instance instanceof Taxonomy_Field ) {
+		} elseif ( $markup_field instanceof Taxonomy_Field ) {
 			if ( false === is_array( $value ) ) {
 				return 0;
 			}
@@ -98,9 +98,7 @@ class Pods_Pick_Field extends Markup_Field {
 			if ( true === is_array( $variable_field_data->get_value() ) ) {
 				$variable_field_data->set_value(
 					array_map(
-						function ( $value ) use ( $field_instance ) {
-							return $this->get_instance_value( $field_instance, $value );
-						},
+						fn( $value ) => $this->get_instance_value( $field_instance, $value ),
 						$variable_field_data->get_value()
 					)
 				);
@@ -119,18 +117,18 @@ class Pods_Pick_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
-		return $this->get_field_instance( $field_meta )->is_with_field_wrapper( $view_data, $field, $field_meta );
+		return $this->get_field_instance( $field_meta )->is_with_field_wrapper( $layout_settings, $field_settings, $field_meta );
 	}
 
 	public function get_conditional_fields( Field_Meta_Interface $field_meta ): array {
 		return $this->get_field_instance( $field_meta )->get_conditional_fields( $field_meta );
 	}
 
-	public function get_front_assets( Field_Settings $field_data ): array {
-		return $this->get_field_instance( $field_data->get_field_meta() )->get_front_assets( $field_data );
+	public function get_front_assets( Field_Settings $field_settings ): array {
+		return $this->get_field_instance( $field_settings->get_field_meta() )->get_front_assets( $field_settings );
 	}
 }

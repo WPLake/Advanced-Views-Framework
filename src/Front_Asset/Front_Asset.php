@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Front_Asset;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 

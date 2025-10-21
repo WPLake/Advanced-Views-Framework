@@ -24,20 +24,20 @@ class Post_Selections_Settings_Storage extends Cpt_Settings_Storage {
 	public function __construct(
 		Logger $logger,
 		File_System $file_system,
-		Post_Selection_Fs_Fields $card_fs_fields,
+		Post_Selection_Fs_Fields $post_selection_fs_fields,
 		Db_Management $db_management,
-		Post_Selection_Settings $card_data
+		Post_Selection_Settings $post_selection_settings
 	) {
-		parent::__construct( $logger, $file_system, $card_fs_fields, $db_management );
+		parent::__construct( $logger, $file_system, $post_selection_fs_fields, $db_management );
 
 		$this->items = array();
 
-		$this->card_data = $card_data;
+		$this->card_data = $post_selection_settings;
 	}
 
-	public function replace( string $unique_id, Cpt_Settings $cpt_data ): void {
-		if ( $cpt_data instanceof Post_Selection_Settings ) {
-			$this->items[ $unique_id ] = $cpt_data;
+	public function replace( string $unique_id, Cpt_Settings $cpt_settings ): void {
+		if ( $cpt_settings instanceof Post_Selection_Settings ) {
+			$this->items[ $unique_id ] = $cpt_settings;
 		}
 	}
 

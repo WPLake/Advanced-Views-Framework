@@ -20,7 +20,6 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Post;
 use WP_REST_Request;
 
@@ -31,13 +30,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	use Safe_Array_Arguments;
 
-	private Cpt_Settings_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Plugin $plugin;
 	/**
 	 * @var array<string|int, mixed>
 	 */
 	private array $field_values;
-	private Cpt_Settings $validation_data;
+	private Cpt_Settings $cpt_settings;
 	/**
 	 * @var string[]
 	 */
@@ -50,20 +49,20 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	public function __construct(
 		Logger $logger,
-		Cpt_Settings_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_settings_storage,
 		Plugin $plugin,
-		Cpt_Settings $cpt_data,
+		Cpt_Settings $cpt_settings,
 		Front_Assets $front_assets
 	) {
 		parent::__construct( $logger );
 
-		$this->cpt_data_storage = $cpt_data_storage;
-		$this->plugin           = $plugin;
+		$this->cpt_settings_storage = $cpt_settings_storage;
+		$this->plugin               = $plugin;
 		// don't make a clone, as otherwise $viewValidationData in inheritors won't be actual anymore
 		// (there is a clone at the child class level).
-		$this->validation_data       = $cpt_data;
+		$this->cpt_settings          = $cpt_settings;
 		$this->front_assets          = $front_assets;
-		$this->available_acf_fields  = array_keys( $this->validation_data->getFieldValues() );
+		$this->available_acf_fields  = array_keys( $this->cpt_settings->getFieldValues() );
 		$this->field_values          = array();
 		$this->validated_input_names = array();
 	}
@@ -74,15 +73,15 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 	abstract protected function make_validation_instance(): Instance;
 
-	abstract protected function update_markup( Cpt_Settings $cpt_data ): void;
+	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	/**
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $wprest_request
 	 *
 	 * @return array<string,mixed>
 	 */
 	// @phpstan-ignore-next-line
-	abstract public function refresh_request( WP_REST_Request $request ): array;
+	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces
@@ -143,7 +142,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$post_id   = (int) $post_id;
 		$unique_id = get_post( $post_id )->post_name ?? '';
 
-		$cpt_data = $this->cpt_data_storage->get( $unique_id );
+		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
 		// it must be before the frontAssets generation, otherwise CSS may already be not empty even for the first save.
 		if ( '' === $cpt_data->css_code &&
@@ -173,7 +172,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$cpt_data->css_code = $this->sync_code( $cpt_data->css_code, $css_code );
 
 		if ( true !== $is_skip_save ) {
-			$this->cpt_data_storage->save( $cpt_data );
+			$this->cpt_settings_storage->save( $cpt_data );
 		}
 
 		return $cpt_data;
@@ -193,7 +192,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	}
 
 	protected function validate_custom_markup(): void {
-		$is_with_custom_markup = '' !== trim( $this->validation_data->custom_markup );
+		$is_with_custom_markup = '' !== trim( $this->cpt_settings->custom_markup );
 
 		if ( false === $is_with_custom_markup ) {
 			return;
@@ -201,7 +200,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		// it's necessary to update the markupPreview before the validation
 		// as the validation uses the markupPreview as 'canonical' for the 'array' type validation.
-		$this->update_markup( $this->validation_data );
+		$this->update_markup( $this->cpt_settings );
 		$markup_validation_error = $this->make_validation_instance()->get_markup_validation_error();
 
 		if ( '' === $markup_validation_error ) {
@@ -230,20 +229,20 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$field_values = array_map( 'stripslashes_deep', $this->field_values );
 
 		// @phpstan-ignore-next-line
-		$this->validation_data->load( $post_id, '', $field_values );
+		$this->cpt_settings->load( $post_id, '', $field_values );
 
 		// restore overwritten fields.
-		$this->validation_data->unique_id = get_post( $post_id )->post_name ?? '';
-		$this->validation_data->title     = get_post( $post_id )->post_title ?? '';
+		$this->cpt_settings->unique_id = get_post( $post_id )->post_name ?? '';
+		$this->cpt_settings->title     = get_post( $post_id )->post_title ?? '';
 	}
 
-	protected function save_validation_instance_to_storage( string $unique_id, ?Group $origin_instance ): void {
+	protected function save_validation_instance_to_storage( string $unique_id, ?Group $group ): void {
 		// to avoid changing fields for Unlicensed users.
 		if ( true === $this->plugin->is_pro_field_locked() ) {
-			$this->validation_data->reset_pro_fields( $origin_instance );
+			$this->cpt_settings->reset_pro_fields( $group );
 		}
 
-		$this->cpt_data_storage->replace( $unique_id, $this->validation_data );
+		$this->cpt_settings_storage->replace( $unique_id, $this->cpt_settings );
 	}
 
 	/**
@@ -253,14 +252,14 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$post_unique_id = get_post( $post_id )->post_name ?? '';
 
 		// here is the right place to assign the uniqueId for new items.
-		$this->cpt_data_storage->get_db_management()->maybe_assign_unique_id( $post_id, $this->validation_data );
+		$this->cpt_settings_storage->get_db_management()->maybe_assign_unique_id( $post_id, $this->cpt_settings );
 
-		$unique_id = $this->validation_data->get_unique_id();
+		$unique_id = $this->cpt_settings->get_unique_id();
 		$is_new    = $unique_id !== $post_unique_id;
 
 		// do not provide origin instance, if the post is just created.
 		$origin_instance = false === $is_new ?
-			$this->cpt_data_storage->get( $unique_id ) :
+			$this->cpt_settings_storage->get( $unique_id ) :
 			null;
 
 		$this->save_validation_instance_to_storage( $unique_id, $origin_instance );
@@ -277,7 +276,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 								( is_string( $field['name'] ) || is_numeric( $field['name'] ) ) ?
 			(string) $field['name'] :
 			'';
-		$validation_instance = $this->validation_data;
+		$validation_instance = $this->cpt_settings;
 
 		$view_php_code_field = Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES );
 		$card_php_code_field = Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS );
@@ -354,7 +353,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		}
 
 		$value         = $values[ $field_name ];
-		$instance_data = $this->cpt_data_storage->get( $unique_id );
+		$instance_data = $this->cpt_settings_storage->get( $unique_id );
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
 		// also check to make sure it's array (can be empty string).
@@ -536,7 +535,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// priority is 20, as current is with 10.
 		self::add_action(
 			'acf/save_post',
-			function ( $post_id ) {
+			function ( $post_id ): void {
 				// check again, as probably it's about another post.
 				if ( false === $this->is_my_post( $post_id ) ) {
 					return;
@@ -579,7 +578,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 				$unique_id = get_post( $post_id )->post_name ?? '';
 
 				if ( false === key_exists( $post_id, $values ) ) {
-					$instance_data = $this->cpt_data_storage->get( $unique_id );
+					$instance_data = $this->cpt_settings_storage->get( $unique_id );
 
 					// not loaded if it's a new post.
 					$values[ $post_id ] = true === $instance_data->isLoaded() ?
@@ -594,18 +593,18 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		);
 	}
 
-	public function maybe_rename_title( int $post_id, WP_Post $post ): void {
+	public function maybe_rename_title( int $post_id, WP_Post $wp_post ): void {
 		// ignore wrong cases
 		// note: check on false, as it returns int in case of success.
-		if ( false !== wp_is_post_revision( $post ) ||
-			false !== wp_is_post_autosave( $post ) ||
-			true === in_array( $post->post_status, array( 'auto-draft', 'trash' ), true ) ||
-			true === $this->cpt_data_storage->get_db_management()->is_renaming_suppressed() ) {
+		if ( false !== wp_is_post_revision( $wp_post ) ||
+			false !== wp_is_post_autosave( $wp_post ) ||
+			true === in_array( $wp_post->post_status, array( 'auto-draft', 'trash' ), true ) ||
+			true === $this->cpt_settings_storage->get_db_management()->is_renaming_suppressed() ) {
 			return;
 		}
 
-		$cpt_data      = $this->cpt_data_storage->get( $post->post_name );
-		$current_title = trim( $post->post_title );
+		$cpt_data      = $this->cpt_settings_storage->get( $wp_post->post_name );
+		$current_title = trim( $wp_post->post_title );
 
 		// skip if cptData isn't loaded (e.g. it may happen within restoring item from the trash process).
 		if ( false === $cpt_data->isLoaded() ||
@@ -618,9 +617,9 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			$cpt_data->setSource( $post_id );
 		}
 
-		$this->cpt_data_storage->rename( $cpt_data, $current_title );
+		$this->cpt_settings_storage->rename( $cpt_data, $current_title );
 
-		$this->cpt_data_storage->save( $cpt_data );
+		$this->cpt_settings_storage->save( $cpt_data );
 	}
 
 	public function trash( int $post_id ): void {
@@ -628,7 +627,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			return;
 		}
 
-		$this->cpt_data_storage->trash( $post_id );
+		$this->cpt_settings_storage->trash( $post_id );
 	}
 
 	public function unTrash( int $post_id ): void {
@@ -636,7 +635,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			return;
 		}
 
-		$this->cpt_data_storage->un_trash( $post_id );
+		$this->cpt_settings_storage->un_trash( $post_id );
 	}
 
 	public function register_rest_routes(): void {
@@ -646,9 +645,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'refresh_request' ),
-				'permission_callback' => function (): bool {
-					return true === is_user_logged_in();
-				},
+				'permission_callback' => fn(): bool => true === is_user_logged_in(),
 			)
 		);
 	}

@@ -11,9 +11,7 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,30 +24,30 @@ class Layouts_Cpt_Table extends Cpt_Table {
 	const COLUMN_RELATED_CARDS  = 'relatedCards';
 
 	private Html $html;
-	private Layouts_Cpt_Meta_Boxes $views_meta_boxes;
+	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
 
 	public function __construct(
-		Cpt_Settings_Storage $cpt_data_storage,
+		Cpt_Settings_Storage $cpt_settings_storage,
 		string $name,
 		Html $html,
-		Layouts_Cpt_Meta_Boxes $views_cpt_meta_boxes
+		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes
 	) {
-		parent::__construct( $cpt_data_storage, $name );
+		parent::__construct( $cpt_settings_storage, $name );
 
-		$this->html             = $html;
-		$this->views_meta_boxes = $views_cpt_meta_boxes;
+		$this->html                   = $html;
+		$this->layouts_cpt_meta_boxes = $layouts_cpt_meta_boxes;
 	}
 
 	protected function get_views_meta_boxes(): Layouts_Cpt_Meta_Boxes {
-		return $this->views_meta_boxes;
+		return $this->layouts_cpt_meta_boxes;
 	}
 
-	protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void {
-		if ( false === ( $cpt_data instanceof Layout_Settings ) ) {
+	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
+		if ( false === ( $cpt_settings instanceof Layout_Settings ) ) {
 			return;
 		}
 
-		$view_data = $cpt_data;
+		$view_data = $cpt_settings;
 
 		switch ( $short_column_name ) {
 			case self::COLUMN_DESCRIPTION:
@@ -67,10 +65,10 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				break;
 			case self::COLUMN_RELATED_GROUPS:
 				// without the not found message.
-				$this->views_meta_boxes->print_related_groups_meta_box( $view_data, true );
+				$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data, true );
 				break;
 			case self::COLUMN_RELATED_CARDS:
-				$this->views_meta_boxes->print_related_acf_cards_meta_box( $view_data, true );
+				$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box( $view_data, true );
 				break;
 			case self::COLUMN_LAST_MODIFIED:
 				$post_id = $view_data->get_post_id();
@@ -102,16 +100,16 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		);
 	}
 
-	public function add_sortable_columns_to_request( WP_Query $query ): void {
+	public function add_sortable_columns_to_request( WP_Query $wp_query ): void {
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		$order_by = $query->get( 'orderby' );
+		$order_by = $wp_query->get( 'orderby' );
 
 		switch ( $order_by ) {
 			case self::COLUMN_LAST_MODIFIED:
-				$query->set( 'orderby', 'post_modified' );
+				$wp_query->set( 'orderby', 'post_modified' );
 				break;
 		}
 	}

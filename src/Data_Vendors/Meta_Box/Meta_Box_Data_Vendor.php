@@ -83,7 +83,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 * @return array<string,string>
 	 */
 	protected function get_field_request_args(
-		Field_Settings $field_data,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Source $source,
 		&$source_id
@@ -260,7 +260,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 *
 	 * @return mixed
 	 */
-	protected function format_group_item_value( $raw_value, Field_Settings $field_data, Field_Meta_Interface $field_meta, Source $source ) {
+	protected function format_group_item_value( $raw_value, Field_Settings $field_settings, Field_Meta_Interface $field_meta, Source $source ) {
 		/**
 		 * Hand fix for maps.
 		 * https://docs.metabox.io/fields/osm/#outputting-a-map-in-a-group
@@ -271,7 +271,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 				array( 'RWMB_OSM_Field', 'render_map' ) :
 				array( 'RWMB_Map_Field', 'render_map' );
 
-			$field_request_args = $this->get_field_request_args( $field_data, $field_meta, $source, $source_id );
+			$field_request_args = $this->get_field_request_args( $field_settings, $field_meta, $source, $source_id );
 
 			return true === is_callable( $render_map_callback ) ?
 				call_user_func( $render_map_callback, $raw_value, $field_request_args ) :
@@ -286,7 +286,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 *
 	 * @return array<int|string,mixed>
 	 */
-	protected function format_group_value( $raw_value, Field_Settings $field_data, Field_Meta_Interface $field_meta, Item_Settings $item_data, Source $source ): array {
+	protected function format_group_value( $raw_value, Field_Settings $field_settings, Field_Meta_Interface $field_meta, Item_Settings $item_settings, Source $source ): array {
 		$raw_value = true === is_array( $raw_value ) ?
 			$raw_value :
 			array();
@@ -298,7 +298,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			foreach ( $raw_value as $raw_row ) {
 				$formatted_row = array();
 
-				foreach ( $item_data->repeater_fields as $repeater_field ) {
+				foreach ( $item_settings->repeater_fields as $repeater_field ) {
 					$repeater_field_id   = $repeater_field->get_field_meta()->get_field_id();
 					$repeater_field_name = $repeater_field->get_field_meta()->get_name();
 
@@ -317,14 +317,14 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		// self-repeatable.
 		if ( null !== $self_repeatable ) {
 			foreach ( $raw_value as $item ) {
-				$formatted_value[] = $this->format_group_item_value( $item, $field_data, $self_repeatable, $source );
+				$formatted_value[] = $this->format_group_item_value( $item, $field_settings, $self_repeatable, $source );
 			}
 
 			return $formatted_value;
 		}
 
 		// group.
-		foreach ( $item_data->repeater_fields as $repeater_field ) {
+		foreach ( $item_settings->repeater_fields as $repeater_field ) {
 			$repeater_field_id   = $repeater_field->get_field_meta()->get_field_id();
 			$repeater_field_name = $repeater_field->get_field_meta()->get_name();
 
@@ -348,23 +348,23 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	}
 
 	public function make_integration_instance(
-		Item_Settings $item_data,
-		Layouts_Settings_Storage $views_data_storage,
+		Item_Settings $item_settings,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
-		Layout_Factory $view_factory,
-		Repeater_Field_Settings $repeater_field_data,
-		Layout_Shortcode $view_shortcode,
+		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Factory $layout_factory,
+		Repeater_Field_Settings $repeater_field_settings,
+		Layout_Shortcode $layout_shortcode,
 		Settings $settings
 	): ?Data_Vendor_Integration_Interface {
 		return new Meta_Box_Integration(
-			$item_data,
-			$views_data_storage,
+			$item_settings,
+			$layouts_settings_storage,
 			$data_vendors,
-			$views_cpt_save_actions,
-			$view_factory,
+			$layouts_cpt_save_actions,
+			$layout_factory,
 			$this,
-			$view_shortcode,
+			$layout_shortcode,
 			$settings
 		);
 	}
@@ -594,17 +594,17 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Settings $field_data,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Source $source,
-		?Item_Settings $item_data = null,
+		?Item_Settings $item_settings = null,
 		bool $is_formatted = false,
 		?array $local_data = null
 	) {
 		$field_id = $field_meta->get_field_id();
 
 		$source_id       = $source->get_id();
-		$args            = $this->get_field_request_args( $field_data, $field_meta, $source, $source_id );
+		$args            = $this->get_field_request_args( $field_settings, $field_meta, $source, $source_id );
 		$self_repeatable = $field_meta->get_self_repeatable_meta();
 
 		if ( null !== $local_data ) {
@@ -663,8 +663,8 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 				$value = get_post_meta( $source_id, $field_id, true );
 
 				// It's impossible to format the group value without the item data.
-				$value = null !== $item_data ?
-					$this->format_group_value( $value, $field_data, $field_meta, $item_data, $source ) :
+				$value = null !== $item_settings ?
+					$this->format_group_value( $value, $field_settings, $field_meta, $item_settings, $source ) :
 					$value;
 			}
 			return $value;

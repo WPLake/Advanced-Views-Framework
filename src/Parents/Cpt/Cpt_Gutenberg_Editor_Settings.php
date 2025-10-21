@@ -4,12 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
+use WPCom_Markdown;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Post;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
@@ -58,8 +57,8 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 	 * Otherwise in case editing fields (without saving) and reloading a page,
 	 * then the fields have these unsaved values, it's wrong and breaks logic (e.g. of group-field selects)
 	 */
-	public function disable_autocomplete_for_post_edit( WP_Post $post ): void {
-		if ( $this->cpt_name !== $post->post_type ) {
+	public function disable_autocomplete_for_post_edit( WP_Post $wp_post ): void {
+		if ( $this->cpt_name !== $wp_post->post_type ) {
 			return;
 		}
 
@@ -108,7 +107,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 			return;
 		}
 
-		$markdown = \WPCom_Markdown::get_instance();
+		$markdown = WPCom_Markdown::get_instance();
 		remove_action( 'init', array( $markdown, 'load' ) );
 	}
 
@@ -196,7 +195,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		// priority '9' is earlier than Jetpack's.
 		self::add_action(
 			'init',
-			function () use ( $current_screen ) {
+			function () use ( $current_screen ): void {
 				$this->disable_jetpack_markdown_module( $current_screen );
 			},
 			9
@@ -204,9 +203,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 
 		self::add_filter(
 			'classic_editor_plugin_settings',
-			function ( $settings ) use ( $current_screen ) {
-				return $this->classic_editor_plugin_settings_patch( $settings, $current_screen );
-			}
+			fn( $settings ) => $this->classic_editor_plugin_settings_patch( $settings, $current_screen )
 		);
 		self::add_filter(
 			'classic_editor_enabled_editors_for_post_type',
@@ -219,9 +216,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		self::add_filter( 'use_block_editor_for_post_type', array( $this, 'force_gutenberg_for_cpt_pages' ), 99999, 2 );
 		self::add_filter(
 			'block_editor_settings_all',
-			function ( array $editor_settings ) use ( $current_screen ): array {
-				return $this->disable_gutenberg_auto_save( $editor_settings, $current_screen );
-			}
+			fn( array $editor_settings ): array => $this->disable_gutenberg_auto_save( $editor_settings, $current_screen )
 		);
 	}
 }

@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$view    = $view ?? array();
+$view  ??= array();
 $name    = $view['name'] ?? '';
 $version = $view['version'] ?? '';
 // @phpcs:ignore

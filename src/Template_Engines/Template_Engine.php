@@ -15,14 +15,14 @@ use WP_Filesystem_Base;
 abstract class Template_Engine extends Action implements Template_Engine_Interface {
 	private string $templates_folder;
 	private Settings $settings;
-	private WP_Filesystem_Base $wp_filesystem;
+	private WP_Filesystem_Base $wp_filesystem_base;
 
-	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem ) {
+	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem_base ) {
 		parent::__construct( $logger );
 
-		$this->settings         = $settings;
-		$this->templates_folder = $templates_folder;
-		$this->wp_filesystem    = $wp_filesystem;
+		$this->settings           = $settings;
+		$this->templates_folder   = $templates_folder;
+		$this->wp_filesystem_base = $wp_filesystem_base;
 	}
 
 	/**
@@ -53,7 +53,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 	 * @param array<string,mixed> $args
 	 */
 	public function print( string $unique_id, string $template, array $args, bool $is_validation = false ): void {
-		if ( false === $this->wp_filesystem->is_dir( $this->templates_folder ) ) {
+		if ( false === $this->wp_filesystem_base->is_dir( $this->templates_folder ) ) {
 			$this->get_logger()->warning(
 				"can't render the twig template as the templates folder is not writable",
 				array(
@@ -72,7 +72,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 
 		$template_name = sprintf( '%s.%s', $unique_id, $this->get_extension() );
 		$template_file = $this->templates_folder . '/' . $template_name;
-		$wp_filesystem = $this->wp_filesystem;
+		$wp_filesystem = $this->wp_filesystem_base;
 
 		$is_written = false !== $wp_filesystem->put_contents( $template_file, $template );
 

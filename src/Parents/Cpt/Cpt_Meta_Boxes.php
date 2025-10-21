@@ -32,7 +32,7 @@ abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 		add_meta_box(
 			'acf-views_support',
 			__( 'Having issues?', 'acf-views' ),
-			function () {
+			function (): void {
 				$this->html->print_postbox_support();
 			},
 			array(
@@ -46,7 +46,7 @@ abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 			add_meta_box(
 				'acf-views_upgrade',
 				__( 'Unlock with Pro', 'acf-views' ),
-				function () {
+				function (): void {
 					$this->html->print_postbox_upgrade();
 				},
 				array(
@@ -58,11 +58,11 @@ abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	public function print_mount_points( Cpt_Settings $cpt_data ): void {
+	public function print_mount_points( Cpt_Settings $cpt_settings ): void {
 		$post_types      = array();
 		$safe_post_links = array();
 
-		foreach ( $cpt_data->mount_points as $mount_point ) {
+		foreach ( $cpt_settings->mount_points as $mount_point ) {
 			$post_types      = array_merge( $post_types, $mount_point->post_types );
 			$safe_post_links = array_merge( $safe_post_links, $mount_point->posts );
 		}

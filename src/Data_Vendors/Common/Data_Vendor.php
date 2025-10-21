@@ -147,7 +147,7 @@ abstract class Data_Vendor extends Action implements Data_Vendor_Interface {
 			}
 
 			foreach ( $conditional_instance_field_keys as $conditional_instance_field_key ) {
-				$field_key_conditional_rules[ $conditional_instance_field_key ]   = $field_key_conditional_rules[ $conditional_instance_field_key ] ?? array();
+				$field_key_conditional_rules[ $conditional_instance_field_key ] ??= array();
 				$field_key_conditional_rules[ $conditional_instance_field_key ][] = $field_key;
 			}
 		}
@@ -165,12 +165,12 @@ abstract class Data_Vendor extends Action implements Data_Vendor_Interface {
 	/**
 	 * @return string[]
 	 */
-	public function get_field_front_assets( Field_Settings $field_data ): array {
-		$field_type     = $field_data->get_field_meta()->get_type();
+	public function get_field_front_assets( Field_Settings $field_settings ): array {
+		$field_type     = $field_settings->get_field_meta()->get_type();
 		$field_instance = $this->field_types[ $field_type ] ?? null;
 
 		return null !== $field_instance ?
-			$field_instance->get_front_assets( $field_data ) :
+			$field_instance->get_front_assets( $field_settings ) :
 			array();
 	}
 

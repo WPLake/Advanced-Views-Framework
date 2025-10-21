@@ -16,11 +16,11 @@ interface Front_Asset_Interface {
 	/**
 	 * @return array{css:array<string,string>,js:array<string,string>}
 	 */
-	public function generate_code( Cpt_Settings $cpt_data ): array;
+	public function generate_code( Cpt_Settings $cpt_settings ): array;
 
-	public function maybe_activate( Cpt_Settings $cpt_data ): void;
+	public function maybe_activate( Cpt_Settings $cpt_settings ): void;
 
-	public function is_web_component_required( Cpt_Settings $cpt_data ): bool;
+	public function is_web_component_required( Cpt_Settings $cpt_settings ): bool;
 
 	public function get_name(): string;
 }

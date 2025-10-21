@@ -19,7 +19,6 @@ use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -27,35 +26,35 @@ defined( 'ABSPATH' ) || exit;
 class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/view-refresh';
 
-	private Layout_Markup $view_markup;
-	private Layouts_Cpt_Meta_Boxes $views_cpt_meta_boxes;
+	private Layout_Markup $layout_markup;
+	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
 	private Html $html;
-	private Layout_Settings $view_data;
-	private Layout_Factory $view_factory;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Layout_Settings $layout_settings;
+	private Layout_Factory $layout_factory;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Logger $logger,
-		Layouts_Settings_Storage $views_data_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Plugin $plugin,
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		Front_Assets $front_assets,
-		Layout_Markup $view_markup,
-		Layouts_Cpt_Meta_Boxes $views_cpt_meta_boxes,
+		Layout_Markup $layout_markup,
+		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
 		Html $html,
-		Layout_Factory $view_factory
+		Layout_Factory $layout_factory
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
-		$view_data = $view_data->getDeepClone();
+		$layout_settings = $layout_settings->getDeepClone();
 
-		parent::__construct( $logger, $views_data_storage, $plugin, $view_data, $front_assets );
+		parent::__construct( $logger, $layouts_settings_storage, $plugin, $layout_settings, $front_assets );
 
-		$this->views_data_storage   = $views_data_storage;
-		$this->view_data            = $view_data;
-		$this->view_markup          = $view_markup;
-		$this->views_cpt_meta_boxes = $views_cpt_meta_boxes;
-		$this->html                 = $html;
-		$this->view_factory         = $view_factory;
+		$this->layouts_settings_storage = $layouts_settings_storage;
+		$this->layout_settings          = $layout_settings;
+		$this->layout_markup            = $layout_markup;
+		$this->layouts_cpt_meta_boxes   = $layouts_cpt_meta_boxes;
+		$this->html                     = $html;
+		$this->layout_factory           = $layout_factory;
 	}
 
 	protected function get_cpt_name(): string {
@@ -69,20 +68,20 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	protected function make_validation_instance(): Instance {
 		$view_unique_id = get_post( $this->get_acf_ajax_post_id() )->post_name ?? '';
 
-		return $this->view_factory->make( new Source(), $view_unique_id, 0, $this->view_data );
+		return $this->layout_factory->make( new Source(), $view_unique_id, 0, $this->layout_settings );
 	}
 
-	public function update_markup( Cpt_Settings $cpt_data ): void {
-		if ( ! ( $cpt_data instanceof Layout_Settings ) ) {
+	public function update_markup( Cpt_Settings $cpt_settings ): void {
+		if ( ! ( $cpt_settings instanceof Layout_Settings ) ) {
 			return;
 		}
 
 		ob_start();
 		// pageId 0, so without CSS, also skipCache and customMarkup.
-		$this->view_markup->print_markup( $cpt_data, 0, '', true, true );
+		$this->layout_markup->print_markup( $cpt_settings, 0, '', true, true );
 		$view_markup = (string) ob_get_clean();
 
-		$cpt_data->markup = $view_markup;
+		$cpt_settings->markup = $view_markup;
 	}
 
 	protected function get_safe_field_id( string $name ): string {
@@ -103,15 +102,15 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 			'';
 	}
 
-	protected function update_identifiers( Layout_Settings $view_data ): void {
-		foreach ( $view_data->items as $item ) {
+	protected function update_identifiers( Layout_Settings $layout_settings ): void {
+		foreach ( $layout_settings->items as $item ) {
 			$item->field->id = ( '' !== $item->field->id &&
 								false === preg_match( '/^[a-zA-Z0-9_\-]+$/', $item->field->id ) ) ?
 				'' :
 				$item->field->id;
 
 			if ( '' !== $item->field->id &&
-				$item->field->id === $this->get_unique_field_id( $view_data, $item, $item->field->id ) ) {
+				$item->field->id === $this->get_unique_field_id( $layout_settings, $item, $item->field->id ) ) {
 				continue;
 			}
 
@@ -122,7 +121,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 			}
 
 			$item->field->id = $this->get_unique_field_id(
-				$view_data,
+				$layout_settings,
 				$item,
 				$this->get_safe_field_id( $field_meta->get_name() )
 			);
@@ -130,11 +129,11 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	// public for tests.
-	public function get_unique_field_id( Layout_Settings $view_data, Item_Settings $exclude_object, string $name ): string {
+	public function get_unique_field_id( Layout_Settings $layout_settings, Item_Settings $item_settings, string $name ): string {
 		$is_unique = true;
 
-		foreach ( $view_data->items as $item ) {
-			if ( $item === $exclude_object ||
+		foreach ( $layout_settings->items as $item ) {
+			if ( $item === $item_settings ||
 				$item->field->id !== $name ) {
 				continue;
 			}
@@ -145,7 +144,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		return $is_unique ?
 			$name :
-			$this->get_unique_field_id( $view_data, $exclude_object, $name . '2' );
+			$this->get_unique_field_id( $layout_settings, $item_settings, $name . '2' );
 	}
 
 	public function perform_save_actions( $post_id, bool $is_skip_save = false ): ?Layout_Settings {
@@ -166,7 +165,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		if ( false === $is_skip_save ) {
 			// it'll also update post fields, like 'comment_count'.
-			$this->views_data_storage->save( $view_data );
+			$this->layouts_settings_storage->save( $view_data );
 		}
 
 		return $view_data;
@@ -177,8 +176,8 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	 * @throws Exception
 	 */
 	// @phpstan-ignore-next-line
-	public function refresh_request( WP_REST_Request $request ): array {
-		$request_args = $request->get_json_params();
+	public function refresh_request( WP_REST_Request $wprest_request ): array {
+		$request_args = $wprest_request->get_json_params();
 		$view_id      = $this->get_int_arg( '_postId', $request_args );
 
 		$post_type = get_post( $view_id )->post_type ?? '';
@@ -189,7 +188,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		$view_unique_id = get_post( $view_id )->post_name ?? '';
 
-		$view_data = $this->views_data_storage->get( $view_unique_id );
+		$view_data = $this->layouts_settings_storage->get( $view_unique_id );
 
 		ob_start();
 		$this->html->print_postbox_shortcode(
@@ -206,7 +205,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		ob_start();
 		// ignore customMarkup (we need the preview).
-		$this->view_markup->print_markup(
+		$this->layout_markup->print_markup(
 			$view_data,
 			0,
 			'',
@@ -216,17 +215,17 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$markup = (string) ob_get_clean();
 
 		ob_start();
-		$this->views_cpt_meta_boxes->print_related_groups_meta_box( $view_data );
+		$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data );
 		$related_groups_meta_box = (string) ob_get_clean();
 
 		ob_start();
-		$this->views_cpt_meta_boxes->print_related_views_meta_box(
+		$this->layouts_cpt_meta_boxes->print_related_views_meta_box(
 			$view_data
 		);
 		$related_views_meta_box = (string) ob_get_clean();
 
 		ob_start();
-		$this->views_cpt_meta_boxes->print_related_acf_cards_meta_box(
+		$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box(
 			$view_data
 		);
 		$related_cards_meta_box = (string) ob_get_clean();
@@ -249,7 +248,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 			);
 		}
 
-		$response['autocompleteData'] = $this->view_factory->get_autocomplete_variables( $view_unique_id );
+		$response['autocompleteData'] = $this->layout_factory->get_autocomplete_variables( $view_unique_id );
 
 		return $response;
 	}

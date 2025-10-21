@@ -15,20 +15,20 @@ use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Bulk_Validation_Tab extends Bulk_Validation_Tab {
-	private Layout_Factory $view_factory;
+	private Layout_Factory $layout_factory;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Cpt_Settings_Storage $cards_data_storage,
-		Fs_Only_Tab $fs_only_cpt_table_tab,
-		Layout_Factory $view_factory
+		Cpt_Settings_Storage $cpt_settings_storage,
+		Fs_Only_Tab $fs_only_tab,
+		Layout_Factory $layout_factory
 	) {
-		parent::__construct( $cpt_table, $cards_data_storage, $fs_only_cpt_table_tab );
+		parent::__construct( $cpt_table, $cpt_settings_storage, $fs_only_tab );
 
-		$this->view_factory = $view_factory;
+		$this->layout_factory = $layout_factory;
 	}
 
 	protected function make_validation_instance( string $unique_id ): Instance {
-		return $this->view_factory->make( new Source(), $unique_id, 0 );
+		return $this->layout_factory->make( new Source(), $unique_id, 0 );
 	}
 }

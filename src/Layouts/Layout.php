@@ -19,7 +19,7 @@ use WP_REST_Request;
 defined( 'ABSPATH' ) || exit;
 
 class Layout extends Instance {
-	private Layout_Settings $view_data;
+	private Layout_Settings $layout_settings;
 	private Data_Vendors $data_vendors;
 	private Field_Markup $field_markup;
 	/**
@@ -38,19 +38,19 @@ class Layout extends Instance {
 		Data_Vendors $data_vendors,
 		Template_Engines $template_engines,
 		string $twig_template,
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		Source $source,
 		Field_Markup $field_markup,
 		string $classes = ''
 	) {
-		parent::__construct( $template_engines, $view_data, $twig_template, $classes );
+		parent::__construct( $template_engines, $layout_settings, $twig_template, $classes );
 
-		$this->view_data    = $view_data;
-		$this->data_vendors = $data_vendors;
-		$this->source       = $source;
-		$this->field_markup = $field_markup;
-		$this->field_values = array();
-		$this->local_data   = null;
+		$this->layout_settings = $layout_settings;
+		$this->data_vendors    = $data_vendors;
+		$this->source          = $source;
+		$this->field_markup    = $field_markup;
+		$this->field_values    = array();
+		$this->local_data      = null;
 	}
 
 	/**
@@ -59,16 +59,16 @@ class Layout extends Instance {
 	 * @return array<string, mixed>
 	 */
 	protected function get_template_args_for_variable(
-		Item_Settings $item,
+		Item_Settings $item_settings,
 		Field_Meta_Interface $field_meta,
 		Source $source,
 		$field_value,
 		bool $is_for_validation
 	): array {
 		$twig_args = $this->field_markup->get_field_twig_args(
-			$this->view_data,
-			$item,
-			$item->field,
+			$this->layout_settings,
+			$item_settings,
+			$item_settings->field,
 			$field_meta,
 			$this,
 			$source,
@@ -77,10 +77,10 @@ class Layout extends Instance {
 		);
 
 		return array(
-			$item->field->get_template_field_id() => array_merge(
+			$item_settings->field->get_template_field_id() => array_merge(
 				$twig_args,
 				array(
-					'label' => $item->field->get_label_translation(),
+					'label' => $item_settings->field->get_label_translation(),
 				)
 			),
 		);
@@ -94,7 +94,7 @@ class Layout extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		if ( false === $this->view_data->is_render_when_empty &&
+		if ( false === $this->layout_settings->is_render_when_empty &&
 			false === $is_for_validation ) {
 			$is_empty = true;
 
@@ -121,11 +121,11 @@ class Layout extends Instance {
 			}
 		}
 
-		$template_engine = $this->get_template_engines()->get_template_engine( $this->view_data->template_engine );
+		$template_engine = $this->get_template_engines()->get_template_engine( $this->layout_settings->template_engine );
 
 		if ( null !== $template_engine ) {
 			$template_engine->print(
-				$this->view_data->get_unique_id(),
+				$this->layout_settings->get_unique_id(),
 				$template,
 				$variables,
 				$is_for_validation
@@ -153,7 +153,7 @@ class Layout extends Instance {
 	 * @return array<string,mixed>
 	 */
 	// @phpstan-ignore-next-line
-	protected function get_rest_api_response_args( WP_REST_Request $request, $controller ): array {
+	protected function get_rest_api_response_args( WP_REST_Request $wprest_request, $controller ): array {
 		// nothing in the Lite version.
 		return array();
 	}
@@ -176,13 +176,13 @@ class Layout extends Instance {
 		$twig_variables = array(
 			'_view' => array(
 				'classes'   => $this->get_classes(),
-				'id'        => $this->view_data->get_markup_id(),
+				'id'        => $this->layout_settings->get_markup_id(),
 				// replace for others: term_6 to term-6.
 				'object_id' => str_replace( '_', '-', $object_id ),
 			),
 		);
 
-		foreach ( $this->view_data->items as $item ) {
+		foreach ( $this->layout_settings->items as $item ) {
 			$field_meta = $item->field->get_field_meta();
 
 			$field_value = false === $is_for_validation ?
@@ -280,12 +280,10 @@ class Layout extends Instance {
 		return array_keys(
 			array_filter(
 				$variables,
-				function ( $field_value ) {
-					return is_array( $field_value ) && key_exists(
-						'value',
-						$field_value
-					) && is_array( $field_value['value'] );
-				}
+				fn( $field_value ) => is_array( $field_value ) && key_exists(
+					'value',
+					$field_value
+				) && is_array( $field_value['value'] )
 			)
 		);
 	}
@@ -347,15 +345,11 @@ class Layout extends Instance {
 		);
 
 		$inner_views              = array_map(
-			function ( $inner_view_info ) {
-				return $inner_view_info[1];
-			},
+			fn( $inner_view_info ) => $inner_view_info[1],
 			$inner_views_info
 		);
 		$inner_views_for_flexible = array_map(
-			function ( $inner_view_info ) {
-				return $inner_view_info[1];
-			},
+			fn( $inner_view_info ) => $inner_view_info[1],
 			$inner_views_for_flexible_info
 		);
 
@@ -401,16 +395,16 @@ class Layout extends Instance {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Settings $field_data,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
-		?Item_Settings $item_data = null,
+		?Item_Settings $item_settings = null,
 		bool $is_formatted = false
 	) {
 		return $this->data_vendors->get_field_value(
-			$field_data,
+			$field_settings,
 			$field_meta,
 			$this->source,
-			$item_data,
+			$item_settings,
 			$is_formatted,
 			$this->local_data
 		);
@@ -441,7 +435,7 @@ class Layout extends Instance {
 
 			// Blade requires at least some spacing between its tokens.
 			if ( true === in_array(
-				$this->view_data->template_engine,
+				$this->layout_settings->template_engine,
 				array( Template_Engines::TWIG, '' ),
 				true
 			) ) {
@@ -459,12 +453,12 @@ class Layout extends Instance {
 	}
 
 	public function get_view_data(): Layout_Settings {
-		return $this->view_data;
+		return $this->layout_settings;
 	}
 
 	public function get_markup_validation_error(): string {
 		$markup_validation_error = parent::get_markup_validation_error();
-		$custom_markup           = trim( $this->view_data->custom_markup );
+		$custom_markup           = trim( $this->layout_settings->custom_markup );
 
 		if ( '' !== $markup_validation_error ||
 			'' === $custom_markup ) {

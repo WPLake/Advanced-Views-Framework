@@ -5,8 +5,6 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -25,26 +23,26 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 	const COLUMN_LAST_MODIFIED = 'lastModified';
 
 	private Html $html;
-	private Post_Selections_Cpt_Meta_Boxes $cards_meta_boxes;
+	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
 
 	public function __construct(
-		Post_Selections_Settings_Storage $cards_data_storage,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		string $name,
 		Html $html,
-		Post_Selections_Cpt_Meta_Boxes $cards_cpt_meta_boxes
+		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes
 	) {
-		parent::__construct( $cards_data_storage, $name );
+		parent::__construct( $post_selections_settings_storage, $name );
 
-		$this->html             = $html;
-		$this->cards_meta_boxes = $cards_cpt_meta_boxes;
+		$this->html                           = $html;
+		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
 	}
 
-	protected function print_column( string $short_column_name, Cpt_Settings $cpt_data ): void {
-		if ( false === ( $cpt_data instanceof Post_Selection_Settings ) ) {
+	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
+		if ( false === ( $cpt_settings instanceof Post_Selection_Settings ) ) {
 			return;
 		}
 
-		$card_data = $cpt_data;
+		$card_data = $cpt_settings;
 
 		switch ( $short_column_name ) {
 			case self::COLUMN_DESCRIPTION:
@@ -74,25 +72,25 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				break;
 			case self::COLUMN_RELATED_VIEW:
 				// without the not found message.
-				$this->cards_meta_boxes->print_related_acf_view_meta_box( $card_data, true );
+				$this->post_selections_cpt_meta_boxes->print_related_acf_view_meta_box( $card_data, true );
 				break;
 		}
 	}
 
 	protected function get_cards_meta_boxes(): Post_Selections_Cpt_Meta_Boxes {
-		return $this->cards_meta_boxes;
+		return $this->post_selections_cpt_meta_boxes;
 	}
 
-	public function add_sortable_columns_to_request( WP_Query $query ): void {
+	public function add_sortable_columns_to_request( WP_Query $wp_query ): void {
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		$order_by = $query->get( 'orderby' );
+		$order_by = $wp_query->get( 'orderby' );
 
 		switch ( $order_by ) {
 			case self::COLUMN_LAST_MODIFIED:
-				$query->set( 'orderby', 'post_modified' );
+				$wp_query->set( 'orderby', 'post_modified' );
 				break;
 		}
 	}

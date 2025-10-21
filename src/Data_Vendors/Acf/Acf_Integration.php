@@ -17,12 +17,12 @@ class Acf_Integration extends Settings_Vendor_Integration {
 	/**
 	 * @return array<int,array<string,mixed>>
 	 */
-	protected function get_group_fields( WP_Post $group ): array {
+	protected function get_group_fields( WP_Post $wp_post ): array {
 		if ( false === function_exists( 'acf_get_fields' ) ) {
 			return array();
 		}
 
-		return acf_get_fields( $group->ID );
+		return acf_get_fields( $wp_post->ID );
 	}
 
 	/**

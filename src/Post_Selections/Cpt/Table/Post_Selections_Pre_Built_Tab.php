@@ -18,8 +18,8 @@ use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
-	private Post_Selections_Settings_Storage $cards_data_storage;
-	private Layouts_Pre_Built_Tab $views_pre_built_tab;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layouts_Pre_Built_Tab $layouts_pre_built_tab;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
@@ -28,7 +28,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 		Data_Vendors $data_vendors,
 		Upgrades $upgrades,
 		Logger $logger,
-		Layouts_Pre_Built_Tab $views_pre_built_tab
+		Layouts_Pre_Built_Tab $layouts_pre_built_tab
 	) {
 		parent::__construct(
 			$cpt_table,
@@ -39,20 +39,20 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 			$logger
 		);
 
-		$this->cards_data_storage  = $cards_data_storage;
-		$this->views_pre_built_tab = $views_pre_built_tab;
+		$this->post_selections_settings_storage  = $cards_data_storage;
+		$this->layouts_pre_built_tab = $layouts_pre_built_tab;
 	}
 
 	protected function get_cpt_data( string $unique_id ): Cpt_Settings {
 		return 0 === strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX ) ?
-			$this->views_pre_built_tab->get_cpt_data( $unique_id ) :
-			$this->cards_data_storage->get( $unique_id );
+			$this->layouts_pre_built_tab->get_cpt_data( $unique_id ) :
+			$this->post_selections_settings_storage->get( $unique_id );
 	}
 
 	protected function import_related_cpt_data_items( string $unique_id ): ?Import_Result {
-		$card_data = $this->cards_data_storage->get( $unique_id );
+		$card_data = $this->post_selections_settings_storage->get( $unique_id );
 
-		return $this->views_pre_built_tab->import_cpt_data_with_all_related_items( $card_data->acf_view_id );
+		return $this->layouts_pre_built_tab->import_cpt_data_with_all_related_items( $card_data->acf_view_id );
 	}
 
 	protected function print_tab_description_middle(): void {

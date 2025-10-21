@@ -23,16 +23,16 @@ class Post_Selection_Fs_Fields extends Fs_Fields {
 		);
 	}
 
-	public function set_fs_field( Cpt_Settings $cpt_data, string $field_file, string $field_value ): void {
-		parent::set_fs_field( $cpt_data, $field_file, $field_value );
+	public function set_fs_field( Cpt_Settings $cpt_settings, string $field_file, string $field_value ): void {
+		parent::set_fs_field( $cpt_settings, $field_file, $field_value );
 
-		if ( ! ( $cpt_data instanceof Post_Selection_Settings ) ) {
+		if ( ! ( $cpt_settings instanceof Post_Selection_Settings ) ) {
 			return;
 		}
 
 		switch ( $field_file ) {
 			case 'query-preview.php':
-				$cpt_data->query_preview = $field_value;
+				$cpt_settings->query_preview = $field_value;
 				break;
 		}
 	}
@@ -53,17 +53,17 @@ class Post_Selection_Fs_Fields extends Fs_Fields {
 	 * @return array<string, string>
 	 */
 	public function get_fs_field_values(
-		Cpt_Settings $cpt_data,
+		Cpt_Settings $cpt_settings,
 		bool $is_bulk_refresh = false,
 		bool $is_skip_auto_generated = false
 	): array {
-		$fs_field_values = parent::get_fs_field_values( $cpt_data, $is_bulk_refresh, $is_skip_auto_generated );
+		$fs_field_values = parent::get_fs_field_values( $cpt_settings, $is_bulk_refresh, $is_skip_auto_generated );
 
-		if ( $cpt_data instanceof Post_Selection_Settings ) {
+		if ( $cpt_settings instanceof Post_Selection_Settings ) {
 			$fs_field_values = array_merge(
 				$fs_field_values,
 				array(
-					'query-preview.php' => $cpt_data->query_preview,
+					'query-preview.php' => $cpt_settings->query_preview,
 				)
 			);
 		}

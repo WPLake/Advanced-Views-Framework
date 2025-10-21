@@ -19,16 +19,16 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 	const KEY_SINGLE_ACTION  = self::KEY_PREFIX . 'id';
 	const KEY_RESULT_MESSAGE = self::KEY_PREFIX . 'result-ids';
 
-	private Cpt_Settings_Storage $cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 
-	public function __construct( Cpt_Table $cpt_table, Cpt_Settings_Storage $cards_data_storage ) {
+	public function __construct( Cpt_Table $cpt_table, Cpt_Settings_Storage $cpt_settings_storage ) {
 		parent::__construct( $cpt_table );
 
-		$this->cpt_data_storage = $cards_data_storage;
+		$this->cpt_settings_storage = $cpt_settings_storage;
 	}
 
 	protected function get_tab(): ?Tab_Data {
-		$fs_only_items_count = $this->cpt_data_storage->get_fs_only_items_count(
+		$fs_only_items_count = $this->cpt_settings_storage->get_fs_only_items_count(
 			$this->get_cpt_table()->get_current_search_value()
 		);
 
@@ -42,7 +42,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 		$is_active_tab = self::NAME === $this->get_cpt_table()->get_current_tab();
 
 		$items = true === $is_active_tab ?
-			$this->cpt_data_storage->get_fs_only_items(
+			$this->cpt_settings_storage->get_fs_only_items(
 				$this->get_cpt_table()->get_current_search_value(),
 				$this->get_cpt_table()->get_current_page_number(),
 				$this->get_pagination_per_page()
@@ -53,7 +53,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 		$tab_data->set_name( self::NAME );
 		$tab_data->set_label( __( 'FS only', 'acf-views' ) );
 		$tab_data->set_description_callback(
-			function () {
+			function (): void {
 				echo esc_html(
 					__(
 						'The "FS only" tab displays a list of items that do not have a record in the WordPress posts table and cannot be edited using the UI.',
@@ -109,13 +109,13 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 		foreach ( $unique_ids as $unique_id ) {
 			// on batch action (e.g. for template validation) user can select 'sync' for non-FS-only items
 			// we must ignore them.
-			if ( false === $this->cpt_data_storage->is_fs_only_item( $unique_id ) ) {
+			if ( false === $this->cpt_settings_storage->is_fs_only_item( $unique_id ) ) {
 				continue;
 			}
 
-			$cpt_data = $this->cpt_data_storage->get( $unique_id );
+			$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
-			$this->cpt_data_storage->get_db_management()->make_post_for_fs_only_item( $cpt_data );
+			$this->cpt_settings_storage->get_db_management()->make_post_for_fs_only_item( $cpt_data );
 		}
 
 		wp_safe_redirect(
@@ -144,7 +144,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 		$safe_item_links = array();
 
 		foreach ( $ids as $unique_id ) {
-			$cpt_data          = $this->cpt_data_storage->get( $unique_id );
+			$cpt_data          = $this->cpt_settings_storage->get( $unique_id );
 			$safe_item_links[] = sprintf(
 				'<a href="%s" target="_blank">%s</a>',
 				esc_url( $cpt_data->get_edit_post_link() ),
@@ -163,14 +163,14 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 			'</div>';
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
+	public function print_row_title( Tab_Data $tab_data, Cpt_Settings $cpt_settings ): void {
 		$url = add_query_arg(
 			array(
-				self::KEY_SINGLE_ACTION => $cpt_data->get_unique_id(),
+				self::KEY_SINGLE_ACTION => $cpt_settings->get_unique_id(),
 				'_wpnonce'              => wp_create_nonce( 'bulk-posts' ),
 			)
 		);
-		printf( '<strong><span class="row-title">%s</span></strong>', esc_html( $cpt_data->title ) );
+		printf( '<strong><span class="row-title">%s</span></strong>', esc_html( $cpt_settings->title ) );
 		printf(
 			'<div class="row-actions"><span class="sync"><a href="%s">%s</a></span></div>',
 			esc_url( $url ),

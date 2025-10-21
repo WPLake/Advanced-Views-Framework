@@ -6,13 +6,11 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
@@ -31,7 +29,7 @@ class File_System extends Action implements Hooks_Interface {
 	private bool $is_read_item_folders;
 	private string $base_folder;
 	private string $items_folder_name;
-	private ?WP_Filesystem_Base $wp_filesystem;
+	private ?WP_Filesystem_Base $wp_filesystem_base;
 
 	public function __construct( Logger $logger, string $items_folder_name, string $external_base_folder = '' ) {
 		parent::__construct( $logger );
@@ -40,7 +38,7 @@ class File_System extends Action implements Hooks_Interface {
 		$this->item_folders         = array();
 		$this->base_folder          = $external_base_folder;
 		$this->is_read_item_folders = false;
-		$this->wp_filesystem        = null;
+		$this->wp_filesystem_base   = null;
 	}
 
 	protected function read_item_folders(): void {
@@ -89,15 +87,13 @@ class File_System extends Action implements Hooks_Interface {
 
 		$json = json_decode( $file_content, true );
 
-		return null !== $json ?
-			$json :
-			array();
+		return $json ?? array();
 	}
 
 	protected function show_folder_is_not_writable_warning(): void {
 		self::add_action(
 			'admin_notices',
-			function () {
+			function (): void {
 				// it's going to be checked in both CPTs, but we need only one notice.
 				if ( true === self::$is_fs_not_writable_notice_shown ) {
 					return;
@@ -153,9 +149,7 @@ class File_System extends Action implements Hooks_Interface {
 		$title = strtolower( $title );
 		$title = preg_replace( '/[^a-z0-9]/', '-', $title );
 
-		return null !== $title ?
-			$title :
-			'';
+		return $title ?? '';
 	}
 
 	public function get_item_folder_by_short_unique_id( string $item_id ): string {
@@ -388,17 +382,17 @@ class File_System extends Action implements Hooks_Interface {
 	}
 
 	public function get_wp_filesystem(): WP_Filesystem_Base {
-		if ( null === $this->wp_filesystem ) {
+		if ( null === $this->wp_filesystem_base ) {
 			global $wp_filesystem;
 
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 
 			WP_Filesystem();
 
-			$this->wp_filesystem = $wp_filesystem;
+			$this->wp_filesystem_base = $wp_filesystem;
 		}
 
-		return $this->wp_filesystem;
+		return $this->wp_filesystem_base;
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
@@ -407,7 +401,7 @@ class File_System extends Action implements Hooks_Interface {
 			// theme is loaded since this hook.
 			self::add_action(
 				'after_setup_theme',
-				function () use ( $current_screen ) {
+				function () use ( $current_screen ): void {
 					$this->set_base_folder( $current_screen );
 				}
 			);

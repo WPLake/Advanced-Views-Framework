@@ -10,24 +10,24 @@ use WP_Filesystem_Base;
 defined( 'ABSPATH' ) || exit;
 
 class Html {
-	private ?WP_Filesystem_Base $wp_filesystem;
+	private ?WP_Filesystem_Base $wp_filesystem_base;
 
 	public function __construct() {
-		$this->wp_filesystem = null;
+		$this->wp_filesystem_base = null;
 	}
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
-		if ( null === $this->wp_filesystem ) {
+		if ( null === $this->wp_filesystem_base ) {
 			global $wp_filesystem;
 
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 
 			WP_Filesystem();
 
-			$this->wp_filesystem = $wp_filesystem;
+			$this->wp_filesystem_base = $wp_filesystem;
 		}
 
-		return $this->wp_filesystem;
+		return $this->wp_filesystem_base;
 	}
 
 	/**

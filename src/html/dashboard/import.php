@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$view                 = $view ?? array();
+$view               ??= array();
 $is_has_demo_objects  = $view['isHasDemoObjects'] ?? false;
 $form_nonce           = $view['formNonce'] ?? '';
 $is_with_form_message = $view['isWithFormMessage'] ?? '';

@@ -81,18 +81,18 @@ class Data_Vendors extends Action implements Hooks_Interface {
 
 	protected function load_integration_instance(
 		Current_Screen $current_screen,
-		Data_Vendor_Integration_Interface $integration_instance,
-		Layouts_Settings_Storage $views_data_storage
+		Data_Vendor_Integration_Interface $data_vendor_integration,
+		Layouts_Settings_Storage $layouts_settings_storage
 	): void {
 		// functions below only for the admin part.
 		if ( false === $current_screen->is_admin() ) {
 			return;
 		}
 
-		$integration_instance->add_tab_to_meta_group();
-		$integration_instance->add_column_to_list_table();
-		$integration_instance->validate_related_views_on_group_change();
-		$integration_instance->maybe_create_view_for_group();
+		$data_vendor_integration->add_tab_to_meta_group();
+		$data_vendor_integration->add_column_to_list_table();
+		$data_vendor_integration->validate_related_views_on_group_change();
+		$data_vendor_integration->maybe_create_view_for_group();
 	}
 
 	/**
@@ -184,8 +184,8 @@ class Data_Vendors extends Action implements Hooks_Interface {
 			$vendor_field_key_conditional_rules = $data_vendor->get_field_key_conditional_rules( $is_sub_fields );
 
 			foreach ( $vendor_field_key_conditional_rules as $vendor_field => $vendor_field_conditions ) {
-				$field_key_conditions[ $vendor_field ] = $field_key_conditions[ $vendor_field ] ?? array();
-				$field_key_conditions[ $vendor_field ] = array_merge(
+				$field_key_conditions[ $vendor_field ] ??= array();
+				$field_key_conditions[ $vendor_field ]   = array_merge(
 					$field_key_conditions[ $vendor_field ],
 					$vendor_field_conditions
 				);
@@ -230,7 +230,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function get_field_meta( string $vendor_name, string $field_id ): Field_Meta_Interface {
 		$vendor = $this->data_vendors[ $vendor_name ] ?? null;
 
-		$this->field_meta_cache[ $vendor_name ] = $this->field_meta_cache[ $vendor_name ] ?? array();
+		$this->field_meta_cache[ $vendor_name ] ??= array();
 
 		if ( false === key_exists( $field_id, $this->field_meta_cache[ $vendor_name ] ) ) {
 			$field_meta = new Field_Meta( $vendor_name, $field_id );
@@ -253,10 +253,10 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Settings $field_data,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Source $source,
-		?Item_Settings $item_data = null,
+		?Item_Settings $item_settings = null,
 		bool $is_formatted = false,
 		?array $local_data = null
 	) {
@@ -267,10 +267,10 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		}
 
 		return $this->data_vendors[ $vendor_name ]->get_field_value(
-			$field_data,
+			$field_settings,
 			$field_meta,
 			$source,
-			$item_data,
+			$item_settings,
 			$is_formatted,
 			$local_data
 		);
@@ -291,12 +291,12 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	/**
 	 * @return string[]
 	 */
-	public function get_field_front_assets( string $vendor_name, Field_Settings $field_data ): array {
+	public function get_field_front_assets( string $vendor_name, Field_Settings $field_settings ): array {
 		if ( ! key_exists( $vendor_name, $this->data_vendors ) ) {
 			return array();
 		}
 
-		$field_front_assets = $this->data_vendors[ $vendor_name ]->get_field_front_assets( $field_data );
+		$field_front_assets = $this->data_vendors[ $vendor_name ]->get_field_front_assets( $field_settings );
 
 		// avoid duplicates (can be in case of the inheritance chain).
 		return array_unique( $field_front_assets );
@@ -305,13 +305,13 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	/**
 	 * @return array{0:Field_Settings[],1:Field_Settings[]}
 	 */
-	public function get_fields_by_front_asset( string $asset_name, Layout_Settings $view_data ): array {
+	public function get_fields_by_front_asset( string $asset_name, Layout_Settings $layout_settings ): array {
 		$fields = array(
 			array(),
 			array(),
 		);
 
-		foreach ( $view_data->items as $item ) {
+		foreach ( $layout_settings->items as $item ) {
 			foreach ( $item->repeater_fields as $repeater_field ) {
 				$vendor_name = $repeater_field->get_vendor_name();
 
@@ -371,7 +371,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function convert_date_to_string_for_db_comparison(
 		string $vendor,
 		DateTime $date_time,
-		Field_Meta_Interface $field_meta_interface
+		Field_Meta_Interface $field_meta
 	): string {
 		if ( false === key_exists( $vendor, $this->data_vendors ) ) {
 			return '';
@@ -379,18 +379,18 @@ class Data_Vendors extends Action implements Hooks_Interface {
 
 		return $this->data_vendors[ $vendor ]->convert_date_to_string_for_db_comparison(
 			$date_time,
-			$field_meta_interface
+			$field_meta
 		);
 	}
 
 	public function make_integration_instances(
 		Current_Screen $current_screen,
-		Item_Settings $item_data,
-		Layouts_Settings_Storage $views_data_storage,
-		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
-		Layout_Factory $view_factory,
-		Repeater_Field_Settings $repeater_field_data,
-		Layout_Shortcode $view_shortcode,
+		Item_Settings $item_settings,
+		Layouts_Settings_Storage $layouts_settings_storage,
+		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Factory $layout_factory,
+		Repeater_Field_Settings $repeater_field_settings,
+		Layout_Shortcode $layout_shortcode,
 		Settings $settings
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
@@ -399,23 +399,23 @@ class Data_Vendors extends Action implements Hooks_Interface {
 			'after_setup_theme',
 			function () use (
 				$current_screen,
-				$item_data,
-				$views_data_storage,
-				$views_cpt_save_actions,
-				$view_factory,
-				$repeater_field_data,
-				$view_shortcode,
+				$item_settings,
+				$layouts_settings_storage,
+				$layouts_cpt_save_actions,
+				$layout_factory,
+				$repeater_field_settings,
+				$layout_shortcode,
 				$settings
-			) {
+			): void {
 				foreach ( $this->data_vendors as $vendor ) {
 					$integration_instance = $vendor->make_integration_instance(
-						$item_data,
-						$views_data_storage,
+						$item_settings,
+						$layouts_settings_storage,
 						$this,
-						$views_cpt_save_actions,
-						$view_factory,
-						$repeater_field_data,
-						$view_shortcode,
+						$layouts_cpt_save_actions,
+						$layout_factory,
+						$repeater_field_settings,
+						$layout_shortcode,
 						$settings
 					);
 
@@ -424,7 +424,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 						continue;
 					}
 
-					$this->load_integration_instance( $current_screen, $integration_instance, $views_data_storage );
+					$this->load_integration_instance( $current_screen, $integration_instance, $layouts_settings_storage );
 				}
 			}
 		);
@@ -462,7 +462,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	 * @param array<string, string> $import_files name => content
 	 */
 	public function import_related_group_files( array $import_files ): Related_Groups_Import_Result {
-		$import_result = new Related_Groups_Import_Result();
+		$related_groups_import_result = new Related_Groups_Import_Result();
 
 		foreach ( $import_files as $file_name => $file_content ) {
 			if ( false === strpos( $file_name, '.json' ) ) {
@@ -499,11 +499,11 @@ class Data_Vendors extends Action implements Hooks_Interface {
 					continue;
 				}
 
-				$import_result->add_group( $vendor->get_name(), $imported_group_id );
+				$related_groups_import_result->add_group( $vendor->get_name(), $imported_group_id );
 			}
 		}
 
-		return $import_result;
+		return $related_groups_import_result;
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {

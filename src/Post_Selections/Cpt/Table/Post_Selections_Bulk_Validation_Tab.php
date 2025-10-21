@@ -19,14 +19,14 @@ class Post_Selections_Bulk_Validation_Tab extends Bulk_Validation_Tab {
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Post_Selections_Settings_Storage $cards_data_storage,
-		Fs_Only_Tab $fs_only_cpt_table_tab,
-		Post_Selection_Factory $card_factory
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Fs_Only_Tab $fs_only_tab,
+		Post_Selection_Factory $post_selection_factory
 	) {
-		parent::__construct( $cpt_table, $cards_data_storage, $fs_only_cpt_table_tab );
+		parent::__construct( $cpt_table, $post_selections_settings_storage, $fs_only_tab );
 
-		$this->card_factory       = $card_factory;
-		$this->cards_data_storage = $cards_data_storage;
+		$this->card_factory       = $post_selection_factory;
+		$this->cards_data_storage = $post_selections_settings_storage;
 	}
 
 	protected function make_validation_instance( string $unique_id ): Instance {

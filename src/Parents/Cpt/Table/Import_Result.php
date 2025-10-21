@@ -28,9 +28,9 @@ class Import_Result {
 		$this->related_groups_import_result->merge( $related_groups_import_result );
 	}
 
-	public function merge( Import_Result $cpt_import_result ): void {
-		$this->unique_ids = array_merge( $this->unique_ids, $cpt_import_result->unique_ids );
-		$this->related_groups_import_result->merge( $cpt_import_result->related_groups_import_result );
+	public function merge( Import_Result $import_result ): void {
+		$this->unique_ids = array_merge( $this->unique_ids, $import_result->unique_ids );
+		$this->related_groups_import_result->merge( $import_result->related_groups_import_result );
 	}
 
 	/**

@@ -10,7 +10,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,7 +31,7 @@ abstract class Item_Management extends Action {
 		$this->db_management = $db_management;
 	}
 
-	abstract public function replace( string $unique_id, Cpt_Settings $cpt_data ): void;
+	abstract public function replace( string $unique_id, Cpt_Settings $cpt_settings ): void;
 
 	abstract public function get(
 		string $unique_id,
@@ -48,7 +47,7 @@ abstract class Item_Management extends Action {
 	): ?Cpt_Settings;
 
 	protected function load(
-		Cpt_Settings $cpt_data,
+		Cpt_Settings $cpt_settings,
 		string $unique_id,
 		bool $is_force_from_db = false,
 		bool $is_force_from_fs = false
@@ -86,7 +85,7 @@ abstract class Item_Management extends Action {
 				return;
 			}
 
-			$cpt_data->loadFromPostContent( $post_id );
+			$cpt_settings->loadFromPostContent( $post_id );
 
 			return;
 		}
@@ -107,11 +106,11 @@ abstract class Item_Management extends Action {
 			$json :
 			array();
 
-		$cpt_data->load( $post_id, '', $json );
+		$cpt_settings->load( $post_id, '', $json );
 
 		unset( $fs_field_values['data.json'] );
 
-		$this->fs_fields->set_fs_fields( $cpt_data, $fs_field_values );
+		$this->fs_fields->set_fs_fields( $cpt_settings, $fs_field_values );
 	}
 
 	// $uniqueId for import only
@@ -121,9 +120,7 @@ abstract class Item_Management extends Action {
 		?int $author_id = null,
 		?string $unique_id = null
 	): string {
-		$unique_id = null === $unique_id ?
-			uniqid( $this->db_management->get_unique_id_prefix() ) :
-			$unique_id;
+		$unique_id ??= uniqid( $this->db_management->get_unique_id_prefix() );
 
 		$post_id = $this->db_management->make_new_post( $unique_id, $post_status, $title, $author_id );
 
@@ -210,25 +207,25 @@ abstract class Item_Management extends Action {
 		return $post->post_name;
 	}
 
-	public function save( Cpt_Settings $cpt_data, bool $is_force_to_db = false ): void {
+	public function save( Cpt_Settings $cpt_settings, bool $is_force_to_db = false ): void {
 		$trashed_post_ids = $this->db_management->get_trashed_post_ids();
 
 		// trashed posts are saved to DB only.
-		if ( 0 !== $cpt_data->get_post_id() &&
-			true === in_array( $cpt_data->get_post_id(), $trashed_post_ids, true ) ) {
+		if ( 0 !== $cpt_settings->get_post_id() &&
+			true === in_array( $cpt_settings->get_post_id(), $trashed_post_ids, true ) ) {
 			$is_force_to_db = true;
 		}
 
 		// used in case of the deactivation of the FS option.
 		if ( false === $this->file_system->is_active() ||
 			$is_force_to_db ) {
-			$cpt_data->saveToPostContent();
+			$cpt_settings->saveToPostContent();
 
 			$this->get_logger()->debug(
 				'saved Cpt_Date item to the DB',
 				array(
-					'post_id'   => $cpt_data->get_post_id(),
-					'unique_id' => $cpt_data->get_unique_id(),
+					'post_id'   => $cpt_settings->get_post_id(),
+					'unique_id' => $cpt_settings->get_unique_id(),
 				)
 			);
 
@@ -236,41 +233,41 @@ abstract class Item_Management extends Action {
 		}
 
 		$this->file_system->write_fields_to_fs(
-			$cpt_data->get_unique_id( true ),
-			$cpt_data->title,
-			$this->fs_fields->get_fs_field_values( $cpt_data ),
+			$cpt_settings->get_unique_id( true ),
+			$cpt_settings->title,
+			$this->fs_fields->get_fs_field_values( $cpt_settings ),
 		);
 
 		$this->get_logger()->debug(
 			'saved Cpt_Date item to the FS',
 			array(
-				'post_id'   => $cpt_data->get_post_id(),
-				'unique_id' => $cpt_data->get_unique_id(),
+				'post_id'   => $cpt_settings->get_post_id(),
+				'unique_id' => $cpt_settings->get_unique_id(),
 			)
 		);
 
 		// keep the exposed post fields actual, if the post is present.
-		if ( 0 !== $cpt_data->get_post_id() ) {
+		if ( 0 !== $cpt_settings->get_post_id() ) {
 			$this->db_management->update_post_without_renaming(
 				array_merge(
-					$cpt_data->get_exposed_post_fields(),
+					$cpt_settings->get_exposed_post_fields(),
 					array(
-						'ID' => $cpt_data->get_post_id(),
+						'ID' => $cpt_settings->get_post_id(),
 					)
 				)
 			);
 		}
 	}
 
-	public function rename( Cpt_Settings $cpt_data, string $new_title ): void {
-		$cpt_data->title = $new_title;
+	public function rename( Cpt_Settings $cpt_settings, string $new_title ): void {
+		$cpt_settings->title = $new_title;
 
 		if ( false === $this->file_system->is_active() ) {
 			return;
 		}
 
 		// do not use directly $newTitle, as we need the FS-suitable title.
-		$this->file_system->rename_item( $cpt_data->get_unique_id( true ), $cpt_data->title );
+		$this->file_system->rename_item( $cpt_settings->get_unique_id( true ), $cpt_settings->title );
 	}
 
 	// note: the post must already be trashed by WP.
@@ -336,13 +333,13 @@ abstract class Item_Management extends Action {
 		);
 	}
 
-	public function delete_and_bypass_trash( Cpt_Settings $cpt_data ): void {
+	public function delete_and_bypass_trash( Cpt_Settings $cpt_settings ): void {
 		// 1. remove in FS (optionally)
 		if ( true === $this->file_system->is_active() ) {
-			$this->file_system->delete_item( $cpt_data->get_unique_id( true ) );
+			$this->file_system->delete_item( $cpt_settings->get_unique_id( true ) );
 		}
 
-		$this->db_management->delete_and_bypass_trash( $cpt_data );
+		$this->db_management->delete_and_bypass_trash( $cpt_settings );
 	}
 
 	public function get_file_system(): File_System {

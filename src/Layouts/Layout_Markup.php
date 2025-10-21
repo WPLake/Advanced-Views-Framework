@@ -32,9 +32,9 @@ class Layout_Markup {
 	}
 
 	protected function print_row_markup(
-		Layout_Settings $view_data,
+		Layout_Settings $layout_settings,
 		Field_Meta_Interface $field_meta,
-		Item_Settings $item
+		Item_Settings $item_settings
 	): void {
 		if ( false === $field_meta->is_field_exist() ||
 			// e.g. tab.
@@ -42,14 +42,14 @@ class Layout_Markup {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $view_data->template_engine );
+		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
 
-		$field_id   = $item->field->get_template_field_id();
+		$field_id   = $item_settings->field->get_template_field_id();
 		$field_type = $field_meta->get_type();
 
-		$is_condition_with_true_stub = true === $item->field->is_visible_when_empty ||
+		$is_condition_with_true_stub = true === $item_settings->field->is_visible_when_empty ||
 							true === $this->data_vendors->is_empty_value_supported_in_markup(
-								$item->field->get_vendor_name(),
+								$item_settings->field->get_vendor_name(),
 								$field_type
 							);
 		$row_tabs_number             = 2;
@@ -76,9 +76,9 @@ class Layout_Markup {
 		$this->field_markup->print_row_markup(
 			$row_type,
 			'',
-			$view_data,
-			$item,
-			$item->field,
+			$layout_settings,
+			$item_settings,
+			$item_settings->field,
 			$field_meta,
 			$row_tabs_number,
 			$field_id
@@ -91,8 +91,8 @@ class Layout_Markup {
 		echo "\r\n\r\n";
 	}
 
-	protected function print_markup_from_cache( Layout_Settings $view, bool $is_skip_cache ): void {
-		$short_unique_id = $view->get_unique_id( true );
+	protected function print_markup_from_cache( Layout_Settings $layout_settings, bool $is_skip_cache ): void {
+		$short_unique_id = $layout_settings->get_unique_id( true );
 
 		if ( true === key_exists( $short_unique_id, $this->markups_safe ) &&
 			false === $is_skip_cache ) {
@@ -100,13 +100,13 @@ class Layout_Markup {
 			echo $this->markups_safe[ $short_unique_id ];
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $view->template_engine );
+		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
 
-		$bem_name = $view->get_bem_name();
-		$tag_name = $view->get_tag_name();
+		$bem_name = $layout_settings->get_bem_name();
+		$tag_name = $layout_settings->get_tag_name();
 
 		printf( '<%s class="', esc_html( $tag_name ) );
-		if ( Layout_Settings::CLASS_GENERATION_NONE !== $view->classes_generation ) {
+		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
 			$template_generator->print_array_item( '_view', 'classes' );
 			echo esc_html( $bem_name );
 
@@ -124,20 +124,20 @@ class Layout_Markup {
 
 		echo "\r\n";
 
-		if ( Layout_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $view->web_component ) {
+		if ( Layout_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '<template shadowrootmode="open">';
 			echo "\r\n";
 		}
 
-		foreach ( $view->items as $item ) {
+		foreach ( $layout_settings->items as $item ) {
 			$this->print_row_markup(
-				$view,
+				$layout_settings,
 				$item->field->get_field_meta(),
 				$item
 			);
 		}
 
-		if ( Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $view->web_component ) {
+		if ( Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '</template>';
 			echo "\r\n";
 		}
@@ -148,7 +148,7 @@ class Layout_Markup {
 	}
 
 	public function print_markup(
-		Layout_Settings $view,
+		Layout_Settings $layout_settings,
 		int $page_id,
 		string $view_markup_safe = '',
 		bool $is_skip_cache = false,
@@ -157,15 +157,15 @@ class Layout_Markup {
 		$view_markup_safe = ( '' !== $view_markup_safe ||
 								true === $is_ignore_custom_markup ) ?
 			$view_markup_safe :
-			trim( $view->custom_markup );
+			trim( $layout_settings->custom_markup );
 
 		if ( '' === $view_markup_safe ) {
 			ob_start();
-			$this->print_markup_from_cache( $view, $is_skip_cache );
+			$this->print_markup_from_cache( $layout_settings, $is_skip_cache );
 			$view_markup_safe = (string) ob_get_clean();
 
 			// remove the empty class attribute if the generation is disabled.
-			if ( Layout_Settings::CLASS_GENERATION_NONE === $view->classes_generation ) {
+			if ( Layout_Settings::CLASS_GENERATION_NONE === $layout_settings->classes_generation ) {
 				$view_markup_safe = str_replace( ' class=""', '', $view_markup_safe );
 			}
 
@@ -176,6 +176,6 @@ class Layout_Markup {
 			echo $view_markup_safe;
 		}
 
-		$this->markups_safe[ $view->get_unique_id( true ) ] = $view_markup_safe;
+		$this->markups_safe[ $layout_settings->get_unique_id( true ) ] = $view_markup_safe;
 	}
 }

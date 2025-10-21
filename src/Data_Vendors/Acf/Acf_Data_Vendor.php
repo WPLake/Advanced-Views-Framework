@@ -190,23 +190,23 @@ class Acf_Data_Vendor extends Data_Vendor {
 	}
 
 	public function make_integration_instance(
-		Item_Settings $item_data,
-		Layouts_Settings_Storage $views_data_storage,
+		Item_Settings $item_settings,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Layouts_Cpt_Save_Actions $views_cpt_save_actions,
-		Layout_Factory $view_factory,
-		Repeater_Field_Settings $repeater_field_data,
-		Layout_Shortcode $view_shortcode,
+		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Factory $layout_factory,
+		Repeater_Field_Settings $repeater_field_settings,
+		Layout_Shortcode $layout_shortcode,
 		Settings $settings
 	): ?Data_Vendor_Integration_Interface {
 		return new Acf_Integration(
-			$item_data,
-			$views_data_storage,
+			$item_settings,
+			$layouts_settings_storage,
 			$data_vendors,
-			$views_cpt_save_actions,
-			$view_factory,
+			$layouts_cpt_save_actions,
+			$layout_factory,
 			$this,
-			$view_shortcode,
+			$layout_shortcode,
 			$settings
 		);
 	}
@@ -403,10 +403,10 @@ class Acf_Data_Vendor extends Data_Vendor {
 	 * @return mixed
 	 */
 	public function get_field_value(
-		Field_Settings $field_data,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Source $source,
-		?Item_Settings $item_data = null,
+		?Item_Settings $item_settings = null,
 		bool $is_formatted = false,
 		?array $local_data = null
 	) {

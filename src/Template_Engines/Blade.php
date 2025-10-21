@@ -16,8 +16,8 @@ class Blade extends Template_Engine {
 	// @phpstan-ignore-next-line
 	private ?Blade_Engine $blade_engine;
 
-	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem ) {
-		parent::__construct( $templates_folder, $logger, $settings, $wp_filesystem );
+	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem_base ) {
+		parent::__construct( $templates_folder, $logger, $settings, $wp_filesystem_base );
 
 		$this->blade_engine = null;
 	}

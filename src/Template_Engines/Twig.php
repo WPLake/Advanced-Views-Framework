@@ -17,15 +17,15 @@ defined( 'ABSPATH' ) || exit;
 
 class Twig extends Template_Engine {
 	// @phpstan-ignore-next-line
-	private ?FilesystemLoader $loader;
+	private ?FilesystemLoader $filesystem_loader;
 	// @phpstan-ignore-next-line
-	private ?Environment $twig;
+	private ?Environment $environment;
 
-	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem ) {
-		parent::__construct( $templates_folder, $logger, $settings, $wp_filesystem );
+	public function __construct( string $templates_folder, Logger $logger, Settings $settings, WP_Filesystem_Base $wp_filesystem_base ) {
+		parent::__construct( $templates_folder, $logger, $settings, $wp_filesystem_base );
 
-		$this->loader = null;
-		$this->twig   = null;
+		$this->filesystem_loader = null;
+		$this->environment       = null;
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Twig extends Template_Engine {
 		return array(
 			array(
 				'wp_interactivity_state',
-				function ( string $store_namespace, array $state = array() ) {
+				function ( string $store_namespace, array $state = array() ): void {
 					if ( false === function_exists( 'wp_interactivity_state' ) ) {
 						return;
 					}
@@ -63,7 +63,7 @@ class Twig extends Template_Engine {
 			),
 			array(
 				'wp_interactivity_data_wp_context',
-				function ( array $context ) {
+				function ( array $context ): void {
 					if ( false === function_exists( 'wp_interactivity_data_wp_context' ) ) {
 						return;
 					}
@@ -74,7 +74,7 @@ class Twig extends Template_Engine {
 			),
 			array(
 				'paginate_links',
-				function ( array $args ) {
+				function ( array $args ): void {
 					$paginate_links = paginate_links( $args );
 
 					// null if less than 2 pages.
@@ -88,7 +88,7 @@ class Twig extends Template_Engine {
 			),
 			array(
 				'print_r',
-				function ( $data ) {
+				function ( $data ): void {
 					// @phpcs:ignore 
 					print_r( $data );
 				},
@@ -106,10 +106,10 @@ class Twig extends Template_Engine {
 	// @phpstan-ignore-next-line
 	protected function init_twig(): Environment {
 		// @phpstan-ignore-next-line
-		$this->loader = new FilesystemLoader( $this->get_templates_folder() );
+		$this->filesystem_loader = new FilesystemLoader( $this->get_templates_folder() );
 		// @phpstan-ignore-next-line
-		$this->twig = new Environment(
-			$this->loader,
+		$this->environment = new Environment(
+			$this->filesystem_loader,
 			array(
 				// will generate exception if a var doesn't exist instead of replace to NULL.
 				'strict_variables' => true,
@@ -144,7 +144,7 @@ class Twig extends Template_Engine {
 			}
 
 			// @phpstan-ignore-next-line
-			$this->twig->addFunction(
+			$this->environment->addFunction(
 			// @phpstan-ignore-next-line
 				new TwigFunction( $function_name, $function_callback, $function_args )
 			);
@@ -170,22 +170,22 @@ class Twig extends Template_Engine {
 			}
 
 			// @phpstan-ignore-next-line
-			$this->twig->addFilter(
+			$this->environment->addFilter(
 			// @phpstan-ignore-next-line
 				new TwigFilter( $filter_name, $filter_callback, $filter_args )
 			);
 		}
 
-		return $this->twig;
+		return $this->environment;
 	}
 
 	// @phpstan-ignore-next-line
 	protected function get_twig(): Environment {
-		if ( null === $this->twig ) {
+		if ( null === $this->environment ) {
 			return $this->init_twig();
 		}
 
-		return $this->twig;
+		return $this->environment;
 	}
 
 	public function is_available(): bool {

@@ -25,8 +25,8 @@ class Menu_Items_Field extends Markup_Field {
 		$this->link_field = $link_field;
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_data ): void {
-		$this->link_field->print_markup( $item_id, $markup_data );
+	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$this->link_field->print_markup( $item_id, $markup_field_data );
 	}
 
 
@@ -163,13 +163,13 @@ class Menu_Items_Field extends Markup_Field {
 		echo "\r\n";
 	}
 
-	protected function is_active_item( WP_Post $menu_item ): bool {
+	protected function is_active_item( WP_Post $wp_post ): bool {
 		$posts_page_id = get_option( 'page_for_posts' );
 		$posts_page_id = is_numeric( $posts_page_id ) ?
 			(int) $posts_page_id :
 			0;
 
-		$object_id = (int) ( $menu_item->object_id ?? 0 );
+		$object_id = (int) ( $wp_post->object_id ?? 0 );
 
 		// active if the current menu is for current page, or
 		// the current menu for blog and the current page is post or
@@ -192,20 +192,20 @@ class Menu_Items_Field extends Markup_Field {
 	 * @return array<string,mixed>
 	 */
 	protected function get_item_twig_args(
-		?WP_Post $menu_item,
+		?WP_Post $wp_post,
 		array $children,
-		Variable_Field_Data $twig_args_data,
+		Variable_Field_Data $variable_field_data,
 		bool $is_for_validation = false
 	): array {
-		$link_args = null !== $menu_item ?
-			$this->get_menu_item_info( $menu_item ) :
+		$link_args = null !== $wp_post ?
+			$this->get_menu_item_info( $wp_post ) :
 			array();
 
-		$twig_args_data->set_value( $link_args );
+		$variable_field_data->set_value( $link_args );
 
 		$args = ! $is_for_validation ?
-			$this->link_field->get_template_variables( $twig_args_data ) :
-			$this->link_field->get_validation_template_variables( $twig_args_data );
+			$this->link_field->get_template_variables( $variable_field_data ) :
+			$this->link_field->get_validation_template_variables( $variable_field_data );
 
 		$args = array_merge(
 			$args,
@@ -217,7 +217,7 @@ class Menu_Items_Field extends Markup_Field {
 		);
 
 		if ( $is_for_validation ) {
-			$child_args = $this->link_field->get_validation_template_variables( $twig_args_data );
+			$child_args = $this->link_field->get_validation_template_variables( $variable_field_data );
 
 			// @phpstan-ignore-next-line
 			$args['children'][] = array_merge(
@@ -235,9 +235,9 @@ class Menu_Items_Field extends Markup_Field {
 		foreach ( $children as $child_menu_item ) {
 			$link_args = $this->get_menu_item_info( $child_menu_item );
 
-			$twig_args_data->set_value( $link_args );
+			$variable_field_data->set_value( $link_args );
 
-			$child_args = $this->link_field->get_template_variables( $twig_args_data );
+			$child_args = $this->link_field->get_template_variables( $variable_field_data );
 
 			$is_sub_active = $this->is_active_item( $child_menu_item );
 
@@ -255,7 +255,7 @@ class Menu_Items_Field extends Markup_Field {
 		return array_merge(
 			$args,
 			array(
-				'isActive'      => null !== $menu_item && $this->is_active_item( $menu_item ),
+				'isActive'      => null !== $wp_post && $this->is_active_item( $wp_post ),
 				'isChildActive' => $is_child_active,
 			)
 		);
@@ -324,8 +324,8 @@ class Menu_Items_Field extends Markup_Field {
 	}
 
 	public function is_with_field_wrapper(
-		Layout_Settings $view_data,
-		Field_Settings $field,
+		Layout_Settings $layout_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta
 	): bool {
 		return true;

@@ -17,14 +17,14 @@ class Related_Groups_Import_Result {
 	}
 
 	public function add_group( string $vendor_name, string $group_id ): void {
-		$this->group_ids[ $vendor_name ]   = $this->group_ids[ $vendor_name ] ?? array();
+		$this->group_ids[ $vendor_name ] ??= array();
 		$this->group_ids[ $vendor_name ][] = $group_id;
 	}
 
 	public function merge( Related_Groups_Import_Result $related_groups_import_result ): void {
 		foreach ( $related_groups_import_result->group_ids as $vendor_name => $group_ids ) {
-			$this->group_ids[ $vendor_name ] = $this->group_ids[ $vendor_name ] ?? array();
-			$this->group_ids[ $vendor_name ] = array_merge( $this->group_ids[ $vendor_name ], $group_ids );
+			$this->group_ids[ $vendor_name ] ??= array();
+			$this->group_ids[ $vendor_name ]   = array_merge( $this->group_ids[ $vendor_name ], $group_ids );
 		}
 	}
 

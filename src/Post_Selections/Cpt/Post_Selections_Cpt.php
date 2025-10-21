@@ -14,16 +14,16 @@ defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt extends Cpt {
 
-	private Post_Selections_Settings_Storage $card_data_storage;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Plugin_Feature $plugin_feature, Post_Selections_Settings_Storage $cards_data_storage ) {
-		parent::__construct( $plugin_feature, $cards_data_storage );
+	public function __construct( Plugin_Feature $plugin_feature, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+		parent::__construct( $plugin_feature, $post_selections_settings_storage );
 
-		$this->card_data_storage = $cards_data_storage;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}
 
 	protected function get_cards_data_storage(): Post_Selections_Settings_Storage {
-		return $this->card_data_storage;
+		return $this->post_selections_settings_storage;
 	}
 
 	public function add_cpt(): void {

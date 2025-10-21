@@ -45,13 +45,13 @@ class Taxonomy_Field extends List_Field {
 		);
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_data ): void {
-		$markup_data->set_is_with_field_wrapper(
-			$markup_data->get_field_meta()->is_multiple() ||
-			$markup_data->is_with_field_wrapper()
+	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$markup_field_data->set_is_with_field_wrapper(
+			$markup_field_data->get_field_meta()->is_multiple() ||
+			$markup_field_data->is_with_field_wrapper()
 		);
 
-		$this->link_field->print_markup( $item_id, $markup_data );
+		$this->link_field->print_markup( $item_id, $markup_field_data );
 	}
 
 	/**

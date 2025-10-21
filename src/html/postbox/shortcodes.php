@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$view           = $view ?? array();
+$view         ??= array();
 $is_short       = $view['isShort'] ?? false;
 $shortcode_name = $view['shortcodeName'] ?? '';
 $view_id        = $view['viewId'] ?? '';

@@ -18,8 +18,8 @@ class File_Field extends List_Field {
 		$this->link_field = $link_field;
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_data ): void {
-		$this->link_field->print_markup( $item_id, $markup_data );
+	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$this->link_field->print_markup( $item_id, $markup_field_data );
 	}
 
 	protected function get_item_template_args( Variable_Field_Data $variable_field_data ): array {

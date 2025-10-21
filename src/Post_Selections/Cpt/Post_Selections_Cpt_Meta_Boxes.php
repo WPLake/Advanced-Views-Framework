@@ -16,19 +16,19 @@ use WP_Post;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
-	private Layouts_Settings_Storage $views_data_storage;
-	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
-		Post_Selections_Settings_Storage $cards_data_storage,
-		Layouts_Settings_Storage $views_data_storage
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layouts_Settings_Storage $layouts_settings_storage
 	) {
 		parent::__construct( $html, $plugin );
 
-		$this->cards_data_storage = $cards_data_storage;
-		$this->views_data_storage = $views_data_storage;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
 	}
 
 	protected function get_cpt_name(): string {
@@ -36,12 +36,12 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	public function print_related_acf_view_meta_box(
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		bool $is_skip_not_found_message = false
 	): void {
 		$message = __( 'No related View.', 'acf-views' );
 
-		if ( '' === $card_data->acf_view_id ) {
+		if ( '' === $post_selection_settings->acf_view_id ) {
 			if ( false === $is_skip_not_found_message ) {
 				echo esc_html( $message );
 			}
@@ -50,7 +50,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		}
 
 		// here we must use viewsDataStorage, as it's a View.
-		$view_data = $this->views_data_storage->get( $card_data->acf_view_id );
+		$view_data = $this->layouts_settings_storage->get( $post_selection_settings->acf_view_id );
 
 		printf(
 			'<a href="%s" target="_blank">%s</a>',
@@ -63,7 +63,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-cards_shortcode_cpt',
 			__( 'Shortcode', 'acf-views' ),
-			function ( $post ) {
+			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
 					echo esc_html( __( 'Your Card shortcode is available after publishing.', 'acf-views' ) );
@@ -71,7 +71,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 					return;
 				}
 
-				$card_unique_id = $this->cards_data_storage->get( $post->post_name )->get_unique_id( true );
+				$card_unique_id = $this->post_selections_settings_storage->get( $post->post_name )->get_unique_id( true );
 
 				$this->get_html()->print_postbox_shortcode(
 					$card_unique_id,
@@ -91,8 +91,8 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-cards_related_view',
 			__( 'Related View', 'acf-views' ),
-			function ( WP_Post $post ) {
-				$card_data = $this->cards_data_storage->get( $post->post_name );
+			function ( WP_Post $wp_post ): void {
+				$card_data = $this->post_selections_settings_storage->get( $wp_post->post_name );
 
 				$this->print_related_acf_view_meta_box( $card_data );
 			},

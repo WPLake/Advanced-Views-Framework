@@ -22,11 +22,9 @@ class Mb_Taxonomy_Field extends Taxonomy_Field {
 			$variable_field_data->set_value(
 				true === is_array( $variable_field_data->get_value() ) ?
 					array_map(
-						function ( $term ) {
-							return true === $term instanceof WP_Term ?
+						fn( $term ) => true === $term instanceof WP_Term ?
 								$term->term_id :
-								0;
-						},
+								0,
 						$variable_field_data->get_value()
 					) :
 					array()

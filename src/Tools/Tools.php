@@ -32,9 +32,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 	 * @var array<string,mixed>
 	 */
 	private array $values;
-	private Tools_Settings $tools_data;
-	private Post_Selections_Settings_Storage $cards_data_storage;
-	private Layouts_Settings_Storage $views_data_storage;
+	private Tools_Settings $tools_settings;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Plugin $plugin;
 	private Logger $logger;
 	private Debug_Dump_Creator $debug_dump_creator;
@@ -44,27 +44,27 @@ final class Tools extends Hookable implements Hooks_Interface {
 	private array $export_data;
 	private bool $is_import_successful;
 	private string $import_result_message;
-	private ?WP_Filesystem_Base $wp_filesystem;
+	private ?WP_Filesystem_Base $wp_filesystem_base;
 
 	public function __construct(
-		Tools_Settings $tools_data,
-		Post_Selections_Settings_Storage $cards_data_storage,
-		Layouts_Settings_Storage $views_data_storage,
+		Tools_Settings $tools_settings,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
 		Plugin $plugin,
 		Logger $logger,
 		Debug_Dump_Creator $debug_dump_creator
 	) {
-		$this->tools_data            = $tools_data;
-		$this->cards_data_storage    = $cards_data_storage;
-		$this->views_data_storage    = $views_data_storage;
-		$this->plugin                = $plugin;
-		$this->logger                = $logger;
-		$this->debug_dump_creator    = $debug_dump_creator;
-		$this->values                = array();
-		$this->export_data           = array();
-		$this->is_import_successful  = false;
-		$this->import_result_message = '';
-		$this->wp_filesystem         = null;
+		$this->tools_settings                   = $tools_settings;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->plugin                           = $plugin;
+		$this->logger                           = $logger;
+		$this->debug_dump_creator               = $debug_dump_creator;
+		$this->values                           = array();
+		$this->export_data                      = array();
+		$this->is_import_successful             = false;
+		$this->import_result_message            = '';
+		$this->wp_filesystem_base               = null;
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
@@ -123,12 +123,12 @@ final class Tools extends Hookable implements Hooks_Interface {
 		$ids               = array_keys( $this->export_data );
 		$view_ids          = array_filter(
 			$ids,
-			fn($id) => false !== strpos( $id, (string) Layout_Settings::UNIQUE_ID_PREFIX )
+			fn( $id ) => false !== strpos( $id, (string) Layout_Settings::UNIQUE_ID_PREFIX )
 		);
 		$count_of_view_ids = count( $view_ids );
 		$card_ids          = array_filter(
 			$ids,
-			fn($id) => false !== strpos( $id, (string) Post_Selection_Settings::UNIQUE_ID_PREFIX )
+			fn( $id ) => false !== strpos( $id, (string) Post_Selection_Settings::UNIQUE_ID_PREFIX )
 		);
 		$count_of_card_ids = count( $card_ids );
 
@@ -283,15 +283,15 @@ final class Tools extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$this->tools_data->load( false, '', $this->values );
+		$this->tools_settings->load( false, '', $this->values );
 
 		$actions = array(
-			'export'                     => $this->tools_data->is_export_all_views ||
-							$this->tools_data->is_export_all_cards ||
-							array() !== $this->tools_data->export_views ||
-							array() !== $this->tools_data->export_cards,
-			'import'                     => 0 !== $this->tools_data->import_file,
-			'generate_installation_dump' => $this->tools_data->is_generate_installation_dump,
+			'export'                     => $this->tools_settings->is_export_all_views ||
+							$this->tools_settings->is_export_all_cards ||
+							array() !== $this->tools_settings->export_views ||
+							array() !== $this->tools_settings->export_cards,
+			'import'                     => 0 !== $this->tools_settings->import_file,
+			'generate_installation_dump' => $this->tools_settings->is_generate_installation_dump,
 		);
 
 		$current_action = array_search( true, $actions, true );
@@ -310,17 +310,17 @@ final class Tools extends Hookable implements Hooks_Interface {
 	}
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
-		if ( null === $this->wp_filesystem ) {
+		if ( null === $this->wp_filesystem_base ) {
 			global $wp_filesystem;
 
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 
 			WP_Filesystem();
 
-			$this->wp_filesystem = $wp_filesystem;
+			$this->wp_filesystem_base = $wp_filesystem;
 		}
 
-		return $this->wp_filesystem;
+		return $this->wp_filesystem_base;
 	}
 
 	/**
@@ -359,26 +359,26 @@ final class Tools extends Hookable implements Hooks_Interface {
 	}
 
 	protected function export(): void {
-		$is_views_in_export = $this->tools_data->is_export_all_views ||
-								array() !== $this->tools_data->export_views;
-		$is_cards_in_export = $this->tools_data->is_export_all_cards ||
-								array() !== $this->tools_data->export_cards;
+		$is_views_in_export = $this->tools_settings->is_export_all_views ||
+								array() !== $this->tools_settings->export_views;
+		$is_cards_in_export = $this->tools_settings->is_export_all_cards ||
+								array() !== $this->tools_settings->export_cards;
 
 		$view_posts = $is_views_in_export ?
-			$this->get_posts( Layouts_Cpt::NAME, $this->tools_data->export_views ) :
+			$this->get_posts( Layouts_Cpt::NAME, $this->tools_settings->export_views ) :
 			array();
 		$card_posts = $is_cards_in_export ?
-			$this->get_posts( Post_Selections_Cpt::NAME, $this->tools_data->export_cards ) :
+			$this->get_posts( Post_Selections_Cpt::NAME, $this->tools_settings->export_cards ) :
 			array();
 
 		foreach ( $view_posts as $view_post ) {
-			$view_data = $this->views_data_storage->get( $view_post->post_name );
+			$view_data = $this->layouts_settings_storage->get( $view_post->post_name );
 			// we don't need to save defaults.
 			$this->export_data[ $view_post->post_name ] = $view_data->getFieldValues( '', true );
 		}
 
 		foreach ( $card_posts as $card_post ) {
-			$card_data      = $this->cards_data_storage->get( $card_post->post_name );
+			$card_data      = $this->post_selections_settings_storage->get( $card_post->post_name );
 			$card_unique_id = $card_data->get_unique_id();
 			// we don't need to save defaults.
 			$this->export_data[ $card_unique_id ] = $card_data->getFieldValues( '', true );
@@ -515,8 +515,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 				Layouts_Cpt::NAME :
 				Post_Selections_Cpt::NAME;
 			$data_storage = Layouts_Cpt::NAME === $post_type ?
-				$this->views_data_storage :
-				$this->cards_data_storage;
+				$this->layouts_settings_storage :
+				$this->post_selections_settings_storage;
 			$title_field  = Layouts_Cpt::NAME === $post_type ?
 				Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) :
 				Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE );
@@ -568,7 +568,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 	}
 
 	protected function import(): void {
-		$path_to_file = (string) get_attached_file( $this->tools_data->import_file );
+		$path_to_file = (string) get_attached_file( $this->tools_settings->import_file );
 
 		$wp_filesystem = $this->get_wp_filesystem();
 
@@ -597,7 +597,7 @@ final class Tools extends Hookable implements Hooks_Interface {
 
 		$this->import_or_update_items( $json_data );
 
-		wp_delete_attachment( $this->tools_data->import_file, true );
+		wp_delete_attachment( $this->tools_settings->import_file, true );
 
 		$url = $this->plugin->get_admin_url( self::SLUG ) .
 				sprintf(

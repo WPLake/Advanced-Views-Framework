@@ -19,8 +19,6 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use WP_Post;
-use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,33 +29,33 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	 * @var array<string,mixed>
 	 */
 	private array $values;
-	private Plugin_Settings $settings_data;
+	private Plugin_Settings $plugin_settings;
 	private Settings $settings;
-	private Layouts_Settings_Storage $views_data_storage;
-	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
 	private Automatic_Reports $automatic_reports;
 
 	public function __construct(
 		Logger $logger,
-		Plugin_Settings $settings_data,
+		Plugin_Settings $plugin_settings,
 		Settings $settings,
-		Layouts_Settings_Storage $views_data_storage,
-		Post_Selections_Settings_Storage $cards_data_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Git_Repository $git_repository,
 		Automatic_Reports $automatic_reports
 	) {
 		parent::__construct( $logger );
 
-		$this->values             = array();
-		$this->settings_data      = $settings_data;
-		$this->settings           = $settings;
-		$this->views_data_storage = $views_data_storage;
-		$this->cards_data_storage = $cards_data_storage;
-		$this->saved_message      = '';
-		$this->git_repository     = $git_repository->getDeepClone();
-		$this->automatic_reports  = $automatic_reports;
+		$this->values                           = array();
+		$this->plugin_settings                  = $plugin_settings;
+		$this->settings                         = $settings;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->saved_message                    = '';
+		$this->git_repository                   = $git_repository->getDeepClone();
+		$this->automatic_reports                = $automatic_reports;
 	}
 
 	/**
@@ -72,8 +70,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	}
 
 	protected function activate_fs_storage(): void {
-		$wp_filesystem      = $this->views_data_storage->get_file_system()->get_wp_filesystem();
-		$target_base_folder = $this->views_data_storage->get_file_system()->get_target_base_folder();
+		$wp_filesystem      = $this->layouts_settings_storage->get_file_system()->get_wp_filesystem();
+		$target_base_folder = $this->layouts_settings_storage->get_file_system()->get_target_base_folder();
 
 		if ( false === $wp_filesystem->mkdir( $target_base_folder, 0755 ) ) {
 			$this->saved_message = __(
@@ -85,20 +83,20 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		}
 
 		// set, as the folder was just created.
-		$this->views_data_storage->get_file_system()->set_base_folder();
-		$this->cards_data_storage->get_file_system()->set_base_folder();
+		$this->layouts_settings_storage->get_file_system()->set_base_folder();
+		$this->post_selections_settings_storage->get_file_system()->set_base_folder();
 
-		$this->views_data_storage->activate_file_system_storage();
-		$this->cards_data_storage->activate_file_system_storage();
+		$this->layouts_settings_storage->activate_file_system_storage();
+		$this->post_selections_settings_storage->activate_file_system_storage();
 	}
 
 	protected function deactivate_fs_storage(): void {
-		$theme_templates_folder = $this->views_data_storage->get_file_system()->get_base_folder();
+		$theme_templates_folder = $this->layouts_settings_storage->get_file_system()->get_base_folder();
 
-		$this->views_data_storage->deactivate_file_system_storage();
-		$this->cards_data_storage->deactivate_file_system_storage();
+		$this->layouts_settings_storage->deactivate_file_system_storage();
+		$this->post_selections_settings_storage->deactivate_file_system_storage();
 
-		$is_removed = $this->views_data_storage->get_file_system()
+		$is_removed = $this->layouts_settings_storage->get_file_system()
 												->get_wp_filesystem()
 												->rmdir(
 													$theme_templates_folder,
@@ -197,10 +195,10 @@ final class Settings_Page extends Action implements Hooks_Interface {
 						$value = $this->settings->is_dev_mode();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_FILE_SYSTEM_STORAGE ):
-						$value = '' !== $this->views_data_storage->get_file_system()->get_base_folder();
+						$value = '' !== $this->layouts_settings_storage->get_file_system()->get_base_folder();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES ):
-						$this->settings_data->git_repositories = array();
+						$this->plugin_settings->git_repositories = array();
 
 						foreach ( $this->settings->get_git_repositories() as $git_repository_data ) {
 							$git_repository = $this->git_repository->getDeepClone();
@@ -209,17 +207,17 @@ final class Settings_Page extends Action implements Hooks_Interface {
 							$git_repository->access_token = $git_repository_data['accessToken'];
 							$git_repository->name         = $git_repository_data['name'];
 
-							$this->settings_data->git_repositories[] = $git_repository;
+							$this->plugin_settings->git_repositories[] = $git_repository;
 						}
 
 						$git_repositories_field_name = Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES );
-						$value                       = $this->settings_data->getFieldValues()[ $git_repositories_field_name ] ?? array();
+						$value                       = $this->plugin_settings->getFieldValues()[ $git_repositories_field_name ] ?? array();
 
 						$value = true === is_array( $value ) ?
 							Group::convertRepeaterFieldValues( $field_name, $value, false ) :
 							array();
 
-						$this->settings_data->git_repositories = array();
+						$this->plugin_settings->git_repositories = array();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_AUTOMATIC_REPORTS_DISABLED ):
 						$value = $this->settings->is_automatic_reports_disabled();
@@ -268,21 +266,21 @@ final class Settings_Page extends Action implements Hooks_Interface {
 			return;
 		}
 
-		$this->settings_data->load( false, '', $this->values );
+		$this->plugin_settings->load( false, '', $this->values );
 
-		$this->settings->set_is_dev_mode( $this->settings_data->is_dev_mode );
-		$this->settings->set_live_reload_interval_seconds( $this->settings_data->live_reload_interval_seconds );
-		$this->settings->set_live_reload_inactive_delay_seconds( $this->settings_data->live_reload_inactive_delay_seconds );
-		$this->settings->set_template_engine( $this->settings_data->template_engine );
-		$this->settings->set_web_components_type( $this->settings_data->web_components_type );
-		$this->settings->set_classes_generation( $this->settings_data->classes_generation );
-		$this->settings->set_is_cpt_admin_optimization_enabled( $this->settings_data->is_cpt_admin_optimization_enabled );
-		$this->settings->set_sass_template( $this->settings_data->sass_template );
-		$this->settings->set_ts_template( $this->settings_data->ts_template );
+		$this->settings->set_is_dev_mode( $this->plugin_settings->is_dev_mode );
+		$this->settings->set_live_reload_interval_seconds( $this->plugin_settings->live_reload_interval_seconds );
+		$this->settings->set_live_reload_inactive_delay_seconds( $this->plugin_settings->live_reload_inactive_delay_seconds );
+		$this->settings->set_template_engine( $this->plugin_settings->template_engine );
+		$this->settings->set_web_components_type( $this->plugin_settings->web_components_type );
+		$this->settings->set_classes_generation( $this->plugin_settings->classes_generation );
+		$this->settings->set_is_cpt_admin_optimization_enabled( $this->plugin_settings->is_cpt_admin_optimization_enabled );
+		$this->settings->set_sass_template( $this->plugin_settings->sass_template );
+		$this->settings->set_ts_template( $this->plugin_settings->ts_template );
 
 		$git_repositories = array();
 
-		foreach ( $this->settings_data->git_repositories as $git_repository ) {
+		foreach ( $this->plugin_settings->git_repositories as $git_repository ) {
 			$git_repositories[] = array(
 				'id'          => $git_repository->id,
 				'accessToken' => $git_repository->access_token,
@@ -293,22 +291,22 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->settings->set_git_repositories( $git_repositories );
 
 		$is_do_not_track_request_needed = false === $this->settings->is_automatic_reports_disabled() &&
-											true === $this->settings_data->is_automatic_reports_disabled;
+											true === $this->plugin_settings->is_automatic_reports_disabled;
 
-		$this->settings->set_is_automatic_reports_disabled( $this->settings_data->is_automatic_reports_disabled );
+		$this->settings->set_is_automatic_reports_disabled( $this->plugin_settings->is_automatic_reports_disabled );
 
 		// send only after the setting is updated.
 		if ( true === $is_do_not_track_request_needed ) {
 			$this->automatic_reports->send_do_not_track_request();
 		}
 
-		if ( true === $this->settings_data->is_file_system_storage &&
-			false === $this->views_data_storage->get_file_system()->is_active() ) {
+		if ( true === $this->plugin_settings->is_file_system_storage &&
+			false === $this->layouts_settings_storage->get_file_system()->is_active() ) {
 			$this->activate_fs_storage();
 		}
 
-		if ( false === $this->settings_data->is_file_system_storage &&
-			true === $this->views_data_storage->get_file_system()->is_active() ) {
+		if ( false === $this->plugin_settings->is_file_system_storage &&
+			true === $this->layouts_settings_storage->get_file_system()->is_active() ) {
 			$this->deactivate_fs_storage();
 		}
 

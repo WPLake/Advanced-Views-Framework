@@ -115,8 +115,8 @@ final class Shortcode_Block extends Hookable implements Hooks_Interface {
 			$defaults,
 			array(
 				'usesContext'     => array_merge( $default_context, array( 'postId' ) ),
-				'render_callback' => fn( array $attributes, string $content, WP_Block $block )=>
-				$this->render_shortcode_block( $content, $block->context ),
+				'render_callback' => fn( array $attributes, string $content, WP_Block $wp_block )=>
+				$this->render_shortcode_block( $content, $wp_block->context ),
 			)
 		);
 	}

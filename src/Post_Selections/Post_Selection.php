@@ -13,9 +13,9 @@ use WP_REST_Request;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selection extends Instance {
-	private Post_Selection_Settings $card_data;
+	private Post_Selection_Settings $post_selection_settings;
 	private Query_Builder $query_builder;
-	private Post_Selection_Markup $card_markup;
+	private Post_Selection_Markup $post_selection_markup;
 	private int $pages_amount;
 	/**
 	 * @var int[]
@@ -24,18 +24,18 @@ class Post_Selection extends Instance {
 
 	public function __construct(
 		Template_Engines $template_engines,
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		Query_Builder $query_builder,
-		Post_Selection_Markup $card_markup,
+		Post_Selection_Markup $post_selection_markup,
 		string $classes = ''
 	) {
-		parent::__construct( $template_engines, $card_data, '', $classes );
+		parent::__construct( $template_engines, $post_selection_settings, '', $classes );
 
-		$this->card_data     = $card_data;
-		$this->query_builder = $query_builder;
-		$this->card_markup   = $card_markup;
-		$this->pages_amount  = 0;
-		$this->post_ids      = array();
+		$this->post_selection_settings = $post_selection_settings;
+		$this->query_builder           = $query_builder;
+		$this->post_selection_markup   = $post_selection_markup;
+		$this->pages_amount            = 0;
+		$this->post_ids                = array();
 	}
 
 	/**
@@ -46,14 +46,14 @@ class Post_Selection extends Instance {
 	protected function get_template_variables( bool $is_for_validation = false, array $custom_arguments = array() ): array {
 		return array(
 			'_card' => array(
-				'id'                     => $this->card_data->get_markup_id(),
+				'id'                     => $this->post_selection_settings->get_markup_id(),
 				// short unique id is expected in the shortcode arguments.
 				'view_id'                => str_replace(
 					Layout_Settings::UNIQUE_ID_PREFIX,
 					'',
-					$this->card_data->acf_view_id
+					$this->post_selection_settings->acf_view_id
 				),
-				'no_posts_found_message' => $this->card_data->get_no_posts_found_message_translation(),
+				'no_posts_found_message' => $this->post_selection_settings->get_no_posts_found_message_translation(),
 				'post_ids'               => $this->post_ids,
 				'classes'                => $this->get_classes(),
 				'pages_amount'           => $this->get_pages_amount(),
@@ -69,13 +69,13 @@ class Post_Selection extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		$template_engine = $this->get_template_engines()->get_template_engine( $this->card_data->template_engine );
+		$template_engine = $this->get_template_engines()->get_template_engine( $this->post_selection_settings->template_engine );
 
 		ob_start();
 
 		if ( null !== $template_engine ) {
 			$template_engine->print(
-				$this->card_data->get_unique_id(),
+				$this->post_selection_settings->get_unique_id(),
 				$template,
 				$variables,
 				$is_for_validation
@@ -95,7 +95,7 @@ class Post_Selection extends Instance {
 	}
 
 	protected function get_card_data(): Post_Selection_Settings {
-		return $this->card_data;
+		return $this->post_selection_settings;
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Post_Selection extends Instance {
 	 * @return array<string,mixed>
 	 */
 	// @phpstan-ignore-next-line
-	public function get_rest_api_response_args( WP_REST_Request $request, $controller ): array {
+	public function get_rest_api_response_args( WP_REST_Request $wprest_request, $controller ): array {
 		// nothing in the Lite version.
 		return array();
 	}
@@ -128,7 +128,7 @@ class Post_Selection extends Instance {
 		bool $is_load_more = false,
 		array $custom_arguments = array()
 	): void {
-		$posts_data         = $this->query_builder->get_posts_data( $this->card_data, $page_number, $custom_arguments );
+		$posts_data         = $this->query_builder->get_posts_data( $this->post_selection_settings, $page_number, $custom_arguments );
 		$this->pages_amount = key_exists( 'pagesAmount', $posts_data ) &&
 								is_int( $posts_data['pagesAmount'] ) ?
 			$posts_data['pagesAmount'] :
@@ -139,7 +139,7 @@ class Post_Selection extends Instance {
 			array();
 
 		ob_start();
-		$this->card_markup->print_markup( $this->card_data, $is_load_more );
+		$this->post_selection_markup->print_markup( $this->post_selection_settings, $is_load_more );
 		$template = (string) ob_get_clean();
 
 		if ( true === $is_minify_markup ) {
@@ -150,7 +150,7 @@ class Post_Selection extends Instance {
 
 			// Blade requires at least some spacing between its tokens.
 			if ( true === in_array(
-				$this->card_data->template_engine,
+				$this->post_selection_settings->template_engine,
 				array( Template_Engines::TWIG, '' ),
 				true
 			) ) {
@@ -168,12 +168,12 @@ class Post_Selection extends Instance {
 	}
 
 	public function getCardData(): Post_Selection_Settings {
-		return $this->card_data;
+		return $this->post_selection_settings;
 	}
 
 	public function get_markup_validation_error(): string {
 		ob_start();
-		$this->card_markup->print_markup( $this->card_data );
+		$this->post_selection_markup->print_markup( $this->post_selection_settings );
 		$template = (string) ob_get_clean();
 
 		$this->set_template( $template );

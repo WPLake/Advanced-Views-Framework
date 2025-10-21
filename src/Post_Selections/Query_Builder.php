@@ -32,7 +32,7 @@ class Query_Builder {
 		array $post_ids,
 		string $short_unique_card_id,
 		int $page_number,
-		WP_Query $query,
+		WP_Query $wp_query,
 		array $query_args
 	): array {
 		return array(
@@ -51,32 +51,32 @@ class Query_Builder {
 	 * @return array<string,mixed>
 	 */
 	// phpcs:ignore
-	public function get_query_args( Post_Selection_Settings $card_data, int $page_number, array $custom_arguments = array() ): array {
+	public function get_query_args( Post_Selection_Settings $post_selection_settings, int $page_number, array $custom_arguments = array() ): array {
 		$args = array(
 			'fields'              => 'ids',
-			'post_type'           => $card_data->post_types,
-			'post_status'         => $card_data->post_statuses,
-			'posts_per_page'      => $card_data->limit,
-			'order'               => $card_data->order,
-			'ignore_sticky_posts' => $card_data->is_ignore_sticky_posts,
+			'post_type'           => $post_selection_settings->post_types,
+			'post_status'         => $post_selection_settings->post_statuses,
+			'posts_per_page'      => $post_selection_settings->limit,
+			'order'               => $post_selection_settings->order,
+			'ignore_sticky_posts' => $post_selection_settings->is_ignore_sticky_posts,
 		);
 
-		if ( 'none' !== $card_data->order_by ) {
-			$args['orderby'] = $card_data->order_by;
+		if ( 'none' !== $post_selection_settings->order_by ) {
+			$args['orderby'] = $post_selection_settings->order_by;
 		}
 
-		if ( array() !== $card_data->post_in ) {
-			$args['post__in'] = $card_data->post_in;
+		if ( array() !== $post_selection_settings->post_in ) {
+			$args['post__in'] = $post_selection_settings->post_in;
 		}
 
-		if ( array() !== $card_data->post_not_in ) {
-			$args['post__not_in'] = $card_data->post_not_in;
+		if ( array() !== $post_selection_settings->post_not_in ) {
+			$args['post__not_in'] = $post_selection_settings->post_not_in;
 		}
 
-		if ( true === in_array( $card_data->order_by, array( 'meta_value', 'meta_value_num' ), true ) ) {
+		if ( true === in_array( $post_selection_settings->order_by, array( 'meta_value', 'meta_value_num' ), true ) ) {
 			$field_meta = $this->data_vendors->get_field_meta(
-				$card_data->get_order_by_meta_field_source(),
-				$card_data->get_order_by_meta_acf_field_id()
+				$post_selection_settings->get_order_by_meta_field_source(),
+				$post_selection_settings->get_order_by_meta_acf_field_id()
 			);
 
 			if ( true === $field_meta->is_field_exist() ) {
@@ -94,11 +94,11 @@ class Query_Builder {
 	 * @return array<string,mixed>
 	 */
 	public function get_posts_data(
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		int $page_number = 1,
 		array $custom_arguments = array()
 	): array {
-		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS === $card_data->items_source ) {
+		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS === $post_selection_settings->items_source ) {
 			global $wp_query;
 
 			$post_ids       = array();
@@ -132,33 +132,33 @@ class Query_Builder {
 			);
 		}
 
-		$query_args = $this->get_query_args( $card_data, $page_number, $custom_arguments );
-		$query      = new WP_Query( $query_args );
+		$query_args = $this->get_query_args( $post_selection_settings, $page_number, $custom_arguments );
+		$wp_query   = new WP_Query( $query_args );
 
 		// only ids, as the 'fields' argument is set.
 		/**
 		 * @var int[] $post_ids
 		 */
-		$post_ids = $query->get_posts();
+		$post_ids = $wp_query->get_posts();
 
 		global $wpdb;
 		$this->logger->debug(
 			'Card executed WP_Query',
 			array(
-				'card_id'     => $card_data->get_unique_id(),
+				'card_id'     => $post_selection_settings->get_unique_id(),
 				'page_number' => $page_number,
 				'query_args'  => $query_args,
-				'found_posts' => $query->found_posts,
+				'found_posts' => $wp_query->found_posts,
 				'post_ids'    => $post_ids,
-				'query'       => $query->request,
+				'query'       => $wp_query->request,
 				'query_error' => $wpdb->last_error,
 			)
 		);
 
-		$found_posts = ( - 1 !== $card_data->limit &&
-						$query->found_posts > $card_data->limit ) ?
-			$card_data->limit :
-			$query->found_posts;
+		$found_posts = ( - 1 !== $post_selection_settings->limit &&
+						$wp_query->found_posts > $post_selection_settings->limit ) ?
+			$post_selection_settings->limit :
+			$wp_query->found_posts;
 
 		$posts_per_page = $query_args['posts_per_page'] ?? 0;
 
@@ -170,9 +170,9 @@ class Query_Builder {
 		return $this->filter_posts_data(
 			$pages_amount,
 			$post_ids,
-			$card_data->get_unique_id( true ),
+			$post_selection_settings->get_unique_id( true ),
 			$page_number,
-			$query,
+			$wp_query,
 			$query_args
 		);
 	}

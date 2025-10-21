@@ -27,21 +27,21 @@ class Markup_Field_Data extends Template_Field_Data {
 	private Template_Generator $template_generator;
 
 	public function __construct(
-		Layout_Settings $view_data,
-		?Item_Settings $item_data,
-		Field_Settings $field_data,
+		Layout_Settings $layout_settings,
+		?Item_Settings $item_settings,
+		Field_Settings $field_settings,
 		Field_Meta_Interface $field_meta,
 		Field_Markup $field_markup,
-		Markup_Field_Interface $field_instance,
+		Markup_Field_Interface $markup_field,
 		Template_Generator $template_generator
 	) {
 		parent::__construct(
-			$view_data,
-			$item_data,
-			$field_data,
+			$layout_settings,
+			$item_settings,
+			$field_settings,
 			$field_meta,
 			$field_markup,
-			$field_instance
+			$markup_field
 		);
 
 		$this->field_assets          = array();

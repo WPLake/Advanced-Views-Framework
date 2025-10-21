@@ -41,8 +41,8 @@ class Tab_Data {
 		$this->bulk_actions         = array();
 	}
 
-	public function print_row_title( Cpt_Settings $cpt_data ): void {
-		$this->cpt_table_tab->print_row_title( $this, $cpt_data );
+	public function print_row_title( Cpt_Settings $cpt_settings ): void {
+		$this->cpt_table_tab->print_row_title( $this, $cpt_settings );
 	}
 
 	public function get_name(): string {

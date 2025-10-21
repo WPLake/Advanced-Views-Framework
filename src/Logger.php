@@ -16,27 +16,27 @@ class Logger extends Hookable implements Hooks_Interface {
 	private string $log_file;
 	private string $error_file;
 	private Settings $settings;
-	private ?WP_Filesystem_Base $wp_filesystem;
+	private ?WP_Filesystem_Base $wp_filesystem_base;
 
 	public function __construct( string $folder, Settings $settings ) {
-		$this->log_file      = $folder . '/log.txt';
-		$this->error_file    = $folder . '/error_log.txt';
-		$this->settings      = $settings;
-		$this->wp_filesystem = null;
+		$this->log_file           = $folder . '/log.txt';
+		$this->error_file         = $folder . '/error_log.txt';
+		$this->settings           = $settings;
+		$this->wp_filesystem_base = null;
 	}
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
-		if ( null === $this->wp_filesystem ) {
+		if ( null === $this->wp_filesystem_base ) {
 			global $wp_filesystem;
 
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 
 			WP_Filesystem();
 
-			$this->wp_filesystem = $wp_filesystem;
+			$this->wp_filesystem_base = $wp_filesystem;
 		}
 
-		return $this->wp_filesystem;
+		return $this->wp_filesystem_base;
 	}
 
 	// separate method for tests.

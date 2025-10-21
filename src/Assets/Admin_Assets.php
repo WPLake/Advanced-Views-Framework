@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Assets;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -21,7 +20,6 @@ use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Source;
@@ -35,26 +33,26 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	 * @var Plugin
 	 */
 	private $plugin;
-	private Post_Selections_Settings_Storage $cards_data_storage;
-	private Layouts_Settings_Storage $views_data_storage;
-	private Layout_Factory $view_factory;
-	private Post_Selection_Factory $card_factory;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Factory $layout_factory;
+	private Post_Selection_Factory $post_selection_factory;
 	private Data_Vendors $data_vendors;
 
 	public function __construct(
 		Plugin $plugin,
-		Post_Selections_Settings_Storage $cards_data_storage,
-		Layouts_Settings_Storage $views_data_storage,
-		Layout_Factory $view_factory,
-		Post_Selection_Factory $card_factory,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Factory $layout_factory,
+		Post_Selection_Factory $post_selection_factory,
 		Data_Vendors $data_vendors
 	) {
-		$this->plugin             = $plugin;
-		$this->cards_data_storage = $cards_data_storage;
-		$this->views_data_storage = $views_data_storage;
-		$this->view_factory       = $view_factory;
-		$this->card_factory       = $card_factory;
-		$this->data_vendors       = $data_vendors;
+		$this->plugin                           = $plugin;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->layout_factory                   = $layout_factory;
+		$this->post_selection_factory           = $post_selection_factory;
+		$this->data_vendors                     = $data_vendors;
 	}
 
 	/**
@@ -73,7 +71,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			return $js_data;
 		}
 
-		$view_data       = $this->views_data_storage->get( $post->post_name );
+		$view_data       = $this->layouts_settings_storage->get( $post->post_name );
 		$preview_post_id = $view_data->preview_post;
 
 		if ( 0 !== $preview_post_id ) {
@@ -84,7 +82,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 			ob_start();
 			// without minify, it's a preview.
-			$this->view_factory->make_and_print_html(
+			$this->layout_factory->make_and_print_html(
 				$source,
 				$post->post_name,
 				0,
@@ -123,11 +121,11 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			return $js_data;
 		}
 
-		$card_data = $this->cards_data_storage->get( $post->post_name );
+		$card_data = $this->post_selections_settings_storage->get( $post->post_name );
 		ob_start();
-		$this->card_factory->make_and_print_html( $card_data, 1, false );
+		$this->post_selection_factory->make_and_print_html( $card_data, 1, false );
 		$card_html = (string) ob_get_clean();
-		$view_data = $this->views_data_storage->get( $card_data->acf_view_id );
+		$view_data = $this->layouts_settings_storage->get( $card_data->acf_view_id );
 
 		// amend to allow work the '#card' alias.
 		$view_html       = str_replace(
@@ -231,7 +229,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			return $field_choices;
 		}
 
-		foreach ( $field_choices as $key => &$value ) {
+		foreach ( $field_choices as &$value ) {
 			// converts non-english strings, like 'як справи' to 'jak spravi'.
 			$value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
 		}
@@ -251,7 +249,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		 */
 		$sub_field_choices = $this->data_vendors->get_sub_field_choices();
 
-		foreach ( $sub_field_choices as $key => &$value ) {
+		foreach ( $sub_field_choices as &$value ) {
 			// converts non-english strings, like 'як справи' to 'jak spravi'.
 			$value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
 		}
@@ -270,7 +268,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		if ( $is_view ) {
 			$autocomplete_variables    = $is_published ?
-				$this->view_factory->get_autocomplete_variables( $post->post_name ) :
+				$this->layout_factory->get_autocomplete_variables( $post->post_name ) :
 				array();
 			$textarea_items_to_refresh = array(
 				'acf-local_acf_views_view__markup',
@@ -280,7 +278,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			$refresh_route             = Layouts_Cpt_Save_Actions::REST_REFRESH_ROUTE;
 		} else {
 			$autocomplete_variables    = $is_published ?
-				$this->card_factory->get_autocomplete_variables( $post->post_name ) :
+				$this->post_selection_factory->get_autocomplete_variables( $post->post_name ) :
 				array();
 			$textarea_items_to_refresh = array(
 				'acf-local_acf_views_acf-card-data__markup',

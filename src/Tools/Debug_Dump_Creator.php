@@ -9,26 +9,24 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Query;
 use WP_Post;
 
 final class Debug_Dump_Creator {
-	private Tools_Settings $tools_data;
+	private Tools_Settings $tools_settings;
 	private Logger $logger;
-	private Layouts_Settings_Storage $views_data_storage;
-	private Post_Selections_Settings_Storage $cards_data_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Tools_Settings $tools_data, Logger $logger, Layouts_Settings_Storage $views_data_storage, Post_Selections_Settings_Storage $cards_data_storage ) {
-		$this->tools_data         = $tools_data;
-		$this->logger             = $logger;
-		$this->views_data_storage = $views_data_storage;
-		$this->cards_data_storage = $cards_data_storage;
+	public function __construct( Tools_Settings $tools_settings, Logger $logger, Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+		$this->tools_settings                   = $tools_settings;
+		$this->logger                           = $logger;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}
 
 	public function echo_dump_file(): void {
@@ -94,12 +92,12 @@ final class Debug_Dump_Creator {
 			$query_args['post_name__in'] = $slugs;
 		}
 
-		$query = new WP_Query( $query_args );
+		$wp_query = new WP_Query( $query_args );
 
 		/**
 		 * @var WP_Post[]
 		 */
-		return $query->get_posts();
+		return $wp_query->get_posts();
 	}
 
 	/**
@@ -108,21 +106,21 @@ final class Debug_Dump_Creator {
 	protected function get_cpt_dump_data(): array {
 		$export_data = array();
 
-		$views_to_export = array() !== $this->tools_data->dump_views ?
-			$this->get_posts( Layouts_Feature::cpt_name(), $this->tools_data->dump_views ) :
+		$views_to_export = array() !== $this->tools_settings->dump_views ?
+			$this->get_posts( Layouts_Feature::cpt_name(), $this->tools_settings->dump_views ) :
 			array();
-		$cards_to_export = array() !== $this->tools_data->dump_cards ?
-			$this->get_posts( Post_Selections_Feature::cpt_name(), $this->tools_data->dump_cards ) :
+		$cards_to_export = array() !== $this->tools_settings->dump_cards ?
+			$this->get_posts( Post_Selections_Feature::cpt_name(), $this->tools_settings->dump_cards ) :
 			array();
 
 		foreach ( $views_to_export as $view_post ) {
-			$view_data = $this->views_data_storage->get( $view_post->post_name );
+			$view_data = $this->layouts_settings_storage->get( $view_post->post_name );
 			// we don't need to save defaults.
 			$export_data[ $view_post->post_name ] = $view_data->getFieldValues( '', true );
 		}
 
 		foreach ( $cards_to_export as $card_post ) {
-			$card_data      = $this->cards_data_storage->get( $card_post->post_name );
+			$card_data      = $this->post_selections_settings_storage->get( $card_post->post_name );
 			$card_unique_id = $card_data->get_unique_id();
 			// we don't need to save defaults.
 			$export_data[ $card_unique_id ] = $card_data->getFieldValues( '', true );

@@ -91,8 +91,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 			return $field;
 		}
 
-		$type           = $field['type'] ?? '';
-		$field['label'] = $field['label'] ?? '';
+		$type             = $field['type'] ?? '';
+		$field['label'] ??= '';
 
 		$instructions = key_exists( 'instructions', $field ) &&
 						is_string( $field['instructions'] ) ?

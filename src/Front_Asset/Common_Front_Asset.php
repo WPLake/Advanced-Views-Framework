@@ -26,81 +26,81 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 
 	abstract protected function print_common_js_code( string $var_name ): void;
 
-	abstract protected function print_common_css_code( string $field_selector, Cpt_Settings $cpt_data ): void;
+	abstract protected function print_common_css_code( string $field_selector, Cpt_Settings $cpt_settings ): void;
 
-	abstract public function is_target_card( Post_Selection_Settings $card_data ): bool;
+	abstract public function is_target_card( Post_Selection_Settings $post_selection_settings ): bool;
 
 	protected function set_card_field_id( string $card_field_id ): void {
 		$this->card_field_id = $card_field_id;
 	}
 
-	protected function is_web_component_required_for_card( Post_Selection_Settings $card_data ): bool {
+	protected function is_web_component_required_for_card( Post_Selection_Settings $post_selection_settings ): bool {
 		return $this->is_with_web_component() &&
-				$this->is_target_card( $card_data );
+				$this->is_target_card( $post_selection_settings );
 	}
 
-	protected function print_js_code( string $var_name, Field_Settings $field_data, Layout_Settings $view_data ): void {
+	protected function print_js_code( string $var_name, Field_Settings $field_settings, Layout_Settings $layout_settings ): void {
 		$this->print_common_js_code( $var_name );
 	}
 
 	protected function print_css_code(
 		string $field_selector,
-		Field_Settings $field_data,
-		Layout_Settings $view_data
+		Field_Settings $field_settings,
+		Layout_Settings $layout_settings
 	): void {
-		$this->print_common_css_code( $field_selector, $view_data );
+		$this->print_common_css_code( $field_selector, $layout_settings );
 	}
 
-	public function get_card_items_wrapper_class( Post_Selection_Settings $card_data ): string {
+	public function get_card_items_wrapper_class( Post_Selection_Settings $post_selection_settings ): string {
 		return '';
 	}
 
 	/**
 	 * @return Html_Wrapper[]
 	 */
-	public function get_card_item_outers( Post_Selection_Settings $card_data ): array {
+	public function get_card_item_outers( Post_Selection_Settings $post_selection_settings ): array {
 		return array();
 	}
 
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_card_shortcode_attrs( Post_Selection_Settings $card_data ): array {
+	public function get_card_shortcode_attrs( Post_Selection_Settings $post_selection_settings ): array {
 		return array();
 	}
 
-	public function is_web_component_required( Cpt_Settings $cpt_data ): bool {
-		return $cpt_data instanceof Post_Selection_Settings ?
-			$this->is_web_component_required_for_card( $cpt_data ) :
-			parent::is_web_component_required( $cpt_data );
+	public function is_web_component_required( Cpt_Settings $cpt_settings ): bool {
+		return $cpt_settings instanceof Post_Selection_Settings ?
+			$this->is_web_component_required_for_card( $cpt_settings ) :
+			parent::is_web_component_required( $cpt_settings );
 	}
 
 	/**
 	 * @return array{css:array<string,string>,js:array<string,string>}
 	 */
-	public function generate_code( Cpt_Settings $cpt_data ): array {
+	public function generate_code( Cpt_Settings $cpt_settings ): array {
 		$code = array(
 			'css' => array(),
 			'js'  => array(),
 		);
 
-		if ( ! ( $cpt_data instanceof Post_Selection_Settings ) ) {
-			return parent::generate_code( $cpt_data );
+		if ( ! ( $cpt_settings instanceof Post_Selection_Settings ) ) {
+			return parent::generate_code( $cpt_settings );
 		}
 
-		if ( ! $this->is_target_card( $cpt_data ) ) {
+		if ( ! $this->is_target_card( $cpt_settings ) ) {
 			return $code;
 		}
 
 		ob_start();
-		$this->print_common_css_code( '#card', $cpt_data );
+		$this->print_common_css_code( '#card', $cpt_settings );
 		$css_code = (string) ob_get_clean();
 
 		ob_start();
 		$this->print_common_js_code( $this->card_field_id );
 		$js_code = (string) ob_get_clean();
 
-		$selector = '.' . $cpt_data->get_bem_name() . '__' . $this->card_field_id;
+		$selector = '.' . $cpt_settings->get_bem_name() . '__' . $this->card_field_id;
 
 		if ( '' !== $css_code ) {
 			ob_start();

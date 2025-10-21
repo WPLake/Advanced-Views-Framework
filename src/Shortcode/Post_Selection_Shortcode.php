@@ -8,7 +8,6 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -25,15 +24,15 @@ final class Post_Selection_Shortcode extends Shortcode {
 	public function __construct(
 		Plugin_Feature $plugin_feature,
 		Settings $settings,
-		Post_Selections_Settings_Storage $cards_data_storage,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
-		Post_Selection_Factory $card_factory
+		Post_Selection_Factory $post_selection_factory
 	) {
-		parent::__construct( $plugin_feature, $settings, $cards_data_storage, $card_factory, $front_assets, $live_reloader_component );
+		parent::__construct( $plugin_feature, $settings, $post_selections_settings_storage, $post_selection_factory, $front_assets, $live_reloader_component );
 
-		$this->cards_data_storage = $cards_data_storage;
-		$this->card_factory       = $card_factory;
+		$this->cards_data_storage = $post_selections_settings_storage;
+		$this->card_factory       = $post_selection_factory;
 	}
 
 	protected function get_unique_id_prefix(): string {

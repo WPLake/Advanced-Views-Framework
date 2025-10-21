@@ -11,7 +11,6 @@ use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Admin_Bar;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -19,21 +18,21 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 defined( 'ABSPATH' ) || exit;
 
 class Admin_Bar extends Hookable implements Hooks_Interface {
-	private Layout_Shortcode $view_shortcode;
-	private Post_Selection_Shortcode $card_shortcode;
+	private Layout_Shortcode $layout_shortcode;
+	private Post_Selection_Shortcode $post_selection_shortcode;
 	private Live_Reloader_Component $live_reloader_component;
 	private Settings $settings;
 
 	public function __construct(
-		Layout_Shortcode $view_shortcode,
-		Post_Selection_Shortcode $card_shortcode,
+		Layout_Shortcode $layout_shortcode,
+		Post_Selection_Shortcode $post_selection_shortcode,
 		Live_Reloader_Component $live_reloader_component,
 		Settings $settings
 	) {
-		$this->view_shortcode          = $view_shortcode;
-		$this->card_shortcode          = $card_shortcode;
-		$this->live_reloader_component = $live_reloader_component;
-		$this->settings                = $settings;
+		$this->layout_shortcode         = $layout_shortcode;
+		$this->post_selection_shortcode = $post_selection_shortcode;
+		$this->live_reloader_component  = $live_reloader_component;
+		$this->settings                 = $settings;
 	}
 
 	public function add_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ): void {
@@ -41,8 +40,8 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$total_items_count = $this->view_shortcode->get_rendered_items_count() +
-							$this->card_shortcode->get_rendered_items_count();
+		$total_items_count = $this->layout_shortcode->get_rendered_items_count() +
+							$this->post_selection_shortcode->get_rendered_items_count();
 
 		$title = __( 'Advanced Views', 'acf-views' );
 

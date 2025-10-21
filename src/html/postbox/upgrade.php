@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$view         = $view ?? array();
+$view       ??= array();
 $upgrade_link = $view['upgrade_link'] ?? '';
 ?>
 

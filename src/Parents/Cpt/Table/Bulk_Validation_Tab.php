@@ -13,18 +13,18 @@ defined( 'ABSPATH' ) || exit;
 abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	const NAME = 'bulk_validation';
 
-	private Cpt_Settings_Storage $cpt_data_storage;
-	private Fs_Only_Tab $fs_only_cpt_table_tab;
+	private Cpt_Settings_Storage $cpt_settings_storage;
+	private Fs_Only_Tab $fs_only_tab;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Cpt_Settings_Storage $cards_data_storage,
-		Fs_Only_Tab $fs_only_cpt_table_tab
+		Cpt_Settings_Storage $cpt_settings_storage,
+		Fs_Only_Tab $fs_only_tab
 	) {
 		parent::__construct( $cpt_table );
 
-		$this->cpt_data_storage      = $cards_data_storage;
-		$this->fs_only_cpt_table_tab = $fs_only_cpt_table_tab;
+		$this->cpt_settings_storage = $cpt_settings_storage;
+		$this->fs_only_tab          = $fs_only_tab;
 	}
 
 	abstract protected function make_validation_instance( string $unique_id ): Instance;
@@ -35,8 +35,8 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	protected function get_items_with_wrong_custom_template( string $search_value ): array {
 		$cpt_data_items_with_wrong_custom_template = array();
 
-		foreach ( $this->cpt_data_storage->get_db_management()->get_post_ids() as $unique_id => $post_id ) {
-			$cpt_data = $this->cpt_data_storage->get( $unique_id );
+		foreach ( $this->cpt_settings_storage->get_db_management()->get_post_ids() as $unique_id => $post_id ) {
+			$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
 			$is_empty_custom_markup = '' === trim( $cpt_data->custom_markup );
 
@@ -72,7 +72,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 		$tab_data->set_name( self::NAME );
 		$tab_data->set_label( __( 'Bulk validation', 'acf-views' ) );
 		$tab_data->set_description_callback(
-			function () {
+			function (): void {
 				echo esc_html(
 					__(
 						'Bulk validation - Used to validate the Custom Template field of all existing items and displays items that have failed validation.',
@@ -82,7 +82,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 			}
 		);
 		// some items can be FS-only, so show the sync action too.
-		$tab_data->set_bulk_actions( $this->fs_only_cpt_table_tab->get_bulk_actions() );
+		$tab_data->set_bulk_actions( $this->fs_only_tab->get_bulk_actions() );
 		$tab_data->set_total_items_count( count( $items ) );
 
 		$pagination_from   = ( $this->get_cpt_table()->get_current_page_number() - 1 ) * $this->get_pagination_per_page();
@@ -99,25 +99,25 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	}
 
 	public function maybe_perform_actions(): void {
-		$this->fs_only_cpt_table_tab->maybe_perform_actions();
+		$this->fs_only_tab->maybe_perform_actions();
 	}
 
 	public function maybe_show_action_result_message(): void {
 		// nothing to do here.
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
-		if ( true === $this->cpt_data_storage->is_fs_only_item( $cpt_data->get_unique_id() ) ) {
-			$this->fs_only_cpt_table_tab->print_row_title( $cpt_table_tab_data, $cpt_data );
+	public function print_row_title( Tab_Data $tab_data, Cpt_Settings $cpt_settings ): void {
+		if ( true === $this->cpt_settings_storage->is_fs_only_item( $cpt_settings->get_unique_id() ) ) {
+			$this->fs_only_tab->print_row_title( $tab_data, $cpt_settings );
 
 			return;
 		}
 
-		$edit_post_link = $cpt_data->get_edit_post_link();
+		$edit_post_link = $cpt_settings->get_edit_post_link();
 		printf(
 			'<strong><a class="row-title" href="%s">%s</a></strong>',
 			esc_url( $edit_post_link ),
-			esc_html( $cpt_data->title )
+			esc_html( $cpt_settings->title )
 		);
 		printf(
 			'<div class="row-actions"><span class="edit"><a href="%s">%s</a></span></div>',

@@ -29,9 +29,7 @@ abstract class Profiler {
 
 	public static function get_callback( string $source, string $hook_name, callable $callback ): callable {
 		return self::is_active() ?
-			function ( ...$args ) use ( $source, $hook_name, $callback ) {
-				return self::execute_callback( $source, $hook_name, $callback, $args );
-			} :
+			fn( ...$args ) => self::execute_callback( $source, $hook_name, $callback, $args ) :
 			$callback;
 	}
 
@@ -101,9 +99,7 @@ abstract class Profiler {
 
 		uasort(
 			$classes_total_usage,
-			function ( array $first, array $second ) {
-				return $second['time_sec'] <=> $first['time_sec'];
-			}
+			fn( array $first, array $second ) => $second['time_sec'] <=> $first['time_sec']
 		);
 
 		return $classes_total_usage;
@@ -137,25 +133,25 @@ abstract class Profiler {
 	}
 
 	private static function record_call( string $source, string $hook_name, float $execution_time_sec ): void {
-		self::$classes_total_usage[ $source ]             = self::$classes_total_usage[ $source ] ?? array(
+		self::$classes_total_usage[ $source ]             ??= array(
 			'time_sec' => 0,
 			'calls'    => 0,
 			'hooks'    => array(),
 		);
-		self::$class_hooks_usage[ $source ]               = self::$class_hooks_usage[ $source ] ?? array();
-		self::$class_hooks_usage[ $source ][ $hook_name ] = self::$class_hooks_usage[ $source ][ $hook_name ] ?? array(
+		self::$class_hooks_usage[ $source ]               ??= array();
+		self::$class_hooks_usage[ $source ][ $hook_name ] ??= array(
 			'time_sec' => 0,
 			'calls'    => 0,
 		);
 
-		self::$total_usage['calls'] = self::$total_usage['calls'] + 1;
+		self::$total_usage['calls'] += 1;
 		// Estimated, as we can't guarantee that the current execution isn't a child to another one.
-		self::$total_usage['estimated_time_sec'] = self::$total_usage['estimated_time_sec'] + $execution_time_sec;
+		self::$total_usage['estimated_time_sec'] += $execution_time_sec;
 
-		self::$classes_total_usage[ $source ]['calls']    = self::$classes_total_usage[ $source ]['calls'] + 1;
-		self::$classes_total_usage[ $source ]['time_sec'] = self::$classes_total_usage[ $source ]['time_sec'] + $execution_time_sec;
+		self::$classes_total_usage[ $source ]['calls']    += 1;
+		self::$classes_total_usage[ $source ]['time_sec'] += $execution_time_sec;
 
-		self::$class_hooks_usage[ $source ][ $hook_name ]['calls']    = self::$class_hooks_usage[ $source ][ $hook_name ]['calls'] + 1;
-		self::$class_hooks_usage[ $source ][ $hook_name ]['time_sec'] = self::$class_hooks_usage[ $source ][ $hook_name ]['time_sec'] + $execution_time_sec;
+		self::$class_hooks_usage[ $source ][ $hook_name ]['calls']    += 1;
+		self::$class_hooks_usage[ $source ][ $hook_name ]['time_sec'] += $execution_time_sec;
 	}
 }

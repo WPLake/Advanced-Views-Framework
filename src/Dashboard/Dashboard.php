@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -15,7 +14,6 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use WP_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
@@ -59,7 +57,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			__( 'Docs', 'acf-views' ),
 			Avf_User::get_manage_capability(),
 			self::PAGE_DOCS,
-			function () {
+			function (): void {
 				printf(
 					'<iframe src="%s" style="border: 0;width: calc(100%% + 20px);height: calc(100vh - 32px - 65px);margin-left: -20px;"></iframe>',
 					esc_url( Plugin::DOCS_URL )
@@ -72,7 +70,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			__( 'Survey', 'acf-views' ),
 			Avf_User::get_manage_capability(),
 			self::PAGE_SURVEY,
-			function () {
+			function (): void {
 				printf(
 					'<iframe src="%s" style="border: 0;width: calc(100%% + 20px);height: calc(100vh - 32px - 65px);margin-left: -20px;"></iframe>',
 					esc_url( Plugin::SURVEY_URL )
@@ -169,8 +167,8 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 		self::add_action(
 			'current_screen',
-			function ( WP_Screen $screen ) {
-				if ( ! in_array( $screen->post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ) {
+			function ( WP_Screen $wp_screen ): void {
+				if ( ! in_array( $wp_screen->post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ) {
 					return;
 				}
 				self::add_action( 'in_admin_header', array( $this, 'get_header' ) );

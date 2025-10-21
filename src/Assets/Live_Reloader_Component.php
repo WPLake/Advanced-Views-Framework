@@ -69,12 +69,12 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 	/**
 	 * @param array<string,mixed> $shortcode_arguments
 	 */
-	public function get_reloading_component( Cpt_Settings $cpt_data, array $shortcode_arguments, bool $is_gutenberg_block ): string {
+	public function get_reloading_component( Cpt_Settings $cpt_settings, array $shortcode_arguments, bool $is_gutenberg_block ): string {
 		if ( false === $this->is_active ) {
 			return '';
 		}
 
-		$unique_id = $cpt_data->get_unique_id();
+		$unique_id = $cpt_settings->get_unique_id();
 
 		if ( '' !== $this->parent_card_id ) {
 			// we need to keep View reloaders unique inside the Card (to avoid unnecessary duplications).
@@ -93,7 +93,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 				(string) wp_json_encode(
 					array(
 						'uniqueId'           => $unique_id,
-						'codeHashes'         => $cpt_data->get_code_hashes(),
+						'codeHashes'         => $cpt_settings->get_code_hashes(),
 						'parentCardId'       => $this->parent_card_id,
 						'shortcodeArguments' => $shortcode_arguments,
 						'isGutenbergBlock'   => true === $is_gutenberg_block,

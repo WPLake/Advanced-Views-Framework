@@ -21,21 +21,21 @@ class Post_Selections_View_Integration extends Cpt_Settings_Creator implements H
 	const ARGUMENT_FROM  = '_from';
 	const NONCE_MAKE_NEW = 'av-make-card';
 
-	private Post_Selections_Settings_Storage $cards_data_storage;
-	private Layouts_Settings_Storage $views_data_storage;
-	private Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
 
 	public function __construct(
-		Post_Selections_Settings_Storage $cards_data_storage,
-		Layouts_Settings_Storage $views_data_storage,
-		Post_Selections_Cpt_Save_Actions $cards_cpt_save_actions,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layouts_Settings_Storage $layouts_settings_storage,
+		Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions,
 		Settings $settings
 	) {
 		parent::__construct( $settings );
 
-		$this->cards_data_storage     = $cards_data_storage;
-		$this->views_data_storage     = $views_data_storage;
-		$this->cards_cpt_save_actions = $cards_cpt_save_actions;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->post_selections_cpt_save_actions = $post_selections_cpt_save_actions;
 	}
 
 	public function maybe_create_card_for_view(): void {
@@ -65,9 +65,9 @@ class Post_Selections_View_Integration extends Cpt_Settings_Creator implements H
 			return;
 		}
 
-		$view_data = $this->views_data_storage->get( $from_post->post_name );
+		$view_data = $this->layouts_settings_storage->get( $from_post->post_name );
 
-		$card_data = $this->cards_data_storage->create_new( 'publish', $from_post->post_title );
+		$card_data = $this->post_selections_settings_storage->create_new( 'publish', $from_post->post_title );
 
 		if ( null === $card_data ) {
 			return;
@@ -79,7 +79,7 @@ class Post_Selections_View_Integration extends Cpt_Settings_Creator implements H
 		$this->set_defaults_from_settings( $card_data );
 
 		// the data above will be saved in this call (link to cardData is in the storage).
-		$this->cards_cpt_save_actions->perform_save_actions( $card_data->get_post_id() );
+		$this->post_selections_cpt_save_actions->perform_save_actions( $card_data->get_post_id() );
 
 		wp_safe_redirect( $card_data->get_edit_post_link( 'redirect' ) );
 		exit;

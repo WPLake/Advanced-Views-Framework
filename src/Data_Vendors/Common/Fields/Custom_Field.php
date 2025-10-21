@@ -97,14 +97,14 @@ trait Custom_Field {
 	/**
 	 * @return array{title: string, url: string, target: bool}
 	 */
-	protected function get_menu_item_info( WP_Post $menu_item ): array {
-		$target_page = get_post_meta( $menu_item->ID, '_menu_item_object_id', true );
+	protected function get_menu_item_info( WP_Post $wp_post ): array {
+		$target_page = get_post_meta( $wp_post->ID, '_menu_item_object_id', true );
 		$target_page = is_numeric( $target_page ) ?
 			(int) $target_page :
 			0;
 
 		// if equal, it means that the menu item is a custom link.
-		$target_page       = ( 0 !== $target_page && $target_page !== $menu_item->ID ) ?
+		$target_page       = ( 0 !== $target_page && $target_page !== $wp_post->ID ) ?
 			get_post( $target_page ) :
 			null;
 		$target_page_title = $target_page->post_title ?? '';
@@ -113,18 +113,18 @@ trait Custom_Field {
 			(string) get_the_permalink( $target_page ) :
 			'';
 
-		$title = '' !== $menu_item->post_title ?
-			$menu_item->post_title :
+		$title = '' !== $wp_post->post_title ?
+			$wp_post->post_title :
 			$target_page_title;
 
 		$url = '' !== $target_page_link ?
 			$target_page_link :
-			get_post_meta( $menu_item->ID, '_menu_item_url', true );
+			get_post_meta( $wp_post->ID, '_menu_item_url', true );
 		$url = is_string( $url ) ?
 			$url :
 			'';
 
-		$target = (bool) get_post_meta( $menu_item->ID, '_menu_item_target', true );
+		$target = (bool) get_post_meta( $wp_post->ID, '_menu_item_target', true );
 
 		return array(
 			// avoid double encoding in Twig.

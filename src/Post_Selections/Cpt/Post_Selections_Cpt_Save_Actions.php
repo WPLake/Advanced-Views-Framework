@@ -25,41 +25,41 @@ defined( 'ABSPATH' ) || exit;
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/card-refresh';
 
-	private Post_Selection_Markup $card_markup;
+	private Post_Selection_Markup $post_selection_markup;
 	private Query_Builder $query_builder;
 	private Html $html;
-	private Post_Selections_Cpt_Meta_Boxes $cards_cpt_meta_boxes;
-	private Post_Selection_Factory $card_factory;
+	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
+	private Post_Selection_Factory $post_selection_factory;
 	/**
 	 * @var Post_Selection_Settings
 	 */
-	private Post_Selection_Settings $card_validation_data;
-	private Post_Selections_Settings_Storage $card_data_storage;
+	private Post_Selection_Settings $post_selection_settings;
+	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
 	public function __construct(
 		Logger $logger,
-		Post_Selections_Settings_Storage $cards_data_storage,
+		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Plugin $plugin,
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		Front_Assets $front_assets,
-		Post_Selection_Markup $card_markup,
+		Post_Selection_Markup $post_selection_markup,
 		Query_Builder $query_builder,
 		Html $html,
-		Post_Selections_Cpt_Meta_Boxes $cards_cpt_meta_boxes,
-		Post_Selection_Factory $card_factory
+		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
+		Post_Selection_Factory $post_selection_factory
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
-		$card_data = $card_data->getDeepClone();
+		$post_selection_settings = $post_selection_settings->getDeepClone();
 
-		parent::__construct( $logger, $cards_data_storage, $plugin, $card_data, $front_assets );
+		parent::__construct( $logger, $post_selections_settings_storage, $plugin, $post_selection_settings, $front_assets );
 
-		$this->card_data_storage    = $cards_data_storage;
-		$this->card_validation_data = $card_data;
-		$this->card_markup          = $card_markup;
-		$this->query_builder        = $query_builder;
-		$this->html                 = $html;
-		$this->cards_cpt_meta_boxes = $cards_cpt_meta_boxes;
-		$this->card_factory         = $card_factory;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->post_selection_settings          = $post_selection_settings;
+		$this->post_selection_markup            = $post_selection_markup;
+		$this->query_builder                    = $query_builder;
+		$this->html                             = $html;
+		$this->post_selections_cpt_meta_boxes   = $post_selections_cpt_meta_boxes;
+		$this->post_selection_factory           = $post_selection_factory;
 	}
 
 	protected function get_cpt_name(): string {
@@ -71,36 +71,36 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	protected function make_validation_instance(): Instance {
-		return $this->card_factory->make( $this->card_validation_data );
+		return $this->post_selection_factory->make( $this->post_selection_settings );
 	}
 
-	protected function update_markup( Cpt_Settings $cpt_data ): void {
-		if ( false === ( $cpt_data instanceof Post_Selection_Settings ) ) {
+	protected function update_markup( Cpt_Settings $cpt_settings ): void {
+		if ( false === ( $cpt_settings instanceof Post_Selection_Settings ) ) {
 			return;
 		}
 
 		ob_start();
-		$this->card_markup->print_markup( $cpt_data, false, true );
+		$this->post_selection_markup->print_markup( $cpt_settings, false, true );
 
-		$cpt_data->markup = (string) ob_get_clean();
+		$cpt_settings->markup = (string) ob_get_clean();
 	}
 
-	protected function update_query_preview( Post_Selection_Settings $card_data ): void {
+	protected function update_query_preview( Post_Selection_Settings $post_selection_settings ): void {
 		// @phpcs:ignore
-		$card_data->query_preview = print_r( $this->query_builder->get_query_args( $card_data, 1 ), true );
+		$post_selection_settings->query_preview = print_r( $this->query_builder->get_query_args( $post_selection_settings, 1 ), true );
 	}
 
-	protected function add_layout_css( Post_Selection_Settings $card_data ): void {
+	protected function add_layout_css( Post_Selection_Settings $post_selection_settings ): void {
 		ob_start();
-		$this->card_markup->print_layout_css( $card_data );
+		$this->post_selection_markup->print_layout_css( $post_selection_settings );
 		$layout_css = (string) ob_get_clean();
 
 		if ( '' === $layout_css ) {
 			return;
 		}
 
-		if ( false === strpos( $card_data->css_code, '/*BEGIN LAYOUT_RULES*/' ) ) {
-			$card_data->css_code .= "\n" . $layout_css . "\n";
+		if ( false === strpos( $post_selection_settings->css_code, '/*BEGIN LAYOUT_RULES*/' ) ) {
+			$post_selection_settings->css_code .= "\n" . $layout_css . "\n";
 
 			return;
 		}
@@ -108,14 +108,14 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$css_code = preg_replace(
 			'|\/\*BEGIN LAYOUT_RULES\*\/(.*\s)+\/\*END LAYOUT_RULES\*\/|',
 			$layout_css,
-			$card_data->css_code
+			$post_selection_settings->css_code
 		);
 
 		if ( null === $css_code ) {
 			return;
 		}
 
-		$card_data->css_code = $css_code;
+		$post_selection_settings->css_code = $css_code;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->add_layout_css( $card_data );
 
 		if ( ! $is_skip_save ) {
-			$this->card_data_storage->save( $card_data );
+			$this->post_selections_settings_storage->save( $card_data );
 		}
 
 		return $card_data;
@@ -152,8 +152,8 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	 * @throws Exception
 	 */
 	// @phpstan-ignore-next-line
-	public function refresh_request( WP_REST_Request $request ): array {
-		$request_args = $request->get_json_params();
+	public function refresh_request( WP_REST_Request $wprest_request ): array {
+		$request_args = $wprest_request->get_json_params();
 		$card_id      = $this->get_int_arg( '_postId', $request_args );
 
 		$post_type = get_post( $card_id )->post_type ?? '';
@@ -166,10 +166,10 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		$card_unique_id = get_post( $card_id )->post_name ?? '';
 
-		$card_data = $this->card_data_storage->get( $card_unique_id );
+		$card_data = $this->post_selections_settings_storage->get( $card_unique_id );
 		ob_start();
 		// ignore customMarkup (we need the preview).
-		$this->card_markup->print_markup( $card_data, false, true );
+		$this->post_selection_markup->print_markup( $card_data, false, true );
 		$markup = (string) ob_get_clean();
 
 		ob_start();
@@ -183,7 +183,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$shortcodes = (string) ob_get_clean();
 
 		ob_start();
-		$this->cards_cpt_meta_boxes->print_related_acf_view_meta_box( $card_data );
+		$this->post_selections_cpt_meta_boxes->print_related_acf_view_meta_box( $card_data );
 		$related_view_meta_box = (string) ob_get_clean();
 
 		$response['textareaItems'] = array(
@@ -204,7 +204,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 			);
 		}
 
-		$response['autocompleteData'] = $this->card_factory->get_autocomplete_variables( $card_unique_id );
+		$response['autocompleteData'] = $this->post_selection_factory->get_autocomplete_variables( $card_unique_id );
 
 		return $response;
 	}

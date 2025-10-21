@@ -27,12 +27,12 @@ class Post_Selection_Markup {
 		return $this->template_engines;
 	}
 
-	protected function print_extra_markup( Post_Selection_Settings $card_data ): void {
-		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS !== $card_data->items_source ) {
+	protected function print_extra_markup( Post_Selection_Settings $post_selection_settings ): void {
+		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS !== $post_selection_settings->items_source ) {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $card_data->template_engine );
+		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
 		echo "\r\n\t";
 
@@ -53,15 +53,15 @@ class Post_Selection_Markup {
 	}
 
 	protected function print_items_opening_wrapper(
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		int &$tabs_number,
 		string $class_name = ''
 	): void {
 		$classes  = '';
-		$external = $this->front_assets->get_card_items_wrapper_class( $card_data );
+		$external = $this->front_assets->get_card_items_wrapper_class( $post_selection_settings );
 
-		if ( Post_Selection_Settings::CLASS_GENERATION_NONE !== $card_data->classes_generation ) {
-			$classes .= $card_data->get_bem_name() . '__items';
+		if ( Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ) {
+			$classes .= $post_selection_settings->get_bem_name() . '__items';
 			$classes .= '' !== $class_name ?
 				' ' . $class_name :
 				'';
@@ -108,7 +108,7 @@ class Post_Selection_Markup {
 		}
 	}
 
-	protected function print_items_closing_wrapper( Post_Selection_Settings $card_data, int &$tabs_number ): void {
+	protected function print_items_closing_wrapper( Post_Selection_Settings $post_selection_settings, int &$tabs_number ): void {
 		echo esc_html( str_repeat( "\t", --$tabs_number ) ) . '</div>' . "\r\n";
 	}
 
@@ -123,14 +123,14 @@ class Post_Selection_Markup {
 		}
 	}
 
-	protected function print_shortcode( Post_Selection_Settings $card_data ): void {
-		$template_generator = $this->template_engines->get_template_generator( $card_data->template_engine );
+	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
+		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
 		printf( '[%s', esc_html( Layout_Shortcode::NAME ) );
 		$template_generator->print_array_item_attribute( 'view-id', '_card', 'view_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 
-		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $card_data );
+		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $post_selection_settings );
 
 		foreach ( $asset_attrs as $attr => $value ) {
 			printf( ' %s="%s"', esc_html( $attr ), esc_html( $value ) );
@@ -141,14 +141,14 @@ class Post_Selection_Markup {
 	}
 
 	public function print_markup(
-		Post_Selection_Settings $card_data,
+		Post_Selection_Settings $post_selection_settings,
 		bool $is_load_more = false,
 		bool $is_ignore_custom_markup = false
 	): void {
 		if ( false === $is_ignore_custom_markup &&
-			'' !== $card_data->custom_markup &&
+			'' !== $post_selection_settings->custom_markup &&
 			false === $is_load_more ) {
-			$custom_markup = trim( $card_data->custom_markup );
+			$custom_markup = trim( $post_selection_settings->custom_markup );
 
 			if ( '' !== $custom_markup ) {
 				// @phpcs:ignore WordPress.Security.EscapeOutput
@@ -157,26 +157,26 @@ class Post_Selection_Markup {
 			}
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $card_data->template_engine );
+		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
 		ob_start();
 
 		$tabs_number = 1;
 		$item_outers = false === $is_load_more ?
-			$this->front_assets->get_card_item_outers( $card_data ) :
+			$this->front_assets->get_card_item_outers( $post_selection_settings ) :
 			array();
 
 		if ( false === $is_load_more ) {
-			printf( '<%s class="', esc_html( $card_data->get_tag_name() ) );
+			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
 			$template_generator->print_array_item( '_card', 'classes' );
-			echo esc_html( $card_data->get_bem_name() );
-			if ( 'acf-card' === $card_data->get_bem_name() ) {
-				echo ' ' . sprintf( '%s--id--', esc_html( $card_data->get_bem_name() ) );
+			echo esc_html( $post_selection_settings->get_bem_name() );
+			if ( 'acf-card' === $post_selection_settings->get_bem_name() ) {
+				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
 				$template_generator->print_array_item( '_card', 'id' );
 			}
 			echo '">';
 
-			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $card_data->web_component ) {
+			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
 				echo "\r\n";
 				echo '<template shadowrootmode="open">';
 			}
@@ -185,7 +185,7 @@ class Post_Selection_Markup {
 			echo esc_html( str_repeat( "\t", $tabs_number ) );
 			$template_generator->print_if_for_array_item( '_card', 'post_ids' );
 			echo "\r\n";
-			$this->print_items_opening_wrapper( $card_data, $tabs_number );
+			$this->print_items_opening_wrapper( $post_selection_settings, $tabs_number );
 			$this->print_opening_item_outers( $item_outers, $tabs_number, $template_generator );
 		}
 
@@ -193,22 +193,22 @@ class Post_Selection_Markup {
 		$template_generator->print_for_of_array_item( '_card', 'post_ids', 'post_id' );
 		echo "\r\n";
 		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-		$this->print_shortcode( $card_data );
+		$this->print_shortcode( $post_selection_settings );
 		echo esc_html( str_repeat( "\t", --$tabs_number ) );
 		$template_generator->print_end_for();
 		echo "\r\n";
 
 		if ( false === $is_load_more ) {
 			$this->print_closing_item_outers( $item_outers, $tabs_number );
-			$this->print_items_closing_wrapper( $card_data, $tabs_number );
+			$this->print_items_closing_wrapper( $post_selection_settings, $tabs_number );
 
-			if ( '' !== $card_data->no_posts_found_message ) {
+			if ( '' !== $post_selection_settings->no_posts_found_message ) {
 				echo esc_html( str_repeat( "\t", --$tabs_number ) );
 				$template_generator->print_else();
 				echo "\r\n";
 				echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-				$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $card_data->classes_generation ?
-					sprintf( '%s__no-posts-message', $card_data->get_bem_name() ) :
+				$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
+					sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
 					'';
 				printf(
 					'<div class="%s">',
@@ -224,20 +224,20 @@ class Post_Selection_Markup {
 			$template_generator->print_end_if();
 			echo "\r\n";
 
-			$this->print_extra_markup( $card_data );
+			$this->print_extra_markup( $post_selection_settings );
 
-			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $card_data->web_component ) {
+			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
 				echo "\r\n";
 				echo '</template>';
 			}
 
-			echo "\r\n" . sprintf( '</%s>', esc_html( $card_data->get_tag_name() ) ) . "\r\n";
+			echo "\r\n" . sprintf( '</%s>', esc_html( $post_selection_settings->get_tag_name() ) ) . "\r\n";
 		}
 
 		$markup = (string) ob_get_clean();
 
 		// remove the empty class attribute if the generation is disabled.
-		if ( Post_Selection_Settings::CLASS_GENERATION_NONE === $card_data->classes_generation ) {
+		if ( Post_Selection_Settings::CLASS_GENERATION_NONE === $post_selection_settings->classes_generation ) {
 			$markup = str_replace( ' class=""', '', $markup );
 		}
 
@@ -245,8 +245,8 @@ class Post_Selection_Markup {
 		echo $markup;
 	}
 
-	public function print_layout_css( Post_Selection_Settings $card_data ): void {
-		if ( false === $card_data->is_use_layout_css ) {
+	public function print_layout_css( Post_Selection_Settings $post_selection_settings ): void {
+		if ( false === $post_selection_settings->is_use_layout_css ) {
 			return;
 		}
 
@@ -260,7 +260,7 @@ class Post_Selection_Markup {
 
 		$safe_rules = array();
 
-		foreach ( $card_data->layout_rules as $layout_rule ) {
+		foreach ( $post_selection_settings->layout_rules as $layout_rule ) {
 			$screen = 0;
 			switch ( $layout_rule->screen ) {
 				case Post_Selection_Layout_Settings::SCREEN_TABLET:

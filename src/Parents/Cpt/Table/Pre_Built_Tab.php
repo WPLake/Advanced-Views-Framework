@@ -24,7 +24,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	const KEY_BATCH_ACTION  = self::KEY_PREFIX . 'items';
 	const KEY_SINGLE_ACTION = self::KEY_PREFIX . 'id';
 
-	private Cpt_Settings_Storage $external_cpt_data_storage;
+	private Cpt_Settings_Storage $cpt_settings_storage;
 	/**
 	 * Used to avoid potential recursion (if user made the recursion setup)
 	 *
@@ -42,7 +42,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	) {
 		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $upgrades, $logger );
 
-		$this->external_cpt_data_storage = $external_cpt_data_storage;
+		$this->cpt_settings_storage = $external_cpt_data_storage;
 		$this->pulling_unique_ids        = array();
 	}
 
@@ -51,7 +51,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	abstract protected function print_tab_description_middle(): void;
 
 	protected function get_tab(): ?Tab_Data {
-		$all_pre_built_items = $this->external_cpt_data_storage->get_all();
+		$all_pre_built_items = $this->cpt_settings_storage->get_all();
 
 		$items_count = count( $all_pre_built_items );
 
@@ -63,9 +63,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		// sort by names asc.
 		usort(
 			$all_pre_built_items,
-			function ( Cpt_Settings $a, Cpt_Settings $b ) {
-				return strcasecmp( $a->title, $b->title );
-			}
+			fn(Cpt_Settings $a, Cpt_Settings $b) => strcasecmp( $a->title, $b->title )
 		);
 
 		/**
@@ -81,7 +79,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		$tab_data->set_name( self::NAME );
 		$tab_data->set_label( __( 'Pre-built components', 'acf-views' ) );
 		$tab_data->set_description_callback(
-			function () {
+			function (): void {
 				esc_html_e(
 					'Import pre-built components.',
 					'acf-views'
@@ -118,7 +116,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			return null;
 		}
 
-		$cpt_data = $this->external_cpt_data_storage->get( $unique_id );
+		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
 		if ( false === $cpt_data->isLoaded() ) {
 			$this->get_logger()->warning( 'Pre-built item not found', array( 'unique_id' => $unique_id ) );
@@ -126,7 +124,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			return null;
 		}
 
-		$field_values = $this->external_cpt_data_storage->get_fs_fields()
+		$field_values = $this->cpt_settings_storage->get_fs_fields()
 														->get_fs_field_values(
 															$cpt_data,
 															false,
@@ -140,7 +138,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			$meta_group_files[] = $meta_vendor_name . '.json';
 		}
 
-		$file_system             = $this->external_cpt_data_storage->get_file_system();
+		$file_system             = $this->cpt_settings_storage->get_file_system();
 		$vendor_meta_groups_data = $file_system->read_fields_from_fs(
 			$short_unique_id,
 			$meta_group_files
@@ -188,7 +186,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			return;
 		}
 
-		$cpt_import_result = new Import_Result();
+		$import_result = new Import_Result();
 
 		foreach ( $unique_ids as $unique_id ) {
 			$item_import_result = $this->import_cpt_data_with_all_related_items( $unique_id );
@@ -197,26 +195,26 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 				continue;
 			}
 
-			$cpt_import_result->merge( $item_import_result );
+			$import_result->merge( $item_import_result );
 		}
 
 		$success_message_url = $this->get_cpt_table()->get_tab_url(
 			$this->get_cpt_table()->get_current_tab(),
-			$cpt_import_result->get_query_string_args( self::KEY_RESULT_ITEMS, self::KEY_RESULT_GROUPS )
+			$import_result->get_query_string_args( self::KEY_RESULT_ITEMS, self::KEY_RESULT_GROUPS )
 		);
 
 		wp_safe_redirect( $success_message_url );
 		exit;
 	}
 
-	public function print_row_title( Tab_Data $cpt_table_tab_data, Cpt_Settings $cpt_data ): void {
+	public function print_row_title( Tab_Data $tab_data, Cpt_Settings $cpt_settings ): void {
 		$url = add_query_arg(
 			array(
-				self::KEY_SINGLE_ACTION => $cpt_data->get_unique_id(),
+				self::KEY_SINGLE_ACTION => $cpt_settings->get_unique_id(),
 				'_wpnonce'              => wp_create_nonce( 'bulk-posts' ),
 			)
 		);
-		printf( '<strong><span class="row-title">%s</span></strong>', esc_html( $cpt_data->title ) );
+		printf( '<strong><span class="row-title">%s</span></strong>', esc_html( $cpt_settings->title ) );
 		printf(
 			'<div class="row-actions"><span class="import"><a href="%s">%s</a></span></div>',
 			esc_url( $url ),
