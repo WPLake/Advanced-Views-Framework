@@ -159,7 +159,7 @@ abstract class Cpt_Settings extends Group {
 		$matches   = array_merge( $functions, $filters );
 
 		foreach ( $matches as $match ) {
-			$label       = $match[1] ?? '';
+			$label       = $match[1];
 			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
 
 			$ml_strings[ $text_domain ]   = $ml_strings[ $text_domain ] ?? array();

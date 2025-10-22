@@ -8,6 +8,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use WP_Query;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -99,29 +100,7 @@ class Query_Builder {
 		array $custom_arguments = array()
 	): array {
 		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS === $post_selection_settings->items_source ) {
-			global $wp_query;
-
-			$post_ids       = array();
-			$posts_per_page = get_option( 'posts_per_page' );
-			$posts_per_page = true === is_numeric( $posts_per_page ) ?
-				(int) $posts_per_page :
-				0;
-
-			$posts       = $wp_query->posts ?? array();
-			$total_posts = $wp_query->found_posts ?? 0;
-
-			foreach ( $posts as $post ) {
-				$post_ids[] = $post->ID;
-			}
-
-			$pages_amount = $total_posts > 0 && $posts_per_page > 0 ?
-				(int) ceil( $total_posts / $posts_per_page ) :
-				0;
-
-			return array(
-				'pagesAmount' => $pages_amount,
-				'postIds'     => $post_ids,
-			);
+			return $this->get_global_posts_data();
 		}
 
 		// stub for tests.
@@ -160,7 +139,7 @@ class Query_Builder {
 			$post_selection_settings->limit :
 			$wp_query->found_posts;
 
-		$posts_per_page = $query_args['posts_per_page'] ?? 0;
+		$posts_per_page = int( $query_args, 'posts_per_page' );
 
 		// otherwise, can be DivisionByZero error.
 		$pages_amount = 0 !== $posts_per_page ?
@@ -174,6 +153,35 @@ class Query_Builder {
 			$page_number,
 			$wp_query,
 			$query_args
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_global_posts_data(): array {
+		global $wp_query;
+
+		$post_ids       = array();
+		$posts_per_page = get_option( 'posts_per_page' );
+		$posts_per_page = true === is_numeric( $posts_per_page ) ?
+			(int) $posts_per_page :
+			0;
+
+		$posts       = $wp_query->posts ?? array();
+		$total_posts = $wp_query->found_posts ?? 0;
+
+		foreach ( $posts as $post ) {
+			$post_ids[] = $post->ID;
+		}
+
+		$pages_amount = $total_posts > 0 && $posts_per_page > 0 ?
+			(int) ceil( $total_posts / $posts_per_page ) :
+			0;
+
+		return array(
+			'pagesAmount' => $pages_amount,
+			'postIds'     => $post_ids,
 		);
 	}
 }

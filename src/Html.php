@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
+use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use WP_Filesystem_Base;
 
@@ -18,13 +19,7 @@ class Html {
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
 		if ( null === $this->wp_filesystem_base ) {
-			global $wp_filesystem;
-
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-
-			WP_Filesystem();
-
-			$this->wp_filesystem_base = $wp_filesystem;
+			$this->wp_filesystem_base = WP_Filesystem_Factory::get_wp_filesystem();
 		}
 
 		return $this->wp_filesystem_base;

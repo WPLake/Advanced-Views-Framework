@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Exception;
+use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
@@ -55,16 +56,7 @@ class Upgrades extends Action implements Hooks_Interface {
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
 		if ( null === $this->wp_filesystem_base ) {
-			global $wp_filesystem;
-
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-
-			WP_Filesystem();
-
-			/**
-			 * @var WP_Filesystem_Base $wp_filesystem
-			 */
-			$this->wp_filesystem_base = $wp_filesystem;
+			$this->wp_filesystem_base = WP_Filesystem_Factory::get_wp_filesystem();
 		}
 
 		return $this->wp_filesystem_base;

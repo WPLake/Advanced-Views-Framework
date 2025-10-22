@@ -77,7 +77,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$card_unique_id,
 					false,
-					Post_Selection_Shortcode::NAME,
+					Post_Selections_Feature::shortcode(),
 					get_the_title( $post ),
 					true
 				);

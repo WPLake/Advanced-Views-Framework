@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -118,20 +119,22 @@ class Layouts_Cpt extends Cpt {
 		}
 
 		foreach ( $submenu[ $url ] as $item_key => $item ) {
-			if ( 3 !== count( $item ) ) {
-				continue;
-			}
+			$item = arr( $item );
 
-			switch ( $item[2] ) {
-				// remove 'Add new' submenu link.
-				case 'post-new.php?post_type=acf_views':
-					unset( $submenu[ $url ][ $item_key ] );
-					break;
-				// rename 'Advanced Views' to 'Views' submenu link.
-				case 'edit.php?post_type=acf_views':
-					// @phpcs:ignore
-					$submenu[ $url ][ $item_key ][0] = __( 'Views', 'acf-views' );
-					break;
+			if ( 3 === count( $item ) ) {
+				switch ( $item[2] ) {
+					// remove 'Add new' submenu link.
+					case 'post-new.php?post_type=acf_views':
+						unset( $submenu[ $url ][ $item_key ] );
+						break;
+					// rename 'Advanced Views' to 'Views' submenu link.
+					case 'edit.php?post_type=acf_views':
+						// @phpcs:ignore
+						$submenu[ $url ][ $item_key ] = arr($submenu[ $url ],$item_key);
+						// @phpcs:ignore
+						$submenu[ $url ][ $item_key ][0] = __( 'Views', 'acf-views' );
+						break;
+				}
 			}
 		}
 	}

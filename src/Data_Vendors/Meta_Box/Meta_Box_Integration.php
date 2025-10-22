@@ -6,6 +6,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Settings_Vendor_Integration;
 use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -15,7 +17,7 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 	}
 
 	/**
-	 * @return array<int,array<string,mixed>>
+	 * @return mixed[]
 	 */
 	protected function get_group_fields( WP_Post $wp_post ): array {
 		if ( false === function_exists( 'rwmb_get_registry' ) ) {
@@ -35,26 +37,16 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 			$fields->meta_box :
 			array();
 
-		return true === key_exists( 'fields', $fields ) &&
-				true === is_array( $fields['fields'] ) ?
-			$fields['fields'] :
-			array();
+		return arr( $fields, 'fields' );
 	}
 
 	/**
 	 * @param array<string,mixed> $field
 	 */
 	protected function fill_field_id_and_type( array $field, string &$field_id, string &$field_type ): void {
-		$field_id = $field['id'] ?? '';
-		$field_id = is_string( $field_id ) ||
-					is_numeric( $field_id ) ?
-			(string) $field_id :
-			'';
+		$field_id = string( $field, 'id' );
 
-		$field_type = $field['type'] ?? '';
-		$field_type = is_string( $field_type ) ?
-			$field_type :
-			'';
+		$field_type = string( $field, 'type' );
 	}
 
 	public function add_tab_to_meta_group(): void {

@@ -34,7 +34,7 @@ interface Field_Meta_Interface {
 	public function get_self_repeatable_meta(): ?Field_Meta_Interface;
 
 	/**
-	 * @return string|string[]
+	 * @return mixed
 	 */
 	public function get_default_value();
 
@@ -66,7 +66,7 @@ interface Field_Meta_Interface {
 	public function set_display_format( string $display_format ): void;
 
 	/**
-	 * @param array<string|int,mixed> $choices
+	 * @param mixed[] $choices
 	 */
 	public function set_choices( array $choices ): void;
 
@@ -79,7 +79,7 @@ interface Field_Meta_Interface {
 	public function set_self_repeatable_meta( ?Field_Meta_Interface $field_meta ): void;
 
 	/**
-	 * @param string|string[] $default_value
+	 * @param mixed $default_value
 	 */
 	public function set_default_value( $default_value ): void;
 

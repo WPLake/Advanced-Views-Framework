@@ -9,6 +9,9 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,18 +53,17 @@ class Link_Field extends Markup_Field {
 			'linkLabel' => $variable_field_data->get_field_data()->get_link_label_translation(),
 		);
 
-		$value = is_array( $variable_field_data->get_value() ) ?
-			$variable_field_data->get_value() :
-			array();
+		$value = arr( $variable_field_data->get_value() );
 
-		if ( array() === $value ) {
+		if ( 0 === count( $value ) ) {
 			return $args;
 		}
 
-		$is_target_set = isset( $value['target'] ) && $value['target'];
+		$target        = string( $value, 'target' );
+		$is_target_set = strlen( $target ) > 0 || bool( $value, 'target' );
 
-		$args['value']  = (string) ( $value['url'] ?? '' );
-		$args['title']  = (string) ( $value['title'] ?? '' );
+		$args['value']  = string( $value, 'url' );
+		$args['title']  = string( $value, 'title' );
 		$args['target'] = $variable_field_data->get_field_data()->is_link_target_blank || $is_target_set ?
 			'_blank' :
 			'_self';

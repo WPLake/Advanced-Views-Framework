@@ -255,13 +255,8 @@ class Layout extends Instance {
 		$array_field_names = array();
 
 		foreach ( $arrays_info as $array_info ) {
-			$char_position = $array_info[0][1] ?? - 1;
-			$array_name    = $array_info[1][0] ?? '';
-
-			if ( '' === $array_name ||
-				- 1 === $char_position ) {
-				continue;
-			}
+			$char_position = $array_info[0][1];
+			$array_name    = $array_info[1][0];
 
 			$line_number = substr_count( mb_substr( $markup, 0, $char_position ), PHP_EOL ) + 1;
 

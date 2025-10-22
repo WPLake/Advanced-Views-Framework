@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -52,10 +53,11 @@ class Current_Screen {
 
 	// no arguments, as during ajax it's impossible to detect the specific plugin.
 	public function is_ajax(): bool {
-		if ( false === key_exists( 'isAjax', $this->cache ) ) {
+		if ( ! key_exists( 'isAjax', $this->cache ) ) {
 			// do not use 'is_ajax()' function, it may be not available yet.
-			$this->cache['isAjax'] = true === defined( 'DOING_AJAX' ) &&
-									true === DOING_AJAX;
+			$this->cache['isAjax'] = defined( 'DOING_AJAX' ) &&
+									// @phpstan-ignore-next-line.
+										bool( DOING_AJAX );
 		}
 
 		return $this->cache['isAjax'];

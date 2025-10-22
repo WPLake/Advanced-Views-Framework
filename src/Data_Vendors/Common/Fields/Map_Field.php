@@ -12,6 +12,8 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -61,19 +63,19 @@ class Map_Field extends Markup_Field {
 			)
 		);
 
-		$value = is_array( $variable_field_data->get_value() ) ?
-			$variable_field_data->get_value() :
-			array();
+		$value = arr( $variable_field_data->get_value() );
 
-		if ( array() === $value ) {
+		if ( 0 === count( $value ) ) {
 			return $args;
 		}
 
 		if ( ! $variable_field_data->get_field_meta()->is_multiple() ) {
-			$args['value'] = (bool) ( $value['lat'] ?? '' );
-			$args['zoom']  = (string) ( $value['zoom'] ?? '16' );
-			$args['lat']   = (string) ( $value['lat'] ?? '' );
-			$args['lng']   = (string) ( $value['lng'] ?? '' );
+			$lat = string( $value, 'lat' );
+
+			$args['value'] = strlen( $lat ) > 0;
+			$args['zoom']  = string( $value, 'zoom', '16' );
+			$args['lat']   = $lat;
+			$args['lng']   = string( $value, 'lng' );
 		} else {
 			// the plugin doesn't support zoom, so use the default from the ACF field settings.
 			$args['zoom'] = $variable_field_data->get_field_meta()->get_zoom();
@@ -81,9 +83,11 @@ class Map_Field extends Markup_Field {
 			$args['value'] = array();
 
 			foreach ( $value as $item ) {
+				$item = arr( $item );
+
 				$args['value'][] = array(
-					'lat' => (string) ( $item['lat'] ?? '' ),
-					'lng' => (string) ( $item['lng'] ?? '' ),
+					'lat' => string( $item, 'lat' ),
+					'lng' => string( $item, 'lng' ),
 				);
 			}
 		}

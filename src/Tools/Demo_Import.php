@@ -184,8 +184,8 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 
 		if ( key_exists( 'location', $group_json ) &&
 			is_array( $group_json['location'] ) ) {
-			if ( isset( $group_json['location'][0][0] ) &&
-				is_array( $group_json['location'][0] ) &&
+			if ( is_array( $group_json['location'][0] ) &&
+				isset( $group_json['location'][0][0] ) &&
 				is_array( $group_json['location'][0][0] ) ) {
 				$group_json['location'][0][0]['value'] = $this->samsung_id;
 			}

@@ -31,6 +31,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -483,16 +484,12 @@ class Data_Vendors extends Action implements Hooks_Interface {
 
 			$vendor = $this->get_data_vendors()[ $file_vendor ];
 
-			/**
-			 * @var array<string,mixed> $meta_data
-			 */
-			$meta_data = $this->get_array_arg( 'meta', $import_data );
+			$meta_data = arr( $import_data, 'meta' );
 			// compatibility with the old export format, which didn't have meta at all.
-			$groups_data = true === key_exists( 'groups', $import_data ) ?
-				$this->get_array_arg( 'groups', $import_data ) :
-				$import_data;
+			$groups_data = arr( $import_data, 'groups' );
 
 			foreach ( $groups_data as $group_data ) {
+				$group_data        = arr( $group_data );
 				$imported_group_id = $vendor->import_group( $group_data, $meta_data );
 
 				if ( null === $imported_group_id ) {

@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts;
 
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
+
 defined( 'ABSPATH' ) || exit;
 
 class Field_Meta implements Field_Meta_Interface {
@@ -23,7 +25,7 @@ class Field_Meta implements Field_Meta_Interface {
 	private bool $is_group;
 	private ?Field_Meta_Interface $field_meta;
 	/**
-	 * @var string|string[]
+	 * @var mixed
 	 */
 	private $default_value;
 	/**
@@ -126,7 +128,7 @@ class Field_Meta implements Field_Meta_Interface {
 	}
 
 	/**
-	 * @return string|string[]
+	 * @return mixed
 	 */
 	public function get_default_value() {
 		return $this->default_value;
@@ -175,7 +177,7 @@ class Field_Meta implements Field_Meta_Interface {
 	}
 
 	/**
-	 * @param array<string|int,mixed> $choices
+	 * @param mixed[] $choices
 	 */
 	public function set_choices( array $choices ): void {
 		foreach ( $choices as $key => $value ) {
@@ -184,7 +186,7 @@ class Field_Meta implements Field_Meta_Interface {
 				continue;
 			}
 
-			$this->choices[ (string) $key ] = (string) $value;
+			$this->choices[ string( $key ) ] = string( $value );
 		}
 	}
 
@@ -205,7 +207,7 @@ class Field_Meta implements Field_Meta_Interface {
 	}
 
 	/**
-	 * @param string|string[] $default_value
+	 * @param mixed $default_value
 	 */
 	public function set_default_value( $default_value ): void {
 		$this->default_value = $default_value;

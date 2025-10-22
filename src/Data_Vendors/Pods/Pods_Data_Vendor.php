@@ -36,6 +36,7 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Pods_Migrate_Packages;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -144,7 +145,10 @@ class Pods_Data_Vendor extends Data_Vendor {
 				$date_time_type = $this->get_string_arg( 'datetime_type', $data );
 
 				if ( 'wp' === $date_time_type ) {
-					return get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+					$date_format = get_option( 'date_format' );
+					$time_format = get_option( 'time_format' );
+
+					return sprintf( '%s %s', string( $date_format ), string( $time_format ) );
 				}
 
 				$display_format = $this->get_string_arg( 'datetime_format', $data );
@@ -172,9 +176,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 				if ( 'wp' === $date_type ) {
 					$format = get_option( 'date_format' );
 
-					return true === is_string( $format ) ?
-						$format :
-						'';
+					return string( $format );
 				}
 
 				$display_format = $this->get_string_arg( 'date_format', $data );
@@ -186,9 +188,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 				if ( 'wp' === $time_type ) {
 					$format = get_option( 'time_format' );
 
-					return true === is_string( $format ) ?
-						$format :
-						'';
+					return string( $format );
 				}
 
 				$display_time_format = '24' === $time_type ?
@@ -240,7 +240,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @return array<string,string>
+	 * @return mixed[]
 	 */
 	protected function get_dynamic_choices( string $pick_object ): array {
 		$pick_related_objects = $this->get_pick_related_objects();
@@ -263,7 +263,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 	/**
 	 * @param array<string,mixed> $data
 	 *
-	 * @return array<string,string>
+	 * @return mixed[]
 	 */
 	protected function get_choices( array $data ): array {
 		$pick_object = $this->get_string_arg( 'pick_object', $data );
@@ -601,7 +601,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<string,mixed> $data
+	 * @param mixed[] $data
 	 */
 	public function fill_field_meta( Field_Meta_Interface $field_meta, array $data = array() ): void {
 		if ( array() === $data ) {
@@ -794,7 +794,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 	 * Exports of the whole pod
 	 * (as the group is dependent part, and won't be exported if the pod is missing)
 	 *
-	 * @return array<string, mixed>|null
+	 * @return mixed[]|null
 	 */
 	public function get_group_export_data( string $group_id ): ?array {
 		$pod = $this->get_pod_object_by_group_id( $group_id );
@@ -860,8 +860,8 @@ class Pods_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<int|string, mixed> $group_data
-	 * @param array<string, mixed> $meta_data
+	 * @param mixed[] $group_data
+	 * @param mixed[] $meta_data
 	 */
 	public function import_group( array $group_data, array $meta_data ): ?string {
 		if ( false === class_exists( 'Pods_Migrate_Packages' ) ||

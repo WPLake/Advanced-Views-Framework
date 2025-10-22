@@ -75,11 +75,12 @@ class Post_Selections_Cpt extends Cpt {
 
 	public function get_title_placeholder( string $title ): string {
 		$screen = get_current_screen()->post_type ?? '';
-		if ( self::NAME !== $screen ) {
-			return $title;
+
+		if ( $this->get_cpt_name() === $screen ) {
+			return __( 'Name your Card here (required)', 'acf-views' );
 		}
 
-		return __( 'Name your Card here (required)', 'acf-views' );
+		return $title;
 	}
 
 	/**
@@ -104,7 +105,7 @@ class Post_Selections_Cpt extends Cpt {
 			$restored_message .= ' ' . wp_post_revision_title( $revision_id, false );
 		}
 
-		$messages[ self::NAME ] = array(
+		$messages[ $this->get_cpt_name() ] = array(
 			0  => '', // Unused. Messages start at index 1.
 			1  => __( 'Card updated.', 'acf-views' ),
 			2  => __( 'Custom field updated.', 'acf-views' ),

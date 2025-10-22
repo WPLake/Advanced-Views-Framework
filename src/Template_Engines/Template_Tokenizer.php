@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template_Engines;
 
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
+
 defined( 'ABSPATH' ) || exit;
 
 class Template_Tokenizer {
@@ -137,14 +139,10 @@ class Template_Tokenizer {
 	}
 
 	protected function extract_sub_field_id( string &$field_id ): string {
-		$field_id = explode( '.', $field_id );
+		$ids = explode( '.', $field_id );
 
-		$sub_field_id = count( $field_id ) > 1 ?
-			$field_id[1] :
-			'';
+		$field_id = $ids[0];
 
-		$field_id = $field_id[0];
-
-		return $sub_field_id;
+		return string( $ids, 1 );
 	}
 }

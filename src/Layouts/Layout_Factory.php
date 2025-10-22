@@ -88,8 +88,8 @@ class Layout_Factory extends Instance_Factory {
 	}
 
 	/**
-	 * @param array<string,mixed> $custom_arguments
-	 * @param array<string|int,mixed>|null $local_data
+	 * @param mixed[] $custom_arguments
+	 * @param mixed[]|null $local_data
 	 */
 	public function make_and_print_html(
 		Source $source,

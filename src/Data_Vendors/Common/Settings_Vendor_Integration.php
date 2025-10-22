@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings_Creator;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
@@ -20,6 +20,7 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -61,7 +62,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	abstract protected function get_vendor_post_type(): string;
 
 	/**
-	 * @return array<int,array<string,mixed>>
+	 * @return mixed[]
 	 */
 	abstract protected function get_group_fields( WP_Post $wp_post ): array;
 
@@ -138,7 +139,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	}
 
 	/**
-	 * @param array<string,mixed> $field
+	 * @param mixed[] $field
 	 * @param string[] $supported_field_types
 	 */
 	protected function add_item_to_view(
@@ -328,7 +329,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	}
 
 	/**
-	 * @param array<string,mixed> $field
+	 * @param mixed[] $field
 	 */
 	protected function get_group_key_by_from_post( WP_Post $wp_post, array $field ): string {
 		return $this->data_vendor->get_group_key( $wp_post->post_name );
@@ -395,12 +396,14 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 				// get group field key if at least one field is present
 				// (e.g. Pods requires a field data to get the '_pod_name' part).
 				if ( count( $group_fields ) > 0 ) {
-					$group_key = $this->get_group_key_by_from_post( $from_post, $group_fields[0] );
+					$group_key = $this->get_group_key_by_from_post( $from_post, arr( $group_fields[0] ) );
 					// Leave global group filter empty, so beginners can easily mix fields from different groups.
 					// $view_data->group = $group_key;.
 				}
 
 				foreach ( $group_fields as $field ) {
+					$field = arr( $field );
+
 					$this->add_item_to_view(
 						$group_key,
 						$field,

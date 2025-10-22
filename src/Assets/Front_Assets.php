@@ -156,8 +156,8 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		$css_rules = array();
 
 		foreach ( $matches as $match ) {
-			$selector = trim( $match[1] ?? '' );
-			$rules    = trim( $match[2] ?? '' );
+			$selector = trim( $match[1] );
+			$rules    = trim( $match[2] );
 
 			$global_selector = $prefix . $selector;
 
@@ -196,8 +196,8 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		$media_rules = array();
 		foreach ( $media_queries as $media_query ) {
-			$media_condition = trim( $media_query[1] ?? '' );
-			$media_content   = trim( $media_query[2] ?? '' );
+			$media_condition = trim( $media_query[1] );
+			$media_content   = trim( $media_query[2] );
 
 			$media_rules[ $media_condition ] ??= '';
 			$media_rules[ $media_condition ]  .= $media_content;

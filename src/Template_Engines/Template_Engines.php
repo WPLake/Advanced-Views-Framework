@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_Filesystem_Base;
@@ -114,16 +115,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 	// public for tests only.
 	public function get_wp_filesystem(): WP_Filesystem_Base {
 		if ( null === $this->wp_filesystem_base ) {
-			global $wp_filesystem;
-
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-
-			WP_Filesystem();
-
-			/**
-			 * @var WP_Filesystem_Base $wp_filesystem
-			 */
-			$this->wp_filesystem_base = $wp_filesystem;
+			$this->wp_filesystem_base = WP_Filesystem_Factory::get_wp_filesystem();
 		}
 
 		return $this->wp_filesystem_base;

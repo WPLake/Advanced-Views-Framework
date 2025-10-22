@@ -35,6 +35,9 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use RWMB_Field;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -168,7 +171,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 					'';
 				// hidden type doesn't have label.
 				$name  = 'hidden' !== $field_type ?
-					$field['name'] :
+					string( $field, 'name' ) :
 					__( 'Hidden', 'acf-views' );
 				$value = sprintf( '%s (%s%s)', $name, $repeatable_field, $field_type );
 
@@ -297,6 +300,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		if ( true === $field_meta->is_repeater() ) {
 			foreach ( $raw_value as $raw_row ) {
 				$formatted_row = array();
+				$raw_row       = arr( $raw_row );
 
 				foreach ( $item_settings->repeater_fields as $repeater_field ) {
 					$repeater_field_id   = $repeater_field->get_field_meta()->get_field_id();
@@ -496,7 +500,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<string,mixed> $data
+	 * @param mixed[] $data
 	 */
 	public function fill_field_meta( Field_Meta_Interface $field_meta, array $data = array() ): void {
 		if ( array() === $data ) {
@@ -638,7 +642,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 						null;
 				} else {
 					// self repeatable maps can't be read via rwmb_get_value - https://support.metabox.io/topic/bug-clonable-map-field-not-displaying-data/.
-					$value = get_post_meta( $source_id, $field_id, true );
+					$value = get_post_meta( int( $source_id ), $field_id, true );
 				}
 			} else {
 				$value = false !== function_exists( 'mb_get_block_field' ) ?
@@ -660,7 +664,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 				 * Instead of looping through each field and formatting it, it returns HTML for the whole array as single string.
 				 * Note: get_post_meta() works with clonable map, while rwmb_get_value not - https://support.metabox.io/topic/bug-clonable-map-field-not-displaying-data/
 				 */
-				$value = get_post_meta( $source_id, $field_id, true );
+				$value = get_post_meta( int( $source_id ), $field_id, true );
 
 				// It's impossible to format the group value without the item data.
 				$value = null !== $item_settings ?
@@ -758,7 +762,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @return array<string, mixed>|null
+	 * @return mixed[]|null
 	 */
 	public function get_group_export_data( string $group_id ): ?array {
 		$post = get_page_by_path( $group_id, OBJECT, 'meta-box' );
@@ -791,8 +795,8 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<int|string, mixed> $group_data
-	 * @param array<string, mixed> $meta_data
+	 * @param mixed[] $group_data
+	 * @param mixed[] $meta_data
 	 */
 	public function import_group( array $group_data, array $meta_data ): ?string {
 		if ( false === function_exists( 'rwmb_get_registry' ) ) {
@@ -826,7 +830,6 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			$group_data['ID'] = $existing_post->ID;
 		}
 
-		// @phpstan-ignore-next-line
 		$post_id = wp_insert_post( $group_data, true );
 
 		if ( true === is_wp_error( $post_id ) ) {

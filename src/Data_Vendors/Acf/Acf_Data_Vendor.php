@@ -40,6 +40,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -127,7 +128,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 
 			if ( false === $is_meta_format ) {
 				if ( false === $is_field_name_as_label ) {
-					$value = $group_field['label'] . ' (' . $type . ')';
+					$value = string( $group_field, 'label' ) . ' (' . $type . ')';
 
 					if ( true === in_array( $type, $pro_stub_field_types, true ) ) {
 						$value .= ' ' . $this->get_pro_only_label();
@@ -287,10 +288,10 @@ class Acf_Data_Vendor extends Data_Vendor {
 		$group_choices = array();
 
 		foreach ( $this->get_groups() as $acf_group ) {
-			$key = $this->get_string_arg( 'key', $acf_group );
+			$key = string( $acf_group, 'key' );
 
 			$group_key                   = $this->get_group_key( $key );
-			$group_choices[ $group_key ] = $acf_group['title'] . ' ' . $acf_source_label;
+			$group_choices[ $group_key ] = string( $acf_group, 'title' ) . ' ' . $acf_source_label;
 		}
 
 		return $group_choices;
@@ -338,7 +339,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<string,mixed> $data
+	 * @param mixed[] $data
 	 */
 	public function fill_field_meta( Field_Meta_Interface $field_meta, array $data = array() ): void {
 		if ( false === function_exists( 'get_field_object' ) ) {
@@ -566,7 +567,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @return array<string, mixed>|null
+	 * @return mixed[]|null
 	 */
 	public function get_group_export_data( string $group_id ): ?array {
 		if ( false === function_exists( 'acf_get_field_group' ) ||
@@ -621,8 +622,8 @@ class Acf_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<int|string, mixed> $group_data
-	 * @param array<string, mixed> $meta_data
+	 * @param mixed[] $group_data
+	 * @param mixed[] $meta_data
 	 */
 	public function import_group( array $group_data, array $meta_data ): ?string {
 		if ( false === function_exists( 'acf_get_field_group' ) ||

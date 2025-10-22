@@ -162,9 +162,6 @@ class Db_Management extends Action {
 
 		// suppress the renaming, it's going to break everything at this step.
 		$this->is_renaming_suppressed = true;
-		/**
-		 * @var int|WP_Error $post_id
-		 */
 		$post_id                      = wp_insert_post( $args, true );
 		$this->is_renaming_suppressed = false;
 

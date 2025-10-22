@@ -4,9 +4,10 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents;
 
-use Org\Wplake\Advanced_Views\Settings;
-
 defined( 'ABSPATH' ) || exit;
+
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Settings;
 
 class Cpt_Settings_Creator extends Hookable {
 	private Settings $settings;

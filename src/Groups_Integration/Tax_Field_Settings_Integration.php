@@ -50,18 +50,18 @@ class Tax_Field_Settings_Integration extends Acf_Integration {
 		$taxonomy_names = get_taxonomies();
 
 		foreach ( $taxonomy_names as $taxonomy_name ) {
-			/**
-			 * @var WP_Term[] $terms
-			 */
 			$terms = get_terms(
 				array(
 					'taxonomy'   => $taxonomy_name,
 					'hide_empty' => false,
 				)
 			);
-			foreach ( $terms as $term ) {
-				$full_tax_id                  = Tax_Field_Settings::create_key( $taxonomy_name, $term->term_id );
-				$term_choices[ $full_tax_id ] = $term->name;
+
+			if ( is_array( $terms ) ) {
+				foreach ( $terms as $term ) {
+					$full_tax_id                  = Tax_Field_Settings::create_key( $taxonomy_name, $term->term_id );
+					$term_choices[ $full_tax_id ] = $term->name;
+				}
 			}
 		}
 

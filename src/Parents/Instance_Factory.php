@@ -27,9 +27,9 @@ abstract class Instance_Factory {
 	}
 
 	/**
-	 * @param array<string,mixed>|null $twig_variables
+	 * @param mixed[]|null $twig_variables
 	 *
-	 * @return array<string,mixed>
+	 * @return mixed[]
 	 */
 	public function get_autocomplete_variables( string $unique_id, ?array $twig_variables = null ): array {
 		$twig_variables_for_validation = $twig_variables ?? $this->get_template_variables_for_validation( $unique_id );

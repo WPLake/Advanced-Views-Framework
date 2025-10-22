@@ -51,7 +51,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 	}
 
 	/**
-	 * @return array<int,array<string,mixed>>
+	 * @return mixed[]
 	 */
 	protected function get_group_fields( WP_Post $wp_post ): array {
 		if ( false === function_exists( 'pods_api' ) ) {
@@ -112,7 +112,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 	}
 
 	/**
-	 * @param array<string,mixed> $field
+	 * @param mixed[] $field
 	 */
 	protected function get_group_key_by_from_post( WP_Post $wp_post, array $field ): string {
 		// filled in $this->getGroupFields() method.

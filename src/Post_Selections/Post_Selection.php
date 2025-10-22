@@ -9,6 +9,8 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -129,14 +131,10 @@ class Post_Selection extends Instance {
 		array $custom_arguments = array()
 	): void {
 		$posts_data         = $this->query_builder->get_posts_data( $this->post_selection_settings, $page_number, $custom_arguments );
-		$this->pages_amount = key_exists( 'pagesAmount', $posts_data ) &&
-								is_int( $posts_data['pagesAmount'] ) ?
-			$posts_data['pagesAmount'] :
-			0;
-		$this->post_ids     = key_exists( 'postIds', $posts_data ) &&
-								is_array( $posts_data['postIds'] ) ?
-			$posts_data['postIds'] :
-			array();
+		$this->pages_amount = int( $posts_data, 'pagesAmount' );
+
+		$post_ids       = arr( $posts_data, 'postIds' );
+		$this->post_ids = array_map( fn( $post_id )=>int( $post_id ), $post_ids );
 
 		ob_start();
 		$this->post_selection_markup->print_markup( $this->post_selection_settings, $is_load_more );

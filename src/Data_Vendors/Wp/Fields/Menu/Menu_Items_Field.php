@@ -13,6 +13,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -169,7 +170,7 @@ class Menu_Items_Field extends Markup_Field {
 			(int) $posts_page_id :
 			0;
 
-		$object_id = (int) ( $wp_post->object_id ?? 0 );
+		$object_id = int( $wp_post, 'object_id' );
 
 		// active if the current menu is for current page, or
 		// the current menu for blog and the current page is post or

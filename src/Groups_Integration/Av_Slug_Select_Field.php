@@ -23,7 +23,6 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 
 		private Layouts_Settings_Storage $views_data_storage;
 
-		// @phpstan-ignore-next-line
 		public function __construct( Layouts_Settings_Storage $views_data_storage ) {
 			// @phpstan-ignore-next-line
 			$this->public             = false;

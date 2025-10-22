@@ -76,7 +76,7 @@ interface Data_Vendor_Interface {
 	public function is_empty_value_supported_in_markup( string $field_type ): bool;
 
 	/**
-	 * @param array<string,mixed> $data
+	 * @param mixed[] $data
 	 */
 	public function fill_field_meta( Field_Meta_Interface $field_meta, array $data = array() ): void;
 
@@ -117,7 +117,7 @@ interface Data_Vendor_Interface {
 	public function get_group_link_by_group_id( string $group_id ): ?array;
 
 	/**
-	 * @return array<string, mixed>|null
+	 * @return mixed[]|null
 	 */
 	public function get_group_export_data( string $group_id ): ?array;
 
@@ -129,8 +129,8 @@ interface Data_Vendor_Interface {
 	public function get_export_meta_data( array $groups_data ): array;
 
 	/**
-	 * @param array<int|string, mixed> $group_data
-	 * @param array<string, mixed> $meta_data
+	 * @param mixed[] $group_data
+	 * @param mixed[] $meta_data
 	 */
 	public function import_group( array $group_data, array $meta_data ): ?string;
 }

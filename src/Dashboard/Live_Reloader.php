@@ -99,8 +99,8 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 		$media_rules = array();
 		foreach ( $media_queries as $media_query ) {
-			$media_condition = trim( $media_query[1] ?? '' );
-			$media_content   = trim( $media_query[2] ?? '' );
+			$media_condition = trim( $media_query[1] );
+			$media_content   = trim( $media_query[2] );
 
 			$media_rules[ $media_condition ] ??= '';
 			$media_rules[ $media_condition ]  .= $media_content;

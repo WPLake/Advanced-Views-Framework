@@ -4,21 +4,21 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups;
 
+defined( 'ABSPATH' ) || exit;
+
 use Exception;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
-
-defined( 'ABSPATH' ) || exit;
-
 class Post_Selection_Settings extends Cpt_Settings {
 	// to fix the group name in case the class name changes.
 	const CUSTOM_GROUP_NAME = self::GROUP_NAME_PREFIX . 'acf-card-data';
 	const LOCATION_RULES    = array(
 		array(
-			'post_type == ' . Post_Selections_Cpt::NAME,
+			// todo it's hardcoded.
+			'post_type == acf_cards',
 		),
 	);
 

@@ -22,6 +22,7 @@ use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use WP_Post;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -76,12 +77,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	/**
-     * @param WP_REST_Request $wprest_request
-     *
-     * @return array<string,mixed>
-     */
-    // @phpstan-ignore-next-line
-    abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
+	 * @param WP_REST_Request $wprest_request
+	 *
+	 * @return array<string,mixed>
+	 */
+	// @phpstan-ignore-next-line
+	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces
@@ -98,10 +99,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// 1. remove present pieces from the actual list (to avoid override)
 		// 2. remove absent pieces from the code
 		foreach ( $current_pieces as $current_piece ) {
-			if ( count( $current_piece ) < 3 ) {
-				continue;
-			}
-
 			$type     = trim( $current_piece[1] );
 			$name     = trim( $current_piece[2] );
 			$piece_id = $type . ':' . $name;
@@ -225,7 +222,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// in the 'saveToPostContent()' method using $wpdb that also has 'addslashes()',
 		// it means otherwise \" will be replaced with \\\" and it'll create double slashing issue (every saving amount of slashes before " will be increasing).
 
-		// @phpstan-ignore-next-line
 		$field_values = array_map( 'stripslashes_deep', $this->field_values );
 
 		// @phpstan-ignore-next-line
@@ -283,7 +279,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
 		if ( true === in_array( $field_name, array( $view_php_code_field, $card_php_code_field ), true ) ) {
-			$value = "<?php\n" . $value;
+			$value = "<?php\n" . string( $value );
 		}
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
@@ -299,6 +295,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			// also check to make sure it's array (can be empty string).
 			if ( in_array( $field_name, $validation_instance->getCloneFieldNames(), true ) &&
 				is_array( $value ) ) {
+				// @phpstan-ignore-next-line
 				$new_value          = Group::convertCloneField( $field_name, $value );
 				$this->field_values = array_merge( $this->field_values, $new_value );
 
@@ -378,6 +375,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 			$field_name_without_clone_prefix = substr( $field_name, strlen( $clone_prefix ) );
 
+			// @phpstan-ignore-next-line
 			$value = Group::convertCloneField( $field_name_without_clone_prefix, $value, false );
 
 			break;

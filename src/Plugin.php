@@ -48,14 +48,9 @@ class Plugin extends Hookable implements Hooks_Interface {
 	}
 
 	public static function get_theme_text_domain(): string {
-		/**
-		 * @var string|false $theme_text_domain
-		 */
 		$theme_text_domain = wp_get_theme()->get( 'TextDomain' );
 
-		return is_string( $theme_text_domain ) ?
-			$theme_text_domain :
-			'';
+		return string( $theme_text_domain );
 	}
 
 	public static function get_label_translation( string $label, string $text_domain = '' ): string {
@@ -101,7 +96,9 @@ class Plugin extends Hookable implements Hooks_Interface {
 		$field['instructions'] = $instructions;
 
 		if ( 'tab' === $type ) {
-			$field['class'] = ( $field['class'] ?? '' ) . ' acf-views-tab__pro';
+			$field['class'] = string( $field, 'class' );
+
+			$field['class'] .= ' acf-views-tab__pro';
 		} else {
 			// labels do not support HTML, so we can't use a link.
 			$field['label'] = sprintf(
@@ -385,9 +382,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 								$this->is_pro_field_locked();
 
 		if ( $is_pro_field ) {
-			if ( ! key_exists( 'class', $wrapper ) ) {
-				$wrapper['class'] = '';
-			}
+			$wrapper['class'] = string( $wrapper, 'class' );
 
 			$wrapper['class'] .= ' acf-views-pro';
 		}
