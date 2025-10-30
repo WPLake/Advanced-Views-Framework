@@ -20,14 +20,14 @@ final class Post_Selections_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf_card';
+		return 'avf_post_selection';
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public static function shortcodes(): array {
-		return array( self::shortcode(), 'acf_cards' );
+		return array( self::shortcode(), 'acf_cards', 'avf_card' );
 	}
 
 	public static function rest_route_names(): array {

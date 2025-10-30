@@ -20,6 +20,12 @@ use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Migration\Migrator;
+use Org\Wplake\Advanced_Views\Migration\Versions\Migration_1_6_0;
+use Org\Wplake\Advanced_Views\Migration\Versions\Migration_1_7_0;
+use Org\Wplake\Advanced_Views\Migration\Versions\Migration_2_0_0;
+use Org\Wplake\Advanced_Views\Migration\Versions\Migration_2_2_0;
+use Org\Wplake\Advanced_Views\Migration\Versions\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -104,7 +110,7 @@ $acf_views = new class() {
 	private Data_Vendors $data_vendors;
 	private Layout_Shortcode $layout_shortcode;
 	private Post_Selection_Shortcode $post_selection_shortcode;
-	private Upgrades $upgrades;
+	private Migrator $migrator;
 	private Automatic_Reports $automatic_reports;
 	private Logger $logger;
 	private Layouts_Pre_Built_Tab $layouts_pre_built_tab;
@@ -190,7 +196,7 @@ $acf_views = new class() {
 			$views_file_system,
 			$this->live_reloader_component
 		);
-		$this->upgrades                = new Upgrades(
+		$this->migrator                = new Upgrades(
 			$this->logger,
 			$this->plugin,
 			$this->settings,
@@ -278,7 +284,7 @@ $acf_views = new class() {
 			$this->layouts_settings_storage,
 			$layouts_settings_storage,
 			$this->data_vendors,
-			$this->upgrades,
+			$this->migrator,
 			$this->logger
 		);
 
@@ -380,7 +386,7 @@ $acf_views = new class() {
 			$this->post_selections_settings_storage,
 			$post_selections_settings_storage,
 			$this->data_vendors,
-			$this->upgrades,
+			$this->migrator,
 			$this->logger,
 			$this->layouts_pre_built_tab
 		);
@@ -482,7 +488,7 @@ $acf_views = new class() {
 		$dashboard             = new Dashboard( $this->plugin, $this->html, $demo_import );
 		$acf_internal_features = new Acf_Internal_Features( $this->plugin );
 		// late dependencies.
-		$this->upgrades->set_dependencies(
+		$this->migrator->set_dependencies(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage,
 			$this->layouts_cpt_save_actions,
@@ -549,7 +555,7 @@ $acf_views = new class() {
 		$demo_import->set_hooks( $current_screen );
 		$acf_internal_features->set_hooks( $current_screen );
 		// only after late dependencies were set.
-		$this->upgrades->set_hooks( $current_screen );
+
 		$this->automatic_reports->set_hooks( $current_screen );
 		$tools->set_hooks( $current_screen );
 		$admin_assets->set_hooks( $current_screen );
@@ -561,6 +567,20 @@ $acf_views = new class() {
 	private function bridge(): void {
 		Advanced_Views::$layout_renderer         = $this->layout_shortcode;
 		Advanced_Views::$post_selection_renderer = $this->post_selection_shortcode;
+	}
+
+	private function migration( Current_Screen $current_screen ): void {
+		$this->migrator->setup_migrations(
+			array(
+				new Migration_1_6_0(),
+				new Migration_2_2_0(),
+				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_1_7_0( $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
+				new Migration_2_0_0( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+			)
+		);
+
+		$this->migrator->set_hooks( $current_screen );
 	}
 
 	public function activation(): void {
@@ -608,6 +628,7 @@ $acf_views = new class() {
 		$this->integration( $current_screen );
 		$this->others( $current_screen );
 		$this->bridge();
+		$this->migration( $current_screen );
 	}
 
 	public function init(): void {

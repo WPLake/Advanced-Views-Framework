@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use WP_Post;
 use WP_Query;
-
-defined( 'ABSPATH' ) || exit;
 
 class Db_Management extends Action {
 	private File_System $file_system;
@@ -76,20 +76,7 @@ class Db_Management extends Action {
 		// 2. fill post ids for the items which are present in the DB
 		// (if FS storage is disabled, then it'll be the only source)
 
-		$query = new WP_Query(
-			array(
-				'post_type'      => $this->post_type,
-				// do not consider 'trash', as no FS option is available for them
-				// (and we don't want to show these items in the field select lists)
-				// we act with all the other statuses as with published.
-				'post_status'    => array( 'publish', 'future', 'draft', 'pending', 'private' ),
-				'posts_per_page' => - 1,
-			)
-		);
-		/**
-		 * @var WP_Post[] $posts
-		 */
-		$posts = $query->get_posts();
+		$posts = $this->get_all_posts();
 
 		foreach ( $posts as $post ) {
 			// ignore posts with broken slugs (auto-save or something else).
@@ -365,5 +352,27 @@ class Db_Management extends Action {
 				'unique_id' => $unique_id,
 			)
 		);
+	}
+
+	/**
+	 * @return WP_Post[]
+	 */
+	public function get_all_posts(): array {
+		$query = new WP_Query(
+			array(
+				'post_type'      => $this->post_type,
+				// do not consider 'trash', as no FS option is available for them
+				// (and we don't want to show these items in the field select lists)
+				// we act with all the other statuses as with published.
+				'post_status'    => array( 'publish', 'future', 'draft', 'pending', 'private' ),
+				'posts_per_page' => - 1,
+			)
+		);
+		/**
+		 * @var WP_Post[] $posts
+		 */
+		$posts = $query->get_posts();
+
+		return $posts;
 	}
 }

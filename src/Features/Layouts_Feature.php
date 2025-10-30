@@ -20,14 +20,14 @@ final class Layouts_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf_view';
+		return 'avf_layout';
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public static function shortcodes(): array {
-		return array( self::shortcode(), 'acf_views' );
+		return array( self::shortcode(), 'acf_views', 'avf_view' );
 	}
 
 	public static function rest_route_names(): array {
