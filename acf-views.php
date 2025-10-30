@@ -179,7 +179,7 @@ $acf_views = new class() {
 			$this->logger,
 			$cards_file_system,
 			new Post_Selection_Fs_Fields(),
-			new Db_Management( $this->logger, $cards_file_system, Post_Selections_Feature::cpt_name(), Post_Selections_Feature::slug_prefix() ),
+			new Db_Management( $this->logger, $cards_file_system, new Post_Selections_Feature() ),
 			$this->post_selection_settings
 		);
 
@@ -188,7 +188,7 @@ $acf_views = new class() {
 			$this->logger,
 			$views_file_system,
 			new Fs_Fields(),
-			new Db_Management( $this->logger, $views_file_system, Layouts_Feature::cpt_name(), Layouts_Feature::slug_prefix() ),
+			new Db_Management( $this->logger, $views_file_system, new Layouts_Feature() ),
 			$this->layout_settings
 		);
 
@@ -276,8 +276,7 @@ $acf_views = new class() {
 		$db_management               = new Db_Management(
 			$this->logger,
 			$file_system,
-			Layouts_Feature::cpt_name(),
-			'view_',
+			new Layouts_Feature(),
 			true
 		);
 		$layouts_settings_storage    = new Layouts_Settings_Storage(
@@ -378,8 +377,7 @@ $acf_views = new class() {
 		$db_management                    = new Db_Management(
 			$this->logger,
 			$file_system,
-			Post_Selections_Feature::cpt_name(),
-			'card_',
+			new Post_Selections_Feature(),
 			true
 		);
 		$post_selections_settings_storage = new Post_Selections_Settings_Storage(
@@ -589,7 +587,7 @@ $acf_views = new class() {
 				// v3.
 				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_3_3_0( $this->layouts_settings_storage, $this->post_selections_settings_storage, $this->logger, $this->plugin ),
-				new Migration_3_8_0(),
+				new Migration_3_8_0( $this->layouts_settings_storage ),
 			)
 		);
 	}

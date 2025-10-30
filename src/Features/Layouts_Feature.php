@@ -8,11 +8,11 @@ defined( 'ABSPATH' ) || exit;
 
 final class Layouts_Feature implements Plugin_Feature {
 	public static function cpt_name(): string {
-		return 'acf_views';
+		return 'avf-layout';
 	}
 
 	public static function slug_prefix(): string {
-		return 'view_';
+		return 'layout-';
 	}
 
 	public static function folder_name(): string {
@@ -20,7 +20,7 @@ final class Layouts_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf_layout';
+		return 'avf-layout';
 	}
 
 	/**
@@ -31,6 +31,6 @@ final class Layouts_Feature implements Plugin_Feature {
 	}
 
 	public static function rest_route_names(): array {
-		return array( 'view' );
+		return array( 'layout', 'view' );
 	}
 }

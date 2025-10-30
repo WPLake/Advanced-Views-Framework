@@ -8,11 +8,11 @@ defined( 'ABSPATH' ) || exit;
 
 final class Post_Selections_Feature implements Plugin_Feature {
 	public static function cpt_name(): string {
-		return 'acf_cards';
+		return 'avf-post-selection';
 	}
 
 	public static function slug_prefix(): string {
-		return 'card_';
+		return 'post-selection-';
 	}
 
 	public static function folder_name(): string {
@@ -20,7 +20,7 @@ final class Post_Selections_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf_post_selection';
+		return 'avf-post-selection';
 	}
 
 	/**
@@ -31,6 +31,6 @@ final class Post_Selections_Feature implements Plugin_Feature {
 	}
 
 	public static function rest_route_names(): array {
-		return array( 'card' );
+		return array( 'post-selection', 'card' );
 	}
 }
