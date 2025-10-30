@@ -137,7 +137,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.1 (2025-) =
+= 3.8.0 (2025-) =
 - Better entity names: View => Layout, Card => Post Selection
 
 = 3.7.20 (2025-09-19) =

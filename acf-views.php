@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Views Lite
  * Plugin URI: https://wplake.org/advanced-views-lite/
  * Description: Effortlessly display WordPress posts, custom fields, and WooCommerce data.
- * Version: 3.7.21
+ * Version: 3.7.22
  * Author: WPLake
  * Author URI: https://wplake.org/advanced-views-lite/
  * Text Domain: acf-views
@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_3_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
@@ -588,6 +589,7 @@ $acf_views = new class() {
 				// v3.
 				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_3_3_0( $this->layouts_settings_storage, $this->post_selections_settings_storage, $this->logger, $this->plugin ),
+				new Migration_3_8_0(),
 			)
 		);
 	}
