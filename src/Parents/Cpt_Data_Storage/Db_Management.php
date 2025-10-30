@@ -90,7 +90,7 @@ class Db_Management extends Action {
 		// 3. trashed posts
 		// store separately, as we don't want these items to be listed in the field select lists
 
-		$query = new WP_Query(
+		$wp_query = new WP_Query(
 			array(
 				'post_type'      => $this->post_type,
 				'post_status'    => 'trash',
@@ -101,7 +101,7 @@ class Db_Management extends Action {
 		/**
 		 * @var WP_Post[] $posts
 		 */
-		$posts = $query->get_posts();
+		$posts = $wp_query->get_posts();
 
 		foreach ( $posts as $post ) {
 			$this->trashed_post_ids[ $post->post_name ] = $post->ID;
@@ -358,7 +358,7 @@ class Db_Management extends Action {
 	 * @return WP_Post[]
 	 */
 	public function get_all_posts(): array {
-		$query = new WP_Query(
+		$wp_query = new WP_Query(
 			array(
 				'post_type'      => $this->post_type,
 				// do not consider 'trash', as no FS option is available for them
@@ -371,7 +371,7 @@ class Db_Management extends Action {
 		/**
 		 * @var WP_Post[] $posts
 		 */
-		$posts = $query->get_posts();
+		$posts = $wp_query->get_posts();
 
 		return $posts;
 	}

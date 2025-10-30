@@ -51,7 +51,7 @@ class Acf_Integration extends Hookable implements Hooks_Interface {
 		// 'wp_loaded' is the first one from which MetaBox fields info become available.
 		self::add_action(
 			'wp_loaded',
-			function () {
+			function (): void {
 				$this->set_conditional_field_rules();
 			}
 		);

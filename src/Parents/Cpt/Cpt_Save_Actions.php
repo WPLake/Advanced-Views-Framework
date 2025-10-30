@@ -77,12 +77,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	/**
-	 * @param WP_REST_Request $wprest_request
-	 *
-	 * @return array<string,mixed>
-	 */
-	// @phpstan-ignore-next-line
-	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
+     * @param WP_REST_Request $wprest_request
+     *
+     * @return array<string,mixed>
+     */
+    // @phpstan-ignore-next-line
+    abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces

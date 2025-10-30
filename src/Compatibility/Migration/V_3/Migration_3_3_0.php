@@ -5,13 +5,10 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_3;
 
 defined( 'ABSPATH' ) || exit;
-
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 

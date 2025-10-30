@@ -33,7 +33,7 @@ class Migrator extends Hookable implements Hooks_Interface {
 		$this->migrations = array();
 	}
 
-	protected static function is_version_lower( string $version, string $target_version ): bool {
+	public static function is_version_lower( string $version, string $target_version ): bool {
 		// empty means the very first run, no data is available, nothing to fix.
 		if ( '' === $version ) {
 			return false;
@@ -96,11 +96,11 @@ class Migrator extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	public function migrate_cpt_settings( string $previous_version, Cpt_Settings $settings ): void {
+	public function migrate_cpt_settings( string $previous_version, Cpt_Settings $cpt_settings ): void {
 		$migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $migrations as $migration ) {
-			$migration->migrate_cpt_settings( $settings );
+			$migration->migrate_cpt_settings( $cpt_settings );
 		}
 	}
 

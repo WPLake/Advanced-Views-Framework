@@ -11,10 +11,7 @@ use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engine;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 final class Migration_2_4_0 extends Migration {
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
