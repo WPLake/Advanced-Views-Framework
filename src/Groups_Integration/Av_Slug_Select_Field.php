@@ -21,12 +21,12 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 	class Av_Slug_Select_Field extends acf_field_select {
 		use Safe_Array_Arguments;
 
-		private Layouts_Settings_Storage $views_data_storage;
+		private Layouts_Settings_Storage $layouts_settings_storage;
 
-		public function __construct( Layouts_Settings_Storage $views_data_storage ) {
+		public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
 			// @phpstan-ignore-next-line
 			$this->public             = false;
-			$this->views_data_storage = $views_data_storage;
+			$this->layouts_settings_storage = $layouts_settings_storage;
 
 			// @phpstan-ignore-next-line
 			parent::__construct();
@@ -67,7 +67,7 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 			$value = $this->get_string_arg( 'value', $field );
 
 			if ( '' !== $value ) {
-				$title                      = $this->views_data_storage->get_unique_id_with_name_items_list()[ $value ] ?? '';
+				$title                      = $this->layouts_settings_storage->get_unique_id_with_name_items_list()[ $value ] ?? '';
 				$field['choices'][ $value ] = $title;
 			}
 
@@ -97,12 +97,10 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 
 			$filtered_items = '' !== $search_term ?
 				array_filter(
-					$this->views_data_storage->get_unique_id_with_name_items_list(),
-					function ( $name ) use ( $search_term ) {
-						return false !== stripos( $name, $search_term );
-					}
+					$this->layouts_settings_storage->get_unique_id_with_name_items_list(),
+					fn($name) => false !== stripos( $name, $search_term )
 				) :
-				$this->views_data_storage->get_unique_id_with_name_items_list();
+				$this->layouts_settings_storage->get_unique_id_with_name_items_list();
 
 			$paginated_items = $this->apply_array_pagination(
 				$filtered_items,

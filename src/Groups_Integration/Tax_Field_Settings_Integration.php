@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -192,7 +192,7 @@ abstract class Data_Vendor extends Action implements Data_Vendor_Interface {
 	}
 
 	/**
-	 * @param array<string, mixed> $groups_data
+	 * @param mixed[] $groups_data
 	 *
 	 * @return array<string, mixed>
 	 */

@@ -844,7 +844,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 	}
 
 	/**
-	 * @param array<string, mixed> $groups_data
+	 * @param mixed[] $groups_data
 	 *
 	 * @return array<string, mixed>
 	 */

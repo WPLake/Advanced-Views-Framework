@@ -56,16 +56,16 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 			return $this->items[ $unique_id ];
 		}
 
-		$view_data = $this->layout_settings->getDeepClone();
+		$layout_settings = $this->layout_settings->getDeepClone();
 
-		$this->load( $view_data, $unique_id, $is_force_from_db, $is_force_from_fs );
+		$this->load( $layout_settings, $unique_id, $is_force_from_db, $is_force_from_fs );
 
 		// cache only existing items.
-		if ( true === $view_data->isLoaded() ) {
-			$this->items[ $unique_id ] = $view_data;
+		if ( true === $layout_settings->isLoaded() ) {
+			$this->items[ $unique_id ] = $layout_settings;
 		}
 
-		return $view_data;
+		return $layout_settings;
 	}
 
 	public function create_new(

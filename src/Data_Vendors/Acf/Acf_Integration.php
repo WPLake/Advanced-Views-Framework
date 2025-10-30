@@ -27,7 +27,7 @@ class Acf_Integration extends Settings_Vendor_Integration {
 	}
 
 	/**
-	 * @param array<string,mixed> $field
+	 * @param mixed[] $field
 	 */
 	protected function fill_field_id_and_type( array $field, string &$field_id, string &$field_type ): void {
 		$field_id = string( $field, 'key' );

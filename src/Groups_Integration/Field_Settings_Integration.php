@@ -76,13 +76,11 @@ class Field_Settings_Integration extends Acf_Integration {
 
 		self::add_filter(
 			'acf/load_field/name=' . $acf_field_name,
-			function ( array $field ) use ( $acf_key, $target_choices ) {
-				return $this->set_conditional_rules_for_field(
+			fn(array $field) => $this->set_conditional_rules_for_field(
 					$field,
 					$acf_key,
 					$target_choices
-				);
-			}
+				)
 		);
 	}
 
@@ -98,13 +96,11 @@ class Field_Settings_Integration extends Acf_Integration {
 		foreach ( $masonry_fields as $masonry_field ) {
 			self::add_filter(
 				'acf/load_field/name=' . Field_Settings::getAcfFieldName( $masonry_field ),
-				function ( array $field ) {
-					return $this->set_conditional_rules_for_field(
+				fn(array $field) => $this->set_conditional_rules_for_field(
 						$field,
 						Field_Settings::getAcfFieldName( Field_Settings::FIELD_GALLERY_TYPE ),
 						array( 'masonry' ),
-					);
-				}
+					)
 			);
 		}
 
@@ -117,13 +113,11 @@ class Field_Settings_Integration extends Acf_Integration {
 		foreach ( $masonry_repeater_fields as $masonry_repeater_field ) {
 			self::add_filter(
 				'acf/load_field/name=' . Repeater_Field_Settings::getAcfFieldName( $masonry_repeater_field ),
-				function ( array $field ) {
-					return $this->set_conditional_rules_for_field(
+				fn(array $field) => $this->set_conditional_rules_for_field(
 						$field,
 						Repeater_Field_Settings::getAcfFieldName( Repeater_Field_Settings::FIELD_GALLERY_TYPE ),
 						array( 'masonry' ),
-					);
-				}
+					)
 			);
 		}
 

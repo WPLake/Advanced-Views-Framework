@@ -122,7 +122,7 @@ interface Data_Vendor_Interface {
 	public function get_group_export_data( string $group_id ): ?array;
 
 	/**
-	 * @param array<string, mixed> $groups_data
+	 * @param mixed[] $groups_data
 	 *
 	 * @return array<string, mixed>
 	 */
