@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,7 +19,7 @@ final class Migration_2_0_0 extends Migration {
 		$this->post_selections_cpt_save_actions = $post_selections_cpt_save_actions;
 	}
 
-	public function introduced_at_version(): string {
+	public function introduced_version(): string {
 		return '2.0.0';
 	}
 

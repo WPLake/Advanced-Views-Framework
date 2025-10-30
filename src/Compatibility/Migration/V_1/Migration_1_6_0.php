@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use WP_Post;
 
 final class Migration_1_6_0 extends Migration {
-	public function introduced_at_version(): string {
+	public function introduced_version(): string {
 		return '1.6.0';
 	}
 

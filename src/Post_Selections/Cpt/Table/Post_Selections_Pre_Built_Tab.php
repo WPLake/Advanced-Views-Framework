@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -12,7 +13,6 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Import_Result;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Upgrades;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 		Post_Selections_Settings_Storage $cards_data_storage,
 		Post_Selections_Settings_Storage $external_cards_data_storage,
 		Data_Vendors $data_vendors,
-		Upgrades $upgrades,
+		Migrator $migrator,
 		Logger $logger,
 		Layouts_Pre_Built_Tab $layouts_pre_built_tab
 	) {
@@ -35,7 +35,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 			$cards_data_storage,
 			$external_cards_data_storage,
 			$data_vendors,
-			$upgrades,
+			$migrator,
 			$logger
 		);
 

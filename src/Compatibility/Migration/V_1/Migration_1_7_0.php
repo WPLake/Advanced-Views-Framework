@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,7 +23,7 @@ final class Migration_1_7_0 extends Migration {
 		$this->layouts_cpt_save_actions = $layouts_cpt_save_actions;
 	}
 
-	public function introduced_at_version(): string {
+	public function introduced_version(): string {
 		return '1.7.0';
 	}
 

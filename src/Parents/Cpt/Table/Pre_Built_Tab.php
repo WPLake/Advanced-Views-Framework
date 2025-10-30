@@ -4,15 +4,15 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Upgrades;
-
-defined( 'ABSPATH' ) || exit;
 
 abstract class Pre_Built_Tab extends External_Storage_Tab {
 	use Safe_Array_Arguments;
@@ -37,10 +37,10 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		Cpt_Settings_Storage $cpt_data_storage,
 		Cpt_Settings_Storage $external_cpt_data_storage,
 		Data_Vendors $data_vendors,
-		Upgrades $upgrades,
+		Migrator $migrator,
 		Logger $logger
 	) {
-		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $upgrades, $logger );
+		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $migrator, $logger );
 
 		$this->cpt_settings_storage = $external_cpt_data_storage;
 		$this->pulling_unique_ids        = array();

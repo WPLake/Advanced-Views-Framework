@@ -4,6 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
+defined( 'ABSPATH' ) || exit;
+
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -11,9 +14,6 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Upgrades;
-
-defined( 'ABSPATH' ) || exit;
 
 abstract class External_Storage_Tab extends Cpt_Table_Tab {
 
@@ -22,21 +22,21 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Data_Vendors $data_vendors;
-	private Upgrades $upgrades;
+	private Migrator $migrator;
 	private Logger $logger;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Data_Vendors $data_vendors,
-		Upgrades $upgrades,
+		Migrator $migrator,
 		Logger $logger
 	) {
 		parent::__construct( $cpt_table );
 
 		$this->cpt_settings_storage = $cpt_settings_storage;
 		$this->data_vendors         = $data_vendors;
-		$this->upgrades             = $upgrades;
+		$this->migrator             = $migrator;
 		$this->logger               = $logger;
 	}
 
@@ -105,7 +105,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		$previous_plugin_version = $cpt_data->plugin_version;
 		// we don't need it for instances outside of Git repository.
 		$cpt_data->plugin_version = '';
-		$this->upgrades->upgrade_imported_item( $previous_plugin_version, $cpt_data );
+		$this->migrator->migrate_cpt_settings( $previous_plugin_version, $cpt_data );
 
 		// 6. save
 		$this->cpt_settings_storage->save( $cpt_data );

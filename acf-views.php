@@ -18,14 +18,21 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_1_6_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_1_7_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_2_0_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_2_2_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_3_0_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\V_1\{Migration_1_6_0, Migration_1_7_0};
+use Org\Wplake\Advanced_Views\Compatibility\Migration\V_2\{Migration_2_1_0,
+	Migration_2_2_2,
+	Migration_2_2_3,
+	Migration_2_0_0,
+	Migration_2_2_0,
+	Migration_2_3_0,
+	Migration_2_4_0,
+	Migration_2_4_2,
+	Migration_2_4_5};
+use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -196,11 +203,10 @@ $acf_views = new class() {
 			$views_file_system,
 			$this->live_reloader_component
 		);
-		$this->migrator                = new Upgrades(
-			$this->logger,
+		$this->migrator                = new Migrator(
 			$this->plugin,
 			$this->settings,
-			$this->template_engines
+			$this->logger
 		);
 
 		// it's a hack, but there is no other way to pass data (constructor is always called automatically).
@@ -214,6 +220,7 @@ $acf_views = new class() {
 		$cards_file_system->set_hooks( $current_screen );
 		$views_file_system->set_hooks( $current_screen );
 		$this->live_reloader_component->set_hooks( $current_screen );
+		$this->migrator->set_hooks( $current_screen );
 	}
 
 	private function views( Current_Screen $current_screen ): void {
@@ -487,13 +494,6 @@ $acf_views = new class() {
 
 		$dashboard             = new Dashboard( $this->plugin, $this->html, $demo_import );
 		$acf_internal_features = new Acf_Internal_Features( $this->plugin );
-		// late dependencies.
-		$this->migrator->set_dependencies(
-			$this->layouts_settings_storage,
-			$this->post_selections_settings_storage,
-			$this->layouts_cpt_save_actions,
-			$this->post_selections_cpt_save_actions,
-		);
 
 		$tools_settings     = new Tools_Settings( $this->group_creator );
 		$debug_dump_creator = new Debug_Dump_Creator(
@@ -569,18 +569,27 @@ $acf_views = new class() {
 		Advanced_Views::$post_selection_renderer = $this->post_selection_shortcode;
 	}
 
-	private function migration( Current_Screen $current_screen ): void {
-		$this->migrator->setup_migrations(
+	private function migrations(): void {
+		$this->migrator->set_migrations(
 			array(
+				// v1.
 				new Migration_1_6_0(),
-				new Migration_2_2_0(),
-				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_1_7_0( $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
+				// v2.
 				new Migration_2_0_0( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_1_0( $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
+				new Migration_2_2_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_2_2( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_2_3( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_3_0( $this->template_engines ),
+				new Migration_2_4_0( $this->layouts_cpt_save_actions, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_4_2( $this->layouts_settings_storage ),
+				new Migration_2_4_5( $this->layouts_settings_storage ),
+				// v3.
+				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_3_3_0( $this->layouts_settings_storage, $this->post_selections_settings_storage, $this->logger, $this->plugin ),
 			)
 		);
-
-		$this->migrator->set_hooks( $current_screen );
 	}
 
 	public function activation(): void {
@@ -628,7 +637,7 @@ $acf_views = new class() {
 		$this->integration( $current_screen );
 		$this->others( $current_screen );
 		$this->bridge();
-		$this->migration( $current_screen );
+		$this->migration();
 	}
 
 	public function init(): void {

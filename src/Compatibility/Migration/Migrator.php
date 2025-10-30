@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -83,15 +84,23 @@ class Migrator extends Hookable implements Hooks_Interface {
 	/**
 	 * @param Migration[] $migrations
 	 */
-	public function setup_migrations( array $migrations ): void {
+	public function set_migrations( array $migrations ): void {
 		$this->migrations = $migrations;
 	}
 
-	public function run_migrations( string $previous_version ): void {
-		foreach ( $this->migrations as $migration ) {
-			if ( self::is_version_lower( $previous_version, $migration->introduced_at_version() ) ) {
+	public function migrate( string $previous_version ): void {
+		$migrations = $this->get_version_migrations( $previous_version );
+
+		foreach ( $migrations as $migration ) {
 				$migration->migrate();
-			}
+		}
+	}
+
+	public function migrate_cpt_settings( string $previous_version, Cpt_Settings $settings ): void {
+		$migrations = $this->get_version_migrations( $previous_version );
+
+		foreach ( $migrations as $migration ) {
+			$migration->migrate_cpt_settings( $settings );
 		}
 	}
 
@@ -104,7 +113,7 @@ class Migrator extends Hookable implements Hooks_Interface {
 			// clear error logs for the previous version, as they are not relevant anymore.
 			$this->logger->clear_error_logs();
 
-			$this->run_migrations( $previous_version );
+			$this->migrate( $previous_version );
 
 		}
 
@@ -130,5 +139,16 @@ class Migrator extends Hookable implements Hooks_Interface {
 				Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY + 1
 			);
 		}
+	}
+
+	/**
+	 * @return Migration[]
+	 */
+	protected function get_version_migrations( string $previous_version ): array {
+		return array_filter(
+			$this->migrations,
+			fn( Migration $migration ) =>
+			self::is_version_lower( $previous_version, $migration->introduced_version() )
+		);
 	}
 }
