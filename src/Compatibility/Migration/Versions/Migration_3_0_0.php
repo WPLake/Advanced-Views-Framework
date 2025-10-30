@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 
 final class Migration_3_0_0 extends Migration {

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -10,7 +10,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use WP_Post;
 use WP_Query;
 

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Migration\Versions;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Versions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use WP_Post;
 use WP_Query;
 

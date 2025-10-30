@@ -20,12 +20,12 @@ use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Migration\Migrator;
-use Org\Wplake\Advanced_Views\Migration\Versions\Migration_1_6_0;
-use Org\Wplake\Advanced_Views\Migration\Versions\Migration_1_7_0;
-use Org\Wplake\Advanced_Views\Migration\Versions\Migration_2_0_0;
-use Org\Wplake\Advanced_Views\Migration\Versions\Migration_2_2_0;
-use Org\Wplake\Advanced_Views\Migration\Versions\Migration_3_0_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_1_6_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_1_7_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_2_0_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_2_2_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Versions\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -646,7 +646,7 @@ $acf_views = new class() {
 			require_once __DIR__ . '/prefixed_vendors_php8/vendor/scoper-autoload.php';
 		}
 
-		require_once __DIR__ . '/src/Back_Compatibility/Back_Compatibility.php';
+		require_once __DIR__ . '/src/Compatibility/Back_Compatibility/back_compatibility.php';
 
 		$this->load();
 
