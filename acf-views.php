@@ -637,7 +637,7 @@ $acf_views = new class() {
 		$this->integration( $current_screen );
 		$this->others( $current_screen );
 		$this->bridge();
-		$this->migration();
+		$this->migrations();
 	}
 
 	public function init(): void {

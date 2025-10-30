@@ -16,9 +16,9 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 use WP_Post;
 use WP_Query;
 
-final class Migration_2_2_0 extends Migration {
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+class Migration_2_2_0 extends Migration {
+	protected Layouts_Settings_Storage $layouts_settings_storage;
+	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
 
 	public function __construct( Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
 		$this->layouts_settings_storage         = $layouts_settings_storage;
