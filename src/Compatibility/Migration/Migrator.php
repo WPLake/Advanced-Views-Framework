@@ -88,13 +88,9 @@ class Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function run_migrations( string $previous_version ): void {
-		$current_screen = new Current_Screen();
-
 		foreach ( $this->migrations as $migration ) {
 			if ( self::is_version_lower( $previous_version, $migration->introduced_at_version() ) ) {
 				$migration->migrate();
-
-				$migration->set_hooks( $current_screen );
 			}
 		}
 	}
