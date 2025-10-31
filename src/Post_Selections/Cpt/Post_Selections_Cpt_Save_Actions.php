@@ -48,7 +48,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Post_Selection_Factory $post_selection_factory,
-		Public_Cpt $public_plugin_cpt
+		Public_Cpt $public_cpt
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$post_selection_settings = $post_selection_settings->getDeepClone();
@@ -59,7 +59,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 			$plugin,
 			$post_selection_settings,
 			$front_assets,
-			$public_plugin_cpt
+			$public_cpt
 		);
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;

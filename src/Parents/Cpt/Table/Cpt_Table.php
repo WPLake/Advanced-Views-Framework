@@ -41,10 +41,10 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	private ?int $pagination_per_page;
 	protected Public_Cpt $public_plugin_cpt;
 
-	public function __construct( Cpt_Settings_Storage $cpt_settings_storage, Public_Cpt $public_plugin_cpt ) {
+	public function __construct( Cpt_Settings_Storage $cpt_settings_storage, Public_Cpt $public_cpt ) {
 		$this->cpt_settings_storage = $cpt_settings_storage;
-		$this->public_plugin_cpt    = $public_plugin_cpt;
-		$this->cpt_name             = $public_plugin_cpt->cpt_name();
+		$this->public_plugin_cpt    = $public_cpt;
+		$this->cpt_name             = $public_cpt->cpt_name();
 		$this->tabs                 = array();
 		$this->add_tab_callbacks    = array();
 

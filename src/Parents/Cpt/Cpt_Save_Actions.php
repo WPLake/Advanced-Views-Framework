@@ -56,7 +56,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		Plugin $plugin,
 		Cpt_Settings $cpt_settings,
 		Front_Assets $front_assets,
-		Public_Cpt $public_plugin_cpt
+		Public_Cpt $public_cpt
 	) {
 		parent::__construct( $logger );
 
@@ -69,7 +69,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->available_acf_fields  = array_keys( $this->cpt_settings->getFieldValues() );
 		$this->field_values          = array();
 		$this->validated_input_names = array();
-		$this->public_plugin_cpt     = $public_plugin_cpt;
+		$this->public_plugin_cpt     = $public_cpt;
 	}
 
 	abstract protected function get_cpt_name(): string;
@@ -81,12 +81,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	/**
-	 * @param WP_REST_Request $wprest_request
-	 *
-	 * @return array<string,mixed>
-	 */
-	// @phpstan-ignore-next-line
-	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
+     * @param WP_REST_Request $wprest_request
+     *
+     * @return array<string,mixed>
+     */
+    // @phpstan-ignore-next-line
+    abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces

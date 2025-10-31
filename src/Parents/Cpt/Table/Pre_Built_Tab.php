@@ -37,10 +37,10 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		Cpt_Settings_Storage $cpt_data_storage,
 		Cpt_Settings_Storage $external_cpt_data_storage,
 		Data_Vendors $data_vendors,
-		Version_Migrator $migrator,
+		Version_Migrator $version_migrator,
 		Logger $logger
 	) {
-		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $migrator, $logger );
+		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $version_migrator, $logger );
 
 		$this->cpt_settings_storage = $external_cpt_data_storage;
 		$this->pulling_unique_ids        = array();

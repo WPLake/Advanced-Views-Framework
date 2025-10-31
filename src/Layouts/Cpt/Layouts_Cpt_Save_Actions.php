@@ -44,7 +44,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
 		Html $html,
 		Layout_Factory $layout_factory,
-		Public_Cpt $public_plugin_cpt
+		Public_Cpt $public_cpt
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$layout_settings = $layout_settings->getDeepClone();
@@ -55,7 +55,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 			$plugin,
 			$layout_settings,
 			$front_assets,
-			$public_plugin_cpt
+			$public_cpt
 		);
 
 		$this->layouts_settings_storage = $layouts_settings_storage;

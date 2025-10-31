@@ -16,8 +16,8 @@ class Post_Selections_Cpt extends Cpt {
 
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Plugin_Cpt $plugin_feature, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
-		parent::__construct( $plugin_feature, $post_selections_settings_storage );
+	public function __construct( Plugin_Cpt $plugin_cpt, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+		parent::__construct( $plugin_cpt, $post_selections_settings_storage );
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}

@@ -5,7 +5,6 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
@@ -29,11 +28,11 @@ class Layouts_Cpt_Table extends Cpt_Table {
 
 	public function __construct(
 		Cpt_Settings_Storage $cpt_settings_storage,
-		Public_Cpt $public_plugin_cpt,
+		Public_Cpt $public_cpt,
 		Html $html,
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes
 	) {
-		parent::__construct( $cpt_settings_storage, $public_plugin_cpt );
+		parent::__construct( $cpt_settings_storage, $public_cpt );
 
 		$this->html                   = $html;
 		$this->layouts_cpt_meta_boxes = $layouts_cpt_meta_boxes;

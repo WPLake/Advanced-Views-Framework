@@ -27,22 +27,22 @@ final class Migration_3_8_0 extends Version_Migration_Base {
 	}
 
 	protected function get_views_cpt(): Plugin_Cpt {
-		$views_cpt = new Plugin_Cpt_Base();
+		$plugin_cpt_base = new Plugin_Cpt_Base();
 
-		$views_cpt->cpt_name    = 'acf_views';
-		$views_cpt->slug_prefix = 'view_';
-		$views_cpt->folder_name = 'views';
+		$plugin_cpt_base->cpt_name    = 'acf_views';
+		$plugin_cpt_base->slug_prefix = 'view_';
+		$plugin_cpt_base->folder_name = 'views';
 
-		return $views_cpt;
+		return $plugin_cpt_base;
 	}
 
 	protected function get_cards_cpt(): Plugin_Cpt {
-		$cards_cpt = new Plugin_Cpt_Base();
+		$plugin_cpt_base = new Plugin_Cpt_Base();
 
-		$cards_cpt->cpt_name    = 'acf_cards';
-		$cards_cpt->slug_prefix = 'card_';
-		$cards_cpt->folder_name = 'cards';
+		$plugin_cpt_base->cpt_name    = 'acf_cards';
+		$plugin_cpt_base->slug_prefix = 'card_';
+		$plugin_cpt_base->folder_name = 'cards';
 
-		return $cards_cpt;
+		return $plugin_cpt_base;
 	}
 }

@@ -17,7 +17,6 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,

@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
@@ -37,7 +36,7 @@ final class Layout_Shortcode extends Shortcode {
 	private Shortcode_Block $shortcode_block;
 
 	public function __construct(
-		Public_Cpt $plugin_feature,
+		Public_Cpt $public_cpt,
 		Settings $settings,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Front_Assets $front_assets,
@@ -45,7 +44,7 @@ final class Layout_Shortcode extends Shortcode {
 		Layout_Factory $layout_factory,
 		Shortcode_Block $shortcode_block
 	) {
-		parent::__construct( $plugin_feature, $settings, $layouts_settings_storage, $layout_factory, $front_assets, $live_reloader_component );
+		parent::__construct( $public_cpt, $settings, $layouts_settings_storage, $layout_factory, $front_assets, $live_reloader_component );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->layout_factory           = $layout_factory;

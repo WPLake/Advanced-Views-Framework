@@ -22,20 +22,20 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
 	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Public_Cpt $public_plugin_cpt;
+	private Public_Cpt $public_cpt;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Public_Cpt $public_plugin_cpt
+		Public_Cpt $public_cpt
 	) {
 		parent::__construct( $html, $plugin );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->data_vendors             = $data_vendors;
-		$this->public_plugin_cpt        = $public_plugin_cpt;
+		$this->public_cpt        = $public_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -241,7 +241,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$short_view_unique_id,
 					false,
-					$this->public_plugin_cpt->shortcode(),
+					$this->public_cpt->shortcode(),
 					get_the_title( $post ),
 					false,
 					$view_data->is_for_internal_usage_only()

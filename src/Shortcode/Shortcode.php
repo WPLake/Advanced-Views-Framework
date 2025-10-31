@@ -8,7 +8,6 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -35,14 +34,14 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	protected Public_Cpt $plugin_feature;
 
 	public function __construct(
-		Public_Cpt $plugin_feature,
+		Public_Cpt $public_cpt,
 		Settings $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Instance_Factory $instance_factory,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component
 	) {
-		$this->plugin_feature          = $plugin_feature;
+		$this->plugin_feature          = $public_cpt;
 		$this->rendered_ids            = array();
 		$this->settings                = $settings;
 		$this->cpt_settings_storage    = $cpt_settings_storage;

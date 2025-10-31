@@ -19,20 +19,20 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Public_Cpt $public_plugin_cpt;
+	private Public_Cpt $public_cpt;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Layouts_Settings_Storage $layouts_settings_storage,
-		Public_Cpt $public_plugin_cpt
+		Public_Cpt $public_cpt
 	) {
 		parent::__construct( $html, $plugin );
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->layouts_settings_storage         = $layouts_settings_storage;
-		$this->public_plugin_cpt                = $public_plugin_cpt;
+		$this->public_cpt                = $public_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -80,7 +80,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$card_unique_id,
 					false,
-					$this->public_plugin_cpt->shortcode(),
+					$this->public_cpt->shortcode(),
 					get_the_title( $post ),
 					true
 				);

@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -23,14 +22,14 @@ final class Post_Selection_Shortcode extends Shortcode {
 	protected Post_Selections_Settings_Storage $cards_data_storage;
 
 	public function __construct(
-		Public_Cpt $plugin_feature,
+		Public_Cpt $public_cpt,
 		Settings $settings,
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
 		Post_Selection_Factory $post_selection_factory
 	) {
-		parent::__construct( $plugin_feature, $settings, $post_selections_settings_storage, $post_selection_factory, $front_assets, $live_reloader_component );
+		parent::__construct( $public_cpt, $settings, $post_selections_settings_storage, $post_selection_factory, $front_assets, $live_reloader_component );
 
 		$this->cards_data_storage = $post_selections_settings_storage;
 		$this->card_factory       = $post_selection_factory;

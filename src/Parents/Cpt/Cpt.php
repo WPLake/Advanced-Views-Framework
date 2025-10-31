@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt extends Hookable implements Hooks_Interface {
 	private Cpt_Settings_Storage $cpt_settings_storage;
-	private Plugin_Cpt $plugin_feature;
+	private Plugin_Cpt $plugin_cpt;
 
-	public function __construct( Plugin_Cpt $plugin_feature, Cpt_Settings_Storage $cpt_settings_storage ) {
-		$this->plugin_feature       = $plugin_feature;
+	public function __construct( Plugin_Cpt $plugin_cpt, Cpt_Settings_Storage $cpt_settings_storage ) {
+		$this->plugin_cpt       = $plugin_cpt;
 		$this->cpt_settings_storage = $cpt_settings_storage;
 	}
 
@@ -78,7 +78,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 	}
 
 	protected function get_cpt_name(): string {
-		return $this->plugin_feature->cpt_name();
+		return $this->plugin_cpt->cpt_name();
 	}
 
 	protected function get_storage_label(): string {

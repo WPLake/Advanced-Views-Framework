@@ -424,31 +424,31 @@ abstract class Plugin_Loader_Base {
 	}
 
 	protected static function make_layout_cpt(): Public_Cpt {
-		$layout_cpt = new Public_Cpt_Base();
+		$public_cpt_base = new Public_Cpt_Base();
 
-		$layout_cpt->cpt_name    = Hard_Layout_Cpt::cpt_name();
-		$layout_cpt->slug_prefix = 'layout-';
-		$layout_cpt->folder_name = 'layouts';
+		$public_cpt_base->cpt_name    = Hard_Layout_Cpt::cpt_name();
+		$public_cpt_base->slug_prefix = 'layout-';
+		$public_cpt_base->folder_name = 'layouts';
 
-		$layout_cpt->shortcode        = 'avf-layout';
-		$layout_cpt->shortcodes       = array( $layout_cpt->shortcode, 'avf_view', 'acf_views' );
-		$layout_cpt->rest_route_names = array( 'layout', 'view' );
+		$public_cpt_base->shortcode        = 'avf-layout';
+		$public_cpt_base->shortcodes       = array( $public_cpt_base->shortcode, 'avf_view', 'acf_views' );
+		$public_cpt_base->rest_route_names = array( 'layout', 'view' );
 
-		return $layout_cpt;
+		return $public_cpt_base;
 	}
 
 	protected static function make_post_selection_cpt(): Public_Cpt {
-		$post_selection_cpt = new Public_Cpt_Base();
+		$public_cpt_base = new Public_Cpt_Base();
 
-		$post_selection_cpt->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
-		$post_selection_cpt->slug_prefix = 'post-selection-';
-		$post_selection_cpt->folder_name = 'post-selections';
+		$public_cpt_base->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
+		$public_cpt_base->slug_prefix = 'post-selection-';
+		$public_cpt_base->folder_name = 'post-selections';
 
-		$post_selection_cpt->shortcode        = 'avf-post-selection';
-		$post_selection_cpt->shortcodes       = array( $post_selection_cpt->shortcode, 'avf_card', 'acf_cards' );
-		$post_selection_cpt->rest_route_names = array( 'post-selection', 'card' );
+		$public_cpt_base->shortcode        = 'avf-post-selection';
+		$public_cpt_base->shortcodes       = array( $public_cpt_base->shortcode, 'avf_card', 'acf_cards' );
+		$public_cpt_base->rest_route_names = array( 'post-selection', 'card' );
 
-		return $post_selection_cpt;
+		return $public_cpt_base;
 	}
 
 	protected static function uploads_folder(): string {

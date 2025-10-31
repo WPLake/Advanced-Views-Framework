@@ -4,7 +4,6 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -28,11 +27,11 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 
 	public function __construct(
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Public_Cpt $public_plugin_cpt,
+		Public_Cpt $public_cpt,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes
 	) {
-		parent::__construct( $post_selections_settings_storage, $public_plugin_cpt );
+		parent::__construct( $post_selections_settings_storage, $public_cpt );
 
 		$this->html                           = $html;
 		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;

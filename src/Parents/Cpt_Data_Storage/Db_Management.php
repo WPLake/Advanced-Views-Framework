@@ -15,7 +15,7 @@ use WP_Query;
 
 class Db_Management extends Action {
 	private File_System $file_system;
-	private Plugin_Cpt $plugin_feature;
+	private Plugin_Cpt $plugin_cpt;
 	/**
 	 * @var array<string,int> uniqueId => postId
 	 */
@@ -34,13 +34,13 @@ class Db_Management extends Action {
 	public function __construct(
 		Logger $logger,
 		File_System $file_system,
-		Plugin_Cpt $plugin_feature,
+		Plugin_Cpt $plugin_cpt,
 		bool $is_external_storage = false
 	) {
 		parent::__construct( $logger );
 
 		$this->file_system    = $file_system;
-		$this->plugin_feature = $plugin_feature;
+		$this->plugin_cpt = $plugin_cpt;
 
 		$this->post_ids               = array();
 		$this->trashed_post_ids       = array();
@@ -230,11 +230,11 @@ class Db_Management extends Action {
 	}
 
 	public function get_unique_id_prefix(): string {
-		return $this->plugin_feature->slug_prefix();
+		return $this->plugin_cpt->slug_prefix();
 	}
 
 	public function get_post_type(): string {
-		return $this->plugin_feature->cpt_name();
+		return $this->plugin_cpt->cpt_name();
 	}
 
 	public function maybe_assign_unique_id( int $post_id, Cpt_Settings $cpt_settings ): void {

@@ -22,21 +22,21 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Data_Vendors $data_vendors;
-	private Version_Migrator $migrator;
+	private Version_Migrator $version_migrator;
 	private Logger $logger;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Data_Vendors $data_vendors,
-		Version_Migrator $migrator,
+		Version_Migrator $version_migrator,
 		Logger $logger
 	) {
 		parent::__construct( $cpt_table );
 
 		$this->cpt_settings_storage = $cpt_settings_storage;
 		$this->data_vendors         = $data_vendors;
-		$this->migrator             = $migrator;
+		$this->version_migrator             = $version_migrator;
 		$this->logger               = $logger;
 	}
 
@@ -105,7 +105,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		$previous_plugin_version = $cpt_data->plugin_version;
 		// we don't need it for instances outside of Git repository.
 		$cpt_data->plugin_version = '';
-		$this->migrator->migrate_cpt_settings( $previous_plugin_version, $cpt_data );
+		$this->version_migrator->migrate_cpt_settings( $previous_plugin_version, $cpt_data );
 
 		// 6. save
 		$this->cpt_settings_storage->save( $cpt_data );

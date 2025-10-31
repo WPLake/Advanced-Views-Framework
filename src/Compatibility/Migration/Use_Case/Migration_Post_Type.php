@@ -29,7 +29,7 @@ final class Migration_Post_Type extends Migration_Base {
 
 		self::add_action(
 			'after_setup_theme',
-			function () {
+			function (): void {
 				if ( $this->file_system->is_active() ) {
 					$base_folder = $this->file_system->get_base_folder();
 

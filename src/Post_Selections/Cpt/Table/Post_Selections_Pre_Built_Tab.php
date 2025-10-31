@@ -26,7 +26,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 		Post_Selections_Settings_Storage $cards_data_storage,
 		Post_Selections_Settings_Storage $external_cards_data_storage,
 		Data_Vendors $data_vendors,
-		Version_Migrator $migrator,
+		Version_Migrator $version_migrator,
 		Logger $logger,
 		Layouts_Pre_Built_Tab $layouts_pre_built_tab
 	) {
@@ -35,7 +35,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 			$cards_data_storage,
 			$external_cards_data_storage,
 			$data_vendors,
-			$migrator,
+			$version_migrator,
 			$logger
 		);
 

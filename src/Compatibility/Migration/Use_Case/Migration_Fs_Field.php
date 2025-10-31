@@ -9,7 +9,6 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
 final class Migration_Fs_Field extends Migration_Base {
 	private File_System $file_system;
@@ -25,7 +24,7 @@ final class Migration_Fs_Field extends Migration_Base {
 	public function migrate(): void {
 		self::add_action(
 			'after_setup_theme',
-			function () {
+			function (): void {
 				if ( $this->file_system->is_active() ) {
 					$base_folder = $this->file_system->get_base_folder();
 
