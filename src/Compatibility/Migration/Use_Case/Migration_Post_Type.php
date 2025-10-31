@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
 final class Migration_Post_Type extends Migration_Base {
 	private File_System $file_system;

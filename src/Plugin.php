@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -172,10 +172,6 @@ class Plugin extends Hookable implements Hooks_Interface {
 		return $this->plugin_url;
 	}
 
-	protected function get_plugin_path(): string {
-		return $this->plugin_path;
-	}
-
 	public function is_pro_field_locked(): bool {
 		return true;
 	}
@@ -206,6 +202,10 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	public function get_assets_path( string $file ): string {
 		return $this->plugin_path . 'src/Assets/' . $file;
+	}
+
+	public function get_plugin_path( string $inner_path ): string {
+		return $this->plugin_path . $inner_path;
 	}
 
 	public function get_acf_internal_assets_url( string $file ): string {

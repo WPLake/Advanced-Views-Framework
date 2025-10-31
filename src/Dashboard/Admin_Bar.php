@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;

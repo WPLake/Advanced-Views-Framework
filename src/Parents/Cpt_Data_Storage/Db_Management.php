@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;

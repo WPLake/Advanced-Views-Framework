@@ -7,11 +7,9 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -21,7 +19,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	/**
-	 * @var Version_Migration[]
+	 * @var array<string,Version_Migration> version => migrationInstance
 	 */
 	private array $version_migrations;
 	/**
@@ -88,15 +86,20 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	/**
 	 * @param Version_Migration[] $version_migrations
 	 */
-	public function set_version_migrations( array $version_migrations ): void {
-		$this->version_migrations = $version_migrations;
+	public function add_version_migrations( array $version_migrations ): void {
+
+		foreach ( $version_migrations as $version_migration ) {
+			$version = $version_migration->introduced_version();
+
+			$this->version_migrations[ $version ] = $version_migration;
+		}
 	}
 
 	/**
 	 * @param Migration[] $migrations
 	 */
-	public function set_migrations( array $migrations ): void {
-		$this->migrations = $migrations;
+	public function add_migrations( array $migrations ): void {
+		$this->migrations = array_merge( $this->migrations, $migrations );
 	}
 
 	public function migrate( string $previous_version ): void {
@@ -162,7 +165,8 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	protected function get_version_migrations( string $previous_version ): array {
 		$target_migrations = array_filter(
 			$this->version_migrations,
-			fn( Version_Migration $version_migration ) => self::is_version_lower( $previous_version, $version_migration->introduced_version() )
+			fn( Version_Migration $version_migration ) =>
+			self::is_version_lower( $previous_version, $version_migration->introduced_version() )
 		);
 
 		// ASC sort.

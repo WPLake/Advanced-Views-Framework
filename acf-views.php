@@ -17,27 +17,9 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Error_Logs;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_7_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_0_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_2;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_3;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_3_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_2;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_5;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\{Migration_1_6_0};
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\{Migration_2_1_0};
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_0;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Pub\Public_Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Pub\Public_Plugin_Cpt_Base;
+use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -70,10 +52,8 @@ use Org\Wplake\Advanced_Views\Groups_Integration\{
 	Layout_Settings_Integration,
 };
 use Org\Wplake\Advanced_Views\Groups\{Post_Selection_Settings,
-	Field_Settings,
 	Git_Repository,
 	Item_Settings,
-	Repeater_Field_Settings,
 	Plugin_Settings,
 	Tools_Settings,
 	Layout_Settings};
@@ -88,7 +68,6 @@ use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
-use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader as GroupsLoader;
 use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Cpt\Table\Layouts_Cpt_Table,
 	Cpt\Table\Layouts_Pre_Built_Tab,
@@ -102,138 +81,53 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 
 defined( 'ABSPATH' ) || exit;
 
-$acf_views = new class() {
-	private Public_Plugin_Cpt $layout_cpt;
-	private Public_Plugin_Cpt $post_selection_cpt;
+$acf_views = new class() extends Plugin_Loader_Base {
 	private Html $html;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Template_Engines $template_engines;
-	private Plugin $plugin;
-	private Item_Settings $item_settings;
-	private Options $options;
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
-	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
-	private Layout_Factory $layout_factory;
-	private Post_Selection_Factory $post_selection_factory;
-	private Layout_Settings $layout_settings;
-	private Post_Selection_Settings $post_selection_settings;
-	private Creator $group_creator;
-	private Settings $settings;
-	private Front_Assets $front_assets;
-	private Data_Vendors $data_vendors;
-	private Layout_Shortcode $layout_shortcode;
-	private Post_Selection_Shortcode $post_selection_shortcode;
-	private Version_Migrator $version_migrator;
-	private Automatic_Reports $automatic_reports;
-	private Logger $logger;
-	private Layouts_Pre_Built_Tab $layouts_pre_built_tab;
-	private Live_Reloader_Component $live_reloader_component;
 
-	private function load_translations( Current_Screen $current_screen ): void {
-		// on the whole admin area, as menu items need translations.
-		if ( false === $current_screen->is_admin() ) {
-			return;
-		}
-
-		add_action(
-			'init',
-			function (): void {
-				load_plugin_textdomain( 'acf-views', false, dirname( plugin_basename( __FILE__ ) ) . '/src/lang' );
-			},
-			// make sure it's before acf_groups.
-			8
-		);
-	}
-
-	private function acf_groups( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_ajax() &&
-			false === $current_screen->is_admin_cpt_related( $this->layout_cpt->cpt_name() ) &&
-			false === $current_screen->is_admin_cpt_related( $this->post_selection_cpt->cpt_name() ) ) {
-			return;
-		}
-
-		add_action(
-			'acf/init',
-			function (): void {
-				$loader = new GroupsLoader();
-				$loader->signUpGroups(
-					'Org\Wplake\Advanced_Views\Groups',
-					__DIR__ . '/src/Groups'
-				);
-			},
-			// make sure it's after translations.
-			9
-		);
-	}
-
-	private static function make_layout_cpt(): Public_Plugin_Cpt {
-		$layout_cpt = new Public_Plugin_Cpt_Base();
-
-		$layout_cpt->cpt_name    = Hard_Layout_Cpt::cpt_name();
-		$layout_cpt->slug_prefix = 'layout-';
-		$layout_cpt->folder_name = 'layouts';
-
-		$layout_cpt->shortcode        = 'avf-layout';
-		$layout_cpt->shortcodes       = array( $layout_cpt->shortcode, 'avf_view', 'acf_views' );
-		$layout_cpt->rest_route_names = array( 'layout', 'view' );
-
-		return $layout_cpt;
-	}
-
-	private static function make_post_selection_cpt(): Public_Plugin_Cpt {
-		$post_selection_cpt = new Public_Plugin_Cpt_Base();
-
-		$post_selection_cpt->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
-		$post_selection_cpt->slug_prefix = 'post-selection-';
-		$post_selection_cpt->folder_name = 'post-selections';
-
-		$post_selection_cpt->shortcode        = 'avf-post-selection';
-		$post_selection_cpt->shortcodes       = array( $post_selection_cpt->shortcode, 'avf_card', 'acf_cards' );
-		$post_selection_cpt->rest_route_names = array( 'post-selection', 'card' );
-
-		return $post_selection_cpt;
-	}
-
-	private function primary( Current_Screen $current_screen ): void {
+	protected function primary(): void {
 		$this->layout_cpt         = self::make_layout_cpt();
 		$this->post_selection_cpt = self::make_post_selection_cpt();
 
-		$this->options  = new Options();
-		$this->settings = new Settings( $this->options );
+		$options        = new Options();
+		$this->settings = new Settings( $options );
 
 		$uploads_folder = wp_upload_dir()['basedir'] . '/acf-views';
 		$this->logger   = new Logger( $uploads_folder, $this->settings );
 
-		$this->group_creator           = new Creator();
-		$this->layout_settings         = $this->group_creator->create( Layout_Settings::class );
-		$this->post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
+		$this->group_creator     = new Creator();
+		$layout_settings         = $this->group_creator->create( Layout_Settings::class );
+		$post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
 
 		$this->html = new Html();
 
-		$cards_file_system                      = new File_System(
+		$post_selections_file_system            = new File_System(
 			$this->logger,
 			$this->post_selection_cpt->folder_name()
 		);
 		$this->post_selections_settings_storage = new Post_Selections_Settings_Storage(
 			$this->logger,
-			$cards_file_system,
+			$post_selections_file_system,
 			new Post_Selection_Fs_Fields(),
-			new Db_Management( $this->logger, $cards_file_system, $this->post_selection_cpt ),
-			$this->post_selection_settings
+			new Db_Management( $this->logger, $post_selections_file_system, $this->post_selection_cpt ),
+			$post_selection_settings
 		);
 
-		$views_file_system              = new File_System( $this->logger, $this->layout_cpt->folder_name() );
+		$layouts_file_system            = new File_System( $this->logger, $this->layout_cpt->folder_name() );
 		$this->layouts_settings_storage = new Layouts_Settings_Storage(
 			$this->logger,
-			$views_file_system,
+			$layouts_file_system,
 			new Fs_Fields(),
-			new Db_Management( $this->logger, $views_file_system, $this->layout_cpt ),
-			$this->layout_settings
+			new Db_Management( $this->logger, $layouts_file_system, $this->layout_cpt ),
+			$layout_settings
 		);
 
-		$this->plugin           = new Plugin( __FILE__, $this->options, $this->settings );
-		$this->template_engines = new Template_Engines( $uploads_folder, $this->logger, $this->plugin, $this->settings );
+		$this->plugin           = new Plugin( __FILE__, $options, $this->settings );
+		$this->template_engines = new Template_Engines(
+			$uploads_folder,
+			$this->logger,
+			$this->plugin,
+			$this->settings
+		);
 		$this->item_settings    = $this->group_creator->create( Item_Settings::class );
 
 		$this->data_vendors            = new Data_Vendors( $this->logger );
@@ -241,7 +135,7 @@ $acf_views = new class() {
 		$this->front_assets            = new Front_Assets(
 			$this->plugin,
 			$this->data_vendors,
-			$views_file_system,
+			$layouts_file_system,
 			$this->live_reloader_component
 		);
 		$this->version_migrator        = new Version_Migrator(
@@ -249,21 +143,18 @@ $acf_views = new class() {
 			$this->settings,
 		);
 
-		// it's a hack, but there is no other way to pass data (constructor is always called automatically).
-		Field_Settings::set_data_vendors( $this->data_vendors );
+		$this->add_file_systems(
+			array(
+				$layouts_file_system,
+				$post_selections_file_system,
+			)
+		);
 
-		$this->logger->set_hooks( $current_screen );
-		$this->plugin->set_hooks( $current_screen );
-		$this->template_engines->set_hooks( $current_screen );
-		$this->front_assets->set_hooks( $current_screen );
-		$this->data_vendors->set_hooks( $current_screen );
-		$cards_file_system->set_hooks( $current_screen );
-		$views_file_system->set_hooks( $current_screen );
-		$this->live_reloader_component->set_hooks( $current_screen );
-		$this->version_migrator->set_hooks( $current_screen );
+		parent::primary();
 	}
 
-	private function views( Current_Screen $current_screen ): void {
+	// fixme
+	protected function layouts(): void {
 		$field_markup                   = new Field_Markup( $this->data_vendors, $this->front_assets, $this->template_engines );
 		$layout_markup                  = new Layout_Markup( $field_markup, $this->data_vendors, $this->template_engines );
 		$this->layout_factory           = new Layout_Factory(
@@ -348,17 +239,7 @@ $acf_views = new class() {
 			$shortcode_block
 		);
 
-		$layouts_cpt_meta_boxes->set_hooks( $current_screen );
-		$layouts_cpt->set_hooks( $current_screen );
-		$layouts_cpt_table->set_hooks( $current_screen );
-		$fs_only_tab->set_hooks( $current_screen );
-		$layouts_bulk_validation_tab->set_hooks( $current_screen );
-		$this->layouts_pre_built_tab->set_hooks( $current_screen );
-		$cpt_gutenberg_editor_settings->set_hooks( $current_screen );
-		$cpt_assets_reducer->set_hooks( $current_screen );
-		$this->layouts_cpt_save_actions->set_hooks( $current_screen );
-		$this->layout_shortcode->set_hooks( $current_screen );
-		$shortcode_block->set_hooks( $current_screen );
+		parent::layouts();
 	}
 
 	private function cards( Current_Screen $current_screen ): void {
@@ -453,18 +334,6 @@ $acf_views = new class() {
 			$this->live_reloader_component,
 			$this->post_selection_factory
 		);
-
-		$post_selections_cpt->set_hooks( $current_screen );
-		$post_selections_cpt_table->set_hooks( $current_screen );
-		$fs_only_tab->set_hooks( $current_screen );
-		$post_selections_bulk_validation_tab->set_hooks( $current_screen );
-		$post_selections_pre_built_tab->set_hooks( $current_screen );
-		$cpt_assets_reducer->set_hooks( $current_screen );
-		$cpt_gutenberg_editor_settings->set_hooks( $current_screen );
-		$post_selections_cpt_meta_boxes->set_hooks( $current_screen );
-		$this->post_selections_cpt_save_actions->set_hooks( $current_screen );
-		$post_selections_view_integration->set_hooks( $current_screen );
-		$this->post_selection_shortcode->set_hooks( $current_screen );
 	}
 
 	private function integration( Current_Screen $current_screen ): void {
@@ -502,31 +371,6 @@ $acf_views = new class() {
 			$this->post_selections_settings_storage
 		);
 		$custom_acf_field_types          = new Custom_Acf_Field_Types( $this->layouts_settings_storage );
-
-		$acf_dependency->set_hooks( $current_screen );
-
-		$layout_settings_integration->set_hooks( $current_screen );
-		$field_settings_integration->set_hooks( $current_screen );
-		$post_selection_settings_integration->set_hooks( $current_screen );
-		$item_settings_integration->set_hooks( $current_screen );
-		$meta_field_settings_integration->set_hooks( $current_screen );
-		$views_mount_point_integration->set_hooks( $current_screen );
-		$cards_mount_point_integration->set_hooks( $current_screen );
-		$tax_field_settings_integration->set_hooks( $current_screen );
-		$tools_settings_integration->set_hooks( $current_screen );
-		$custom_acf_field_types->set_hooks( $current_screen );
-
-		// only now, when views() are called.
-		$this->data_vendors->make_integration_instances(
-			$current_screen,
-			$this->item_settings,
-			$this->layouts_settings_storage,
-			$this->layouts_cpt_save_actions,
-			$this->layout_factory,
-			$this->group_creator->create( Repeater_Field_Settings::class ),
-			$this->layout_shortcode,
-			$this->settings
-		);
 	}
 
 	private function others( Current_Screen $current_screen ): void {
@@ -597,147 +441,7 @@ $acf_views = new class() {
 			$this->live_reloader_component,
 			$this->settings
 		);
-
-		$dashboard->set_hooks( $current_screen );
-		$demo_import->set_hooks( $current_screen );
-		$acf_internal_features->set_hooks( $current_screen );
-		// only after late dependencies were set.
-
-		$this->automatic_reports->set_hooks( $current_screen );
-		$tools->set_hooks( $current_screen );
-		$admin_assets->set_hooks( $current_screen );
-		$settings_page->set_hooks( $current_screen );
-		$live_reloader->set_hooks( $current_screen );
-		$admin_bar->set_hooks( $current_screen );
-	}
-
-	private function bridge(): void {
-		Advanced_Views::$layout_renderer         = $this->layout_shortcode;
-		Advanced_Views::$post_selection_renderer = $this->post_selection_shortcode;
-	}
-
-	private function version_migrations(): void {
-		$this->version_migrator->set_migrations(
-			array(
-				new Migration_Error_Logs( $this->logger ),
-			)
-		);
-
-		$this->version_migrator->set_version_migrations(
-			array(
-				// v1.
-				new Migration_1_6_0(),
-				new Migration_1_7_0( $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
-				// v2.
-				new Migration_2_0_0( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
-				new Migration_2_1_0( $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
-				new Migration_2_2_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_2( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_3( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
-				new Migration_2_3_0( $this->template_engines ),
-				new Migration_2_4_0(
-					$this->layouts_cpt_save_actions,
-					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage
-				),
-				new Migration_2_4_2( $this->layouts_settings_storage ),
-				new Migration_2_4_5( $this->layouts_settings_storage ),
-				// v3.
-				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_3_3_0(
-					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage,
-					$this->logger,
-					$this->plugin
-				),
-				new Migration_3_8_0(
-					$this->layouts_settings_storage->get_file_system(),
-					$this->layout_cpt,
-					$this->post_selection_cpt
-				),
-			)
-		);
-	}
-
-	public function activation(): void {
-		$this->template_engines->create_templates_dir();
-		$this->automatic_reports->plugin_activated();
-	}
-
-	public function deactivation(): void {
-		$this->automatic_reports->plugin_deactivated();
-		$this->template_engines->remove_templates_dir();
-
-		// do not check for a security token, as the deactivation plugin link contains it,
-		// and WP already has checked it.
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$is_delete_data = true === key_exists( 'advanced-views-delete-data', $_GET ) &&
-		                  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-							'yes' === $_GET['advanced-views-delete-data'];
-
-		if ( true === $is_delete_data ) {
-			$this->layouts_settings_storage->delete_all_items();
-			$this->post_selections_settings_storage->delete_all_items();
-
-			if ( true === $this->layouts_settings_storage->get_file_system()->is_active() ) {
-				$this->layouts_settings_storage->get_file_system()
-										->get_wp_filesystem()
-										->rmdir(
-											$this->layouts_settings_storage->get_file_system()->get_base_folder(),
-											true
-										);
-			}
-
-			$this->settings->delete_data();
-		}
-	}
-
-	public function load(): void {
-		$current_screen = new Current_Screen();
-
-		$this->load_translations( $current_screen );
-		$this->primary( $current_screen );
-		$this->acf_groups( $current_screen );
-		$this->views( $current_screen );
-		$this->cards( $current_screen );
-		$this->integration( $current_screen );
-		$this->others( $current_screen );
-		$this->bridge();
-		$this->version_migrations();
-	}
-
-	public function init(): void {
-		// skip initialization if PRO already active.
-		if ( class_exists( Plugin::class ) ) {
-			return;
-		}
-
-		$start_timestamp = microtime( true );
-
-		require_once __DIR__ . '/prefixed_vendors/vendor/scoper-autoload.php';
-
-		// @phpstan-ignore-next-line
-		if ( version_compare( PHP_VERSION, '8.2.0', '>=' ) ) {
-			require_once __DIR__ . '/prefixed_vendors_php8/vendor/scoper-autoload.php';
-		}
-
-		require_once __DIR__ . '/src/Compatibility/Back_Compatibility/back_compatibility.php';
-
-		$this->load();
-
-		register_activation_hook(
-			__FILE__,
-			array( $this, 'activation' )
-		);
-
-		register_deactivation_hook(
-			__FILE__,
-			array( $this, 'deactivation' )
-		);
-
-		Profiler::plugin_loaded( $start_timestamp );
 	}
 };
 
-$acf_views->init();
+$acf_views->load();

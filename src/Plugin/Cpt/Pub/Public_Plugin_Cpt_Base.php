@@ -2,9 +2,10 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Plugin_Cpt\Pub;
+namespace Org\Wplake\Advanced_Views\Plugin\Cpt\Pub;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt_Base;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt_Base;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Plugin_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
