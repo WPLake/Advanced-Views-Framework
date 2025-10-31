@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
@@ -126,7 +126,7 @@ class Post_Selection_Markup {
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
 		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
-		printf( '[%s', esc_html( Layouts_Cpt::shortcode() ) );
+		printf( '[%s', esc_html( Hard_Layout_Cpt::shortcode() ) );
 		$template_generator->print_array_item_attribute( 'view-id', '_card', 'view_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 

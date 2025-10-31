@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -65,7 +65,7 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 			array(
 				'id'    => 'acf-views',
 				'title' => $title,
-				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() ) ),
+				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ) ),
 			),
 			array(
 				'parent' => 'acf-views',

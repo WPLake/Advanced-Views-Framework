@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
@@ -46,7 +46,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 	}
 
 	public static function hook(): string {
-		return Layouts_Cpt::cpt_name() . '_refresh';
+		return Hard_Layout_Cpt::cpt_name() . '_refresh';
 	}
 
 	/**
@@ -109,11 +109,11 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		}
 
 		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
-			Layouts_Cpt::cpt_name(),
+			Hard_Layout_Cpt::cpt_name(),
 			Current_Screen::CPT_LIST
 		) ||
 								true === $current_screen->is_admin_cpt_related(
-									Post_Selections_Cpt::cpt_name(),
+									Hard_Post_Selection_Cpt::cpt_name(),
 									Current_Screen::CPT_LIST
 								);
 
@@ -448,8 +448,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		$args = array(
-			'_viewsCount'                    => $this->get_count_of_posts( Layouts_Cpt::cpt_name() ),
-			'_cardsCount'                    => $this->get_count_of_posts( Post_Selections_Cpt::cpt_name() ),
+			'_viewsCount'                    => $this->get_count_of_posts( Hard_Layout_Cpt::cpt_name() ),
+			'_cardsCount'                    => $this->get_count_of_posts( Hard_Post_Selection_Cpt::cpt_name() ),
 			// 'is_plugin_active()' is available only later
 				'_isAcfPro'                  => class_exists( 'acf_pro' ),
 			'_isAcf'                         => class_exists( 'acf' ) && false === defined( 'ACF_VIEWS_INNER_ACF' ),

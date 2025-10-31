@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -52,7 +52,7 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$card_data->get_unique_id( true ),
 					true,
-					Post_Selections_Cpt::shortcode(),
+					Hard_Post_Selection_Cpt::shortcode(),
 					$card_data->title,
 					true
 				);

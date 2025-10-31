@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
@@ -63,7 +63,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	protected function get_cpt_name(): string {
-		return Post_Selections_Cpt::cpt_name();
+		return Hard_Post_Selection_Cpt::cpt_name();
 	}
 
 	protected function get_custom_markup_acf_field_name(): string {
@@ -176,7 +176,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$card_data->get_unique_id( true ),
 			false,
-			Post_Selections_Cpt::shortcode(),
+			Hard_Post_Selection_Cpt::shortcode(),
 			$card_data->title,
 			true
 		);

@@ -30,12 +30,14 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_3_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_2;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_5;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\{Migration_1_6_0};
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\{Migration_2_1_0};
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_0;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Pub\Public_Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Pub\Public_Plugin_Cpt_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -101,6 +103,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 defined( 'ABSPATH' ) || exit;
 
 $acf_views = new class() {
+	private Public_Plugin_Cpt $layout_cpt;
+	private Public_Plugin_Cpt $post_selection_cpt;
 	private Html $html;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 	private Layouts_Settings_Storage $layouts_settings_storage;
@@ -144,8 +148,8 @@ $acf_views = new class() {
 
 	private function acf_groups( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_ajax() &&
-			false === $current_screen->is_admin_cpt_related( Layouts_Cpt::cpt_name() ) &&
-			false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::cpt_name() ) ) {
+			false === $current_screen->is_admin_cpt_related( $this->layout_cpt->cpt_name() ) &&
+			false === $current_screen->is_admin_cpt_related( $this->post_selection_cpt->cpt_name() ) ) {
 			return;
 		}
 
@@ -163,7 +167,38 @@ $acf_views = new class() {
 		);
 	}
 
+	private static function make_layout_cpt(): Public_Plugin_Cpt {
+		$layout_cpt = new Public_Plugin_Cpt_Base();
+
+		$layout_cpt->cpt_name    = Hard_Layout_Cpt::cpt_name();
+		$layout_cpt->slug_prefix = 'layout-';
+		$layout_cpt->folder_name = 'layouts';
+
+		$layout_cpt->shortcode        = 'avf-layout';
+		$layout_cpt->shortcodes       = array( $layout_cpt->shortcode, 'avf_view', 'acf_views' );
+		$layout_cpt->rest_route_names = array( 'layout', 'view' );
+
+		return $layout_cpt;
+	}
+
+	private static function make_post_selection_cpt(): Public_Plugin_Cpt {
+		$post_selection_cpt = new Public_Plugin_Cpt_Base();
+
+		$post_selection_cpt->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
+		$post_selection_cpt->slug_prefix = 'post-selection-';
+		$post_selection_cpt->folder_name = 'post-selections';
+
+		$post_selection_cpt->shortcode        = 'avf-post-selection';
+		$post_selection_cpt->shortcodes       = array( $post_selection_cpt->shortcode, 'avf_card', 'acf_cards' );
+		$post_selection_cpt->rest_route_names = array( 'post-selection', 'card' );
+
+		return $post_selection_cpt;
+	}
+
 	private function primary( Current_Screen $current_screen ): void {
+		$this->layout_cpt         = self::make_layout_cpt();
+		$this->post_selection_cpt = self::make_post_selection_cpt();
+
 		$this->options  = new Options();
 		$this->settings = new Settings( $this->options );
 
@@ -176,21 +211,24 @@ $acf_views = new class() {
 
 		$this->html = new Html();
 
-		$cards_file_system                      = new File_System( $this->logger, Post_Selections_Cpt::folder_name() );
+		$cards_file_system                      = new File_System(
+			$this->logger,
+			$this->post_selection_cpt->folder_name()
+		);
 		$this->post_selections_settings_storage = new Post_Selections_Settings_Storage(
 			$this->logger,
 			$cards_file_system,
 			new Post_Selection_Fs_Fields(),
-			new Db_Management( $this->logger, $cards_file_system, new Post_Selections_Cpt() ),
+			new Db_Management( $this->logger, $cards_file_system, $this->post_selection_cpt ),
 			$this->post_selection_settings
 		);
 
-		$views_file_system              = new File_System( $this->logger, Layouts_Cpt::folder_name() );
+		$views_file_system              = new File_System( $this->logger, $this->layout_cpt->folder_name() );
 		$this->layouts_settings_storage = new Layouts_Settings_Storage(
 			$this->logger,
 			$views_file_system,
 			new Fs_Fields(),
-			new Db_Management( $this->logger, $views_file_system, new Layouts_Cpt() ),
+			new Db_Management( $this->logger, $views_file_system, $this->layout_cpt ),
 			$this->layout_settings
 		);
 
@@ -254,10 +292,10 @@ $acf_views = new class() {
 			$this->layout_factory
 		);
 
-		$layouts_cpt                 = new Layouts_Cpt( new Layouts_Cpt(), $this->layouts_settings_storage );
+		$layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
 		$layouts_cpt_table           = new Layouts_Cpt_Table(
 			$this->layouts_settings_storage,
-			Layouts_Cpt::cpt_name(),
+			Hard_Layout_Cpt::cpt_name(),
 			$this->html,
 			$layouts_cpt_meta_boxes
 		);
@@ -277,7 +315,7 @@ $acf_views = new class() {
 		$db_management               = new Db_Management(
 			$this->logger,
 			$file_system,
-			new Layouts_Cpt(),
+			$this->layout_cpt,
 			true
 		);
 		$layouts_settings_storage    = new Layouts_Settings_Storage(
@@ -296,12 +334,12 @@ $acf_views = new class() {
 			$this->logger
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Layouts_Cpt::cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Layouts_Cpt::cpt_name() );
-		$shortcode_block               = new Shortcode_Block( Layouts_Cpt::shortcodes() );
+		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
+		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
+		$shortcode_block               = new Shortcode_Block( $this->layout_cpt->shortcodes() );
 
 		$this->layout_shortcode = new Layout_Shortcode(
-			new Layouts_Cpt(),
+			$this->layout_cpt,
 			$this->settings,
 			$this->layouts_settings_storage,
 			$this->front_assets,
@@ -353,12 +391,12 @@ $acf_views = new class() {
 		);
 
 		$post_selections_cpt                 = new Post_Selections_Cpt(
-			new Post_Selections_Cpt(),
+			$this->post_selection_cpt,
 			$this->post_selections_settings_storage
 		);
 		$post_selections_cpt_table           = new Post_Selections_Cpt_Table(
 			$this->post_selections_settings_storage,
-			Post_Selections_Cpt::cpt_name(),
+			$this->post_selection_cpt->cpt_name(),
 			$this->html,
 			$post_selections_cpt_meta_boxes
 		);
@@ -378,7 +416,7 @@ $acf_views = new class() {
 		$db_management                    = new Db_Management(
 			$this->logger,
 			$file_system,
-			new Post_Selections_Cpt(),
+			$this->post_selection_cpt,
 			true
 		);
 		$post_selections_settings_storage = new Post_Selections_Settings_Storage(
@@ -398,8 +436,8 @@ $acf_views = new class() {
 			$this->layouts_pre_built_tab
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Post_Selections_Cpt::cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Post_Selections_Cpt::cpt_name() );
+		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, $this->post_selection_cpt->cpt_name() );
+		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->post_selection_cpt->cpt_name() );
 
 		$post_selections_view_integration = new Post_Selections_View_Integration(
 			$this->post_selections_settings_storage,
@@ -408,7 +446,7 @@ $acf_views = new class() {
 			$this->settings
 		);
 		$this->post_selection_shortcode   = new Post_Selection_Shortcode(
-			new Post_Selections_Cpt(),
+			$this->post_selection_cpt,
 			$this->settings,
 			$this->post_selections_settings_storage,
 			$this->front_assets,
@@ -433,23 +471,32 @@ $acf_views = new class() {
 		$acf_dependency = new Acf_Dependency( $this->plugin );
 
 		$layout_settings_integration         = new Layout_Settings_Integration(
-			Layouts_Cpt::cpt_name(),
+			$this->layout_cpt->cpt_name(),
 			$this->data_vendors
 		);
 		$field_settings_integration          = new Field_Settings_Integration(
-			Layouts_Cpt::cpt_name(),
+			$this->layout_cpt->cpt_name(),
 			$this->data_vendors
 		);
 		$post_selection_settings_integration = new Post_Selection_Settings_Integration(
-			Post_Selections_Cpt::cpt_name(),
+			$this->post_selection_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$item_settings_integration           = new Item_Settings_Integration( Layouts_Cpt::cpt_name(), $this->data_vendors );
+		$item_settings_integration           = new Item_Settings_Integration(
+			$this->layout_cpt->cpt_name(),
+			$this->data_vendors
+		);
 		// metaField is a part of the Meta Filter, so we use 'cardsCpt' here.
-		$meta_field_settings_integration = new Meta_Field_Settings_Integration( Post_Selections_Cpt::cpt_name(), $this->data_vendors );
-		$views_mount_point_integration   = new Mount_Point_Settings_Integration( Layouts_Cpt::cpt_name() );
-		$cards_mount_point_integration   = new Mount_Point_Settings_Integration( Post_Selections_Cpt::cpt_name() );
-		$tax_field_settings_integration  = new Tax_Field_Settings_Integration( Post_Selections_Cpt::cpt_name(), $this->data_vendors );
+		$meta_field_settings_integration = new Meta_Field_Settings_Integration(
+			$this->post_selection_cpt->cpt_name(),
+			$this->data_vendors
+		);
+		$views_mount_point_integration   = new Mount_Point_Settings_Integration( $this->layout_cpt->cpt_name() );
+		$cards_mount_point_integration   = new Mount_Point_Settings_Integration( $this->post_selection_cpt->cpt_name() );
+		$tax_field_settings_integration  = new Tax_Field_Settings_Integration(
+			$this->post_selection_cpt->cpt_name(),
+			$this->data_vendors
+		);
 		$tools_settings_integration      = new Tools_Settings_Integration(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage
@@ -588,13 +635,26 @@ $acf_views = new class() {
 				new Migration_2_2_2( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_2_2_3( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
 				new Migration_2_3_0( $this->template_engines ),
-				new Migration_2_4_0( $this->layouts_cpt_save_actions, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_4_0(
+					$this->layouts_cpt_save_actions,
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage
+				),
 				new Migration_2_4_2( $this->layouts_settings_storage ),
 				new Migration_2_4_5( $this->layouts_settings_storage ),
 				// v3.
 				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_3_3_0( $this->layouts_settings_storage, $this->post_selections_settings_storage, $this->logger, $this->plugin ),
-				new Migration_3_8_0( $this->layouts_settings_storage, new Layouts_Cpt(), new Post_Selections_Cpt() ),
+				new Migration_3_3_0(
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage,
+					$this->logger,
+					$this->plugin
+				),
+				new Migration_3_8_0(
+					$this->layouts_settings_storage->get_file_system(),
+					$this->layout_cpt,
+					$this->post_selection_cpt
+				),
 			)
 		);
 	}
@@ -637,8 +697,8 @@ $acf_views = new class() {
 		$current_screen = new Current_Screen();
 
 		$this->load_translations( $current_screen );
-		$this->acf_groups( $current_screen );
 		$this->primary( $current_screen );
+		$this->acf_groups( $current_screen );
 		$this->views( $current_screen );
 		$this->cards( $current_screen );
 		$this->integration( $current_screen );

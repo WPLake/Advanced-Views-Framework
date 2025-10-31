@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -396,7 +396,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 		string $base = 'edit.php'
 	): string {
 		$cpt_name = is_null( $cpt_name ) ?
-			Layouts_Cpt::cpt_name() :
+			Hard_Layout_Cpt::cpt_name() :
 			$cpt_name;
 
 		$page_arg = '' !== $page ?
@@ -431,8 +431,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 		self::add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
 		self::add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
 
-		if ( true === $current_screen->is_admin_cpt_related( Layouts_Cpt::cpt_name(), Current_Screen::CPT_ADD ) ||
-			true === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::cpt_name(), Current_Screen::CPT_ADD ) ) {
+		if ( true === $current_screen->is_admin_cpt_related( Hard_Layout_Cpt::cpt_name(), Current_Screen::CPT_ADD ) ||
+			true === $current_screen->is_admin_cpt_related( Hard_Post_Selection_Cpt::cpt_name(), Current_Screen::CPT_ADD ) ) {
 			self::add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
 		}
 	}

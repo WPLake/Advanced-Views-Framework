@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
@@ -248,7 +248,7 @@ class Field_Settings_Integration extends Acf_Integration {
 		parent::set_hooks( $current_screen );
 
 		if ( false === $current_screen->is_admin_cpt_related(
-			Layouts_Cpt::cpt_name(),
+			Hard_Layout_Cpt::cpt_name(),
 			Current_Screen::CPT_EDIT
 		) ) {
 			return;

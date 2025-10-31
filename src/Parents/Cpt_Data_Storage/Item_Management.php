@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -131,10 +131,10 @@ abstract class Item_Management extends Action {
 		// save the minimum data
 		// (otherwise next '->get()' call won't load the unique id for the CptData).
 
-		$unique_id_field_name = Layouts_Cpt::cpt_name() === $this->db_management->get_post_type() ?
+		$unique_id_field_name = Hard_Layout_Cpt::cpt_name() === $this->db_management->get_post_type() ?
 			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_UNIQUE_ID ) :
 			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_UNIQUE_ID );
-		$title_field_name     = Layouts_Cpt::cpt_name() === $this->db_management->get_post_type() ?
+		$title_field_name     = Hard_Layout_Cpt::cpt_name() === $this->db_management->get_post_type() ?
 			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) :
 			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE );
 
@@ -181,7 +181,7 @@ abstract class Item_Management extends Action {
 	public function get_unique_id_from_shortcode_id( string $id, string $post_type ): string {
 		// A) short unique id.
 		if ( 13 === strlen( $id ) ) {
-			$id_prefix = Layouts_Cpt::cpt_name() === $post_type ?
+			$id_prefix = Hard_Layout_Cpt::cpt_name() === $post_type ?
 				Layout_Settings::UNIQUE_ID_PREFIX :
 				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 

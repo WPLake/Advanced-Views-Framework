@@ -5,8 +5,8 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -44,7 +44,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 	public function add_pages(): void {
 		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() ),
+			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
 			__( 'Demo import', 'acf-views' ),
 			__( 'Demo import', 'acf-views' ),
 			Avf_User::get_manage_capability(),
@@ -52,7 +52,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			array( $this, 'get_import_page' )
 		);
 		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() ),
+			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
 			__( 'Docs', 'acf-views' ),
 			__( 'Docs', 'acf-views' ),
 			Avf_User::get_manage_capability(),
@@ -65,7 +65,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			}
 		);
 		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() ),
+			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
 			__( 'Survey', 'acf-views' ),
 			__( 'Survey', 'acf-views' ),
 			Avf_User::get_manage_capability(),
@@ -86,14 +86,14 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 		$current_url        = $this->get_current_admin_url();
 		$acf_views_list_url = $this->plugin->get_admin_url();
-		$acf_cards_list_url = $this->plugin->get_admin_url( '', Post_Selections_Cpt::cpt_name() );
+		$acf_cards_list_url = $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() );
 
 		$current_screen            = get_current_screen();
 		$is_edit_screen            = null !== $current_screen && 'post' === $current_screen->base && '' === $current_screen->action;
 		$is_add_screen             = null !== $current_screen && 'post' === $current_screen->base && 'add' === $current_screen->action;
 		$is_active_child           = ( $is_edit_screen || $is_add_screen );
-		$is_active_acf_views_child = $is_active_child && null !== $current_screen && Layouts_Cpt::cpt_name() === $current_screen->post_type;
-		$is_active_acf_cards_child = $is_active_child && null !== $current_screen && Post_Selections_Cpt::cpt_name() === $current_screen->post_type;
+		$is_active_acf_views_child = $is_active_child && null !== $current_screen && Hard_Layout_Cpt::cpt_name() === $current_screen->post_type;
+		$is_active_acf_cards_child = $is_active_child && null !== $current_screen && Hard_Post_Selection_Cpt::cpt_name() === $current_screen->post_type;
 
 		foreach ( $tabs as &$tab ) {
 			$is_acf_views_list_page = $tab['url'] === $acf_views_list_url;
@@ -168,7 +168,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		self::add_action(
 			'current_screen',
 			function ( WP_Screen $wp_screen ): void {
-				if ( ! in_array( $wp_screen->post_type, array( Layouts_Cpt::cpt_name(), Post_Selections_Cpt::cpt_name() ), true ) ) {
+				if ( ! in_array( $wp_screen->post_type, array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true ) ) {
 					return;
 				}
 				self::add_action( 'in_admin_header', array( $this, 'get_header' ) );
@@ -200,7 +200,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			),
 			array(
 				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( '', Post_Selections_Cpt::cpt_name() ),
+				'url'         => $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() ),
 				'label'       => __( 'Cards', 'acf-views' ),
 				'isActive'    => false,
 				'isSecondary' => false,
@@ -272,7 +272,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	}
 
 	protected function remove_submenu_links(): void {
-		$url = sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() );
+		$url = sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() );
 
 		global $submenu;
 
@@ -306,12 +306,12 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		return array(
 			sprintf(
 				'<a href="%s" target="_self">%s</a>',
-				esc_url( $this->plugin->get_admin_url( '', Layouts_Cpt::cpt_name() ) ),
+				esc_url( $this->plugin->get_admin_url( '', Hard_Layout_Cpt::cpt_name() ) ),
 				esc_html_x( 'Views', 'acf-views' )
 			),
 			sprintf(
 				'<a href="%s" target="_self">%s</a>',
-				esc_url( $this->plugin->get_admin_url( '', Post_Selections_Cpt::cpt_name() ) ),
+				esc_url( $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() ) ),
 				esc_html_x( 'Cards', 'acf-views' )
 			),
 		);

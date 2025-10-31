@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use WP_Post;
 
@@ -30,8 +30,8 @@ final class Migration_1_6_0 extends Version_Migration_Base {
 		$my_posts = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->posts} WHERE post_type IN (%s,%s) AND post_content != ''",
-				Layouts_Cpt::cpt_name(),
-				Post_Selections_Cpt::cpt_name()
+				Hard_Layout_Cpt::cpt_name(),
+				Hard_Post_Selection_Cpt::cpt_name()
 			)
 		);
 

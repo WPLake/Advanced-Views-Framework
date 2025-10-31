@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -145,7 +145,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		if ( '' === $cpt_data->css_code &&
 			Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
 			// by default, Web component is inline, which is wrong, we expect it to be block.
-			$id                 = Layouts_Cpt::cpt_name() === $this->get_cpt_name() ?
+			$id                 = Hard_Layout_Cpt::cpt_name() === $this->get_cpt_name() ?
 				'view' :
 				'card';
 			$cpt_data->css_code = sprintf( "#%s {\n\tdisplay: block;\n}\n", $id );

@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
@@ -57,10 +57,10 @@ class Post_Selections_View_Integration extends Cpt_Settings_Creator implements H
 		$is_add_screen = 'post' === $screen->base &&
 						'add' === $screen->action;
 
-		if ( Post_Selections_Cpt::cpt_name() !== $screen->post_type ||
+		if ( Hard_Post_Selection_Cpt::cpt_name() !== $screen->post_type ||
 			false === $is_add_screen ||
 			null === $from_post ||
-			Layouts_Cpt::cpt_name() !== $from_post->post_type ||
+			Hard_Layout_Cpt::cpt_name() !== $from_post->post_type ||
 			'publish' !== $from_post->post_status ||
 			! Avf_User::can_manage() ) {
 			return;

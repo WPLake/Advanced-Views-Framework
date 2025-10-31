@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
@@ -56,14 +56,14 @@ final class Migration_3_0_0 extends Version_Migration_Base {
 		);
 
 		foreach ( $cpt_posts as $cpt_post ) {
-			$cpt_data = Layouts_Cpt::cpt_name() === $cpt_post->post_type ?
+			$cpt_data = Hard_Layout_Cpt::cpt_name() === $cpt_post->post_type ?
 				$this->layouts_settings_storage->get( $cpt_post->post_name ) :
 				$this->post_selections_settings_storage->get( $cpt_post->post_name );
 
 			$cpt_data->unique_id = $cpt_post->post_name;
 			$cpt_data->title     = $cpt_post->post_title;
 
-			if ( Layouts_Cpt::cpt_name() === $cpt_post->post_type ) {
+			if ( Hard_Layout_Cpt::cpt_name() === $cpt_post->post_type ) {
 				$this->layouts_settings_storage->save( $cpt_data );
 			} else {
 				$this->post_selections_settings_storage->save( $cpt_data );

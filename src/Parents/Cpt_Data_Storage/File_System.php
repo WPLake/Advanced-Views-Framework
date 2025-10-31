@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
@@ -340,8 +340,8 @@ class File_System extends Action implements Hooks_Interface {
 		// null if called from the SettingsPage.
 		if ( null !== $current_screen ) {
 			// check only for the list screens (for better performance).
-			if ( true === $current_screen->is_admin_cpt_related( Layouts_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ||
-				true === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ) {
+			if ( true === $current_screen->is_admin_cpt_related( Hard_Layout_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ||
+				true === $current_screen->is_admin_cpt_related( Hard_Post_Selection_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ) {
 				if ( false === $this->is_base_folder_writable() ) {
 					$this->show_folder_is_not_writable_warning();
 

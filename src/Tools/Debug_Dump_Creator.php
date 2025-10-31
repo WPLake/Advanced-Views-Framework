@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Tools;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Automatic_Reports;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -107,10 +107,10 @@ final class Debug_Dump_Creator {
 		$export_data = array();
 
 		$views_to_export = array() !== $this->tools_settings->dump_views ?
-			$this->get_posts( Layouts_Cpt::cpt_name(), $this->tools_settings->dump_views ) :
+			$this->get_posts( Hard_Layout_Cpt::cpt_name(), $this->tools_settings->dump_views ) :
 			array();
 		$cards_to_export = array() !== $this->tools_settings->dump_cards ?
-			$this->get_posts( Post_Selections_Cpt::cpt_name(), $this->tools_settings->dump_cards ) :
+			$this->get_posts( Hard_Post_Selection_Cpt::cpt_name(), $this->tools_settings->dump_cards ) :
 			array();
 
 		foreach ( $views_to_export as $view_post ) {

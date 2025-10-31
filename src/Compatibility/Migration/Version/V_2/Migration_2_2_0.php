@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
@@ -37,7 +37,7 @@ class Migration_2_2_0 extends Version_Migration_Base {
 
 	public function recreate_post_slugs(): void {
 		$query_args = array(
-			'post_type'      => array( Layouts_Cpt::cpt_name(), Post_Selections_Cpt::cpt_name() ),
+			'post_type'      => array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ),
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);
@@ -48,7 +48,7 @@ class Migration_2_2_0 extends Version_Migration_Base {
 		$posts = $wp_query->get_posts();
 
 		foreach ( $posts as $post ) {
-			$prefix = Layouts_Cpt::cpt_name() === $post->post_type ?
+			$prefix = Hard_Layout_Cpt::cpt_name() === $post->post_type ?
 				Layout_Settings::UNIQUE_ID_PREFIX :
 				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
@@ -69,7 +69,7 @@ class Migration_2_2_0 extends Version_Migration_Base {
 	public function replace_view_id_to_unique_id_in_cards(): void {
 		$wp_query = new WP_Query(
 			array(
-				'post_type'      => Post_Selections_Cpt::cpt_name(),
+				'post_type'      => Hard_Post_Selection_Cpt::cpt_name(),
 				'post_status'    => array( 'publish', 'draft', 'trash' ),
 				'posts_per_page' => - 1,
 			)
@@ -97,7 +97,7 @@ class Migration_2_2_0 extends Version_Migration_Base {
 	public function replace_view_id_to_unique_id_in_view_relationships(): void {
 		$wp_query = new WP_Query(
 			array(
-				'post_type'      => Layouts_Cpt::cpt_name(),
+				'post_type'      => Hard_Layout_Cpt::cpt_name(),
 				'post_status'    => array( 'publish', 'draft', 'trash' ),
 				'posts_per_page' => - 1,
 			)

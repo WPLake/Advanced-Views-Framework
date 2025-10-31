@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
@@ -58,7 +58,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	protected function get_cpt_name(): string {
-		return Layouts_Cpt::cpt_name();
+		return Hard_Layout_Cpt::cpt_name();
 	}
 
 	protected function get_custom_markup_acf_field_name(): string {
@@ -194,7 +194,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$view_data->get_unique_id( true ),
 			false,
-			Layouts_Cpt::shortcode(),
+			Hard_Layout_Cpt::shortcode(),
 			get_the_title( $view_id ),
 			false,
 			$view_data->is_for_internal_usage_only()

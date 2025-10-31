@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
-use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
@@ -66,7 +66,7 @@ class Post_Selections_Cpt extends Cpt {
 			'label'        => __( 'Cards', 'acf-views' ),
 			'description'  => $description,
 			'labels'       => $labels,
-			'show_in_menu' => sprintf( 'edit.php?post_type=%s', Layouts_Cpt::cpt_name() ),
+			'show_in_menu' => sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
 			'menu_icon'    => 'dashicons-layout',
 		);
 
