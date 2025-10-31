@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
+defined( 'ABSPATH' ) || exit;
+
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
@@ -20,8 +22,7 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
 use WP_REST_Request;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 
 class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/view-refresh';
@@ -42,12 +43,20 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Layout_Markup $layout_markup,
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
 		Html $html,
-		Layout_Factory $layout_factory
+		Layout_Factory $layout_factory,
+		Public_Cpt $public_plugin_cpt
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$layout_settings = $layout_settings->getDeepClone();
 
-		parent::__construct( $logger, $layouts_settings_storage, $plugin, $layout_settings, $front_assets );
+		parent::__construct(
+			$logger,
+			$layouts_settings_storage,
+			$plugin,
+			$layout_settings,
+			$front_assets,
+			$public_plugin_cpt
+		);
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->layout_settings          = $layout_settings;
@@ -194,7 +203,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$view_data->get_unique_id( true ),
 			false,
-			Hard_Layout_Cpt::shortcode(),
+			$this->public_plugin_cpt->shortcode(),
 			get_the_title( $view_id ),
 			false,
 			$view_data->is_for_internal_usage_only()

@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use WP_List_Table;
 use WP_Post;
 use WP_Post_Type;
@@ -38,10 +39,12 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	private ?int $current_page_number;
 	private ?string $current_search_value;
 	private ?int $pagination_per_page;
+	protected Public_Cpt $public_plugin_cpt;
 
-	public function __construct( Cpt_Settings_Storage $cpt_settings_storage, string $name ) {
+	public function __construct( Cpt_Settings_Storage $cpt_settings_storage, Public_Cpt $public_plugin_cpt ) {
 		$this->cpt_settings_storage = $cpt_settings_storage;
-		$this->cpt_name             = $name;
+		$this->public_plugin_cpt    = $public_plugin_cpt;
+		$this->cpt_name             = $public_plugin_cpt->cpt_name();
 		$this->tabs                 = array();
 		$this->add_tab_callbacks    = array();
 

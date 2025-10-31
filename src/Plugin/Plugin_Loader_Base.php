@@ -64,8 +64,8 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Plugin_Cpt_Base;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
@@ -95,8 +95,8 @@ abstract class Plugin_Loader_Base {
 	protected Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 	protected Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
 	protected Template_Engines $template_engines;
-	protected Public_Plugin_Cpt $layout_cpt;
-	protected Public_Plugin_Cpt $post_selection_cpt;
+	protected Public_Cpt $layout_cpt;
+	protected Public_Cpt $post_selection_cpt;
 	protected Data_Vendors $data_vendors;
 	protected Front_Assets $front_assets;
 	protected Live_Reloader_Component $live_reloader_component;
@@ -423,8 +423,8 @@ abstract class Plugin_Loader_Base {
 		$this->file_systems = array_merge( $this->file_systems, $file_systems );
 	}
 
-	protected static function make_layout_cpt(): Public_Plugin_Cpt {
-		$layout_cpt = new Public_Plugin_Cpt_Base();
+	protected static function make_layout_cpt(): Public_Cpt {
+		$layout_cpt = new Public_Cpt_Base();
 
 		$layout_cpt->cpt_name    = Hard_Layout_Cpt::cpt_name();
 		$layout_cpt->slug_prefix = 'layout-';
@@ -437,8 +437,8 @@ abstract class Plugin_Loader_Base {
 		return $layout_cpt;
 	}
 
-	protected static function make_post_selection_cpt(): Public_Plugin_Cpt {
-		$post_selection_cpt = new Public_Plugin_Cpt_Base();
+	protected static function make_post_selection_cpt(): Public_Cpt {
+		$post_selection_cpt = new Public_Cpt_Base();
 
 		$post_selection_cpt->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
 		$post_selection_cpt->slug_prefix = 'post-selection-';

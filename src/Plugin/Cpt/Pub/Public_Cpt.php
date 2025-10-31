@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
-interface Public_Plugin_Cpt extends Plugin_Cpt {
+interface Public_Cpt extends Plugin_Cpt {
 	/**
 	 * @return string[]
 	 */

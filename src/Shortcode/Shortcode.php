@@ -13,6 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_REST_Request;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -31,10 +32,10 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	 * @var array<string,true>
 	 */
 	private array $rendered_ids;
-	protected Plugin_Cpt $plugin_feature;
+	protected Public_Cpt $plugin_feature;
 
 	public function __construct(
-		Plugin_Cpt $plugin_feature,
+		Public_Cpt $plugin_feature,
 		Settings $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Instance_Factory $instance_factory,
@@ -51,7 +52,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	protected function get_post_type(): string {
-		return $this->plugin_feature::cpt_name();
+		return $this->plugin_feature->cpt_name();
 	}
 
 	abstract protected function get_unique_id_prefix(): string;
@@ -124,7 +125,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	protected function get_shortcode_name(): string {
-		return $this->plugin_feature::shortcode();
+		return $this->plugin_feature->shortcode();
 	}
 
 	protected function get_live_reloader_component(): Live_Reloader_Component {
@@ -255,7 +256,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	public function register_rest_route(): void {
-		foreach ( $this->plugin_feature::rest_route_names() as $route_name ) {
+		foreach ( $this->plugin_feature->rest_route_names() as $route_name ) {
 			register_rest_route(
 				'advanced_views/v1',
 				$route_name . '/(?P<unique_id>[a-z0-9]+)',
@@ -278,7 +279,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 
-		foreach ( $this->plugin_feature::shortcodes() as $shortcode ) {
+		foreach ( $this->plugin_feature->shortcodes() as $shortcode ) {
 			self::add_shortcode( $shortcode, array( $this, 'do_shortcode' ) );
 		}
 	}

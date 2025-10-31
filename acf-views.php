@@ -173,7 +173,8 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->html,
 			$this->plugin,
 			$this->layouts_settings_storage,
-			$this->data_vendors
+			$this->data_vendors,
+			$this->layout_cpt
 		);
 		$this->layouts_cpt_save_actions = new Layouts_Cpt_Save_Actions(
 			$this->logger,
@@ -184,13 +185,14 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$layout_markup,
 			$this->layouts_cpt_meta_boxes,
 			$this->html,
-			$this->layout_factory
+			$this->layout_factory,
+			$this->layout_cpt
 		);
 
 		$this->layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
 		$this->layouts_cpt_table           = new Layouts_Cpt_Table(
 			$this->layouts_settings_storage,
-			$this->layout_cpt->cpt_name(),
+			$this->layout_cpt,
 			$this->html,
 			$this->layouts_cpt_meta_boxes
 		);
@@ -250,7 +252,8 @@ $acf_views = new class() extends Plugin_Loader_Base {
 		$query_builder                          = new Query_Builder( $this->data_vendors, $this->logger );
 		$post_selection_markup                  = new Post_Selection_Markup(
 			$this->front_assets,
-			$this->template_engines
+			$this->template_engines,
+			$this->layout_cpt
 		);
 		$this->post_selection_factory           = new Post_Selection_Factory(
 			$this->front_assets,
@@ -263,7 +266,8 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->html,
 			$this->plugin,
 			$this->post_selections_settings_storage,
-			$this->layouts_settings_storage
+			$this->layouts_settings_storage,
+			$this->post_selection_cpt
 		);
 		$this->post_selections_cpt_save_actions = new Post_Selections_Cpt_Save_Actions(
 			$this->logger,
@@ -275,7 +279,8 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$query_builder,
 			$this->html,
 			$this->post_selections_cpt_meta_boxes,
-			$this->post_selection_factory
+			$this->post_selection_factory,
+			$this->post_selection_cpt
 		);
 
 		$this->post_selections_cpt                 = new Post_Selections_Cpt(
@@ -284,7 +289,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 		);
 		$this->post_selections_cpt_table           = new Post_Selections_Cpt_Table(
 			$this->post_selections_settings_storage,
-			$this->post_selection_cpt->cpt_name(),
+			$this->post_selection_cpt,
 			$this->html,
 			$this->post_selections_cpt_meta_boxes
 		);

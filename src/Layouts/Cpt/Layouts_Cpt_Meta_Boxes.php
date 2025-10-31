@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
@@ -15,18 +17,25 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 
 class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
 	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Public_Cpt $public_plugin_cpt;
 
-	public function __construct( Html $html, Plugin $plugin, Layouts_Settings_Storage $layouts_settings_storage, Data_Vendors $data_vendors ) {
+	public function __construct(
+		Html $html,
+		Plugin $plugin,
+		Layouts_Settings_Storage $layouts_settings_storage,
+		Data_Vendors $data_vendors,
+		Public_Cpt $public_plugin_cpt
+	) {
 		parent::__construct( $html, $plugin );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->data_vendors             = $data_vendors;
+		$this->public_plugin_cpt        = $public_plugin_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -232,7 +241,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$short_view_unique_id,
 					false,
-					Hard_Layout_Cpt::shortcode(),
+					$this->public_plugin_cpt->shortcode(),
 					get_the_title( $post ),
 					false,
 					$view_data->is_for_internal_usage_only()

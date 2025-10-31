@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -28,11 +29,11 @@ class Layouts_Cpt_Table extends Cpt_Table {
 
 	public function __construct(
 		Cpt_Settings_Storage $cpt_settings_storage,
-		string $name,
+		Public_Cpt $public_plugin_cpt,
 		Html $html,
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes
 	) {
-		parent::__construct( $cpt_settings_storage, $name );
+		parent::__construct( $cpt_settings_storage, $public_plugin_cpt );
 
 		$this->html                   = $html;
 		$this->layouts_cpt_meta_boxes = $layouts_cpt_meta_boxes;
@@ -57,7 +58,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$view_data->get_unique_id( true ),
 					true,
-					Hard_Layout_Cpt::shortcode(),
+					$this->public_plugin_cpt->shortcode(),
 					$view_data->title,
 					false,
 					$view_data->is_for_internal_usage_only()

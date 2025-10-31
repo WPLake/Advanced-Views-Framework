@@ -9,6 +9,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
 
@@ -17,10 +18,12 @@ defined( 'ABSPATH' ) || exit;
 class Post_Selection_Markup {
 	private Front_Assets $front_assets;
 	private Template_Engines $template_engines;
+	private Public_Cpt $layout_cpt;
 
-	public function __construct( Front_Assets $front_assets, Template_Engines $template_engines ) {
+	public function __construct( Front_Assets $front_assets, Template_Engines $template_engines, Public_Cpt $layout_cpt ) {
 		$this->front_assets     = $front_assets;
 		$this->template_engines = $template_engines;
+		$this->layout_cpt       = $layout_cpt;
 	}
 
 	protected function get_template_engines(): Template_Engines {
@@ -126,7 +129,7 @@ class Post_Selection_Markup {
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
 		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
-		printf( '[%s', esc_html( Hard_Layout_Cpt::shortcode() ) );
+		printf( '[%s', esc_html( $this->layout_cpt->shortcode() ) );
 		$template_generator->print_array_item_attribute( 'view-id', '_card', 'view_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 

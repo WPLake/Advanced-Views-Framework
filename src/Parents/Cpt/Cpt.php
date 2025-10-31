@@ -78,7 +78,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 	}
 
 	protected function get_cpt_name(): string {
-		return $this->plugin_feature::cpt_name();
+		return $this->plugin_feature->cpt_name();
 	}
 
 	protected function get_storage_label(): string {

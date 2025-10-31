@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -27,11 +28,11 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 
 	public function __construct(
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		string $name,
+		Public_Cpt $public_plugin_cpt,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes
 	) {
-		parent::__construct( $post_selections_settings_storage, $name );
+		parent::__construct( $post_selections_settings_storage, $public_plugin_cpt );
 
 		$this->html                           = $html;
 		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
@@ -52,7 +53,7 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$card_data->get_unique_id( true ),
 					true,
-					Hard_Post_Selection_Cpt::shortcode(),
+					$this->public_plugin_cpt->shortcode(),
 					$card_data->title,
 					true
 				);

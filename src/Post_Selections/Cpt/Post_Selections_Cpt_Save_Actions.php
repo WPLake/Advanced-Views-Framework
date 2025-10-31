@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
@@ -19,8 +21,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use WP_REST_Request;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/card-refresh';
@@ -46,12 +47,20 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Query_Builder $query_builder,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
-		Post_Selection_Factory $post_selection_factory
+		Post_Selection_Factory $post_selection_factory,
+		Public_Cpt $public_plugin_cpt
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$post_selection_settings = $post_selection_settings->getDeepClone();
 
-		parent::__construct( $logger, $post_selections_settings_storage, $plugin, $post_selection_settings, $front_assets );
+		parent::__construct(
+			$logger,
+			$post_selections_settings_storage,
+			$plugin,
+			$post_selection_settings,
+			$front_assets,
+			$public_plugin_cpt
+		);
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->post_selection_settings          = $post_selection_settings;
@@ -176,7 +185,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$card_data->get_unique_id( true ),
 			false,
-			Hard_Post_Selection_Cpt::shortcode(),
+			$this->public_plugin_cpt->shortcode(),
 			$card_data->title,
 			true
 		);

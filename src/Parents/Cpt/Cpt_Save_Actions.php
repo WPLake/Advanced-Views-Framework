@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
+defined( 'ABSPATH' ) || exit;
+
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -23,8 +25,7 @@ use Org\Wplake\Advanced_Views\Plugin;
 use WP_Post;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 
 abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	const REST_REFRESH_ROUTE = '';
@@ -47,13 +48,15 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 */
 	private array $validated_input_names;
 	private Front_Assets $front_assets;
+	protected Public_Cpt $public_plugin_cpt;
 
 	public function __construct(
 		Logger $logger,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Plugin $plugin,
 		Cpt_Settings $cpt_settings,
-		Front_Assets $front_assets
+		Front_Assets $front_assets,
+		Public_Cpt $public_plugin_cpt
 	) {
 		parent::__construct( $logger );
 
@@ -66,6 +69,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->available_acf_fields  = array_keys( $this->cpt_settings->getFieldValues() );
 		$this->field_values          = array();
 		$this->validated_input_names = array();
+		$this->public_plugin_cpt     = $public_plugin_cpt;
 	}
 
 	abstract protected function get_cpt_name(): string;
