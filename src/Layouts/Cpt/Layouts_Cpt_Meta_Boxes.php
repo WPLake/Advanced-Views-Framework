@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -30,7 +30,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	}
 
 	protected function get_cpt_name(): string {
-		return Layouts_Feature::cpt_name();
+		return Layouts_Cpt::cpt_name();
 	}
 
 	protected function print_link_with_js_hover( string $url, string $title ): void {
@@ -148,7 +148,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		$query = $wpdb->prepare(
 			"SELECT * from {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish'
                       AND FIND_IN_SET(%s,post_content_filtered) > 0",
-			Post_Selections_Feature::cpt_name(),
+			Post_Selections_Cpt::cpt_name(),
 			$layout_settings->get_unique_id()
 		);
 		// @phpcs:ignore
@@ -232,7 +232,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$short_view_unique_id,
 					false,
-					Layouts_Feature::shortcode(),
+					Layouts_Cpt::shortcode(),
 					get_the_title( $post ),
 					false,
 					$view_data->is_for_internal_usage_only()

@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
@@ -103,10 +104,10 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 			$migration->migrate();
 		}
 
-		$version_migrations = $this->get_target_version_migrations( $previous_version );
+		$version_migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $version_migrations as $version_migration ) {
-			$version_migration->migrate_previous_version();
+			$version_migration->migrate();
 		}
 	}
 
@@ -115,7 +116,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 			$migration->migrate_cpt_settings( $cpt_settings );
 		}
 
-		$version_migrations = $this->get_target_version_migrations( $previous_version );
+		$version_migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $version_migrations as $version_migration ) {
 			$version_migration->migrate_cpt_settings( $cpt_settings );
@@ -156,13 +157,21 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	/**
-	 * @return Migration[]
+	 * @return Version_Migration[]
 	 */
-	protected function get_target_version_migrations( string $previous_version ): array {
-		return array_filter(
+	protected function get_version_migrations( string $previous_version ): array {
+		$target_migrations = array_filter(
 			$this->version_migrations,
-			fn( Version_Migration $version_migration ) =>
-			self::is_version_lower( $previous_version, $version_migration->introduced_version() )
+			fn( Version_Migration $version_migration ) => self::is_version_lower( $previous_version, $version_migration->introduced_version() )
 		);
+
+		// ASC sort.
+		usort(
+			$target_migrations,
+			fn( Version_Migration $first, Version_Migration $second ) =>
+				$first->get_order() <=> $second->get_order()
+		);
+
+		return $target_migrations;
 	}
 }

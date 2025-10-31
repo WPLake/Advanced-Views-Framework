@@ -6,12 +6,12 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use WP_Post;
 
-final class Migration_1_6_0 extends Version_Migration {
+final class Migration_1_6_0 extends Version_Migration_Base {
 	public function introduced_version(): string {
 		return '1.6.0';
 	}
@@ -30,8 +30,8 @@ final class Migration_1_6_0 extends Version_Migration {
 		$my_posts = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->posts} WHERE post_type IN (%s,%s) AND post_content != ''",
-				Layouts_Feature::cpt_name(),
-				Post_Selections_Feature::cpt_name()
+				Layouts_Cpt::cpt_name(),
+				Post_Selections_Cpt::cpt_name()
 			)
 		);
 

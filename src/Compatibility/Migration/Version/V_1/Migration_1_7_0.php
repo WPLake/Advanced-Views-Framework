@@ -7,14 +7,14 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use WP_Post;
 use WP_Query;
 
-final class Migration_1_7_0 extends Version_Migration {
+final class Migration_1_7_0 extends Version_Migration_Base {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 
@@ -36,7 +36,7 @@ final class Migration_1_7_0 extends Version_Migration {
 	 */
 	public function update_markup_identifiers(): void {
 		$query_args = array(
-			'post_type'      => Layouts_Feature::cpt_name(),
+			'post_type'      => Layouts_Cpt::cpt_name(),
 			'post_status'    => array( 'publish', 'draft', 'trash' ),
 			'posts_per_page' => - 1,
 		);

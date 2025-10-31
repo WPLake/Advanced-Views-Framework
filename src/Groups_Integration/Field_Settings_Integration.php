@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
@@ -76,11 +76,11 @@ class Field_Settings_Integration extends Acf_Integration {
 
 		self::add_filter(
 			'acf/load_field/name=' . $acf_field_name,
-			fn(array $field) => $this->set_conditional_rules_for_field(
-					$field,
-					$acf_key,
-					$target_choices
-				)
+			fn( array $field ) => $this->set_conditional_rules_for_field(
+				$field,
+				$acf_key,
+				$target_choices
+			)
 		);
 	}
 
@@ -96,11 +96,11 @@ class Field_Settings_Integration extends Acf_Integration {
 		foreach ( $masonry_fields as $masonry_field ) {
 			self::add_filter(
 				'acf/load_field/name=' . Field_Settings::getAcfFieldName( $masonry_field ),
-				fn(array $field) => $this->set_conditional_rules_for_field(
-						$field,
-						Field_Settings::getAcfFieldName( Field_Settings::FIELD_GALLERY_TYPE ),
-						array( 'masonry' ),
-					)
+				fn( array $field ) => $this->set_conditional_rules_for_field(
+					$field,
+					Field_Settings::getAcfFieldName( Field_Settings::FIELD_GALLERY_TYPE ),
+					array( 'masonry' ),
+				)
 			);
 		}
 
@@ -113,11 +113,11 @@ class Field_Settings_Integration extends Acf_Integration {
 		foreach ( $masonry_repeater_fields as $masonry_repeater_field ) {
 			self::add_filter(
 				'acf/load_field/name=' . Repeater_Field_Settings::getAcfFieldName( $masonry_repeater_field ),
-				fn(array $field) => $this->set_conditional_rules_for_field(
-						$field,
-						Repeater_Field_Settings::getAcfFieldName( Repeater_Field_Settings::FIELD_GALLERY_TYPE ),
-						array( 'masonry' ),
-					)
+				fn( array $field ) => $this->set_conditional_rules_for_field(
+					$field,
+					Repeater_Field_Settings::getAcfFieldName( Repeater_Field_Settings::FIELD_GALLERY_TYPE ),
+					array( 'masonry' ),
+				)
 			);
 		}
 
@@ -248,7 +248,7 @@ class Field_Settings_Integration extends Acf_Integration {
 		parent::set_hooks( $current_screen );
 
 		if ( false === $current_screen->is_admin_cpt_related(
-			Layouts_Feature::cpt_name(),
+			Layouts_Cpt::cpt_name(),
 			Current_Screen::CPT_EDIT
 		) ) {
 			return;

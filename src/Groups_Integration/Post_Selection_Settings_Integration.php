@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -95,7 +95,7 @@ class Post_Selection_Settings_Integration extends Acf_Integration {
 		parent::set_hooks( $current_screen );
 
 		if ( false === $current_screen->is_admin_cpt_related(
-			Post_Selections_Feature::cpt_name(),
+			Post_Selections_Cpt::cpt_name(),
 			Current_Screen::CPT_EDIT
 		) ) {
 			return;

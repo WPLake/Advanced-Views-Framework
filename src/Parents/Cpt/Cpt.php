@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt extends Hookable implements Hooks_Interface {
 	private Cpt_Settings_Storage $cpt_settings_storage;
-	private Plugin_Feature $plugin_feature;
+	private Plugin_Cpt $plugin_feature;
 
-	public function __construct( Plugin_Feature $plugin_feature, Cpt_Settings_Storage $cpt_settings_storage ) {
+	public function __construct( Plugin_Cpt $plugin_feature, Cpt_Settings_Storage $cpt_settings_storage ) {
 		$this->plugin_feature       = $plugin_feature;
 		$this->cpt_settings_storage = $cpt_settings_storage;
 	}

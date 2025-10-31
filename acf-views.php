@@ -30,8 +30,8 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_3_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_2;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_5;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\{Migration_1_6_0};
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\{Migration_2_1_0};
@@ -144,8 +144,8 @@ $acf_views = new class() {
 
 	private function acf_groups( Current_Screen $current_screen ): void {
 		if ( false === $current_screen->is_ajax() &&
-			false === $current_screen->is_admin_cpt_related( Layouts_Feature::cpt_name() ) &&
-			false === $current_screen->is_admin_cpt_related( Post_Selections_Feature::cpt_name() ) ) {
+			false === $current_screen->is_admin_cpt_related( Layouts_Cpt::cpt_name() ) &&
+			false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::cpt_name() ) ) {
 			return;
 		}
 
@@ -176,21 +176,21 @@ $acf_views = new class() {
 
 		$this->html = new Html();
 
-		$cards_file_system                      = new File_System( $this->logger, Post_Selections_Feature::folder_name() );
+		$cards_file_system                      = new File_System( $this->logger, Post_Selections_Cpt::folder_name() );
 		$this->post_selections_settings_storage = new Post_Selections_Settings_Storage(
 			$this->logger,
 			$cards_file_system,
 			new Post_Selection_Fs_Fields(),
-			new Db_Management( $this->logger, $cards_file_system, new Post_Selections_Feature() ),
+			new Db_Management( $this->logger, $cards_file_system, new Post_Selections_Cpt() ),
 			$this->post_selection_settings
 		);
 
-		$views_file_system              = new File_System( $this->logger, Layouts_Feature::folder_name() );
+		$views_file_system              = new File_System( $this->logger, Layouts_Cpt::folder_name() );
 		$this->layouts_settings_storage = new Layouts_Settings_Storage(
 			$this->logger,
 			$views_file_system,
 			new Fs_Fields(),
-			new Db_Management( $this->logger, $views_file_system, new Layouts_Feature() ),
+			new Db_Management( $this->logger, $views_file_system, new Layouts_Cpt() ),
 			$this->layout_settings
 		);
 
@@ -254,10 +254,10 @@ $acf_views = new class() {
 			$this->layout_factory
 		);
 
-		$layouts_cpt                 = new Layouts_Cpt( new Layouts_Feature(), $this->layouts_settings_storage );
+		$layouts_cpt                 = new Layouts_Cpt( new Layouts_Cpt(), $this->layouts_settings_storage );
 		$layouts_cpt_table           = new Layouts_Cpt_Table(
 			$this->layouts_settings_storage,
-			Layouts_Feature::cpt_name(),
+			Layouts_Cpt::cpt_name(),
 			$this->html,
 			$layouts_cpt_meta_boxes
 		);
@@ -277,7 +277,7 @@ $acf_views = new class() {
 		$db_management               = new Db_Management(
 			$this->logger,
 			$file_system,
-			new Layouts_Feature(),
+			new Layouts_Cpt(),
 			true
 		);
 		$layouts_settings_storage    = new Layouts_Settings_Storage(
@@ -296,12 +296,12 @@ $acf_views = new class() {
 			$this->logger
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Layouts_Feature::cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Layouts_Feature::cpt_name() );
-		$shortcode_block               = new Shortcode_Block( Layouts_Feature::shortcodes() );
+		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Layouts_Cpt::cpt_name() );
+		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Layouts_Cpt::cpt_name() );
+		$shortcode_block               = new Shortcode_Block( Layouts_Cpt::shortcodes() );
 
 		$this->layout_shortcode = new Layout_Shortcode(
-			new Layouts_Feature(),
+			new Layouts_Cpt(),
 			$this->settings,
 			$this->layouts_settings_storage,
 			$this->front_assets,
@@ -353,12 +353,12 @@ $acf_views = new class() {
 		);
 
 		$post_selections_cpt                 = new Post_Selections_Cpt(
-			new Post_Selections_Feature(),
+			new Post_Selections_Cpt(),
 			$this->post_selections_settings_storage
 		);
 		$post_selections_cpt_table           = new Post_Selections_Cpt_Table(
 			$this->post_selections_settings_storage,
-			Post_Selections_Feature::cpt_name(),
+			Post_Selections_Cpt::cpt_name(),
 			$this->html,
 			$post_selections_cpt_meta_boxes
 		);
@@ -378,7 +378,7 @@ $acf_views = new class() {
 		$db_management                    = new Db_Management(
 			$this->logger,
 			$file_system,
-			new Post_Selections_Feature(),
+			new Post_Selections_Cpt(),
 			true
 		);
 		$post_selections_settings_storage = new Post_Selections_Settings_Storage(
@@ -398,8 +398,8 @@ $acf_views = new class() {
 			$this->layouts_pre_built_tab
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Post_Selections_Feature::cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Post_Selections_Feature::cpt_name() );
+		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, Post_Selections_Cpt::cpt_name() );
+		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( Post_Selections_Cpt::cpt_name() );
 
 		$post_selections_view_integration = new Post_Selections_View_Integration(
 			$this->post_selections_settings_storage,
@@ -408,7 +408,7 @@ $acf_views = new class() {
 			$this->settings
 		);
 		$this->post_selection_shortcode   = new Post_Selection_Shortcode(
-			new Post_Selections_Feature(),
+			new Post_Selections_Cpt(),
 			$this->settings,
 			$this->post_selections_settings_storage,
 			$this->front_assets,
@@ -433,23 +433,23 @@ $acf_views = new class() {
 		$acf_dependency = new Acf_Dependency( $this->plugin );
 
 		$layout_settings_integration         = new Layout_Settings_Integration(
-			Layouts_Feature::cpt_name(),
+			Layouts_Cpt::cpt_name(),
 			$this->data_vendors
 		);
 		$field_settings_integration          = new Field_Settings_Integration(
-			Layouts_Feature::cpt_name(),
+			Layouts_Cpt::cpt_name(),
 			$this->data_vendors
 		);
 		$post_selection_settings_integration = new Post_Selection_Settings_Integration(
-			Post_Selections_Feature::cpt_name(),
+			Post_Selections_Cpt::cpt_name(),
 			$this->data_vendors
 		);
-		$item_settings_integration           = new Item_Settings_Integration( Layouts_Feature::cpt_name(), $this->data_vendors );
+		$item_settings_integration           = new Item_Settings_Integration( Layouts_Cpt::cpt_name(), $this->data_vendors );
 		// metaField is a part of the Meta Filter, so we use 'cardsCpt' here.
-		$meta_field_settings_integration = new Meta_Field_Settings_Integration( Post_Selections_Feature::cpt_name(), $this->data_vendors );
-		$views_mount_point_integration   = new Mount_Point_Settings_Integration( Layouts_Feature::cpt_name() );
-		$cards_mount_point_integration   = new Mount_Point_Settings_Integration( Post_Selections_Feature::cpt_name() );
-		$tax_field_settings_integration  = new Tax_Field_Settings_Integration( Post_Selections_Feature::cpt_name(), $this->data_vendors );
+		$meta_field_settings_integration = new Meta_Field_Settings_Integration( Post_Selections_Cpt::cpt_name(), $this->data_vendors );
+		$views_mount_point_integration   = new Mount_Point_Settings_Integration( Layouts_Cpt::cpt_name() );
+		$cards_mount_point_integration   = new Mount_Point_Settings_Integration( Post_Selections_Cpt::cpt_name() );
+		$tax_field_settings_integration  = new Tax_Field_Settings_Integration( Post_Selections_Cpt::cpt_name(), $this->data_vendors );
 		$tools_settings_integration      = new Tools_Settings_Integration(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage
@@ -594,7 +594,7 @@ $acf_views = new class() {
 				// v3.
 				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_3_3_0( $this->layouts_settings_storage, $this->post_selections_settings_storage, $this->logger, $this->plugin ),
-				new Migration_3_8_0( $this->layouts_settings_storage ),
+				new Migration_3_8_0( $this->layouts_settings_storage, new Layouts_Cpt(), new Post_Selections_Cpt() ),
 			)
 		);
 	}

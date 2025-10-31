@@ -4,8 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template_Engines;
 
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
@@ -126,7 +126,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 		// show only on the list pages of Views & Cards.
 		if ( null === $screen ||
-			! in_array( $screen->post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ||
+			! in_array( $screen->post_type, array( Layouts_Cpt::cpt_name(), Post_Selections_Cpt::cpt_name() ), true ) ||
 			'edit' !== $screen->base ) {
 			return;
 		}

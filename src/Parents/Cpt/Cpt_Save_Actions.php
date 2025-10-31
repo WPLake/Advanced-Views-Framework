@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -77,12 +77,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	/**
-     * @param WP_REST_Request $wprest_request
-     *
-     * @return array<string,mixed>
-     */
-    // @phpstan-ignore-next-line
-    abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
+	 * @param WP_REST_Request $wprest_request
+	 *
+	 * @return array<string,mixed>
+	 */
+	// @phpstan-ignore-next-line
+	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces
@@ -145,7 +145,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		if ( '' === $cpt_data->css_code &&
 			Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
 			// by default, Web component is inline, which is wrong, we expect it to be block.
-			$id                 = Layouts_Feature::cpt_name() === $this->get_cpt_name() ?
+			$id                 = Layouts_Cpt::cpt_name() === $this->get_cpt_name() ?
 				'view' :
 				'card';
 			$cpt_data->css_code = sprintf( "#%s {\n\tdisplay: block;\n}\n", $id );

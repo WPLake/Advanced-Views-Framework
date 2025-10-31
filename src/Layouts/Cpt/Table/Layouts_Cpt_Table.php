@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Current_Screen;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
@@ -57,7 +57,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$view_data->get_unique_id( true ),
 					true,
-					Layouts_Feature::shortcode(),
+					Layouts_Cpt::shortcode(),
 					$view_data->title,
 					false,
 					$view_data->is_for_internal_usage_only()

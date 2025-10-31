@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Features\Plugin_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
@@ -15,7 +15,7 @@ use WP_Query;
 
 class Db_Management extends Action {
 	private File_System $file_system;
-	private Plugin_Feature $plugin_feature;
+	private Plugin_Cpt $plugin_feature;
 	/**
 	 * @var array<string,int> uniqueId => postId
 	 */
@@ -34,7 +34,7 @@ class Db_Management extends Action {
 	public function __construct(
 		Logger $logger,
 		File_System $file_system,
-		Plugin_Feature $plugin_feature,
+		Plugin_Cpt $plugin_feature,
 		bool $is_external_storage = false
 	) {
 		parent::__construct( $logger );

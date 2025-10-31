@@ -7,10 +7,10 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 
-final class Migration_2_0_0 extends Version_Migration {
+final class Migration_2_0_0 extends Version_Migration_Base {
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
 

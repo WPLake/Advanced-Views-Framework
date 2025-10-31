@@ -5,8 +5,8 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -247,7 +247,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$post_type = $wp_query->query_vars['post_type'] ?? '';
 
 		if ( ! is_admin() ||
-			! in_array( $post_type, array( Layouts_Feature::cpt_name(), Post_Selections_Feature::cpt_name() ), true ) ||
+			! in_array( $post_type, array( Layouts_Cpt::cpt_name(), Post_Selections_Cpt::cpt_name() ), true ) ||
 			! $wp_query->is_main_query() ||
 			! $wp_query->is_search() ) {
 			return;
@@ -260,7 +260,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$prefix = Layouts_Feature::cpt_name() === $post_type ?
+		$prefix = Layouts_Cpt::cpt_name() === $post_type ?
 			Layout_Settings::UNIQUE_ID_PREFIX :
 			Post_Selection_Settings::UNIQUE_ID_PREFIX;
 

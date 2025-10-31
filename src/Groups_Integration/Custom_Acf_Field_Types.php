@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
-use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Layouts_Cpt;
+use Org\Wplake\Advanced_Views\Plugin_Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
@@ -35,8 +35,8 @@ class Custom_Acf_Field_Types extends Hookable implements Hooks_Interface {
 		}
 
 		// must be present on both edit screens and during ajax requests.
-		if ( false === $current_screen->is_admin_cpt_related( Layouts_Feature::cpt_name(), Current_Screen::CPT_EDIT ) &&
-			false === $current_screen->is_admin_cpt_related( Post_Selections_Feature::cpt_name(), Current_Screen::CPT_EDIT ) &&
+		if ( false === $current_screen->is_admin_cpt_related( Layouts_Cpt::cpt_name(), Current_Screen::CPT_EDIT ) &&
+			false === $current_screen->is_admin_cpt_related( Post_Selections_Cpt::cpt_name(), Current_Screen::CPT_EDIT ) &&
 			false === $current_screen->is_ajax() ) {
 			return;
 		}
