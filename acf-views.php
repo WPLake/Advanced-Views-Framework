@@ -83,20 +83,24 @@ defined( 'ABSPATH' ) || exit;
 
 $acf_views = new class() extends Plugin_Loader_Base {
 	private Html $html;
+	private Layout_Settings $layout_settings;
+	private Post_Selection_Settings $post_selection_settings;
+	private Post_Selection_Factory $post_selection_factory;
+	private Options $options;
 
 	protected function primary(): void {
 		$this->layout_cpt         = self::make_layout_cpt();
 		$this->post_selection_cpt = self::make_post_selection_cpt();
 
-		$options        = new Options();
-		$this->settings = new Settings( $options );
+		$this->options  = new Options();
+		$this->settings = new Settings( $this->options );
 
-		$uploads_folder = wp_upload_dir()['basedir'] . '/acf-views';
+		$uploads_folder = self::uploads_folder();
 		$this->logger   = new Logger( $uploads_folder, $this->settings );
 
-		$this->group_creator     = new Creator();
-		$layout_settings         = $this->group_creator->create( Layout_Settings::class );
-		$post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
+		$this->group_creator           = new Creator();
+		$this->layout_settings         = $this->group_creator->create( Layout_Settings::class );
+		$this->post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
 
 		$this->html = new Html();
 
@@ -109,7 +113,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$post_selections_file_system,
 			new Post_Selection_Fs_Fields(),
 			new Db_Management( $this->logger, $post_selections_file_system, $this->post_selection_cpt ),
-			$post_selection_settings
+			$this->post_selection_settings
 		);
 
 		$layouts_file_system            = new File_System( $this->logger, $this->layout_cpt->folder_name() );
@@ -118,10 +122,10 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$layouts_file_system,
 			new Fs_Fields(),
 			new Db_Management( $this->logger, $layouts_file_system, $this->layout_cpt ),
-			$layout_settings
+			$this->layout_settings
 		);
 
-		$this->plugin           = new Plugin( __FILE__, $options, $this->settings );
+		$this->plugin           = new Plugin( __FILE__, $this->options, $this->settings );
 		$this->template_engines = new Template_Engines(
 			$uploads_folder,
 			$this->logger,
@@ -153,10 +157,10 @@ $acf_views = new class() extends Plugin_Loader_Base {
 		parent::primary();
 	}
 
-	// fixme
 	protected function layouts(): void {
-		$field_markup                   = new Field_Markup( $this->data_vendors, $this->front_assets, $this->template_engines );
-		$layout_markup                  = new Layout_Markup( $field_markup, $this->data_vendors, $this->template_engines );
+		$field_markup  = new Field_Markup( $this->data_vendors, $this->front_assets, $this->template_engines );
+		$layout_markup = new Layout_Markup( $field_markup, $this->data_vendors, $this->template_engines );
+
 		$this->layout_factory           = new Layout_Factory(
 			$this->front_assets,
 			$this->layouts_settings_storage,
@@ -165,7 +169,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$field_markup,
 			$this->data_vendors
 		);
-		$layouts_cpt_meta_boxes         = new Layouts_Cpt_Meta_Boxes(
+		$this->layouts_cpt_meta_boxes   = new Layouts_Cpt_Meta_Boxes(
 			$this->html,
 			$this->plugin,
 			$this->layouts_settings_storage,
@@ -178,30 +182,30 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->layout_settings,
 			$this->front_assets,
 			$layout_markup,
-			$layouts_cpt_meta_boxes,
+			$this->layouts_cpt_meta_boxes,
 			$this->html,
 			$this->layout_factory
 		);
 
-		$layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
-		$layouts_cpt_table           = new Layouts_Cpt_Table(
+		$this->layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
+		$this->layouts_cpt_table           = new Layouts_Cpt_Table(
 			$this->layouts_settings_storage,
-			Hard_Layout_Cpt::cpt_name(),
+			$this->layout_cpt->cpt_name(),
 			$this->html,
-			$layouts_cpt_meta_boxes
+			$this->layouts_cpt_meta_boxes
 		);
-		$fs_only_tab                 = new Fs_Only_Tab( $layouts_cpt_table, $this->layouts_settings_storage );
-		$layouts_bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
-			$layouts_cpt_table,
+		$this->layouts_fs_only_tab         = new Fs_Only_Tab( $this->layouts_cpt_table, $this->layouts_settings_storage );
+		$this->layouts_bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
+			$this->layouts_cpt_table,
 			$this->layouts_settings_storage,
-			$fs_only_tab,
+			$this->layouts_fs_only_tab,
 			$this->layout_factory
 		);
 
 		$file_system                 = new File_System(
 			$this->logger,
-			'views',
-			__DIR__ . '/src/pre_built'
+			$this->layout_cpt->folder_name(),
+			$this->plugin->get_plugin_path( 'src/pre_built' )
 		);
 		$db_management               = new Db_Management(
 			$this->logger,
@@ -217,7 +221,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->layout_settings
 		);
 		$this->layouts_pre_built_tab = new Layouts_Pre_Built_Tab(
-			$layouts_cpt_table,
+			$this->layouts_cpt_table,
 			$this->layouts_settings_storage,
 			$layouts_settings_storage,
 			$this->data_vendors,
@@ -225,9 +229,9 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->logger
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
-		$shortcode_block               = new Shortcode_Block( $this->layout_cpt->shortcodes() );
+		$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
+		$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
+		$this->layouts_shortcode_block              = new Shortcode_Block( $this->layout_cpt->shortcodes() );
 
 		$this->layout_shortcode = new Layout_Shortcode(
 			$this->layout_cpt,
@@ -236,15 +240,18 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->front_assets,
 			$this->live_reloader_component,
 			$this->layout_factory,
-			$shortcode_block
+			$this->layouts_shortcode_block
 		);
 
 		parent::layouts();
 	}
 
-	private function cards( Current_Screen $current_screen ): void {
+	protected function post_selections(): void {
 		$query_builder                          = new Query_Builder( $this->data_vendors, $this->logger );
-		$post_selection_markup                  = new Post_Selection_Markup( $this->front_assets, $this->template_engines );
+		$post_selection_markup                  = new Post_Selection_Markup(
+			$this->front_assets,
+			$this->template_engines
+		);
 		$this->post_selection_factory           = new Post_Selection_Factory(
 			$this->front_assets,
 			$query_builder,
@@ -252,7 +259,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->template_engines,
 			$this->post_selections_settings_storage
 		);
-		$post_selections_cpt_meta_boxes         = new Post_Selections_Cpt_Meta_Boxes(
+		$this->post_selections_cpt_meta_boxes   = new Post_Selections_Cpt_Meta_Boxes(
 			$this->html,
 			$this->plugin,
 			$this->post_selections_settings_storage,
@@ -267,48 +274,51 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$post_selection_markup,
 			$query_builder,
 			$this->html,
-			$post_selections_cpt_meta_boxes,
+			$this->post_selections_cpt_meta_boxes,
 			$this->post_selection_factory
 		);
 
-		$post_selections_cpt                 = new Post_Selections_Cpt(
+		$this->post_selections_cpt                 = new Post_Selections_Cpt(
 			$this->post_selection_cpt,
 			$this->post_selections_settings_storage
 		);
-		$post_selections_cpt_table           = new Post_Selections_Cpt_Table(
+		$this->post_selections_cpt_table           = new Post_Selections_Cpt_Table(
 			$this->post_selections_settings_storage,
 			$this->post_selection_cpt->cpt_name(),
 			$this->html,
-			$post_selections_cpt_meta_boxes
+			$this->post_selections_cpt_meta_boxes
 		);
-		$fs_only_tab                         = new Fs_Only_Tab( $post_selections_cpt_table, $this->post_selections_settings_storage );
-		$post_selections_bulk_validation_tab = new Post_Selections_Bulk_Validation_Tab(
-			$post_selections_cpt_table,
+		$this->post_selections_fs_only_tab         = new Fs_Only_Tab(
+			$this->post_selections_cpt_table,
+			$this->post_selections_settings_storage
+		);
+		$this->post_selections_bulk_validation_tab = new Post_Selections_Bulk_Validation_Tab(
+			$this->post_selections_cpt_table,
 			$this->post_selections_settings_storage,
-			$fs_only_tab,
+			$this->post_selections_fs_only_tab,
 			$this->post_selection_factory
 		);
 
-		$file_system                      = new File_System(
+		$file_system                         = new File_System(
 			$this->logger,
-			'cards',
-			__DIR__ . '/src/pre_built'
+			$this->post_selection_cpt->folder_name(),
+			$this->plugin->get_plugin_path( 'src/pre_built' )
 		);
-		$db_management                    = new Db_Management(
+		$db_management                       = new Db_Management(
 			$this->logger,
 			$file_system,
 			$this->post_selection_cpt,
 			true
 		);
-		$post_selections_settings_storage = new Post_Selections_Settings_Storage(
+		$post_selections_settings_storage    = new Post_Selections_Settings_Storage(
 			$this->logger,
 			$file_system,
 			new Post_Selection_Fs_Fields(),
 			$db_management,
 			$this->post_selection_settings
 		);
-		$post_selections_pre_built_tab    = new Post_Selections_Pre_Built_Tab(
-			$post_selections_cpt_table,
+		$this->post_selections_pre_built_tab = new Post_Selections_Pre_Built_Tab(
+			$this->post_selections_cpt_table,
 			$this->post_selections_settings_storage,
 			$post_selections_settings_storage,
 			$this->data_vendors,
@@ -317,16 +327,21 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->layouts_pre_built_tab
 		);
 
-		$cpt_assets_reducer            = new Cpt_Assets_Reducer( $this->settings, $this->post_selection_cpt->cpt_name() );
-		$cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->post_selection_cpt->cpt_name() );
+		$this->post_selections_cpt_assets_reducer           = new Cpt_Assets_Reducer(
+			$this->settings,
+			$this->post_selection_cpt->cpt_name()
+		);
+		$this->post_selection_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings(
+			$this->post_selection_cpt->cpt_name()
+		);
 
-		$post_selections_view_integration = new Post_Selections_View_Integration(
+		$this->post_selections_view_integration = new Post_Selections_View_Integration(
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
 			$this->post_selections_cpt_save_actions,
 			$this->settings
 		);
-		$this->post_selection_shortcode   = new Post_Selection_Shortcode(
+		$this->post_selection_shortcode         = new Post_Selection_Shortcode(
 			$this->post_selection_cpt,
 			$this->settings,
 			$this->post_selections_settings_storage,
@@ -334,46 +349,54 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->live_reloader_component,
 			$this->post_selection_factory
 		);
+
+		parent::post_selections();
 	}
 
-	private function integration( Current_Screen $current_screen ): void {
-		$acf_dependency = new Acf_Dependency( $this->plugin );
+	protected function integration( Current_Screen $current_screen ): void {
+		$this->acf_dependency = new Acf_Dependency( $this->plugin );
 
-		$layout_settings_integration         = new Layout_Settings_Integration(
+		$this->layout_settings_integration         = new Layout_Settings_Integration(
 			$this->layout_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$field_settings_integration          = new Field_Settings_Integration(
+		$this->field_settings_integration          = new Field_Settings_Integration(
 			$this->layout_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$post_selection_settings_integration = new Post_Selection_Settings_Integration(
+		$this->post_selection_settings_integration = new Post_Selection_Settings_Integration(
 			$this->post_selection_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$item_settings_integration           = new Item_Settings_Integration(
+		$this->item_settings_integration           = new Item_Settings_Integration(
 			$this->layout_cpt->cpt_name(),
 			$this->data_vendors
 		);
 		// metaField is a part of the Meta Filter, so we use 'cardsCpt' here.
-		$meta_field_settings_integration = new Meta_Field_Settings_Integration(
+		$this->meta_field_settings_integration        = new Meta_Field_Settings_Integration(
 			$this->post_selection_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$views_mount_point_integration   = new Mount_Point_Settings_Integration( $this->layout_cpt->cpt_name() );
-		$cards_mount_point_integration   = new Mount_Point_Settings_Integration( $this->post_selection_cpt->cpt_name() );
-		$tax_field_settings_integration  = new Tax_Field_Settings_Integration(
+		$this->layout_mount_point_integration         = new Mount_Point_Settings_Integration(
+			$this->layout_cpt->cpt_name()
+		);
+		$this->post_selection_mount_point_integration = new Mount_Point_Settings_Integration(
+			$this->post_selection_cpt->cpt_name()
+		);
+		$this->tax_field_settings_integration         = new Tax_Field_Settings_Integration(
 			$this->post_selection_cpt->cpt_name(),
 			$this->data_vendors
 		);
-		$tools_settings_integration      = new Tools_Settings_Integration(
+		$this->tools_settings_integration             = new Tools_Settings_Integration(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage
 		);
-		$custom_acf_field_types          = new Custom_Acf_Field_Types( $this->layouts_settings_storage );
+		$this->custom_acf_field_types                 = new Custom_Acf_Field_Types( $this->layouts_settings_storage );
+
+		parent::integration( $current_screen );
 	}
 
-	private function others( Current_Screen $current_screen ): void {
+	protected function others(): void {
 		$demo_import = new Demo_Import(
 			$this->post_selections_cpt_save_actions,
 			$this->layouts_cpt_save_actions,
@@ -383,8 +406,8 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->item_settings
 		);
 
-		$dashboard             = new Dashboard( $this->plugin, $this->html, $demo_import );
-		$acf_internal_features = new Acf_Internal_Features( $this->plugin );
+		$this->dashboard             = new Dashboard( $this->plugin, $this->html, $demo_import );
+		$this->acf_internal_features = new Acf_Internal_Features( $this->plugin );
 
 		$tools_settings     = new Tools_Settings( $this->group_creator );
 		$debug_dump_creator = new Debug_Dump_Creator(
@@ -393,7 +416,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage
 		);
-		$tools              = new Tools(
+		$this->tools        = new Tools(
 			$tools_settings,
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
@@ -409,7 +432,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->options,
 			$this->layouts_settings_storage
 		);
-		$settings_page           = new Settings_Page(
+		$this->settings_page     = new Settings_Page(
 			$this->logger,
 			new Plugin_Settings( $this->group_creator ),
 			$this->settings,
@@ -419,7 +442,7 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->automatic_reports
 		);
 
-		$admin_assets = new Admin_Assets(
+		$this->admin_assets = new Admin_Assets(
 			$this->plugin,
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
@@ -428,20 +451,22 @@ $acf_views = new class() extends Plugin_Loader_Base {
 			$this->data_vendors
 		);
 
-		$live_reloader = new Live_Reloader(
+		$this->live_reloader = new Live_Reloader(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage,
 			$this->layout_shortcode,
 			$this->post_selection_shortcode
 		);
 
-		$admin_bar = new Admin_Bar(
+		$this->admin_bar = new Admin_Bar(
 			$this->layout_shortcode,
 			$this->post_selection_shortcode,
 			$this->live_reloader_component,
 			$this->settings
 		);
+
+		parent::others();
 	}
 };
 
-$acf_views->load();
+$acf_views->init();

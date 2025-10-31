@@ -66,6 +66,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Plugin_Cpt_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
@@ -103,19 +104,20 @@ abstract class Plugin_Loader_Base {
 	 * @var File_System[]
 	 */
 	protected array $file_systems = array();
-
 	protected Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
 	protected Layouts_Cpt $layouts_cpt;
 	protected Layouts_Cpt_Table $layouts_cpt_table;
 	protected Fs_Only_Tab $layouts_fs_only_tab;
 	protected Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
 	protected Layouts_Pre_Built_Tab $layouts_pre_built_tab;
-	protected Cpt_Gutenberg_Editor_Settings $cpt_gutenberg_editor_settings;
-	protected Cpt_Assets_Reducer $cpt_assets_reducer;
+	protected Cpt_Gutenberg_Editor_Settings $layout_cpt_gutenberg_editor_settings;
+	protected Cpt_Gutenberg_Editor_Settings $post_selection_cpt_gutenberg_editor_settings;
+	protected Cpt_Assets_Reducer $layouts_cpt_assets_reducer;
+	protected Cpt_Assets_Reducer $post_selections_cpt_assets_reducer;
 	protected Layout_Shortcode $layout_shortcode;
-	protected Shortcode_Block $shortcode_block;
-
+	protected Shortcode_Block $layouts_shortcode_block;
 	protected Post_Selections_Cpt_Table $post_selections_cpt_table;
+	protected Post_Selections_Cpt $post_selections_cpt;
 	protected Fs_Only_Tab $post_selections_fs_only_tab;
 	protected Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
 	protected Post_Selections_Bulk_Validation_Tab $post_selections_bulk_validation_tab;
@@ -129,8 +131,8 @@ abstract class Plugin_Loader_Base {
 	protected Post_Selection_Settings_Integration $post_selection_settings_integration;
 	protected Item_Settings_Integration $item_settings_integration;
 	protected Meta_Field_Settings_Integration $meta_field_settings_integration;
-	protected Mount_Point_Settings_Integration $views_mount_point_integration;
-	protected Mount_Point_Settings_Integration $cards_mount_point_integration;
+	protected Mount_Point_Settings_Integration $layout_mount_point_integration;
+	protected Mount_Point_Settings_Integration $post_selection_mount_point_integration;
 	protected Tax_Field_Settings_Integration $tax_field_settings_integration;
 	protected Tools_Settings_Integration $tools_settings_integration;
 	protected Custom_Acf_Field_Types $custom_acf_field_types;
@@ -147,14 +149,12 @@ abstract class Plugin_Loader_Base {
 	protected Settings_Page $settings_page;
 	protected Live_Reloader $live_reloader;
 	protected Admin_Bar $admin_bar;
-
-
 	/**
 	 * @var Hooks_Interface[]
 	 */
 	protected array $hookable = array();
 
-	public function load(): void {
+	public function init(): void {
 		// skip if another (Lite/Pro) version is already loaded.
 		if ( class_exists( Plugin::class ) ) {
 			return;
@@ -164,6 +164,16 @@ abstract class Plugin_Loader_Base {
 
 		$current_screen = new Current_Screen();
 
+		$this->load( $current_screen );
+
+		foreach ( $this->hookable as $hookable ) {
+			$hookable->set_hooks( $current_screen );
+		}
+
+		Profiler::plugin_loaded( $start_timestamp );
+	}
+
+	protected function load( Current_Screen $current_screen ): void {
 		$this->autoloaders();
 		$this->translations( $current_screen );
 		$this->primary();
@@ -175,12 +185,6 @@ abstract class Plugin_Loader_Base {
 		$this->bridge();
 		$this->version_migrations();
 		$this->activator();
-
-		foreach ( $this->hookable as $hookable ) {
-			$hookable->set_hooks( $current_screen );
-		}
-
-		Profiler::plugin_loaded( $start_timestamp );
 	}
 
 	protected function autoloaders(): void {
@@ -194,16 +198,27 @@ abstract class Plugin_Loader_Base {
 		require_once __DIR__ . '/../Compatibility/Back_Compatibility/back_compatibility.php';
 	}
 
-	protected function translations( Current_Screen $current_screen ): void {
+	/**
+	 * @param string[] $paths
+	 */
+	protected function translations( Current_Screen $current_screen, array $paths = array() ): void {
 		// on the whole admin area, as menu items need translations.
 		if ( false === $current_screen->is_admin() ) {
 			return;
 		}
 
+		$paths[] = 'src/lang';
+
 		add_action(
 			'init',
-			function (): void {
-				load_plugin_textdomain( 'acf-views', false, $this->plugin->get_plugin_path( 'src/lang' ) );
+			function () use ( $paths ): void {
+				foreach ( $paths as  $path ) {
+					load_plugin_textdomain(
+						'acf-views',
+						false,
+						$this->plugin->get_plugin_path( $path )
+					);
+				}
 			},
 			// make sure it's before acf_groups.
 			8
@@ -260,11 +275,11 @@ abstract class Plugin_Loader_Base {
 				$this->layouts_fs_only_tab,
 				$this->layouts_bulk_validation_tab,
 				$this->layouts_pre_built_tab,
-				$this->cpt_gutenberg_editor_settings,
-				$this->cpt_assets_reducer,
+				$this->layout_cpt_gutenberg_editor_settings,
+				$this->layouts_cpt_assets_reducer,
 				$this->layouts_cpt_save_actions,
 				$this->layout_shortcode,
-				$this->shortcode_block,
+				$this->layouts_shortcode_block,
 			)
 		);
 	}
@@ -272,13 +287,13 @@ abstract class Plugin_Loader_Base {
 	protected function post_selections(): void {
 		$this->add_hookable(
 			array(
-				$this->post_selection_cpt,
+				$this->post_selections_cpt,
 				$this->post_selections_cpt_table,
 				$this->post_selections_fs_only_tab,
 				$this->post_selections_bulk_validation_tab,
 				$this->post_selections_pre_built_tab,
-				$this->cpt_assets_reducer,
-				$this->cpt_gutenberg_editor_settings,
+				$this->post_selections_cpt_assets_reducer,
+				$this->post_selection_cpt_gutenberg_editor_settings,
 				$this->post_selections_cpt_meta_boxes,
 				$this->post_selections_cpt_save_actions,
 				$this->post_selections_view_integration,
@@ -296,8 +311,8 @@ abstract class Plugin_Loader_Base {
 				$this->post_selection_settings_integration,
 				$this->item_settings_integration,
 				$this->meta_field_settings_integration,
-				$this->views_mount_point_integration,
-				$this->cards_mount_point_integration,
+				$this->layout_mount_point_integration,
+				$this->post_selection_mount_point_integration,
 				$this->tax_field_settings_integration,
 				$this->tools_settings_integration,
 				$this->custom_acf_field_types,
@@ -434,5 +449,9 @@ abstract class Plugin_Loader_Base {
 		$post_selection_cpt->rest_route_names = array( 'post-selection', 'card' );
 
 		return $post_selection_cpt;
+	}
+
+	protected static function uploads_folder(): string {
+		return wp_upload_dir()['basedir'] . '/acf-views';
 	}
 }
