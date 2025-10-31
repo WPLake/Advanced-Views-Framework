@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -10,13 +10,13 @@ use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use WP_Post;
 use WP_Query;
 
-class Migration_2_2_0 extends Migration {
+class Migration_2_2_0 extends Version_Migration {
 	protected Layouts_Settings_Storage $layouts_settings_storage;
 	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
 
@@ -29,7 +29,7 @@ class Migration_2_2_0 extends Migration {
 		return '2.2.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action( 'acf/init', array( $this, 'recreate_post_slugs' ), 1 );
 		self::add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_cards' ) );
 		self::add_action( 'acf/init', array( $this, 'replace_view_id_to_unique_id_in_view_relationships' ) );

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_1;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -10,11 +10,11 @@ use Exception;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use WP_Post;
 use WP_Query;
 
-final class Migration_1_7_0 extends Migration {
+final class Migration_1_7_0 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 
@@ -27,7 +27,7 @@ final class Migration_1_7_0 extends Migration {
 		return '1.7.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action( 'acf/init', array( $this, 'update_markup_identifiers' ) );
 	}
 

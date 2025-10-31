@@ -18,22 +18,24 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_3_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_8_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Error_Logs;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_7_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_0_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_2;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_2_3;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_3_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_2;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_5;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\V_1\{Migration_1_6_0, Migration_1_7_0};
-use Org\Wplake\Advanced_Views\Compatibility\Migration\V_2\{Migration_2_1_0,
-	Migration_2_2_2,
-	Migration_2_2_3,
-	Migration_2_0_0,
-	Migration_2_2_0,
-	Migration_2_3_0,
-	Migration_2_4_0,
-	Migration_2_4_2,
-	Migration_2_4_5};
-use Org\Wplake\Advanced_Views\Compatibility\Migration\V_3\Migration_3_0_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\{Migration_1_6_0};
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\{Migration_2_1_0};
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -118,7 +120,7 @@ $acf_views = new class() {
 	private Data_Vendors $data_vendors;
 	private Layout_Shortcode $layout_shortcode;
 	private Post_Selection_Shortcode $post_selection_shortcode;
-	private Migrator $migrator;
+	private Version_Migrator $version_migrator;
 	private Automatic_Reports $automatic_reports;
 	private Logger $logger;
 	private Layouts_Pre_Built_Tab $layouts_pre_built_tab;
@@ -204,10 +206,9 @@ $acf_views = new class() {
 			$views_file_system,
 			$this->live_reloader_component
 		);
-		$this->migrator                = new Migrator(
+		$this->version_migrator        = new Version_Migrator(
 			$this->plugin,
 			$this->settings,
-			$this->logger
 		);
 
 		// it's a hack, but there is no other way to pass data (constructor is always called automatically).
@@ -221,7 +222,7 @@ $acf_views = new class() {
 		$cards_file_system->set_hooks( $current_screen );
 		$views_file_system->set_hooks( $current_screen );
 		$this->live_reloader_component->set_hooks( $current_screen );
-		$this->migrator->set_hooks( $current_screen );
+		$this->version_migrator->set_hooks( $current_screen );
 	}
 
 	private function views( Current_Screen $current_screen ): void {
@@ -291,7 +292,7 @@ $acf_views = new class() {
 			$this->layouts_settings_storage,
 			$layouts_settings_storage,
 			$this->data_vendors,
-			$this->migrator,
+			$this->version_migrator,
 			$this->logger
 		);
 
@@ -392,7 +393,7 @@ $acf_views = new class() {
 			$this->post_selections_settings_storage,
 			$post_selections_settings_storage,
 			$this->data_vendors,
-			$this->migrator,
+			$this->version_migrator,
 			$this->logger,
 			$this->layouts_pre_built_tab
 		);
@@ -568,8 +569,14 @@ $acf_views = new class() {
 		Advanced_Views::$post_selection_renderer = $this->post_selection_shortcode;
 	}
 
-	private function migrations(): void {
-		$this->migrator->set_migrations(
+	private function version_migrations(): void {
+		$this->version_migrator->set_migrations(
+			array(
+				new Migration_Error_Logs( $this->logger ),
+			)
+		);
+
+		$this->version_migrator->set_version_migrations(
 			array(
 				// v1.
 				new Migration_1_6_0(),
@@ -637,7 +644,7 @@ $acf_views = new class() {
 		$this->integration( $current_screen );
 		$this->others( $current_screen );
 		$this->bridge();
-		$this->migrations();
+		$this->version_migrations();
 	}
 
 	public function init(): void {

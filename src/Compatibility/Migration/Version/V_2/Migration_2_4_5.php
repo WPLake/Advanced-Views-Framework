@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
-final class Migration_2_4_5 extends Migration {
+final class Migration_2_4_5 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 
 	public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
@@ -19,7 +19,7 @@ final class Migration_2_4_5 extends Migration {
 		return '2.4.5';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action(
 			'acf/init',
 			function (): void {

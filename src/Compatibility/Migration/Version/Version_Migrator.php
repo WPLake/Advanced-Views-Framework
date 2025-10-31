@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,21 +16,24 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 
-class Migrator extends Hookable implements Hooks_Interface {
+class Version_Migrator extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
-	private Logger $logger;
+	/**
+	 * @var Version_Migration[]
+	 */
+	private array $version_migrations;
 	/**
 	 * @var Migration[]
 	 */
 	private array $migrations;
 
-	public function __construct( Plugin $plugin, Settings $settings, Logger $logger ) {
+	public function __construct( Plugin $plugin, Settings $settings ) {
 		$this->plugin   = $plugin;
 		$this->settings = $settings;
-		$this->logger   = $logger;
 
-		$this->migrations = array();
+		$this->version_migrations = array();
+		$this->migrations         = array();
 	}
 
 	public static function is_version_lower( string $version, string $target_version ): bool {
@@ -82,6 +85,13 @@ class Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	/**
+	 * @param Version_Migration[] $version_migrations
+	 */
+	public function set_version_migrations( array $version_migrations ): void {
+		$this->version_migrations = $version_migrations;
+	}
+
+	/**
 	 * @param Migration[] $migrations
 	 */
 	public function set_migrations( array $migrations ): void {
@@ -89,18 +99,26 @@ class Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function migrate( string $previous_version ): void {
-		$migrations = $this->get_version_migrations( $previous_version );
+		foreach ( $this->migrations as $migration ) {
+			$migration->migrate();
+		}
 
-		foreach ( $migrations as $migration ) {
-				$migration->migrate();
+		$version_migrations = $this->get_target_version_migrations( $previous_version );
+
+		foreach ( $version_migrations as $version_migration ) {
+			$version_migration->migrate_previous_version();
 		}
 	}
 
 	public function migrate_cpt_settings( string $previous_version, Cpt_Settings $cpt_settings ): void {
-		$migrations = $this->get_version_migrations( $previous_version );
-
-		foreach ( $migrations as $migration ) {
+		foreach ( $this->migrations as $migration ) {
 			$migration->migrate_cpt_settings( $cpt_settings );
+		}
+
+		$version_migrations = $this->get_target_version_migrations( $previous_version );
+
+		foreach ( $version_migrations as $version_migration ) {
+			$version_migration->migrate_cpt_settings( $cpt_settings );
 		}
 	}
 
@@ -110,11 +128,7 @@ class Migrator extends Hookable implements Hooks_Interface {
 
 		// skip the very first run, no data is available, nothing to fix.
 		if ( strlen( $previous_version ) > 0 ) {
-			// clear error logs for the previous version, as they are not relevant anymore.
-			$this->logger->clear_error_logs();
-
 			$this->migrate( $previous_version );
-
 		}
 
 		$this->settings->set_version( $this->plugin->get_version() );
@@ -144,11 +158,11 @@ class Migrator extends Hookable implements Hooks_Interface {
 	/**
 	 * @return Migration[]
 	 */
-	protected function get_version_migrations( string $previous_version ): array {
+	protected function get_target_version_migrations( string $previous_version ): array {
 		return array_filter(
-			$this->migrations,
-			fn( Migration $migration ) =>
-			self::is_version_lower( $previous_version, $migration->introduced_version() )
+			$this->version_migrations,
+			fn( Version_Migration $version_migration ) =>
+			self::is_version_lower( $previous_version, $version_migration->introduced_version() )
 		);
 	}
 }

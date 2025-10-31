@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment_Items\Comment_Item_Fields;
@@ -10,10 +10,10 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu\Menu_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu_Item\Menu_Item_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post\Post_Fields;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
-final class Migration_2_4_2 extends Migration {
+final class Migration_2_4_2 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 
 	public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
@@ -24,7 +24,7 @@ final class Migration_2_4_2 extends Migration {
 		return '2.4.2';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action(
 			'acf/init',
 			function (): void {

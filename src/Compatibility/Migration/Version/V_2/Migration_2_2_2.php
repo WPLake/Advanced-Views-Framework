@@ -2,20 +2,20 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use WP_Post;
 use WP_Query;
 
-final class Migration_2_2_2 extends Migration {
+final class Migration_2_2_2 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
@@ -31,7 +31,7 @@ final class Migration_2_2_2 extends Migration {
 		return '2.2.2';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action( 'acf/init', array( $this, 'set_digital_id_for_markup_flag_for_views_and_cards' ) );
 	}
 

@@ -20,7 +20,7 @@ final class Layouts_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf-layout';
+		return self::cpt_name();
 	}
 
 	/**

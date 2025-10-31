@@ -20,7 +20,7 @@ final class Post_Selections_Feature implements Plugin_Feature {
 	}
 
 	public static function shortcode(): string {
-		return 'avf-post-selection';
+		return self::cpt_name();
 	}
 
 	/**

@@ -2,49 +2,17 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_3;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 
-final class Migration_3_8_0 extends Migration {
-	private Layouts_Settings_Storage $layouts_settings_storage;
-
-	public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
-		$this->layouts_settings_storage = $layouts_settings_storage;
-	}
-
-	public function introduced_version(): string {
-		return '3.8.0';
-	}
+final class Migration_Post_Type extends Migration {
 
 	public function migrate(): void {
-		$this->replace_post_slug_prefix( 'acf_views', 'view_', 'layout-' );
-		$this->replace_post_slug_prefix( 'acf_cards', 'card_', 'post-selection-' );
-
-		$this->replace_post_type_name( 'acf_views', 'layout' );
-		$this->replace_post_type_name( 'acf_cards', 'post-selection' );
-
-		self::add_action(
-			'after_setup_theme',
-			function () {
-				$file_system = $this->layouts_settings_storage->get_file_system();
-				if ( $file_system->is_active() ) {
-					$base_folder = $file_system->get_base_folder();
-
-					$this->rename_fs_item( $base_folder, 'views', 'layouts' );
-					$this->rename_fs_item( $base_folder, 'cards', 'post-selections' );
-
-					$this->rename_file_recursively( $base_folder, 'view.php', 'controller.php' );
-					$this->rename_file_recursively( $base_folder, 'card.php', 'controller.php' );
-				}
-			},
-			// After File_System->set_hooks().
-			11
-		);
+		// TODO: Implement migrate() method.
 	}
 
 	protected function replace_post_slug_prefix( string $post_type, string $old_prefix, string $new_prefix ): void {

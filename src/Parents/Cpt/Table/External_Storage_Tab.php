@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -22,14 +22,14 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Data_Vendors $data_vendors;
-	private Migrator $migrator;
+	private Version_Migrator $migrator;
 	private Logger $logger;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Data_Vendors $data_vendors,
-		Migrator $migrator,
+		Version_Migrator $migrator,
 		Logger $logger
 	) {
 		parent::__construct( $cpt_table );

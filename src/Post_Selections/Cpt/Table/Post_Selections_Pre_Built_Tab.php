@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -26,7 +26,7 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 		Post_Selections_Settings_Storage $cards_data_storage,
 		Post_Selections_Settings_Storage $external_cards_data_storage,
 		Data_Vendors $data_vendors,
-		Migrator $migrator,
+		Version_Migrator $migrator,
 		Logger $logger,
 		Layouts_Pre_Built_Tab $layouts_pre_built_tab
 	) {

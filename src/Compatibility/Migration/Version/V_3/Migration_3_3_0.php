@@ -2,18 +2,18 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_3;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 
-final class Migration_3_3_0 extends Migration {
+final class Migration_3_3_0 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 	private Logger $logger;
@@ -35,7 +35,7 @@ final class Migration_3_3_0 extends Migration {
 		return '3.3.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		// NOTE: when you add new upgrade, you should use 'after_setup_theme' hook if the acf plugin isn't available
 		// (as ACF isn't a direct dependency now).
 		// You shouldn't use 'after_setup_theme' if acf is available, as this hooks is fired before 'acf/init', so it'll
@@ -54,7 +54,7 @@ final class Migration_3_3_0 extends Migration {
 		);
 	}
 
-	public function migrate_cpt_settings( Cpt_Settings $cpt_settings ): void {
+	public function migrate_previous_cpt_settings( Cpt_Settings $cpt_settings ): void {
 		$this->move_is_without_web_component_to_select( $cpt_settings );
 	}
 

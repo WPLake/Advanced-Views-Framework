@@ -2,21 +2,21 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_1;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Features\Post_Selections_Feature;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use WP_Post;
 
-final class Migration_1_6_0 extends Migration {
+final class Migration_1_6_0 extends Version_Migration {
 	public function introduced_version(): string {
 		return '1.6.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		$this->fix_multiple_slashes_in_post_content_json();
 	}
 

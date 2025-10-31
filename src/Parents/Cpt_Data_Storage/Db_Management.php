@@ -230,11 +230,11 @@ class Db_Management extends Action {
 	}
 
 	public function get_unique_id_prefix(): string {
-		return $this->plugin_feature->slug_prefix();
+		return $this->plugin_feature::slug_prefix();
 	}
 
 	public function get_post_type(): string {
-		return $this->plugin_feature->cpt_name();
+		return $this->plugin_feature::cpt_name();
 	}
 
 	public function maybe_assign_unique_id( int $post_id, Cpt_Settings $cpt_settings ): void {

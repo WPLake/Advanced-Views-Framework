@@ -2,15 +2,15 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 
-final class Migration_2_0_0 extends Migration {
+final class Migration_2_0_0 extends Version_Migration {
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
 
@@ -23,7 +23,7 @@ final class Migration_2_0_0 extends Migration {
 		return '2.0.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		$this->replace_post_identifiers();
 
 		// trigger save to refresh the markup preview.

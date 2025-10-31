@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_2;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
-final class Migration_2_3_0 extends Migration {
+final class Migration_2_3_0 extends Version_Migration {
 	private Template_Engines $template_engines;
 
 	public function __construct( Template_Engines $template_engines ) {
@@ -19,7 +19,7 @@ final class Migration_2_3_0 extends Migration {
 		return '2.3.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action(
 			'init',
 			function (): void {

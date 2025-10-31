@@ -2,17 +2,17 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\V_3;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Features\Layouts_Feature;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 
-final class Migration_3_0_0 extends Migration {
+final class Migration_3_0_0 extends Version_Migration {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
@@ -28,7 +28,7 @@ final class Migration_3_0_0 extends Migration {
 		return '3.0.0';
 	}
 
-	public function migrate(): void {
+	public function migrate_previous_version(): void {
 		self::add_action(
 			'acf/init',
 			function (): void {
