@@ -87,7 +87,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
 abstract class Plugin_Loader_Base {
 	protected Plugin $plugin;
-	protected Plugin_Activator $plugin_activator;
+	protected Plugin_Environment $plugin_activator;
 	protected Version_Migrator $version_migrator;
 	protected Logger $logger;
 	protected Layouts_Settings_Storage $layouts_settings_storage;
@@ -154,17 +154,12 @@ abstract class Plugin_Loader_Base {
 	 */
 	protected array $hookable = array();
 
-	public function init(): void {
-		// skip if another (Lite/Pro) version is already loaded.
-		if ( class_exists( Plugin::class ) ) {
-			return;
-		}
-
+	public function load_plugin(): void {
 		$start_timestamp = microtime( true );
 
 		$current_screen = new Current_Screen();
 
-		$this->load( $current_screen );
+		$this->load_modules( $current_screen );
 
 		foreach ( $this->hookable as $hookable ) {
 			$hookable->set_hooks( $current_screen );
@@ -173,8 +168,7 @@ abstract class Plugin_Loader_Base {
 		Profiler::plugin_loaded( $start_timestamp );
 	}
 
-	protected function load( Current_Screen $current_screen ): void {
-		$this->autoloaders();
+	protected function load_modules( Current_Screen $current_screen ): void {
 		$this->translations( $current_screen );
 		$this->primary();
 		$this->acf_groups( $current_screen );
@@ -184,18 +178,7 @@ abstract class Plugin_Loader_Base {
 		$this->others();
 		$this->bridge();
 		$this->version_migrations();
-		$this->activator();
-	}
-
-	protected function autoloaders(): void {
-		require_once __DIR__ . '/../../prefixed_vendors/vendor/scoper-autoload.php';
-
-		// @phpstan-ignore-next-line
-		if ( version_compare( PHP_VERSION, '8.2.0', '>=' ) ) {
-			require_once __DIR__ . '/../../prefixed_vendors_php8/vendor/scoper-autoload.php';
-		}
-
-		require_once __DIR__ . '/../Compatibility/Back_Compatibility/back_compatibility.php';
+		$this->environment();
 	}
 
 	/**
@@ -397,15 +380,15 @@ abstract class Plugin_Loader_Base {
 		);
 	}
 
-	protected function activator(): void {
+	protected function environment(): void {
 		register_activation_hook(
 			$this->plugin->get_slug(),
-			array( $this->plugin_activator, 'activate' )
+			array( $this->plugin_activator, 'prepare_environment' )
 		);
 
 		register_deactivation_hook(
 			$this->plugin->get_slug(),
-			array( $this->plugin_activator, 'deactivate' )
+			array( $this->plugin_activator, 'clean_environment' )
 		);
 	}
 

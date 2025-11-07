@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
-final class Plugin_Activator {
+final class Plugin_Environment {
 	private Template_Engines $template_engines;
 	private Automatic_Reports $automatic_reports;
 	private Settings $settings;
@@ -38,12 +38,12 @@ final class Plugin_Activator {
 		$this->file_system       = $file_system;
 		$this->storages          = $storages;
 	}
-	public function activate(): void {
+	public function prepare_environment(): void {
 		$this->template_engines->create_templates_dir();
 		$this->automatic_reports->plugin_activated();
 	}
 
-	public function deactivate(): void {
+	public function clean_environment(): void {
 		$this->automatic_reports->plugin_deactivated();
 		$this->template_engines->remove_templates_dir();
 
