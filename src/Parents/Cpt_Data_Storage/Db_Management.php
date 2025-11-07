@@ -39,8 +39,8 @@ class Db_Management extends Action {
 	) {
 		parent::__construct( $logger );
 
-		$this->file_system    = $file_system;
-		$this->plugin_cpt = $plugin_cpt;
+		$this->file_system = $file_system;
+		$this->plugin_cpt  = $plugin_cpt;
 
 		$this->post_ids               = array();
 		$this->trashed_post_ids       = array();

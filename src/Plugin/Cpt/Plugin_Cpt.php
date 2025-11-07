@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Plugin\Cpt;
 
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels;
+
 defined( 'ABSPATH' ) || exit;
 
 interface Plugin_Cpt {

@@ -25,7 +25,7 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 
 		public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
 			// @phpstan-ignore-next-line
-			$this->public             = false;
+			$this->public                   = false;
 			$this->layouts_settings_storage = $layouts_settings_storage;
 
 			// @phpstan-ignore-next-line
@@ -98,7 +98,7 @@ if ( true === class_exists( 'acf_field_select' ) ) {
 			$filtered_items = '' !== $search_term ?
 				array_filter(
 					$this->layouts_settings_storage->get_unique_id_with_name_items_list(),
-					fn($name) => false !== stripos( $name, $search_term )
+					fn( $name ) => false !== stripos( $name, $search_term )
 				) :
 				$this->layouts_settings_storage->get_unique_id_with_name_items_list();
 

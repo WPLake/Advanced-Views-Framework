@@ -17,7 +17,7 @@ class Tools_Settings_Integration extends Acf_Integration {
 	public function __construct( Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
 		parent::__construct( '' );
 
-		$this->layouts_settings_storage = $layouts_settings_storage;
+		$this->layouts_settings_storage         = $layouts_settings_storage;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}
 

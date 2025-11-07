@@ -7,9 +7,9 @@ defined( 'ABSPATH' ) || exit;
 $view   ??= array();
 $is_short = $view['isShort'] ?? false;
 /**
- * @var Public_Cpt $publicCpt
+ * @var Public_Cpt $public_cpt
  */
-$publicCpt   = $view['publicCpt'];
+$public_cpt  = $view['publicCpt'];
 $view_id     = $view['viewId'] ?? '';
 $is_single   = $view['isSingle'] ?? false;
 $id_argument = $view['idArgument'] ?? '';
@@ -24,7 +24,7 @@ printf( '<av-shortcodes class="av-shortcodes av-shortcodes--type--%s">', esc_att
 printf( '<span class="av-sortcodes__code av-shortcodes__code--type--short">' );
 printf(
 	'[%s name="%s" %s="%s"]',
-	esc_html( $publicCpt->shortcode() ),
+	esc_html( $public_cpt->shortcode() ),
 	esc_html( $entry_name ),
 	esc_html( $id_argument ),
 	esc_html( $view_id )
@@ -51,7 +51,7 @@ if ( ! $is_short ) {
 						'displays the %s, posts will be loaded according to the settings and displayed according to the selected Layout.',
 						'acf-views'
 					),
-					$publicCpt->labels()->singular_name()
+					$public_cpt->labels()->singular_name()
 				)
 			);
 			echo '<br><br>';
@@ -70,7 +70,7 @@ if ( ! $is_short ) {
 						'displays the %s, chosen fields should be filled at the same object where the shortcode is pasted (post/page).',
 						'acf-views'
 					),
-					$publicCpt->labels()->singular_name()
+					$public_cpt->labels()->singular_name()
 				)
 			);
 			echo '<br><br>';

@@ -310,13 +310,13 @@ class Field_Markup {
 	}
 
 	/**
-     * @param View_Front_Asset_Interface[] $field_assets
-     * @param Field_Settings $field_settings
-     * @param string $row_type
-     *
-     * @return string
-     */
-    protected function get_field_wrapper_tag( array $field_assets, Field_Settings $field_settings, string $row_type ): string {
+	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param Field_Settings $field_settings
+	 * @param string $row_type
+	 *
+	 * @return string
+	 */
+	protected function get_field_wrapper_tag( array $field_assets, Field_Settings $field_settings, string $row_type ): string {
 		foreach ( $field_assets as $field_asset ) {
 			$tag = $field_asset->get_field_wrapper_tag( $field_settings, $row_type );
 
@@ -596,15 +596,15 @@ class Field_Markup {
 	}
 
 	/**
-     * @param View_Front_Asset_Interface[] $field_assets
-     * @param Layout_Settings $layout_settings
-     * @param Field_Settings $field_settings
-     * @param Field_Meta_Interface $field_meta
-     * @param string $row_type
-     *
-     * @return bool
-     */
-    public function is_with_field_wrapper(
+	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param Layout_Settings $layout_settings
+	 * @param Field_Settings $field_settings
+	 * @param Field_Meta_Interface $field_meta
+	 * @param string $row_type
+	 *
+	 * @return bool
+	 */
+	public function is_with_field_wrapper(
 		array $field_assets,
 		Layout_Settings $layout_settings,
 		Field_Settings $field_settings,

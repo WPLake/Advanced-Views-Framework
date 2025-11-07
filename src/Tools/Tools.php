@@ -205,9 +205,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 			// translators: Success! There were x View(s) and y Card(s) exported.
 				__( 'Success! There were %1$d %2$s and %3$d %4$s exported.', 'acf-views' ),
 				$views_count,
-				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), $views_count ),
+				$layout_labels->item_s_name( $views_count ),
 				$cards_count,
-				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), $cards_count )
+				$post_selection_labels->item_s_name( $cards_count )
 			);
 		}
 
@@ -442,9 +442,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 			// translators: Successfully imported x Layout(s) and y Post Selection(s).
 				__( 'Successfully imported %1$d %2$s and %3$d %4$s.', 'acf-views' ),
 				count( $success_view_ids ),
-				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), count( $success_view_ids ) ),
+				$layout_labels->item_s_name( count( $success_view_ids ) ),
 				count( $success_card_ids ),
-				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), count( $success_card_ids ) )
+				$post_selection_labels->item_s_name( count( $success_card_ids ) )
 			);
 
 			$import_result_message .= '<br>';
@@ -454,10 +454,10 @@ final class Tools extends Hookable implements Hooks_Interface {
 				__( 'Something went wrong. Imported %1$d from %2$d %3$s and %4$d from %5$d %6$s.', 'acf-views' ),
 				count( $success_view_ids ),
 				count( $success_view_ids ) + count( $fail_view_unique_ids ),
-				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), count( $success_view_ids ) ),
+				$layout_labels->item_s_name( count( $success_view_ids ) ),
 				count( $success_card_ids ),
 				count( $success_card_ids ) + count( $fail_card_unique_ids ),
-				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), count( $success_card_ids ) )
+				$post_selection_labels->item_s_name( count( $success_card_ids ) )
 			);
 
 			$import_result_message .= '<br>';
