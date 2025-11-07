@@ -17,10 +17,10 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt_Table extends Cpt_Table {
-	const COLUMN_DESCRIPTION   = 'description';
-	const COLUMN_SHORTCODE     = 'shortcode';
-	const COLUMN_RELATED_VIEW  = 'relatedView';
-	const COLUMN_LAST_MODIFIED = 'lastModified';
+	const COLUMN_DESCRIPTION   = self::COLUMN_PREFIX . 'description';
+	const COLUMN_SHORTCODE     = self::COLUMN_PREFIX . 'shortcode';
+	const COLUMN_RELATED_VIEW  = self::COLUMN_PREFIX . 'relatedView';
+	const COLUMN_LAST_MODIFIED = self::COLUMN_PREFIX . 'lastModified';
 
 	private Html $html;
 	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;

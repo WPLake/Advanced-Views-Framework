@@ -24,6 +24,7 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Table extends Hookable implements Hooks_Interface {
+	const COLUMN_PREFIX = Hard_Layout_Cpt::NAME . '_';
 
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private string $cpt_name;
@@ -198,10 +199,6 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			'<style>#posts-filter .search-box::after{content:"%s";}</style>',
 			esc_html( $label )
 		);
-	}
-
-	protected function get_column_prefix(): string {
-		return $this->get_cpt_name() . '_';
 	}
 
 	/**
@@ -430,9 +427,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 					// All other columns.
 					default:
-						$short_column_name = substr( $column_name, strlen( $this->get_column_prefix() ) );
-
-						$this->print_column( $short_column_name, $cpt_data );
+						$this->print_column( $column_name, $cpt_data );
 						break;
 				}
 				printf( '</%s>', esc_html( $el ) );
@@ -451,8 +446,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$unique_id = get_post( $post_id )->post_name ?? '';
 		$cpt_data  = $this->cpt_settings_storage->get( $unique_id );
 
-		$short_column_name = substr( $column_name, strlen( $this->get_column_prefix() ) );
-		$this->print_column( $short_column_name, $cpt_data );
+		$this->print_column( $column_name, $cpt_data );
 	}
 
 	/**
@@ -575,14 +569,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 		self::add_filter(
 			sprintf( 'manage_%s_posts_columns', $this->get_cpt_name() ),
-			function ( array $columns ): array {
-				$column_prefix = $this->get_column_prefix();
-
-				return array_map(
-					fn( $column ) => $column_prefix . $column,
-					$this->get_columns( $columns )
-				);
-			}
+			array( $this, 'get_columns' ),
 		);
 
 		if ( true === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_LIST ) ) {

@@ -56,15 +56,11 @@ class Html {
 			return;
 		}
 
-		$id_argument = true === $is_single ?
-			'card-id' :
-			'view-id';
-
 		$this->print(
 			'postbox/shortcodes',
 			array(
 				'isShort'       => $is_short,
-				'idArgument'    => $id_argument,
+				'idArgument'    => 'id',
 				'shortcodeName' => $shortcode_name,
 				'entryName'     => $entry_name,
 				'viewId'        => $unique_id,

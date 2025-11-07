@@ -17,11 +17,11 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt_Table extends Cpt_Table {
-	const COLUMN_DESCRIPTION    = 'description';
-	const COLUMN_SHORTCODE      = 'shortcode';
-	const COLUMN_LAST_MODIFIED  = 'lastModified';
-	const COLUMN_RELATED_GROUPS = 'relatedGroups';
-	const COLUMN_RELATED_CARDS  = 'relatedCards';
+	const COLUMN_DESCRIPTION    = self::COLUMN_PREFIX . 'description';
+	const COLUMN_SHORTCODE      = self::COLUMN_PREFIX . 'shortcode';
+	const COLUMN_LAST_MODIFIED  = self::COLUMN_PREFIX . 'lastModified';
+	const COLUMN_RELATED_GROUPS = self::COLUMN_PREFIX . 'relatedGroups';
+	const COLUMN_RELATED_CARDS  = self::COLUMN_PREFIX . 'relatedCards';
 
 	private Html $html;
 	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;

@@ -129,7 +129,7 @@ class Post_Selection_Markup {
 		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
-		$template_generator->print_array_item_attribute( 'view-id', '_card', 'view_id' );
+		$template_generator->print_array_item_attribute( 'id', '_card', 'view_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 
 		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $post_selection_settings );

@@ -63,11 +63,11 @@ final class Layout_Shortcode extends Shortcode {
 	}
 
 	public function render_shortcode( array $attrs ): string {
-		$view_id = $attrs['view-id'] ?? 0;
-		$view_id = true === is_string( $view_id ) ||
-					true === is_numeric( $view_id ) ?
-			(string) $view_id :
-			'';
+		$layout_id = string( $attrs, 'id' );
+		// back compatibility.
+		$layout_id = strlen( $layout_id ) > 0 ?
+			$layout_id :
+			string( $attrs, 'view-id' );
 
 		// note: string $objectId is expected below.
 		$object_id = $attrs['object-id'] ?? '';
@@ -76,12 +76,13 @@ final class Layout_Shortcode extends Shortcode {
 			(string) $object_id :
 			'';
 
-		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
+		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $layout_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
 			$this->print_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
+				// fixme
 				__( 'View is missing', 'acf-views' )
 			);
 

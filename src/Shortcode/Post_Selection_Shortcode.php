@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode;
 use Org\Wplake\Advanced_Views\Settings;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,16 +45,19 @@ final class Post_Selection_Shortcode extends Shortcode {
 			return '';
 		}
 
-		$card_id        = $attrs['card-id'] ?? '';
-		$card_id        = is_string( $card_id ) ?
-			$card_id :
-			'';
-		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, $this->get_post_type() );
+		$post_selection_id = string( $attrs, 'id' );
+		// back compatibility.
+		$post_selection_id = strlen( $post_selection_id ) > 0 ?
+			$post_selection_id :
+			string( $attrs, 'card-id' );
+
+		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $post_selection_id, $this->get_post_type() );
 
 		if ( '' === $card_unique_id ) {
 			$this->print_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
+				// fixme
 				__( 'Card is missing', 'acf-views' )
 			);
 

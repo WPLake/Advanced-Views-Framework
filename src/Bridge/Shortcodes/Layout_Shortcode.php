@@ -65,15 +65,6 @@ final class Layout_Shortcode extends Shortcode_Base implements View_Shortcode_In
 		return $this;
 	}
 
-	protected function get_args(): array {
-		return array_merge(
-			parent::get_args(),
-			array(
-				'view-id' => $this->unique_id,
-			)
-		);
-	}
-
 	// Deprecated methods.
 
 	/**
