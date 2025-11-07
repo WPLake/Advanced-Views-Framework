@@ -81,7 +81,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Layout_Factory,
 	Layout_Markup};
 
-( function () {
+( function (): void {
 	// omit loading if the Pro version is already loaded.
 	if ( class_exists( Plugin::class ) ) {
 		return;
