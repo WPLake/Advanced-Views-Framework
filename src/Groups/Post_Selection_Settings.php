@@ -51,9 +51,9 @@ class Post_Selection_Settings extends Cpt_Settings {
 	/**
 	 * @a-type av_slug_select
 	 * @allow_null 1
-	 * @label View
+	 * @label Item Layout
 	 * @required 1
-	 * @instructions Assigned View is used to display every post from the query results.
+	 * @instructions Assigned Layout is used to display every post from the query results.
 	 */
 	public string $acf_view_id;
 	/**

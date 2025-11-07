@@ -35,7 +35,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->data_vendors             = $data_vendors;
-		$this->public_cpt        = $public_cpt;
+		$this->public_cpt               = $public_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -241,7 +241,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$short_view_unique_id,
 					false,
-					$this->public_cpt->shortcode(),
+					$this->public_cpt,
 					get_the_title( $post ),
 					false,
 					$view_data->is_for_internal_usage_only()

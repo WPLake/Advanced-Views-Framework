@@ -203,7 +203,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$view_data->get_unique_id( true ),
 			false,
-			$this->public_plugin_cpt->shortcode(),
+			$this->public_plugin_cpt,
 			get_the_title( $view_id ),
 			false,
 			$view_data->is_for_internal_usage_only()

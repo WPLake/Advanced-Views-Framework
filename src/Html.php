@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use WP_Filesystem_Base;
 
@@ -45,7 +46,7 @@ class Html {
 	public function print_postbox_shortcode(
 		string $unique_id,
 		bool $is_short,
-		string $shortcode_name,
+		Public_Cpt $public_cpt,
 		string $entry_name,
 		bool $is_single,
 		bool $is_internal_usage_only = false
@@ -59,13 +60,13 @@ class Html {
 		$this->print(
 			'postbox/shortcodes',
 			array(
-				'isShort'       => $is_short,
-				'idArgument'    => 'id',
-				'shortcodeName' => $shortcode_name,
-				'entryName'     => $entry_name,
-				'viewId'        => $unique_id,
-				'isSingle'      => $is_single,
-				'typeName'      => $is_single ? 'Card' : 'View',
+				'isShort'    => $is_short,
+				'idArgument' => 'id',
+				'publicCpt'  => $public_cpt,
+				'entryName'  => $entry_name,
+				'viewId'     => $unique_id,
+				'isSingle'   => $is_single,
+				'typeName'   => $is_single ? 'Card' : 'View',
 			)
 		);
 	}

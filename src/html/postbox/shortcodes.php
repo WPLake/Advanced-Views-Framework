@@ -1,15 +1,20 @@
 <?php
 
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+
 defined( 'ABSPATH' ) || exit;
 
-$view         ??= array();
-$is_short       = $view['isShort'] ?? false;
-$shortcode_name = $view['shortcodeName'] ?? '';
-$view_id        = $view['viewId'] ?? '';
-$is_single      = $view['isSingle'] ?? false;
-$id_argument    = $view['idArgument'] ?? '';
-$entry_name     = $view['entryName'] ?? '';
-$type_name      = $view['typeName'] ?? '';
+$view   ??= array();
+$is_short = $view['isShort'] ?? false;
+/**
+ * @var Public_Cpt $publicCpt
+ */
+$publicCpt   = $view['publicCpt'];
+$view_id     = $view['viewId'] ?? '';
+$is_single   = $view['isSingle'] ?? false;
+$id_argument = $view['idArgument'] ?? '';
+$entry_name  = $view['entryName'] ?? '';
+$type_name   = $view['typeName'] ?? '';
 
 // @phpcs:ignore
 $type = $is_short ?
@@ -20,7 +25,7 @@ printf( '<av-shortcodes class="av-shortcodes av-shortcodes--type--%s">', esc_att
 printf( '<span class="av-sortcodes__code av-shortcodes__code--type--short">' );
 printf(
 	'[%s name="%s" %s="%s"]',
-	esc_html( $shortcode_name ),
+	esc_html( $publicCpt->shortcode() ),
 	esc_html( $entry_name ),
 	esc_html( $id_argument ),
 	esc_html( $view_id )
@@ -39,11 +44,15 @@ if ( ! $is_short ) {
 	</button>
 	<span>
 		<?php
-		if ( true === $is_single ) {
+		if ( $is_single ) {
 			echo esc_html(
-				__(
-					'displays the card, posts will be loaded according to the settings and displayed according to the selected View.',
-					'acf-views'
+				sprintf(
+						// translators: %s: singular name of the CPT.
+					__(
+						'displays the %s, posts will be loaded according to the settings and displayed according to the selected Layout.',
+						'acf-views'
+					),
+					$publicCpt->labels()->singular_name()
 				)
 			);
 			echo '<br><br>';
@@ -56,9 +65,13 @@ if ( ! $is_short ) {
 			echo '.';
 		} else {
 			echo esc_html(
-				__(
-					'displays the View, chosen fields should be filled at the same object where the shortcode is pasted (post/page).',
-					'acf-views'
+				sprintf(
+						// translators: %s: singular name of the CPT.
+					__(
+						'displays the %s, chosen fields should be filled at the same object where the shortcode is pasted (post/page).',
+						'acf-views'
+					),
+					$publicCpt->labels()->singular_name()
 				)
 			);
 			echo '<br><br>';

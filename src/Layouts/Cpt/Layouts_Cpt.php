@@ -115,12 +115,12 @@ class Layouts_Cpt extends Cpt {
 					case sprintf( 'post-new.php?post_type=%s', $this->get_cpt_name() ):
 						unset( $submenu[ $url ][ $item_key ] );
 						break;
-					// rename 'Advanced Views' to 'Views' submenu link.
+					// rename 'Advanced Views' to 'Layouts' in the submenu link.
 					case sprintf( 'edit.php?post_type=%s', $this->get_cpt_name() ):
 						// @phpcs:ignore
 						$submenu[ $url ][ $item_key ] = arr($submenu[ $url ],$item_key);
 						// @phpcs:ignore
-						$submenu[ $url ][ $item_key ][0] = __( 'Views', 'acf-views' );
+						$submenu[ $url ][ $item_key ][0] = $this->plugin_cpt->labels()->plural_name();
 						break;
 				}
 			}

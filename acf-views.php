@@ -208,7 +208,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->layouts_settings_storage,
 				$this->layout_cpt,
 				$this->html,
-				$this->layouts_cpt_meta_boxes
+				$this->layouts_cpt_meta_boxes,
+				$this->post_selection_cpt
 			);
 			$this->layouts_fs_only_tab         = new Fs_Only_Tab( $this->layouts_cpt_table, $this->layouts_settings_storage );
 			$this->layouts_bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
@@ -281,7 +282,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->plugin,
 				$this->post_selections_settings_storage,
 				$this->layouts_settings_storage,
-				$this->post_selection_cpt
+				$this->post_selection_cpt,
+				$this->layout_cpt
 			);
 			$this->post_selections_cpt_save_actions = new Post_Selections_Cpt_Save_Actions(
 				$this->logger,
@@ -305,7 +307,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->post_selections_settings_storage,
 				$this->post_selection_cpt,
 				$this->html,
-				$this->post_selections_cpt_meta_boxes
+				$this->post_selections_cpt_meta_boxes,
+				$this->layout_cpt
 			);
 			$this->post_selections_fs_only_tab         = new Fs_Only_Tab(
 				$this->post_selections_cpt_table,
@@ -446,7 +449,9 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->layouts_settings_storage,
 				$this->plugin,
 				$this->logger,
-				$debug_dump_creator
+				$debug_dump_creator,
+				$this->layout_cpt,
+				$this->post_selection_cpt
 			);
 
 			$this->automatic_reports = new Automatic_Reports(

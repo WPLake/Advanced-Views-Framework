@@ -185,7 +185,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$this->html->print_postbox_shortcode(
 			$card_data->get_unique_id( true ),
 			false,
-			$this->public_plugin_cpt->shortcode(),
+			$this->public_plugin_cpt,
 			$card_data->title,
 			true
 		);

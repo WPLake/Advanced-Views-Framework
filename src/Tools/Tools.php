@@ -9,6 +9,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -46,6 +47,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 	private bool $is_import_successful;
 	private string $import_result_message;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
+	private Plugin_Cpt $layouts_cpt;
+	private Plugin_Cpt $post_selections_cpt;
 
 	public function __construct(
 		Tools_Settings $tools_settings,
@@ -53,7 +56,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Plugin $plugin,
 		Logger $logger,
-		Debug_Dump_Creator $debug_dump_creator
+		Debug_Dump_Creator $debug_dump_creator,
+		Plugin_Cpt $layouts_cpt,
+		Plugin_Cpt $post_selections_cpt
 	) {
 		$this->tools_settings                   = $tools_settings;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
@@ -61,11 +66,14 @@ final class Tools extends Hookable implements Hooks_Interface {
 		$this->plugin                           = $plugin;
 		$this->logger                           = $logger;
 		$this->debug_dump_creator               = $debug_dump_creator;
-		$this->values                           = array();
-		$this->export_data                      = array();
-		$this->is_import_successful             = false;
-		$this->import_result_message            = '';
-		$this->wp_filesystem_base               = null;
+		$this->layouts_cpt                      = $layouts_cpt;
+		$this->post_selections_cpt              = $post_selections_cpt;
+
+		$this->values                = array();
+		$this->export_data           = array();
+		$this->is_import_successful  = false;
+		$this->import_result_message = '';
+		$this->wp_filesystem_base    = null;
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
@@ -190,13 +198,16 @@ final class Tools extends Hookable implements Hooks_Interface {
 			$views_count = Query_Arguments::get_int_for_non_action( '_views' );
 			$cards_count = Query_Arguments::get_int_for_non_action( '_cards' );
 
+			$layout_labels         = $this->layouts_cpt->labels();
+			$post_selection_labels = $this->post_selections_cpt->labels();
+
 			$updated_message = sprintf(
 			// translators: Success! There were x View(s) and y Card(s) exported.
 				__( 'Success! There were %1$d %2$s and %3$d %4$s exported.', 'acf-views' ),
 				$views_count,
-				_n( 'View', 'Views', $views_count ),
+				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), $views_count ),
 				$cards_count,
-				_n( 'Card', 'Cards', $cards_count )
+				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), $cards_count )
 			);
 		}
 
@@ -420,37 +431,44 @@ final class Tools extends Hookable implements Hooks_Interface {
 			);
 		}
 
+		$layout_labels         = $this->layouts_cpt->labels();
+		$post_selection_labels = $this->post_selections_cpt->labels();
+
 		if ( array() === $fail_view_unique_ids &&
 			array() === $fail_card_unique_ids ) {
 			$this->is_import_successful = true;
 
 			$import_result_message .= sprintf(
-			// translators: Successfully imported x View(s) and y Card(s).
+			// translators: Successfully imported x Layout(s) and y Post Selection(s).
 				__( 'Successfully imported %1$d %2$s and %3$d %4$s.', 'acf-views' ),
 				count( $success_view_ids ),
-				_n( 'View', 'Views', count( $success_view_ids ) ),
+				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), count( $success_view_ids ) ),
 				count( $success_card_ids ),
-				_n( 'Card', 'Cards', count( $success_card_ids ) )
+				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), count( $success_card_ids ) )
 			);
 
 			$import_result_message .= '<br>';
 		} else {
 			$import_result_message .= sprintf(
-			// translators: Something went wrong. Imported x from y View(s) and x from y Cards.
+			// translators: Something went wrong. Imported x from y Layout(s) and x from y Post Selections.
 				__( 'Something went wrong. Imported %1$d from %2$d %3$s and %4$d from %5$d %6$s.', 'acf-views' ),
 				count( $success_view_ids ),
 				count( $success_view_ids ) + count( $fail_view_unique_ids ),
-				_n( 'View', 'Views', count( $success_view_ids ) ),
+				_n( $layout_labels->singular_name(), $layout_labels->plural_name(), count( $success_view_ids ) ),
 				count( $success_card_ids ),
 				count( $success_card_ids ) + count( $fail_card_unique_ids ),
-				_n( 'Card', 'Cards', count( $success_card_ids ) )
+				_n( $post_selection_labels->singular_name(), $post_selection_labels->plural_name(), count( $success_card_ids ) )
 			);
 
 			$import_result_message .= '<br>';
 		}
 
 		if ( array() !== $views_info ) {
-			$views_label            = __( 'Imported Views', 'acf-views' );
+			$views_label = sprintf(
+					// translators: %s - plural name of the CPT.
+				__( 'Imported %s', 'acf-views' ),
+				$layout_labels->plural_name()
+			);
 			$import_result_message .= sprintf(
 				'<br>%s:<br><br> %s.',
 				$views_label,
@@ -460,7 +478,11 @@ final class Tools extends Hookable implements Hooks_Interface {
 		}
 
 		if ( array() !== $cards_info ) {
-			$cards_label            = __( 'Imported Cards', 'acf-views' );
+			$cards_label = sprintf(
+			// translators: %s - plural name of the CPT.
+				__( 'Imported %s', 'acf-views' ),
+				$post_selection_labels->plural_name()
+			);
 			$import_result_message .= sprintf(
 				'<br>%s:<br><br> %s.',
 				$cards_label,
@@ -470,7 +492,11 @@ final class Tools extends Hookable implements Hooks_Interface {
 		}
 
 		if ( array() !== $fail_view_unique_ids ) {
-			$views_label            = __( 'Wrong Views', 'acf-views' );
+			$views_label = sprintf(
+			// translators: %s - plural name of the CPT.
+				__( 'Wrong %s', 'acf-views' ),
+				$layout_labels->plural_name()
+			);
 			$import_result_message .= sprintf(
 				'%s: %s.',
 				$views_label,
@@ -480,7 +506,11 @@ final class Tools extends Hookable implements Hooks_Interface {
 		}
 
 		if ( array() !== $fail_card_unique_ids ) {
-			$cards_label            = __( 'Wrong Cards', 'acf-views' );
+			$cards_label = sprintf(
+			// translators: %s - plural name of the CPT.
+				__( 'Wrong %s', 'acf-views' ),
+				$post_selection_labels->plural_name()
+			);
 			$import_result_message .= sprintf(
 				'%s: %s.',
 				$cards_label,

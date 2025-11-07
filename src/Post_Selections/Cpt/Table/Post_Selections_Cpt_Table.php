@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -24,17 +25,20 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 
 	private Html $html;
 	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
+	private Plugin_Cpt $layout_cpt;
 
 	public function __construct(
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Public_Cpt $public_cpt,
 		Html $html,
-		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes
+		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
+		Plugin_Cpt $layout_cpt
 	) {
 		parent::__construct( $post_selections_settings_storage, $public_cpt );
 
 		$this->html                           = $html;
 		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
+		$this->layout_cpt                     = $layout_cpt;
 	}
 
 	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
@@ -52,7 +56,7 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				$this->html->print_postbox_shortcode(
 					$card_data->get_unique_id( true ),
 					true,
-					$this->public_plugin_cpt->shortcode(),
+					$this->public_plugin_cpt,
 					$card_data->title,
 					true
 				);
@@ -108,7 +112,11 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 			array(
 				self::COLUMN_DESCRIPTION   => __( 'Description', 'acf-views' ),
 				self::COLUMN_SHORTCODE     => __( 'Shortcode', 'acf-views' ),
-				self::COLUMN_RELATED_VIEW  => __( 'Related View', 'acf-views' ),
+				self::COLUMN_RELATED_VIEW  => sprintf(
+					// translators: %s - singular name of the CPT.
+					__( 'Related %s', 'acf-views' ),
+					$this->layout_cpt->labels()->singular_name()
+				),
 				self::COLUMN_LAST_MODIFIED => __( 'Last modified', 'acf-views' ),
 			)
 		);

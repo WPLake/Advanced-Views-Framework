@@ -74,8 +74,8 @@ class Field_Settings extends Group {
 	/**
 	 * @a-type av_slug_select
 	 * @allow_null 1
-	 * @label View
-	 * @instructions If filled then data within this field will be displayed using the selected View. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
+	 * @label Layout
+	 * @instructions If filled then data within this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
 	 * @a-order 2
 	 * @a-pro The field must be not required or have default value!
 	 */
