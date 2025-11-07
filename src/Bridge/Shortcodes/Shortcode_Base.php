@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Renderer;
 defined( 'ABSPATH' ) || exit;
 
 // Do not refer to this class directly, prefer the interface.
-abstract class Shortcode_Base implements Shortcode {
+abstract class Shortcode_Base implements Shortcode_Interface {
 	private Shortcode_Renderer $renderer;
 
 	protected string $unique_id;
@@ -56,7 +56,7 @@ abstract class Shortcode_Base implements Shortcode {
 	}
 
 	/**
-	 * @param array<string,mixed> $custom_arguments
+	 * @param mixed[] $custom_arguments
 	 *
 	 * @return static
 	 */
