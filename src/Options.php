@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views;
 defined( 'ABSPATH' ) || exit;
 
 class Options {
-	// todo CPT name is hardcoded.
 	const PREFIX = 'acf_views_';
 
 	const OPTION_SETTINGS                       = self::PREFIX . 'settings';

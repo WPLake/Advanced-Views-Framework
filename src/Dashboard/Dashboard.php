@@ -171,6 +171,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 				if ( ! in_array( $wp_screen->post_type, array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true ) ) {
 					return;
 				}
+
 				self::add_action( 'in_admin_header', array( $this, 'get_header' ) );
 			}
 		);
@@ -304,15 +305,16 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	 */
 	protected function get_cpt_links(): array {
 		return array(
+			// fixme to array
 			sprintf(
 				'<a href="%s" target="_self">%s</a>',
 				esc_url( $this->plugin->get_admin_url( '', Hard_Layout_Cpt::cpt_name() ) ),
-				esc_html_x( 'Views', 'acf-views' )
+				esc_html_x( 'Layouts', 'acf-views' )
 			),
 			sprintf(
 				'<a href="%s" target="_self">%s</a>',
 				esc_url( $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() ) ),
-				esc_html_x( 'Cards', 'acf-views' )
+				esc_html_x( 'Post Selections', 'acf-views' )
 			),
 		);
 	}

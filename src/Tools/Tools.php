@@ -324,8 +324,10 @@ final class Tools extends Hookable implements Hooks_Interface {
 	protected function is_my_source( $post_id ): bool {
 		$screen = get_current_screen();
 
+		$tools_screen = sprintf( '%s_page_%s', Hard_Layout_Cpt::cpt_name(), self::SLUG );
+
 		return null !== $screen &&
-				'acf_views_page_acf-views-tools' === $screen->id &&
+				$tools_screen === $screen->id &&
 				'options' === $post_id;
 	}
 

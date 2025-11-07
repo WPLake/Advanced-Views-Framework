@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Current_Screen;
@@ -63,19 +64,19 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 
 		$items = array(
 			array(
-				'id'    => 'acf-views',
+				'id'    => Plugin::PRODUCT_SLUG,
 				'title' => $title,
 				'href'  => admin_url( sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ) ),
 			),
 			array(
-				'parent' => 'acf-views',
-				'id'     => 'acf-views__dev-mode',
+				'parent' => Plugin::PRODUCT_SLUG,
+				'id'     => sprintf( '%s__dev-mode', Plugin::PRODUCT_SLUG ),
 				'title'  => $dev_mode_label,
 				'href'   => $this->settings->get_page_dev_mode_manage_link( false === $is_page_dev_mode_active ),
 			),
 			array(
-				'parent' => 'acf-views',
-				'id'     => 'acf-views__live-reload',
+				'parent' => Plugin::PRODUCT_SLUG,
+				'id'     => sprintf( '%s__live-reload', Plugin::PRODUCT_SLUG ),
 				'title'  => $live_reload_mode_label,
 				'href'   => $this->live_reloader_component->get_manage_link( false === $is_live_reload_mode_active ),
 			),

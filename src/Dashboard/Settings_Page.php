@@ -64,8 +64,10 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	protected function is_my_source( $post_id ): bool {
 		$screen = get_current_screen();
 
+		$settings_screen = sprintf( '%s_page_%s', Hard_Layout_Cpt::cpt_name(), self::SLUG );
+
 		return null !== $screen &&
-				'acf_views_page_acf-views-settings' === $screen->id &&
+				$settings_screen === $screen->id &&
 				'options' === $post_id;
 	}
 

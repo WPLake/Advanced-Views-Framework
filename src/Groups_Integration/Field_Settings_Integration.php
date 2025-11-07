@@ -238,8 +238,11 @@ class Field_Settings_Integration extends Acf_Integration {
 	}
 
 	public function print_add_new_view_link(): void {
+		$link = sprintf( '/wp-admin/post-new.php?post_type=%s', Hard_Layout_Cpt::cpt_name() );
+
 		printf(
-			'<a class="acf-views__add-new" target="_blank" href="/wp-admin/post-new.php?post_type=acf_views">%s</a>',
+			'<a class="acf-views__add-new" target="_blank" href="%s">%s</a>',
+			esc_url( $link ),
 			esc_html__( 'Add new View', 'acf-views' )
 		);
 	}

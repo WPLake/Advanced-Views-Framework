@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Groups;
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,8 +17,7 @@ class Layout_Settings extends Cpt_Settings {
 	const CUSTOM_GROUP_NAME           = self::GROUP_NAME_PREFIX . 'view';
 	const LOCATION_RULES              = array(
 		array(
-			// todo CPT name is hardcoded.
-			'post_type == avf-layout',
+			'post_type == ' . Hard_Layout_Cpt::NAME,
 		),
 	);
 	const FIELD_GROUP                 = 'group';

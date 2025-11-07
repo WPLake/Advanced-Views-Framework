@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Groups;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
@@ -17,8 +17,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	const CUSTOM_GROUP_NAME = self::GROUP_NAME_PREFIX . 'acf-card-data';
 	const LOCATION_RULES    = array(
 		array(
-			// todo it's hardcoded.
-			'post_type == avf-post-selection',
+			'post_type == ' . Hard_Post_Selection_Cpt::NAME,
 		),
 	);
 

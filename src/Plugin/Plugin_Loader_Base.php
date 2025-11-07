@@ -410,8 +410,9 @@ abstract class Plugin_Loader_Base {
 	protected static function make_layout_cpt(): Public_Cpt {
 		$public_cpt_base = new Public_Cpt_Base();
 
-		$public_cpt_base->cpt_name    = Hard_Layout_Cpt::cpt_name();
-		$public_cpt_base->slug_prefix = 'layout-';
+		$public_cpt_base->cpt_name = Hard_Layout_Cpt::cpt_name();
+		// replacement will require changes in ALL the "layout-pointer" fields values, like Post Selection -> Item layout.
+		$public_cpt_base->slug_prefix = 'view_';
 		$public_cpt_base->folder_name = 'layouts';
 
 		$public_cpt_base->shortcode        = 'avf-layout';
@@ -425,7 +426,7 @@ abstract class Plugin_Loader_Base {
 		$public_cpt_base = new Public_Cpt_Base();
 
 		$public_cpt_base->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
-		$public_cpt_base->slug_prefix = 'post-selection-';
+		$public_cpt_base->slug_prefix = 'card_';
 		$public_cpt_base->folder_name = 'post-selections';
 
 		$public_cpt_base->shortcode        = 'avf-post-selection';

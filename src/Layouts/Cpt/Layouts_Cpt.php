@@ -124,11 +124,11 @@ class Layouts_Cpt extends Cpt {
 			if ( 3 === count( $item ) ) {
 				switch ( $item[2] ) {
 					// remove 'Add new' submenu link.
-					case 'post-new.php?post_type=acf_views':
+					case sprintf( 'post-new.php?post_type=%s', $this->get_cpt_name() ):
 						unset( $submenu[ $url ][ $item_key ] );
 						break;
 					// rename 'Advanced Views' to 'Views' submenu link.
-					case 'edit.php?post_type=acf_views':
+					case sprintf( 'edit.php?post_type=%s', $this->get_cpt_name() ):
 						// @phpcs:ignore
 						$submenu[ $url ][ $item_key ] = arr($submenu[ $url ],$item_key);
 						// @phpcs:ignore

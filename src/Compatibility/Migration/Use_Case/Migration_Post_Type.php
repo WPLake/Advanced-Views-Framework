@@ -29,7 +29,6 @@ final class Migration_Post_Type extends Migration_Base {
 
 	public function migrate(): void {
 		$this->replace_type_in_posts_table();
-		$this->replace_slug_prefix_in_posts_table( $this->to_cpt->cpt_name() );
 
 		self::add_action(
 			'after_setup_theme',
@@ -41,41 +40,10 @@ final class Migration_Post_Type extends Migration_Base {
 
 					$this->rename_cpt_folder( $base_folder );
 				}
-
-				// replace in items only after FS was upgraded - otherwise data can't be read.
-				$this->replace_slug_prefix_in_items();
 			},
 			// After File_System->set_hooks().
 			11
 		);
-	}
-
-	protected function replace_slug_prefix_in_posts_table( string $cpt_name ): void {
-		global $wpdb;
-
-		// @phpcs:ignore
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->posts} SET post_name = REPLACE(post_name, %s, %s) WHERE post_type = %s",
-				$this->from_cpt->slug_prefix(),
-				$this->to_cpt->slug_prefix(),
-				$cpt_name
-			)
-		);
-	}
-
-	protected function replace_slug_prefix_in_items(): void {
-		$cpt_items = $this->cpt_settings_storage->get_all();
-
-		foreach ( $cpt_items as $cpt_item ) {
-			$cpt_item->unique_id = str_replace(
-				$this->from_cpt->slug_prefix(),
-				$this->to_cpt->slug_prefix(),
-				$cpt_item->unique_id
-			);
-
-			$this->cpt_settings_storage->save( $cpt_item );
-		}
 	}
 
 	protected function replace_type_in_posts_table(): void {

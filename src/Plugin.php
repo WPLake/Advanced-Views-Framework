@@ -21,6 +21,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 	const BASIC_VERSION_URL = 'https://advanced-views.com';
 	const SURVEY_URL        = 'https://forms.gle/Wjb16B4mzgLEQvru6';
 	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/compatibility#conflicts';
+	const PRODUCT_SLUG      = 'acf-views';
 
 	private string $slug       = 'acf-views/acf-views.php';
 	private string $short_slug = 'acf-views';

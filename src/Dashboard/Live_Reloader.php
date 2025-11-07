@@ -465,6 +465,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 	public function register_rest_routes(): void {
 		register_rest_route(
+			// todo replace to 'advanced-views'
 			'acf_views/v1',
 			'/live-reloader',
 			array(
