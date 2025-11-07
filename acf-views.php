@@ -20,6 +20,7 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
@@ -409,7 +410,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 		}
 
 		protected function others(): void {
-			$demo_import = new Demo_Import(
+			$this->demo_import = new Demo_Import(
 				$this->post_selections_cpt_save_actions,
 				$this->layouts_cpt_save_actions,
 				$this->post_selections_settings_storage,
@@ -418,7 +419,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->item_settings
 			);
 
-			$this->dashboard             = new Dashboard( $this->plugin, $this->html, $demo_import );
+			$this->dashboard             = new Dashboard( $this->plugin, $this->html, $this->demo_import );
 			$this->acf_internal_features = new Acf_Internal_Features( $this->plugin );
 
 			$tools_settings     = new Tools_Settings( $this->group_creator );
@@ -478,6 +479,16 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 			);
 
 			parent::others();
+		}
+
+		protected function environment(): void {
+			$this->plugin_environment = new Plugin_Environment(
+				$this->template_engines,
+				$this->automatic_reports,
+				$this->settings,
+				$this->file_systems,
+				array( $this->layouts_settings_storage, $this->post_selections_settings_storage )
+			);
 		}
 	};
 

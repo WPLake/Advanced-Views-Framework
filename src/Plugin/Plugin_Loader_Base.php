@@ -87,7 +87,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
 abstract class Plugin_Loader_Base {
 	protected Plugin $plugin;
-	protected Plugin_Environment $plugin_activator;
+	protected Plugin_Environment $plugin_environment;
 	protected Version_Migrator $version_migrator;
 	protected Logger $logger;
 	protected Layouts_Settings_Storage $layouts_settings_storage;
@@ -383,12 +383,12 @@ abstract class Plugin_Loader_Base {
 	protected function environment(): void {
 		register_activation_hook(
 			$this->plugin->get_slug(),
-			array( $this->plugin_activator, 'prepare_environment' )
+			array( $this->plugin_environment, 'prepare_environment' )
 		);
 
 		register_deactivation_hook(
 			$this->plugin->get_slug(),
-			array( $this->plugin_activator, 'clean_environment' )
+			array( $this->plugin_environment, 'clean_environment' )
 		);
 	}
 

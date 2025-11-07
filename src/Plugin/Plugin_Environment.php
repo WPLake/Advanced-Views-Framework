@@ -16,26 +16,30 @@ final class Plugin_Environment {
 	private Template_Engines $template_engines;
 	private Automatic_Reports $automatic_reports;
 	private Settings $settings;
-	private File_System $file_system;
+	/**
+	 * @var File_System[]
+	 */
+	private array $file_systems;
 	/**
 	 * @var Cpt_Settings_Storage[]
 	 */
 	private array $storages;
 
 	/**
+	 * @param File_System[] $file_systems
 	 * @param Cpt_Settings_Storage[] $storages
 	 */
 	public function __construct(
 		Template_Engines $template_engines,
 		Automatic_Reports $automatic_reports,
 		Settings $settings,
-		File_System $file_system,
+		array $file_systems,
 		array $storages
 	) {
 		$this->template_engines  = $template_engines;
 		$this->automatic_reports = $automatic_reports;
 		$this->settings          = $settings;
-		$this->file_system       = $file_system;
+		$this->file_systems      = $file_systems;
 		$this->storages          = $storages;
 	}
 	public function prepare_environment(): void {
@@ -56,20 +60,24 @@ final class Plugin_Environment {
 							'yes' === $_GET['advanced-views-delete-data'];
 
 		if ( true === $is_delete_data ) {
-			foreach ( $this->storages as $storage ) {
-				$storage->delete_all_items();
-			}
-
-			if ( true === $this->file_system->is_active() ) {
-				$this->file_system
-												->get_wp_filesystem()
-												->rmdir(
-													$this->file_system->get_base_folder(),
-													true
-												);
-			}
-
-			$this->settings->delete_data();
+			$this->delete_data();
 		}
+	}
+
+	protected function delete_data(): void {
+		foreach ( $this->storages as $storage ) {
+			$storage->delete_all_items();
+		}
+
+		foreach ( $this->file_systems as $file_system ) {
+			if ( $file_system->is_active() ) {
+				$base_folder = $file_system->get_base_folder();
+
+				$file_system->get_wp_filesystem()
+							->rmdir( $base_folder, true );
+			}
+		}
+
+		$this->settings->delete_data();
 	}
 }
