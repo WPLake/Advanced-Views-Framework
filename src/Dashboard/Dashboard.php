@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
 use WP_Screen;
@@ -31,15 +32,24 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
 	private Html $html;
 	private Demo_Import $demo_import;
+	/**
+	 * @var Plugin_Cpt[]
+	 */
+	private array $plugin_cpts;
 
+	/**
+	 * @param Plugin_Cpt[] $plugin_cpts
+	 */
 	public function __construct(
 		Plugin $plugin,
 		Html $html,
-		Demo_Import $demo_import
+		Demo_Import $demo_import,
+		array $plugin_cpts
 	) {
 		$this->plugin      = $plugin;
 		$this->html        = $html;
 		$this->demo_import = $demo_import;
+		$this->plugin_cpts = $plugin_cpts;
 	}
 
 	public function add_pages(): void {
@@ -191,69 +201,70 @@ class Dashboard extends Hookable implements Hooks_Interface {
 			Plugin::DOCS_URL;
 		$is_docs_blank = false === $is_https;
 
-		return array(
+		$cpts_labels = array_map(
+			fn( Plugin_Cpt $cpt )=>
 			array(
 				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url(),
-				'label'       => __( 'Views', 'acf-views' ),
+				'url'         => $this->plugin->get_admin_url( '', $cpt->cpt_name() ),
+				'label'       => $cpt->labels()->plural_name(),
 				'isActive'    => false,
 				'isSecondary' => false,
 			),
+			$this->plugin_cpts
+		);
+
+		return array_merge(
+			$cpts_labels,
 			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() ),
-				'label'       => __( 'Cards', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( Settings_Page::SLUG ),
-				'label'       => __( 'Settings', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( Tools::SLUG ),
-				'label'       => __( 'Tools', 'acf-views' ),
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isLeftBlock' => true,
-				'url'         => Plugin::PRO_VERSION_URL,
-				'isBlank'     => true,
-				'label'       => __( 'Upgrade to Pro', 'acf-views' ),
-				'class'       => 'av-toolbar__upgrade-link',
-				'isActive'    => false,
-				'isSecondary' => false,
-			),
-			array(
-				'isRightBlock' => true,
-				'url'          => $this->plugin->get_admin_url( self::PAGE_DEMO_IMPORT ),
-				'label'        => __( 'Demo Import', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => true,
-			),
-			array(
-				'isRightBlock' => true,
-				'url'          => $docs_url,
-				'label'        => __( 'Docs', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => false,
-				'isBlank'      => $is_docs_blank,
-			),
-			array(
-				'isRightBlock' => true,
-				// static to be overridden in child.
-				'url'          => static::URL_SUPPORT,
-				'label'        => __( 'Support', 'acf-views' ),
-				'isActive'     => false,
-				'isSecondary'  => false,
-				'iconClasses'  => 'av-toolbar__license-icon dashicons dashicons-external',
-				'isBlank'      => true,
-			),
+				array(
+					'isLeftBlock' => true,
+					'url'         => $this->plugin->get_admin_url( Settings_Page::SLUG ),
+					'label'       => __( 'Settings', 'acf-views' ),
+					'isActive'    => false,
+					'isSecondary' => false,
+				),
+				array(
+					'isLeftBlock' => true,
+					'url'         => $this->plugin->get_admin_url( Tools::SLUG ),
+					'label'       => __( 'Tools', 'acf-views' ),
+					'isActive'    => false,
+					'isSecondary' => false,
+				),
+				array(
+					'isLeftBlock' => true,
+					'url'         => Plugin::PRO_VERSION_URL,
+					'isBlank'     => true,
+					'label'       => __( 'Upgrade to Pro', 'acf-views' ),
+					'class'       => 'av-toolbar__upgrade-link',
+					'isActive'    => false,
+					'isSecondary' => false,
+				),
+				array(
+					'isRightBlock' => true,
+					'url'          => $this->plugin->get_admin_url( self::PAGE_DEMO_IMPORT ),
+					'label'        => __( 'Demo Import', 'acf-views' ),
+					'isActive'     => false,
+					'isSecondary'  => true,
+				),
+				array(
+					'isRightBlock' => true,
+					'url'          => $docs_url,
+					'label'        => __( 'Docs', 'acf-views' ),
+					'isActive'     => false,
+					'isSecondary'  => false,
+					'isBlank'      => $is_docs_blank,
+				),
+				array(
+					'isRightBlock' => true,
+					// static to be overridden in child.
+					'url'          => static::URL_SUPPORT,
+					'label'        => __( 'Support', 'acf-views' ),
+					'isActive'     => false,
+					'isSecondary'  => false,
+					'iconClasses'  => 'av-toolbar__license-icon dashicons dashicons-external',
+					'isBlank'      => true,
+				),
+			)
 		);
 	}
 

@@ -14,29 +14,17 @@ defined( 'ABSPATH' ) || exit;
 class Layouts_Cpt extends Cpt {
 
 	public function add_cpt(): void {
-		// translators: %1$s - link opening tag, %2$s - link closing tag.
-		$not_found_label = __( 'No Views yet. %1$s Add New View %2$s', 'acf-views' );
+		$labels        = $this->plugin_cpt->labels();
+		$singular_name = $labels->singular_name();
+		$plural_name   = $labels->plural_name();
 
-		$labels = array(
-			'name'               => __( 'Views', 'acf-views' ),
-			'singular_name'      => __( 'View', 'acf-views' ),
-			'menu_name'          => __( 'Advanced Views', 'acf-views' ),
-			'parent_item_colon'  => __( 'Parent View', 'acf-views' ),
-			'all_ite__(ms'       => __( 'Views', 'acf-views' ),
-			'view_item'          => __( 'Browse View', 'acf-views' ),
-			'add_new_item'       => __( 'Add New View', 'acf-views' ),
-			'add_new'            => __( 'Add New', 'acf-views' ),
-			'item_updated'       => __( 'View updated.', 'acf-views' ),
-			'edit_item'          => __( 'Edit View', 'acf-views' ),
-			'update_item'        => __( 'Update View', 'acf-views' ),
-			'search_items'       => __( 'Search View', 'acf-views' ),
-			'not_found'          => $this->inject_add_new_item_link( $not_found_label ),
-			'not_found_in_trash' => __( 'Not Found In Trash', 'acf-views' ),
-		);
-
-		$description  = __(
-			'Add a View and select target fields or import a pre-built component.',
-			'acf-views'
+		$description = sprintf(
+		// translators: %s - singular name of the CPT.
+			__(
+				'Add a %s and select target fields or import a pre-built component.',
+				'acf-views'
+			),
+			$singular_name
 		);
 		$description .= '<br>' .
 						__(
@@ -47,9 +35,9 @@ class Layouts_Cpt extends Cpt {
 		$description .= $this->get_storage_label();
 
 		$cpt_args = array(
-			'label'         => __( 'Views', 'acf-views' ),
+			'label'         => $plural_name,
 			'description'   => $description,
-			'labels'        => $labels,
+			'labels'        => $this->get_labels(),
 			'menu_icon'     => 'dashicons-layout',
 			// right under ACF, which has 80.
 			'menu_position' => 81,

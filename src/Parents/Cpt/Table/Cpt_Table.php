@@ -191,7 +191,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 
 	protected function print_search_box_description( bool $is_custom_tab_active ): void {
 		$label = false === $is_custom_tab_active ?
-			__( 'Search for name, description, labels or view-id.', 'acf-views' ) :
+			__( 'Search for name, description, labels or id.', 'acf-views' ) :
 			__( 'Search for name.', 'acf-views' );
 
 		// only primary search is available for custom items.

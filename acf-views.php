@@ -20,6 +20,7 @@ use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
@@ -99,6 +100,11 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 		protected function primary(): void {
 			$this->layout_cpt         = self::make_layout_cpt();
 			$this->post_selection_cpt = self::make_post_selection_cpt();
+
+			$this->plugin_cpts = array(
+				$this->layout_cpt,
+				$this->post_selection_cpt,
+			);
 
 			$this->options  = new Options();
 			$this->settings = new Settings( $this->options );
@@ -419,7 +425,12 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->item_settings
 			);
 
-			$this->dashboard             = new Dashboard( $this->plugin, $this->html, $this->demo_import );
+			$this->dashboard             = new Dashboard(
+				$this->plugin,
+				$this->html,
+				$this->demo_import,
+				$this->plugin_cpts
+			);
 			$this->acf_internal_features = new Acf_Internal_Features( $this->plugin );
 
 			$tools_settings     = new Tools_Settings( $this->group_creator );

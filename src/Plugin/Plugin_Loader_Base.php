@@ -62,8 +62,10 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Cpt_Labels;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
@@ -153,6 +155,10 @@ abstract class Plugin_Loader_Base {
 	 * @var Hooks_Interface[]
 	 */
 	protected array $hookable = array();
+	/**
+	 * @var Plugin_Cpt[]
+	 */
+	protected array $plugin_cpts = array();
 
 	public function load_plugin(): void {
 		$start_timestamp = microtime( true );
@@ -419,6 +425,16 @@ abstract class Plugin_Loader_Base {
 		$public_cpt_base->shortcodes       = array( $public_cpt_base->shortcode, 'avf_view', 'acf_views' );
 		$public_cpt_base->rest_route_names = array( 'layout', 'view' );
 
+		$public_cpt_base->labels = new class() implements Cpt_Labels{
+			public function singular_name(): string {
+				return __( 'Layout', 'acf-views' );
+			}
+
+			public function plural_name(): string {
+				return __( 'Layouts', 'acf-views' );
+			}
+		};
+
 		return $public_cpt_base;
 	}
 
@@ -432,6 +448,16 @@ abstract class Plugin_Loader_Base {
 		$public_cpt_base->shortcode        = 'avf-post-selection';
 		$public_cpt_base->shortcodes       = array( $public_cpt_base->shortcode, 'avf_card', 'acf_cards' );
 		$public_cpt_base->rest_route_names = array( 'post-selection', 'card' );
+
+		$public_cpt_base->labels = new class() implements Cpt_Labels{
+			public function singular_name(): string {
+				return __( 'Post Selection', 'acf-views' );
+			}
+
+			public function plural_name(): string {
+				return __( 'Post Selections', 'acf-views' );
+			}
+		};
 
 		return $public_cpt_base;
 	}

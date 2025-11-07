@@ -9,6 +9,8 @@ defined( 'ABSPATH' ) || exit;
 interface Plugin_Cpt {
 	public function cpt_name(): string;
 
+	public function labels(): Cpt_Labels;
+
 	public function slug_prefix(): string;
 
 	public function folder_name(): string;

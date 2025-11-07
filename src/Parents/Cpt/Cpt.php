@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt extends Hookable implements Hooks_Interface {
 	private Cpt_Settings_Storage $cpt_settings_storage;
-	private Plugin_Cpt $plugin_cpt;
+	protected Plugin_Cpt $plugin_cpt;
 
 	public function __construct( Plugin_Cpt $plugin_cpt, Cpt_Settings_Storage $cpt_settings_storage ) {
-		$this->plugin_cpt       = $plugin_cpt;
+		$this->plugin_cpt           = $plugin_cpt;
 		$this->cpt_settings_storage = $cpt_settings_storage;
 	}
 
@@ -81,6 +81,64 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		return $this->plugin_cpt->cpt_name();
 	}
 
+	/**
+	 * @return array<string,string>
+	 */
+	protected function get_labels(): array {
+
+		$labels        = $this->plugin_cpt->labels();
+		$plural_name   = $labels->plural_name();
+		$singular_name = $labels->singular_name();
+
+		// translators: %1$s - plural name of the CPT, %2$s - link opening tag, %3$s - link closing tag.
+		$not_found_label = __( 'No %1$s yet. %2$s Add New %1$s %3$s', 'acf-views' );
+
+		return array(
+			'name'               => $plural_name,
+			'singular_name'      => $singular_name,
+			'menu_name'          => __( 'Advanced Views', 'acf-views' ),
+			'parent_item_colon'  => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Parent %s', 'acf-views' ),
+				$singular_name
+			),
+			'all_items'          => $plural_name,
+			'view_item'          => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Browse %s', 'acf-views' ),
+				$singular_name
+			),
+			'add_new_item'       => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Add New %s', 'acf-views' ),
+				$singular_name
+			),
+			'add_new'            => __( 'Add New', 'acf-views' ),
+			'item_updated'       => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( '%s updated', 'acf-views' ),
+				$singular_name
+			),
+			'edit_item'          => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Edit %s', 'acf-views' ),
+				$singular_name
+			),
+			'update_item'        => sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Update %s', 'acf-views' ),
+				$singular_name
+			),
+			'search_items'       => sprintf(
+			// translators: %s - plural name of the CPT.
+				__( 'Search %s', 'acf-views' ),
+				$plural_name
+			),
+			'not_found'          => $this->inject_add_new_item_link( $not_found_label ),
+			'not_found_in_trash' => __( 'Not Found In Trash', 'acf-views' ),
+		);
+	}
+
 	protected function get_storage_label(): string {
 		$description  = __(
 			'<a target="_blank" href="https://docs.advanced-views.com/templates/file-system-storage">File system storage</a> is',
@@ -105,7 +163,10 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		);
 		$closing_tag = '</a>';
 
-		return sprintf( $label_template, $opening_tag, $closing_tag );
+		$labels      = $this->plugin_cpt->labels();
+		$plural_name = $labels->plural_name();
+
+		return sprintf( $label_template, $plural_name, $opening_tag, $closing_tag );
 	}
 
 	/**

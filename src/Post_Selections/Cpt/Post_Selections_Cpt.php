@@ -27,29 +27,17 @@ class Post_Selections_Cpt extends Cpt {
 	}
 
 	public function add_cpt(): void {
-		// translators: %1$s - link opening tag, %2$s - link closing tag.
-		$not_found_label = __( 'No Cards yet. %1$s Add New Card %2$s', 'acf-views' );
+		$labels        = $this->plugin_cpt->labels();
+		$singular_name = $labels->singular_name();
+		$plural_name   = $labels->plural_name();
 
-		$labels = array(
-			'name'               => __( 'Cards', 'acf-views' ),
-			'singular_name'      => __( 'Card', 'acf-views' ),
-			'menu_name'          => __( 'Cards', 'acf-views' ),
-			'parent_item_colon'  => __( 'Parent Card', 'acf-views' ),
-			'all_items'          => __( 'Cards', 'acf-views' ),
-			'view_item'          => __( 'Browse Card', 'acf-views' ),
-			'add_new_item'       => __( 'Add New Card', 'acf-views' ),
-			'add_new'            => __( 'Add New', 'acf-views' ),
-			'item_updated'       => __( 'Card updated.', 'acf-views' ),
-			'edit_item'          => __( 'Edit Card', 'acf-views' ),
-			'update_item'        => __( 'Update Card', 'acf-views' ),
-			'search_items'       => __( 'Search Card', 'acf-views' ),
-			'not_found'          => $this->inject_add_new_item_link( $not_found_label ),
-			'not_found_in_trash' => __( 'Not Found In Trash', 'acf-views' ),
-		);
-
-		$description  = __(
-			'Add a Card and select a set of posts or import a pre-built component.',
-			'acf-views'
+		$description = sprintf(
+			// translators: %s - singular name of the CPT.
+			__(
+				'Add a %s and select a set of posts or import a pre-built component.',
+				'acf-views'
+			),
+			$singular_name
 		);
 		$description .= '<br>';
 		$description .= __(
@@ -57,15 +45,15 @@ class Post_Selections_Cpt extends Cpt {
 			'acf-views'
 		) .
 						'<br>'
-						. __( '(The assigned View determines which fields are displayed)', 'acf-views' );
+						. __( '(The assigned Layout determines which fields are displayed)', 'acf-views' );
 
 		$description .= '<br><br>';
 		$description .= $this->get_storage_label();
 
 		$cpt_args = array(
-			'label'        => __( 'Cards', 'acf-views' ),
+			'label'        => $plural_name,
 			'description'  => $description,
-			'labels'       => $labels,
+			'labels'       => $this->get_labels(),
 			'show_in_menu' => sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
 			'menu_icon'    => 'dashicons-layout',
 		);
