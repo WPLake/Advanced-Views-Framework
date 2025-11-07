@@ -18,7 +18,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	const LOCATION_RULES    = array(
 		array(
 			// todo it's hardcoded.
-			'post_type == acf_cards',
+			'post_type == avf-post-selection',
 		),
 	);
 

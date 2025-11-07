@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class Tools extends Hookable implements Hooks_Interface {
 
-	const SLUG = 'acf-views-tools';
+	const SLUG = 'avf-tools';
 	/**
 	 * @var array<string,mixed>
 	 */

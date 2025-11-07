@@ -372,7 +372,8 @@ abstract class Plugin_Loader_Base {
 					$this->plugin
 				),
 				new Migration_3_8_0(
-					$this->layouts_settings_storage->get_file_system(),
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage,
 					$this->layout_cpt,
 					$this->post_selection_cpt
 				),

@@ -18,7 +18,7 @@ class Layout_Settings extends Cpt_Settings {
 	const LOCATION_RULES              = array(
 		array(
 			// todo CPT name is hardcoded.
-			'post_type == acf_views',
+			'post_type == avf-layout',
 		),
 	);
 	const FIELD_GROUP                 = 'group';

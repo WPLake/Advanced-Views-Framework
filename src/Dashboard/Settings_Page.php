@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class Settings_Page extends Action implements Hooks_Interface {
 
-	const SLUG = 'acf-views-settings';
+	const SLUG = 'avf-settings';
 	/**
 	 * @var array<string,mixed>
 	 */

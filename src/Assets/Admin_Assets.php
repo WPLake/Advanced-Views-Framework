@@ -463,6 +463,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	 * @param array<string,mixed> $js_data
 	 */
 	protected function enqueue_admin_assets( string $current_base, array $js_data = array() ): void {
+		$plugin_prefix = Hard_Layout_Cpt::cpt_name();
+
 		switch ( $current_base ) {
 			// add, edit pages.
 			case 'post':
@@ -499,8 +501,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					$this->plugin->get_version()
 				);
 				break;
-			case 'acf_views_page_acf-views-tools':
-			case 'acf_views_page_acf-views-settings':
+			case sprintf( '%s_page_avf-tools', $plugin_prefix ):
+			case sprintf( '%s_page_avf-settings', $plugin_prefix ):
 				wp_enqueue_style(
 					Hard_Layout_Cpt::cpt_name() . '_tools',
 					$this->plugin->get_assets_url( 'admin/css/tools.min.css' ),
@@ -510,8 +512,10 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 				break;
 		}
 
+		$plugin_page_begins = sprintf( '%s_page_', $plugin_prefix );
+
 		// 'dashboard' for all the custom pages (but not for edit/add pages)
-		if ( 0 === strpos( $current_base, 'acf_views_page_' ) ) {
+		if ( 0 === strpos( $current_base, $plugin_page_begins ) ) {
 			wp_enqueue_style(
 				Hard_Layout_Cpt::cpt_name() . '_page',
 				$this->plugin->get_assets_url( 'admin/css/dashboard.min.css' ),
