@@ -292,6 +292,8 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors
         'Org\\Wplake\\Advanced_Views\\Plugin' => __DIR__ . '/../..' . '/../src/Plugin.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Hard\\Hard_Layout_Cpt' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Hard/Hard_Layout_Cpt.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Hard\\Hard_Post_Selection_Cpt' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Hard/Hard_Post_Selection_Cpt.php',
+        'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Labels\\Cpt_Labels' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Labels/Cpt_Labels.php',
+        'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Labels\\Cpt_Labels_Base' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Labels/Cpt_Labels_Base.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Plugin_Cpt' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Plugin_Cpt.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Plugin_Cpt_Base' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Plugin_Cpt_Base.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Pub/Public_Cpt.php',

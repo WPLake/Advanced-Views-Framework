@@ -241,6 +241,8 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Plugin' => $baseDir . '/../src/Plugin.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Hard\\Hard_Layout_Cpt' => $baseDir . '/../src/Plugin/Cpt/Hard/Hard_Layout_Cpt.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Hard\\Hard_Post_Selection_Cpt' => $baseDir . '/../src/Plugin/Cpt/Hard/Hard_Post_Selection_Cpt.php',
+    'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Labels\\Cpt_Labels' => $baseDir . '/../src/Plugin/Cpt/Labels/Cpt_Labels.php',
+    'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Labels\\Cpt_Labels_Base' => $baseDir . '/../src/Plugin/Cpt/Labels/Cpt_Labels_Base.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Plugin_Cpt' => $baseDir . '/../src/Plugin/Cpt/Plugin_Cpt.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Plugin_Cpt_Base' => $baseDir . '/../src/Plugin/Cpt/Plugin_Cpt_Base.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt' => $baseDir . '/../src/Plugin/Cpt/Pub/Public_Cpt.php',
