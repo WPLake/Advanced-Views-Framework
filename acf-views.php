@@ -172,10 +172,18 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 		}
 
 		protected function layouts(): void {
-			$field_markup  = new Field_Markup( $this->data_vendors, $this->front_assets, $this->template_engines );
-			$layout_markup = new Layout_Markup( $field_markup, $this->data_vendors, $this->template_engines );
+			$field_markup  = new Field_Markup(
+				$this->data_vendors,
+				$this->front_assets,
+				$this->template_engines
+			);
+			$layout_markup = new Layout_Markup(
+				$field_markup,
+				$this->data_vendors,
+				$this->template_engines
+			);
 
-			$this->layout_factory           = new Layout_Factory(
+			$this->layout_factory          = new Layout_Factory(
 				$this->front_assets,
 				$this->layouts_settings_storage,
 				$layout_markup,
@@ -183,7 +191,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$field_markup,
 				$this->data_vendors
 			);
-			$this->layouts_cpt_meta_boxes   = new Layouts_Cpt_Meta_Boxes(
+			$this->layouts_cpt_meta_boxes  = new Layouts_Cpt_Meta_Boxes(
 				$this->html,
 				$this->plugin,
 				$this->layouts_settings_storage,
@@ -191,6 +199,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->layout_cpt,
 				$this->post_selection_cpt
 			);
+			$this->layouts_shortcode_block = new Shortcode_Block( $this->layout_cpt->shortcodes() );
+
 			$this->layouts_cpt_save_actions = new Layouts_Cpt_Save_Actions(
 				$this->logger,
 				$this->layouts_settings_storage,
@@ -202,6 +212,16 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->html,
 				$this->layout_factory,
 				$this->layout_cpt
+			);
+
+			$this->layout_shortcode = new Layout_Shortcode(
+				$this->layout_cpt,
+				$this->settings,
+				$this->layouts_settings_storage,
+				$this->front_assets,
+				$this->live_reloader_component,
+				$this->layout_factory,
+				$this->layouts_shortcode_block
 			);
 
 			$this->layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
@@ -249,17 +269,6 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 
 			$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
 			$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
-			$this->layouts_shortcode_block              = new Shortcode_Block( $this->layout_cpt->shortcodes() );
-
-			$this->layout_shortcode = new Layout_Shortcode(
-				$this->layout_cpt,
-				$this->settings,
-				$this->layouts_settings_storage,
-				$this->front_assets,
-				$this->live_reloader_component,
-				$this->layout_factory,
-				$this->layouts_shortcode_block
-			);
 
 			parent::layouts();
 		}
