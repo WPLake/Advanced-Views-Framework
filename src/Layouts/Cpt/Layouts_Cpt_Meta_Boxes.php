@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -23,19 +24,22 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Public_Cpt $public_cpt;
+	private Plugin_Cpt $post_selection_cpt;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Public_Cpt $public_cpt
+		Public_Cpt $public_cpt,
+		Plugin_Cpt $post_selection_cpt
 	) {
 		parent::__construct( $html, $plugin );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->data_vendors             = $data_vendors;
 		$this->public_cpt               = $public_cpt;
+		$this->post_selection_cpt       = $post_selection_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -123,7 +127,11 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		$related_view_unique_ids = $this->get_related_view_unique_ids( $layout_settings );
 
 		if ( array() === $related_view_unique_ids ) {
-			$message = __( 'No assigned Views.', 'acf-views' );
+			$message = sprintf(
+				// translators: %s is the plural name of the CPT.
+				__( 'No assigned %s.', 'acf-views' ),
+				$this->public_cpt->labels()->plural_name()
+			);
 
 			if ( false === $is_skip_not_found_message ) {
 				echo esc_html( $message );
@@ -174,7 +182,16 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		if ( array() === $related_cards &&
 			false === $is_list_look ) {
-			printf( '<p>%s</p>', esc_html( __( 'Not assigned to any Cards.', 'acf-views' ) ) );
+			printf(
+				'<p>%s</p>',
+				esc_html(
+					sprintf(
+					// translators: %s is the plural name of the CPT.
+						__( 'Not assigned to any %s.', 'acf-views' ),
+						$this->post_selection_cpt->labels()->plural_name()
+					)
+				)
+			);
 		}
 
 		$last_item_index = count( $related_cards ) - 1;
@@ -204,7 +221,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		if ( 0 !== $post_id ) {
 			$url = add_query_arg(
 				array(
-					'post_type' => 'acf_cards',
+					'post_type' => $this->post_selection_cpt->cpt_name(),
 					Post_Selections_View_Integration::ARGUMENT_FROM => $post_id,
 					'_wpnonce'  => wp_create_nonce( Post_Selections_View_Integration::NONCE_MAKE_NEW ),
 				),
@@ -270,7 +287,11 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-views_related_views',
-			__( 'Assigned Views', 'acf-views' ),
+			sprintf(
+			// translators: %s is the plural name of the CPT.
+				__( 'Assigned %s', 'acf-views' ),
+				$this->public_cpt->labels()->plural_name()
+			),
 			function ( WP_Post $wp_post ): void {
 				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 
@@ -285,7 +306,11 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-views_related_cards',
-			__( 'Assigned to Cards', 'acf-views' ),
+			sprintf(
+			// translators: %s is the plural name of the CPT.
+				__( 'Assigned to %s', 'acf-views' ),
+				$this->post_selection_cpt->labels()->plural_name()
+			),
 			function ( WP_Post $wp_post ): void {
 				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 

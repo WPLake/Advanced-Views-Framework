@@ -317,7 +317,8 @@ abstract class Plugin_Loader_Base {
 			$this->layout_factory,
 			$this->group_creator->create( Repeater_Field_Settings::class ),
 			$this->layout_shortcode,
-			$this->settings
+			$this->settings,
+			$this->layout_cpt,
 		);
 	}
 
@@ -427,11 +428,11 @@ abstract class Plugin_Loader_Base {
 
 		$public_cpt_base->labels = new class() implements Cpt_Labels{
 			public function singular_name(): string {
-				return __( 'Layout', 'acf-views' );
+				return esc_html__( 'Layout', 'acf-views' );
 			}
 
 			public function plural_name(): string {
-				return __( 'Layouts', 'acf-views' );
+				return esc_html__( 'Layouts', 'acf-views' );
 			}
 		};
 
@@ -451,11 +452,11 @@ abstract class Plugin_Loader_Base {
 
 		$public_cpt_base->labels = new class() implements Cpt_Labels{
 			public function singular_name(): string {
-				return __( 'Post Selection', 'acf-views' );
+				return esc_html__( 'Post Selection', 'acf-views' );
 			}
 
 			public function plural_name(): string {
-				return __( 'Post Selections', 'acf-views' );
+				return esc_html__( 'Post Selections', 'acf-views' );
 			}
 		};
 

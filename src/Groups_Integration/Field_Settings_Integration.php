@@ -13,19 +13,22 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
 class Field_Settings_Integration extends Acf_Integration {
 	use Safe_Array_Arguments;
 
 	private Data_Vendors $data_vendors;
+	private Plugin_Cpt $layout_cpt;
 
 	public function __construct(
-		string $target_cpt_name,
-		Data_Vendors $data_vendors
+		Data_Vendors $data_vendors,
+		Plugin_Cpt $layout_cpt
 	) {
-		parent::__construct( $target_cpt_name );
+		parent::__construct( $layout_cpt->cpt_name() );
 
 		$this->data_vendors = $data_vendors;
+		$this->layout_cpt   = $layout_cpt;
 	}
 
 	/**
@@ -238,12 +241,18 @@ class Field_Settings_Integration extends Acf_Integration {
 	}
 
 	public function print_add_new_view_link(): void {
-		$link = sprintf( '/wp-admin/post-new.php?post_type=%s', Hard_Layout_Cpt::cpt_name() );
+		$link = sprintf( '/wp-admin/post-new.php?post_type=%s', $this->layout_cpt->cpt_name() );
 
 		printf(
 			'<a class="acf-views__add-new" target="_blank" href="%s">%s</a>',
 			esc_url( $link ),
-			esc_html__( 'Add new View', 'acf-views' )
+			esc_html(
+				sprintf(
+				// translators: %s is the singular name of the CPT.
+					__( 'Add new %s', 'acf-views' ),
+					$this->layout_cpt->labels()->singular_name()
+				)
+			)
 		);
 	}
 

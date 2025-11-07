@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,14 +18,17 @@ class Post_Selection_Settings_Integration extends Acf_Integration {
 	use Safe_Array_Arguments;
 
 	private Data_Vendors $data_vendors;
+	private Plugin_Cpt $layout_cpt;
 
 	public function __construct(
 		string $target_cpt_name,
-		Data_Vendors $data_vendors
+		Data_Vendors $data_vendors,
+		Plugin_Cpt $layout_cpt
 	) {
 		parent::__construct( $target_cpt_name );
 
 		$this->data_vendors = $data_vendors;
+		$this->layout_cpt   = $layout_cpt;
 	}
 
 	/**
@@ -91,7 +95,13 @@ class Post_Selection_Settings_Integration extends Acf_Integration {
 		printf(
 			'<a class="acf-views__add-new" target="_blank" href="%s">%s</a>',
 			esc_url( $link ),
-			esc_html__( 'Add new View', 'acf-views' )
+			esc_html(
+				sprintf(
+				// translators: %s is the singular name of the CPT.
+					__( 'Add new %s', 'acf-views' ),
+					$this->layout_cpt->labels()->singular_name()
+				)
+			)
 		);
 	}
 

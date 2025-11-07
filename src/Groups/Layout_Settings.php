@@ -44,7 +44,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @item \Org\Wplake\Advanced_Views\Groups\Item_Settings
 	 * @var Item_Settings[]
 	 * @label Fields
-	 * @instructions Assign fields to your View. <br> Tip: hover mouse on the field number column and drag to reorder.
+	 * @instructions Assign fields to your Layout. <br> Tip: hover mouse on the field number column and drag to reorder.
 	 * @button_label Add Field
 	 * @collapsed local_acf_views_field__key
 	 * @a-no-tab 1
@@ -66,7 +66,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @return_format value
 	 * @allow_null 1
 	 * @label Parent field
-	 * @instructions If you're making an internal View for the <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>group</a>, <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>repeater</a> or <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> field, then fill out this field.
+	 * @instructions If you're making an internal Layout for the <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>group</a>, <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/repeater-pro'>repeater</a> or <a target='_blank' href='https://docs.advanced-views.com/display-content/meta-fields/layout-fields/flexible-pro'>flexible</a> field, then fill out this field.
 	 * @a-pro The field must be not required or have default value!
 	 * @conditional_logic [[{"field": "local_acf_views_view__group","operator": "!=","value": ""}]]
 	 */
@@ -170,7 +170,7 @@ class Layout_Settings extends Cpt_Settings {
 	/**
 	 * @a-type select
 	 * @label Web Component Type
-	 * @instructions By default, every Card is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>.
+	 * @instructions By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>.
 	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
 	 * @default_value classic
 	 */

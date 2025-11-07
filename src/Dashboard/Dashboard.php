@@ -315,18 +315,13 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	 * @return string[]
 	 */
 	protected function get_cpt_links(): array {
-		return array(
-			// fixme to array
-			sprintf(
+		return array_map(
+			fn( Plugin_Cpt $cpt ) => sprintf(
 				'<a href="%s" target="_self">%s</a>',
-				esc_url( $this->plugin->get_admin_url( '', Hard_Layout_Cpt::cpt_name() ) ),
-				esc_html_x( 'Layouts', 'acf-views' )
+				esc_url( $this->plugin->get_admin_url( '', $cpt->cpt_name() ) ),
+				$cpt->labels()->plural_name()
 			),
-			sprintf(
-				'<a href="%s" target="_self">%s</a>',
-				esc_url( $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() ) ),
-				esc_html_x( 'Post Selections', 'acf-views' )
-			),
+			$this->plugin_cpts
 		);
 	}
 

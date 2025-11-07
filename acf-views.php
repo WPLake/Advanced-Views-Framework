@@ -188,7 +188,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->plugin,
 				$this->layouts_settings_storage,
 				$this->data_vendors,
-				$this->layout_cpt
+				$this->layout_cpt,
+				$this->post_selection_cpt
 			);
 			$this->layouts_cpt_save_actions = new Layouts_Cpt_Save_Actions(
 				$this->logger,
@@ -383,12 +384,13 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->data_vendors
 			);
 			$this->field_settings_integration          = new Field_Settings_Integration(
-				$this->layout_cpt->cpt_name(),
-				$this->data_vendors
+				$this->data_vendors,
+				$this->layout_cpt
 			);
 			$this->post_selection_settings_integration = new Post_Selection_Settings_Integration(
 				$this->post_selection_cpt->cpt_name(),
-				$this->data_vendors
+				$this->data_vendors,
+				$this->layout_cpt
 			);
 			$this->item_settings_integration           = new Item_Settings_Integration(
 				$this->layout_cpt->cpt_name(),

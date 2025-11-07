@@ -82,8 +82,11 @@ final class Layout_Shortcode extends Shortcode {
 			$this->print_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
-				// fixme
-				__( 'View is missing', 'acf-views' )
+				sprintf(
+					// translators: %s is a singular post-type name.
+					__( '%s is missing', 'acf-views' ),
+					$this->public_cpt->labels()->singular_name()
+				)
 			);
 
 			return '';

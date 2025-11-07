@@ -39,7 +39,7 @@ class Plugin_Settings extends Group {
 	public bool $is_dev_mode;
 	/**
 	 * @label File system storage
-	 * @instructions Enable to store View and Card data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a>
+	 * @instructions Enable to store Layout and Post Selection data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a>
 	 */
 	public bool $is_file_system_storage;
 
@@ -54,8 +54,8 @@ class Plugin_Settings extends Group {
 	 */
 	public int $live_reload_inactive_delay_seconds;
 	/**
-	 * @label Optimize View and Card admin screen performance
-	 * @instructions This setting improves loading speed by disabling third-party scripts on View and Card admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on View and Card screens).
+	 * @label Optimize Layout and Post Selection admin screen performance
+	 * @instructions This setting improves loading speed by disabling third-party scripts on Layout and Post Selection admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on Layout and Post Selection screens).
 	 */
 	public bool $is_cpt_admin_optimization_enabled;
 	/**
@@ -72,7 +72,7 @@ class Plugin_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Template engine
-	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Views and Cards.
+	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Layouts and Post Selections.
 	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
 	 * @default_value twig
 	 */
@@ -81,7 +81,7 @@ class Plugin_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Web components type
-	 * @instructions Controls the web component setting for new Views and Cards.
+	 * @instructions Controls the web component setting for new Layouts and Post Selections.
 	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
 	 * @default_value classic
 	 */
@@ -89,20 +89,20 @@ class Plugin_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Classes generation
-	 * @instructions Controls classes generation in the Default Template for new Views and Cards.
+	 * @instructions Controls classes generation in the Default Template for new Layouts and Post Selections.
 	 * @choices {"bem":"BEM style","none":"None"}
 	 * @default_value bem
 	 */
 	public string $classes_generation;
 	/**
 	 * @label Sass Template (for File System Storage)
-	 * @instructions When present, this value is used as the default for the 'style.scss' file of View and Card, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted.
+	 * @instructions When present, this value is used as the default for the 'style.scss' file of Layout and Post Selection, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted.
 	 * @a-type textarea
 	 */
 	public string $sass_template;
 	/**
 	 * @label TypeScript Template (for File System Storage)
-	 * @instructions When present, this value is used as the default for the 'script.ts' file of View and Card. <br> If skipped, 'script.ts' creation will be omitted.
+	 * @instructions When present, this value is used as the default for the 'script.ts' file of Layout and Post Selection. <br> If skipped, 'script.ts' creation will be omitted.
 	 * @a-type textarea
 	 */
 	public string $ts_template;
@@ -118,7 +118,7 @@ class Plugin_Settings extends Group {
 	 * @var Git_Repository[]
 	 * @item \Org\Wplake\Advanced_Views\Groups\Git_Repository
 	 * @label Git Repositories
-	 * @instructions By saving Views and Cards in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>
+	 * @instructions By saving Layouts and Post Selections in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>
 	 * @button_label Add Repository
 	 * @a-no-tab 1
 	 * @layout block

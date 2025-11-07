@@ -23,6 +23,7 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
@@ -392,7 +393,8 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		Layout_Factory $layout_factory,
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
-		Settings $settings
+		Settings $settings,
+		Plugin_Cpt $layout_cpt
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
 		// 2. must be on or later 'after_setup_theme', when FS only Views and Cards are available
@@ -406,7 +408,8 @@ class Data_Vendors extends Action implements Hooks_Interface {
 				$layout_factory,
 				$repeater_field_settings,
 				$layout_shortcode,
-				$settings
+				$settings,
+				$layout_cpt
 			): void {
 				foreach ( $this->data_vendors as $vendor ) {
 					$integration_instance = $vendor->make_integration_instance(
@@ -417,7 +420,8 @@ class Data_Vendors extends Action implements Hooks_Interface {
 						$layout_factory,
 						$repeater_field_settings,
 						$layout_shortcode,
-						$settings
+						$settings,
+						$layout_cpt
 					);
 
 					// integration instance is optional (e.g. Woo and WP don't have).

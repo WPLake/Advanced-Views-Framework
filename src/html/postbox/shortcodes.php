@@ -14,7 +14,6 @@ $view_id     = $view['viewId'] ?? '';
 $is_single   = $view['isSingle'] ?? false;
 $id_argument = $view['idArgument'] ?? '';
 $entry_name  = $view['entryName'] ?? '';
-$type_name   = $view['typeName'] ?? '';
 
 // @phpcs:ignore
 $type = $is_short ?

@@ -22,6 +22,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment\{Comment_Author_Ema
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment_Items\{Comment_Item_Fields, Comment_Items_List_Field};
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu\{Menu_Fields, Menu_Items_Field};
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Menu_Item\{Menu_Item_Fields, Menu_Item_Link_Field};
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post\{Post_Attachment_Link,
 	Post_Attachment_Video,
 	Post_Author_Field,
@@ -241,7 +242,8 @@ class Wp_Data_Vendor extends Data_Vendor {
 		Layout_Factory $layout_factory,
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
-		Settings $settings
+		Settings $settings,
+		Plugin_Cpt $layout_cpt
 	): ?Data_Vendor_Integration_Interface {
 		return null;
 	}

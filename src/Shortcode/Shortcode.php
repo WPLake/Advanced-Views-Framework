@@ -31,7 +31,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	 * @var array<string,true>
 	 */
 	private array $rendered_ids;
-	protected Public_Cpt $plugin_feature;
+	protected Public_Cpt $public_cpt;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
@@ -41,7 +41,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component
 	) {
-		$this->plugin_feature          = $public_cpt;
+		$this->public_cpt              = $public_cpt;
 		$this->rendered_ids            = array();
 		$this->settings                = $settings;
 		$this->cpt_settings_storage    = $cpt_settings_storage;
@@ -51,7 +51,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	protected function get_post_type(): string {
-		return $this->plugin_feature->cpt_name();
+		return $this->public_cpt->cpt_name();
 	}
 
 	abstract protected function get_unique_id_prefix(): string;
@@ -124,7 +124,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	protected function get_shortcode_name(): string {
-		return $this->plugin_feature->shortcode();
+		return $this->public_cpt->shortcode();
 	}
 
 	protected function get_live_reloader_component(): Live_Reloader_Component {
@@ -255,7 +255,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	public function register_rest_route(): void {
-		foreach ( $this->plugin_feature->rest_route_names() as $route_name ) {
+		foreach ( $this->public_cpt->rest_route_names() as $route_name ) {
 			register_rest_route(
 				'advanced_views/v1',
 				$route_name . '/(?P<unique_id>[a-z0-9]+)',
@@ -278,7 +278,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 
-		foreach ( $this->plugin_feature->shortcodes() as $shortcode ) {
+		foreach ( $this->public_cpt->shortcodes() as $shortcode ) {
 			self::add_shortcode( $shortcode, array( $this, 'do_shortcode' ) );
 		}
 	}

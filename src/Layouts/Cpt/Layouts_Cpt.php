@@ -27,9 +27,13 @@ class Layouts_Cpt extends Cpt {
 			$singular_name
 		);
 		$description .= '<br>' .
-						__(
-							'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach the View</a> to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/view-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
-							'acf-views'
+						sprintf(
+							// translators: %s - singular name of the CPT.
+							__(
+								'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach the %s</a> to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/view-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
+								'acf-views'
+							),
+							$this->plugin_cpt->labels()->singular_name()
 						);
 		$description .= '<br><br>';
 		$description .= $this->get_storage_label();

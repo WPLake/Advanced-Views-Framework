@@ -26,6 +26,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_Taxonomy_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
@@ -359,7 +360,8 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		Layout_Factory $layout_factory,
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
-		Settings $settings
+		Settings $settings,
+		Plugin_Cpt $layout_cpt
 	): ?Data_Vendor_Integration_Interface {
 		return new Meta_Box_Integration(
 			$item_settings,
@@ -369,7 +371,8 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			$layout_factory,
 			$this,
 			$layout_shortcode,
-			$settings
+			$settings,
+			$layout_cpt
 		);
 	}
 

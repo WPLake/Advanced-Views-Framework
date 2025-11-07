@@ -13,6 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
@@ -37,6 +38,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	private Layout_Factory $layout_factory;
 	private Data_Vendor_Interface $data_vendor;
 	private Layout_Shortcode $layout_shortcode;
+	private Plugin_Cpt $layout_cpt;
 
 	public function __construct(
 		Item_Settings $item_settings,
@@ -46,7 +48,8 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		Layout_Factory $layout_factory,
 		Data_Vendor_Interface $data_vendor,
 		Layout_Shortcode $layout_shortcode,
-		Settings $settings
+		Settings $settings,
+		Plugin_Cpt $layout_cpt
 	) {
 		parent::__construct( $settings );
 
@@ -57,6 +60,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		$this->layout_factory           = $layout_factory;
 		$this->data_vendor              = $data_vendor;
 		$this->layout_shortcode         = $layout_shortcode;
+		$this->layout_cpt               = $layout_cpt;
 	}
 
 	abstract protected function get_vendor_post_type(): string;
@@ -232,8 +236,11 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			$related_views;
 
 		$label = array() !== $related_views ?
-			__( 'Assigned to Views:', 'acf-views' ) . ' ' :
-			__( 'Not assigned to any Views.', 'acf-views' );
+			// translators: %s: the name of the CPT.
+			__( 'Assigned to %s:', 'acf-views' ) . ' ' :
+			// translators: %s: the name of the CPT.
+			__( 'Not assigned to any %s.', 'acf-views' );
+		$label = sprintf( $label, $this->layout_cpt->labels()->plural_name() );
 
 		if ( ! $is_list_look ) {
 			echo esc_html( $label );

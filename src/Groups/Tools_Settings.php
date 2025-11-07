@@ -38,7 +38,7 @@ class Tools_Settings extends Group {
 	public bool $is_export_all_views;
 	/**
 	 * @a-type true_false
-	 * @label Export All Cards
+	 * @label Export All Post Selections
 	 */
 	public bool $is_export_all_cards;
 
@@ -55,8 +55,8 @@ class Tools_Settings extends Group {
 	/**
 	 * @a-type checkbox
 	 * @multiple 1
-	 * @label Export Cards
-	 * @instructions Select Cards to be exported
+	 * @label Export Post Selections
+	 * @instructions Select Post Selections to be exported
 	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-export-all-cards","operator": "!=","value": "1"}]]
 	 * @var string[]
 	 */
@@ -70,7 +70,7 @@ class Tools_Settings extends Group {
 
 	/**
 	 * @a-type message
-	 * @message Important! First import the related Fields and Field Groups included in the Third Party plugin, usually under Tools, then come back and import your Views and Cards here.
+	 * @message Important! First import the related Fields and Field Groups included in the Third Party plugin, usually under Tools, then come back and import your Layouts and Post Selections here.
 	 */
 	public string $import_message;
 
@@ -79,7 +79,7 @@ class Tools_Settings extends Group {
 	 * @return_format id
 	 * @mime_types .txt
 	 * @label Select a file to import
-	 * @instructions Note: Views and Cards with the same IDs are overridden.
+	 * @instructions Note: Layouts and Post Selections with the same IDs are overridden.
 	 */
 	public int $import_file;
 
@@ -123,8 +123,8 @@ class Tools_Settings extends Group {
 	/**
 	 * @a-type checkbox
 	 * @multiple 1
-	 * @label Include specific Cards data in your debug dump
-	 * @instructions Select the Card items related to your issue to include them in the debug dump.
+	 * @label Include specific Post Selections data in your debug dump
+	 * @instructions Select the Post Selection items related to your issue to include them in the debug dump.
 	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-generate-installation-dump","operator": "==","value": "1"}]]
 	 * @var string[]
 	 */

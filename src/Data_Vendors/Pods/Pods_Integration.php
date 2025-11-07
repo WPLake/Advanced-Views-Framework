@@ -9,6 +9,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
@@ -30,7 +31,8 @@ class Pods_Integration extends Settings_Vendor_Integration {
 		Layout_Factory $layout_factory,
 		Pods_Data_Vendor $pods_data_vendor,
 		Layout_Shortcode $layout_shortcode,
-		Settings $settings
+		Settings $settings,
+		Plugin_Cpt $layout_cpt
 	) {
 		parent::__construct(
 			$item_settings,
@@ -40,7 +42,8 @@ class Pods_Integration extends Settings_Vendor_Integration {
 			$layout_factory,
 			$pods_data_vendor,
 			$layout_shortcode,
-			$settings
+			$settings,
+			$layout_cpt
 		);
 
 		$this->pods_data_vendor = $pods_data_vendor;

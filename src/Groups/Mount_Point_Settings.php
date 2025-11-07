@@ -51,7 +51,7 @@ class Mount_Point_Settings extends Group {
 	public string $mount_position;
 	/**
 	 * @label Shortcode Arguments
-	 * @instructions Add arguments to the shortcode, e.g. 'user-with-roles'. Only the view/card 'id' argument is filled by default
+	 * @instructions Add arguments to the shortcode, e.g. 'user-with-roles'. Only the Layout/Post Selection 'id' argument is filled by default
 	 */
 	public string $shortcode_args;
 }

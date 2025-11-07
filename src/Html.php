@@ -66,7 +66,6 @@ class Html {
 				'entryName'  => $entry_name,
 				'viewId'     => $unique_id,
 				'isSingle'   => $is_single,
-				'typeName'   => $is_single ? 'Card' : 'View',
 			)
 		);
 	}
