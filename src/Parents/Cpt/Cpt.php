@@ -32,7 +32,19 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 	 */
 	abstract public function replace_post_updated_message( array $messages ): array;
 
-	abstract public function get_title_placeholder( string $title ): string;
+	public function get_title_placeholder( string $title ): string {
+		$screen = get_current_screen()->post_type ?? '';
+
+		if ( $this->get_cpt_name() !== $screen ) {
+			return $title;
+		}
+
+		return sprintf(
+		// translators: %s - singular name of the CPT.
+			__( 'Name your %s here (required)', 'acf-views' ),
+			$this->plugin_cpt->labels()->singular_name()
+		);
+	}
 
 	public function print_survey_link( string $html ): string {
 		$current_screen = get_current_screen();
@@ -163,10 +175,10 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		);
 		$closing_tag = '</a>';
 
-		$labels      = $this->plugin_cpt->labels();
-		$plural_name = $labels->plural_name();
+		$labels        = $this->plugin_cpt->labels();
+		$singular_name = $labels->singular_name();
 
-		return sprintf( $label_template, $plural_name, $opening_tag, $closing_tag );
+		return sprintf( $label_template, $singular_name, $opening_tag, $closing_tag );
 	}
 
 	/**

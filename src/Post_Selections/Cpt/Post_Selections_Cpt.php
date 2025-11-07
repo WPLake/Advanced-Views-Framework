@@ -66,16 +66,6 @@ class Post_Selections_Cpt extends Cpt {
 		$this->register_cpt( $cpt_args );
 	}
 
-	public function get_title_placeholder( string $title ): string {
-		$screen = get_current_screen()->post_type ?? '';
-
-		if ( $this->get_cpt_name() === $screen ) {
-			return __( 'Name your Card here (required)', 'acf-views' );
-		}
-
-		return $title;
-	}
-
 	/**
 	 * @param array<string,array<int,string>> $messages
 	 *

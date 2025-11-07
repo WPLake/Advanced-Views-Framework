@@ -89,16 +89,6 @@ class Layouts_Cpt extends Cpt {
 		return $messages;
 	}
 
-	public function get_title_placeholder( string $title ): string {
-		$screen = get_current_screen()->post_type ?? '';
-
-		if ( $this->get_cpt_name() !== $screen ) {
-			return $title;
-		}
-
-		return __( 'Name your View here (required)', 'acf-views' );
-	}
-
 	public function change_menu_items(): void {
 		$url = sprintf( 'edit.php?post_type=%s', $this->get_cpt_name() );
 
