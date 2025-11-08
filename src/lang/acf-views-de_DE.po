@@ -1647,7 +1647,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "Massenvalidierung - Wird verwendet, um das benutzerdefinierte Vorlagenfeld aller vorhandenen Elemente zu validieren und Elemente anzuzeigen, die die Validierung nicht bestanden haben."
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Shortcode/Shortcode.php:215
+#: src/Shortcode/Shortcode.php:214
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1699,15 +1699,15 @@ msgstr "Synchronisieren"
 msgid "items successfully synced"
 msgstr "Elemente erfolgreich synchronisiert"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:112
+#: src/Parents/Cpt_Data_Storage/File_System.php:114
 msgid "The FS storage directory is not writable."
 msgstr "Das FS-Speicherverzeichnis ist nicht beschreibbar."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:115
+#: src/Parents/Cpt_Data_Storage/File_System.php:117
 msgid "Check and fix file permissions to work with Views and Cards."
 msgstr "Überprüfen und korrigieren Sie Dateiberechtigungen, um mit Ansichten und Karten zu arbeiten."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:121
+#: src/Parents/Cpt_Data_Storage/File_System.php:123
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Hinweis: Deaktivieren Sie die FS-Speicherfunktion nicht, bevor Sie sie reparieren, sonst gehen Ihre Daten verloren."
 
@@ -1802,7 +1802,7 @@ msgstr "Das Feld \"%1$s\" wird fälschlicherweise als Array erwartet. Zeile %2$d
 msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
 msgstr "Das Feld \"%1$s\" wird fälschlicherweise als Zeichenkette erwartet. Zeile %2$d"
 
-#: src/Shortcode/Layout_Shortcode.php:176
+#: src/Shortcode/Layout_Shortcode.php:174
 msgid "object-id argument contains the wrong value"
 msgstr "object-id Argument enthält den falschen Wert"
 
@@ -1952,7 +1952,7 @@ msgstr "Ich habe eine Alternative gefunden"
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Alle Plugin-Daten löschen (kann nicht rückgängig gemacht werden)"
 
-#: src/Shortcode/Post_Selection_Shortcode.php:117
+#: src/Shortcode/Post_Selection_Shortcode.php:115
 msgid "Card id is wrong"
 msgstr "Karten-ID ist falsch"
 
@@ -1981,7 +1981,7 @@ msgstr "Standardeinstellungen"
 msgid "Web components type"
 msgstr "Art der Web-Komponenten"
 
-#: src/Shortcode/Layout_Shortcode.php:250
+#: src/Shortcode/Layout_Shortcode.php:248
 msgid "View id is wrong"
 msgstr "Ansichts-ID ist falsch"
 
@@ -2366,7 +2366,7 @@ msgstr ""
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:120
+#: src/Shortcode/Shortcode.php:119
 msgid "AVF shortcode render error:"
 msgstr ""
 

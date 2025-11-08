@@ -1647,7 +1647,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "Validación masiva - Se utiliza para validar el campo de Plantilla Personalizada de todos los elementos existentes y muestra los elementos que han fallado la validación."
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Shortcode/Shortcode.php:215
+#: src/Shortcode/Shortcode.php:214
 msgid "Edit"
 msgstr "Editar"
 
@@ -1699,15 +1699,15 @@ msgstr "Sincronizar"
 msgid "items successfully synced"
 msgstr "elementos sincronizados con éxito"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:112
+#: src/Parents/Cpt_Data_Storage/File_System.php:114
 msgid "The FS storage directory is not writable."
 msgstr "El directorio de almacenamiento FS no es escribible."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:115
+#: src/Parents/Cpt_Data_Storage/File_System.php:117
 msgid "Check and fix file permissions to work with Views and Cards."
 msgstr "Verifica y arregla los permisos de archivos para trabajar con Vistas y Tarjetas."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:121
+#: src/Parents/Cpt_Data_Storage/File_System.php:123
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Nota: No desactives la función de almacenamiento FS antes de arreglarla, de lo contrario, tus datos se perderán."
 
@@ -1802,7 +1802,7 @@ msgstr "Se espera incorrectamente que el campo \"%1$s\" sea un arreglo. Línea %
 msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
 msgstr "Se espera incorrectamente que el campo \"%1$s\" sea una cadena. Línea %2$d"
 
-#: src/Shortcode/Layout_Shortcode.php:176
+#: src/Shortcode/Layout_Shortcode.php:174
 msgid "object-id argument contains the wrong value"
 msgstr "el argumento de object-id contiene un valor incorrecto"
 
@@ -1952,7 +1952,7 @@ msgstr "Encontré una alternativa"
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Eliminar todos los datos del plugin (no se puede deshacer)"
 
-#: src/Shortcode/Post_Selection_Shortcode.php:117
+#: src/Shortcode/Post_Selection_Shortcode.php:115
 msgid "Card id is wrong"
 msgstr "La identificación de la tarjeta es incorrecta"
 
@@ -1981,7 +1981,7 @@ msgstr "Valores predeterminados"
 msgid "Web components type"
 msgstr "Tipo de componentes web"
 
-#: src/Shortcode/Layout_Shortcode.php:250
+#: src/Shortcode/Layout_Shortcode.php:248
 msgid "View id is wrong"
 msgstr "La identificación de la vista es incorrecta"
 
@@ -2366,7 +2366,7 @@ msgstr ""
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:120
+#: src/Shortcode/Shortcode.php:119
 msgid "AVF shortcode render error:"
 msgstr ""
 

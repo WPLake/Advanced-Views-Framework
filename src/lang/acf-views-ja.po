@@ -1647,7 +1647,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "一括検証 - すべての既存アイテムのカスタムテンプレートフィールドを検証し、検証に失敗したアイテムを表示するために使用されます。"
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Shortcode/Shortcode.php:215
+#: src/Shortcode/Shortcode.php:214
 msgid "Edit"
 msgstr "編集"
 
@@ -1699,15 +1699,15 @@ msgstr "同期"
 msgid "items successfully synced"
 msgstr "アイテムが正常に同期されました"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:112
+#: src/Parents/Cpt_Data_Storage/File_System.php:114
 msgid "The FS storage directory is not writable."
 msgstr "FSストレージディレクトリに書き込みできません。"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:115
+#: src/Parents/Cpt_Data_Storage/File_System.php:117
 msgid "Check and fix file permissions to work with Views and Cards."
 msgstr "ビューとカードを使用するためにファイルの権限を確認して修正してください。"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:121
+#: src/Parents/Cpt_Data_Storage/File_System.php:123
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "注意：修正する前にFSストレージ機能を無効にしないでください。そうしないとデータが失われます。"
 
@@ -1802,7 +1802,7 @@ msgstr "\"%1$s\"フィールドは配列であると誤って想定されてい�
 msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
 msgstr "\"%1$s\"フィールドは文字列であると誤って想定されています。行%2$d"
 
-#: src/Shortcode/Layout_Shortcode.php:176
+#: src/Shortcode/Layout_Shortcode.php:174
 msgid "object-id argument contains the wrong value"
 msgstr "object-id引数に誤った値が含まれています"
 
@@ -1952,7 +1952,7 @@ msgstr "代替手段を見つけました"
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "すべてのプラグインデータを削除します（取り消しできません）"
 
-#: src/Shortcode/Post_Selection_Shortcode.php:117
+#: src/Shortcode/Post_Selection_Shortcode.php:115
 msgid "Card id is wrong"
 msgstr "カードIDが間違っています"
 
@@ -1981,7 +1981,7 @@ msgstr "デフォルト"
 msgid "Web components type"
 msgstr "Webコンポーネントのタイプ"
 
-#: src/Shortcode/Layout_Shortcode.php:250
+#: src/Shortcode/Layout_Shortcode.php:248
 msgid "View id is wrong"
 msgstr "ビューIDが間違っています"
 
@@ -2366,7 +2366,7 @@ msgstr ""
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:120
+#: src/Shortcode/Shortcode.php:119
 msgid "AVF shortcode render error:"
 msgstr ""
 

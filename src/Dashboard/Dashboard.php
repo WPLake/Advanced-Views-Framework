@@ -17,6 +17,7 @@ use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
 use WP_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,7 +25,6 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 	const PAGE_DEMO_IMPORT = 'demo-import';
 	const PAGE_DOCS        = 'docs';
-	const PAGE_SURVEY      = 'survey';
 	// constant is in use in Lite too, so should be here, not in Pro.
 	const PAGE_PRO    = 'pro';
 	const URL_SUPPORT = 'https://wordpress.org/support/plugin/acf-views/';
@@ -52,19 +52,18 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		$this->plugin_cpts = $plugin_cpts;
 	}
 
-	public function add_pages(): void {
-		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
-			__( 'Demo import', 'acf-views' ),
-			__( 'Demo import', 'acf-views' ),
-			Avf_User::get_manage_capability(),
-			self::PAGE_DEMO_IMPORT,
-			array( $this, 'get_import_page' )
+	public function add_subpages(): void {
+		$parent_slug = sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() );
+
+		$page_titles = array(
+			self::PAGE_DOCS        => __( 'Docs', 'acf-views' ),
+			self::PAGE_DEMO_IMPORT => __( 'Demo import', 'acf-views' ),
 		);
+
 		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
-			__( 'Docs', 'acf-views' ),
-			__( 'Docs', 'acf-views' ),
+			$parent_slug,
+			$page_titles[ self::PAGE_DOCS ],
+			$page_titles[ self::PAGE_DOCS ],
 			Avf_User::get_manage_capability(),
 			self::PAGE_DOCS,
 			function (): void {
@@ -74,21 +73,17 @@ class Dashboard extends Hookable implements Hooks_Interface {
 				);
 			}
 		);
+
 		add_submenu_page(
-			sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() ),
-			__( 'Survey', 'acf-views' ),
-			__( 'Survey', 'acf-views' ),
+			$parent_slug,
+			$page_titles[ self::PAGE_DEMO_IMPORT ],
+			$page_titles[ self::PAGE_DEMO_IMPORT ],
 			Avf_User::get_manage_capability(),
-			self::PAGE_SURVEY,
-			function (): void {
-				printf(
-					'<iframe src="%s" style="border: 0;width: calc(100%% + 20px);height: calc(100vh - 32px - 65px);margin-left: -20px;"></iframe>',
-					esc_url( Plugin::SURVEY_URL )
-				);
-			}
+			self::PAGE_DEMO_IMPORT,
+			array( $this, 'get_import_page' )
 		);
 
-		$this->remove_submenu_links();
+		$this->hide_subpages_from_menu( $parent_slug, $page_titles );
 	}
 
 	public function get_header(): void {
@@ -173,7 +168,7 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 		$plugin_slug = $this->plugin->get_slug();
 
-		self::add_action( 'admin_menu', array( $this, 'add_pages' ) );
+		self::add_action( 'admin_menu', array( $this, 'add_subpages' ) );
 
 		self::add_action(
 			'current_screen',
@@ -268,6 +263,40 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		);
 	}
 
+	/**
+	 * @param array<string,string> $subpages slug => title.
+	 */
+	protected function hide_subpages_from_menu( string $parent_slug, array $subpages ): void {
+		$page_slugs = array_keys( $subpages );
+
+		// 1. trick to hide the subpages from the menu (it keeps the url & permissions check).
+		foreach ( $page_slugs as $page_slug ) {
+			remove_submenu_page( $parent_slug, $page_slug );
+		}
+
+		// 2. trick to define the subpage title (otherwise it's empty after the remove_submenu_page).
+		$current_uri = Query_Arguments::get_string_for_non_action(
+			'REQUEST_URI',
+			Query_Arguments::SOURCE_SERVER
+		);
+
+		$active_page_slugs = array_filter(
+			$page_slugs,
+			function ( $page_slug ) use ( $current_uri, $parent_slug ) {
+				$page_uri = sprintf( '%s&page=%s', $parent_slug, $page_slug );
+
+				return false !== strpos( $current_uri, $page_uri );
+			}
+		);
+		$active_page_slug  = array_pop( $active_page_slugs );
+
+		if ( is_string( $active_page_slug ) ) {
+			global $title;
+			// phpcs:ignore
+			$title = string( $subpages, $active_page_slug );
+		}
+	}
+
 	protected function get_current_admin_url(): string {
 		$uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 		$uri = preg_replace( '|^.*/wp-admin/|i', '', $uri );
@@ -281,34 +310,6 @@ class Dashboard extends Hookable implements Hooks_Interface {
 
 	protected function get_plugin(): Plugin {
 		return $this->plugin;
-	}
-
-	protected function remove_submenu_links(): void {
-		$url = sprintf( 'edit.php?post_type=%s', Hard_Layout_Cpt::cpt_name() );
-
-		global $submenu;
-
-		if ( ! $submenu[ $url ] ) {
-			// @phpcs:ignore
-			$submenu[ $url ] = array();
-		}
-
-		foreach ( $submenu[ $url ] as $item_key => $item ) {
-			if ( 4 !== count( $item ) ||
-				! in_array(
-					$item[2],
-					array(
-						self::PAGE_DEMO_IMPORT,
-						self::PAGE_DOCS,
-						self::PAGE_SURVEY,
-					),
-					true
-				) ) {
-				continue;
-			}
-
-			unset( $submenu[ $url ][ $item_key ] );
-		}
 	}
 
 	/**

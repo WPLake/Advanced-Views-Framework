@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-08T07:27:29+00:00\n"
+"POT-Creation-Date: 2025-11-08T08:30:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: acf-views\n"
@@ -2329,7 +2329,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr ""
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Shortcode/Shortcode.php:215
+#: src/Shortcode/Shortcode.php:214
 msgid "Edit"
 msgstr ""
 
@@ -2429,15 +2429,15 @@ msgstr ""
 msgid "Hover on the title and click Import."
 msgstr ""
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:112
+#: src/Parents/Cpt_Data_Storage/File_System.php:114
 msgid "The FS storage directory is not writable."
 msgstr ""
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:115
+#: src/Parents/Cpt_Data_Storage/File_System.php:117
 msgid "Check and fix file permissions to work with Views and Cards."
 msgstr ""
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:121
+#: src/Parents/Cpt_Data_Storage/File_System.php:123
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr ""
 
@@ -2558,19 +2558,19 @@ msgstr ""
 msgid "%s is missing"
 msgstr ""
 
-#: src/Shortcode/Layout_Shortcode.php:176
+#: src/Shortcode/Layout_Shortcode.php:174
 msgid "object-id argument contains the wrong value"
 msgstr ""
 
-#: src/Shortcode/Layout_Shortcode.php:250
+#: src/Shortcode/Layout_Shortcode.php:248
 msgid "View id is wrong"
 msgstr ""
 
-#: src/Shortcode/Post_Selection_Shortcode.php:117
+#: src/Shortcode/Post_Selection_Shortcode.php:115
 msgid "Card id is wrong"
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:120
+#: src/Shortcode/Shortcode.php:119
 msgid "AVF shortcode render error:"
 msgstr ""
 
