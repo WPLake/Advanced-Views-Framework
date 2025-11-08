@@ -376,8 +376,7 @@ abstract class Plugin_Loader_Base {
 				new Migration_3_3_0(
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage,
-					$this->logger,
-					$this->plugin
+					$this->logger
 				),
 				new Migration_3_8_0(
 					$this->layouts_settings_storage,

@@ -32,6 +32,11 @@ class File_System extends Action implements Hooks_Interface {
 	private string $items_folder_name;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 
+	/**
+	 * @var array<callable(): void>
+	 */
+	private array $on_ready_callbacks;
+
 	public function __construct( Logger $logger, string $items_folder_name, string $external_base_folder = '' ) {
 		parent::__construct( $logger );
 
@@ -40,6 +45,7 @@ class File_System extends Action implements Hooks_Interface {
 		$this->base_folder          = $external_base_folder;
 		$this->is_read_item_folders = false;
 		$this->wp_filesystem_base   = null;
+		$this->on_ready_callbacks   = array();
 	}
 
 	protected function read_item_folders(): void {
@@ -398,8 +404,19 @@ class File_System extends Action implements Hooks_Interface {
 				'after_setup_theme',
 				function () use ( $current_screen ): void {
 					$this->set_base_folder( $current_screen );
+
+					foreach ( $this->on_ready_callbacks as $callback ) {
+						$callback();
+					}
 				}
 			);
 		}
+	}
+
+	/**
+	 * @param callable(): void $callback
+	 */
+	public function add_on_ready_callback( callable $callback ): void {
+		$this->on_ready_callbacks[] = $callback;
 	}
 }

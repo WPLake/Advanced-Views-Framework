@@ -22,17 +22,14 @@ final class Migration_Fs_Field extends Migration_Base {
 	}
 
 	public function migrate(): void {
-		self::add_action(
-			'after_setup_theme',
+		$this->file_system->add_on_ready_callback(
 			function (): void {
 				if ( $this->file_system->is_active() ) {
 					$base_folder = $this->file_system->get_base_folder();
 
 					$this->rename_file_recursively( $base_folder );
 				}
-			},
-			// After File_System->set_hooks().
-			11
+			}
 		);
 	}
 

@@ -17,18 +17,15 @@ final class Migration_3_3_0 extends Version_Migration_Base {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 	private Logger $logger;
-	private Plugin $plugin;
 
 	public function __construct(
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Logger $logger,
-		Plugin $plugin
+		Logger $logger
 	) {
 		$this->layouts_settings_storage         = $layouts_settings_storage;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->logger                           = $logger;
-		$this->plugin                           = $plugin;
 	}
 
 	public function introduced_version(): string {
@@ -36,21 +33,8 @@ final class Migration_3_3_0 extends Version_Migration_Base {
 	}
 
 	public function migrate_previous_version(): void {
-		// NOTE: when you add new upgrade, you should use 'after_setup_theme' hook if the acf plugin isn't available
-		// (as ACF isn't a direct dependency now).
-		// You shouldn't use 'after_setup_theme' if acf is available, as this hooks is fired before 'acf/init', so it'll
-		// miss upgrades for the previous versions.
-
-		$action = true === $this->plugin->is_acf_plugin_available() &&
-					false === defined( 'ACF_VIEWS_INNER_ACF' ) ?
-			'acf/init' :
-			'after_setup_theme';
-
-		self::add_action(
-			$action,
-			function (): void {
-					$this->move_all_is_without_web_component_to_select();
-			}
+		$this->layouts_settings_storage->add_on_loaded_callback(
+			array( $this, 'move_all_is_without_web_component_to_select' )
 		);
 	}
 
@@ -58,7 +42,7 @@ final class Migration_3_3_0 extends Version_Migration_Base {
 		$this->move_is_without_web_component_to_select( $cpt_settings );
 	}
 
-	protected function move_all_is_without_web_component_to_select(): void {
+	public function move_all_is_without_web_component_to_select(): void {
 		$unique_ids = array();
 
 		foreach ( $this->layouts_settings_storage->get_all() as $view_data ) {

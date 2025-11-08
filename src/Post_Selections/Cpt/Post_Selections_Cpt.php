@@ -50,7 +50,7 @@ class Post_Selections_Cpt extends Cpt {
 				$singular_name
 			) .
 						'<br>'
-						. __( '(The assigned Layout determines which fields are displayed)', 'acf-views' );
+						. __( '(The assigned item Layout determines which fields are displayed)', 'acf-views' );
 
 		$description .= '<br><br>';
 		$description .= $this->get_storage_label();

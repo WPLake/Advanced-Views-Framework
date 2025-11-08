@@ -398,8 +398,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
 		// 2. must be on or later 'after_setup_theme', when FS only Views and Cards are available
-		self::add_action(
-			'after_setup_theme',
+		$layouts_settings_storage->add_on_loaded_callback(
 			function () use (
 				$current_screen,
 				$item_settings,

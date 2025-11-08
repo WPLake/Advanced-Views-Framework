@@ -30,8 +30,7 @@ final class Migration_Post_Type extends Migration_Base {
 	public function migrate(): void {
 		$this->replace_type_in_posts_table();
 
-		self::add_action(
-			'after_setup_theme',
+		$this->cpt_settings_storage->add_on_loaded_callback(
 			function (): void {
 				$file_system = $this->cpt_settings_storage->get_file_system();
 
@@ -40,9 +39,7 @@ final class Migration_Post_Type extends Migration_Base {
 
 					$this->rename_cpt_folder( $base_folder );
 				}
-			},
-			// After File_System->set_hooks().
-			11
+			}
 		);
 	}
 
