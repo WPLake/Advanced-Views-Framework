@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-08T08:30:00+00:00\n"
+"POT-Creation-Date: 2025-11-08T09:42:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: acf-views\n"
@@ -167,47 +167,40 @@ msgstr ""
 msgid "Disable on-page Live Reload"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:58
 #: src/Dashboard/Dashboard.php:59
-msgid "Demo import"
-msgstr ""
-
-#: src/Dashboard/Dashboard.php:66
-#: src/Dashboard/Dashboard.php:67
-#: src/Dashboard/Dashboard.php:252
+#: src/Dashboard/Dashboard.php:247
 msgid "Docs"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:79
-#: src/Dashboard/Dashboard.php:80
-msgid "Survey"
+#: src/Dashboard/Dashboard.php:60
+msgid "Demo import"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:222
+#: src/Dashboard/Dashboard.php:217
 #: src/Dashboard/Settings_Page.php:134
 #: src/Dashboard/Settings_Page.php:135
 #: src/Groups/Plugin_Settings.php:150
 msgid "Settings"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:229
+#: src/Dashboard/Dashboard.php:224
 #: src/Groups/Tools_Settings.php:168
 #: src/Tools/Tools.php:249
 #: src/Tools/Tools.php:250
 msgid "Tools"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:237
+#: src/Dashboard/Dashboard.php:232
 #: src/html/postbox/upgrade.php:23
 #: src/Plugin.php:110
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:245
+#: src/Dashboard/Dashboard.php:240
 msgid "Demo Import"
 msgstr ""
 
-#: src/Dashboard/Dashboard.php:261
+#: src/Dashboard/Dashboard.php:256
 msgid "Support"
 msgstr ""
 

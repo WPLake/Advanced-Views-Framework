@@ -135,43 +135,36 @@ msgstr "Описание"
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: src/Dashboard/Dashboard.php:222
+#: src/Dashboard/Dashboard.php:217
 #: src/Dashboard/Settings_Page.php:134
 #: src/Dashboard/Settings_Page.php:135
 #: src/Groups/Plugin_Settings.php:150
 msgid "Settings"
 msgstr "Настройки"
 
-#: src/Dashboard/Dashboard.php:229
+#: src/Dashboard/Dashboard.php:224
 #: src/Groups/Tools_Settings.php:168
 #: src/Tools/Tools.php:249
 #: src/Tools/Tools.php:250
 msgid "Tools"
 msgstr "Инструменты"
 
-#: src/Dashboard/Dashboard.php:245
+#: src/Dashboard/Dashboard.php:240
 msgid "Demo Import"
 msgstr "Демо импорт"
 
-#: src/Dashboard/Dashboard.php:66
-#: src/Dashboard/Dashboard.php:67
-#: src/Dashboard/Dashboard.php:252
+#: src/Dashboard/Dashboard.php:59
+#: src/Dashboard/Dashboard.php:247
 msgid "Docs"
 msgstr "Документация"
 
-#: src/Dashboard/Dashboard.php:261
+#: src/Dashboard/Dashboard.php:256
 msgid "Support"
 msgstr "Поддержка"
 
-#: src/Dashboard/Dashboard.php:58
-#: src/Dashboard/Dashboard.php:59
+#: src/Dashboard/Dashboard.php:60
 msgid "Demo import"
 msgstr "Импортировать демо"
-
-#: src/Dashboard/Dashboard.php:79
-#: src/Dashboard/Dashboard.php:80
-msgid "Survey"
-msgstr "Опрос"
 
 #: src/Tools/Demo_Import.php:87
 msgid "Samsung Galaxy A53 (Demo)"
@@ -1695,7 +1688,7 @@ msgstr "Проверьте и исправьте права доступа к ф
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Примечание: Не отключайте функцию хранения FS до ее исправления, иначе ваши данные будут потеряны."
 
-#: src/Dashboard/Dashboard.php:237
+#: src/Dashboard/Dashboard.php:232
 #: src/html/postbox/upgrade.php:23
 #: src/Plugin.php:110
 msgid "Upgrade to Pro"

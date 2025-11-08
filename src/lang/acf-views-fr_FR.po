@@ -135,43 +135,36 @@ msgstr "Description"
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: src/Dashboard/Dashboard.php:222
+#: src/Dashboard/Dashboard.php:217
 #: src/Dashboard/Settings_Page.php:134
 #: src/Dashboard/Settings_Page.php:135
 #: src/Groups/Plugin_Settings.php:150
 msgid "Settings"
 msgstr "Paramètres"
 
-#: src/Dashboard/Dashboard.php:229
+#: src/Dashboard/Dashboard.php:224
 #: src/Groups/Tools_Settings.php:168
 #: src/Tools/Tools.php:249
 #: src/Tools/Tools.php:250
 msgid "Tools"
 msgstr "Outils"
 
-#: src/Dashboard/Dashboard.php:245
+#: src/Dashboard/Dashboard.php:240
 msgid "Demo Import"
 msgstr "Importation de démo"
 
-#: src/Dashboard/Dashboard.php:66
-#: src/Dashboard/Dashboard.php:67
-#: src/Dashboard/Dashboard.php:252
+#: src/Dashboard/Dashboard.php:59
+#: src/Dashboard/Dashboard.php:247
 msgid "Docs"
 msgstr "Docs"
 
-#: src/Dashboard/Dashboard.php:261
+#: src/Dashboard/Dashboard.php:256
 msgid "Support"
 msgstr "Support"
 
-#: src/Dashboard/Dashboard.php:58
-#: src/Dashboard/Dashboard.php:59
+#: src/Dashboard/Dashboard.php:60
 msgid "Demo import"
 msgstr "Importation de démo"
-
-#: src/Dashboard/Dashboard.php:79
-#: src/Dashboard/Dashboard.php:80
-msgid "Survey"
-msgstr "Sondage"
 
 #: src/Tools/Demo_Import.php:87
 msgid "Samsung Galaxy A53 (Demo)"
@@ -1711,7 +1704,7 @@ msgstr "Vérifiez et corrigez les permissions de fichiers pour travailler avec l
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Note : Ne désactivez pas la fonction de stockage FS avant de la corriger, sinon vos données seront perdues."
 
-#: src/Dashboard/Dashboard.php:237
+#: src/Dashboard/Dashboard.php:232
 #: src/html/postbox/upgrade.php:23
 #: src/Plugin.php:110
 msgid "Upgrade to Pro"
