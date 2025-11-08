@@ -35,7 +35,8 @@ class File_System extends Action implements Hooks_Interface {
 	/**
 	 * @var array<callable(): void>
 	 */
-	private array $on_ready_callbacks;
+	private array $on_loaded_callbacks;
+	private bool $is_loaded;
 
 	public function __construct( Logger $logger, string $items_folder_name, string $external_base_folder = '' ) {
 		parent::__construct( $logger );
@@ -45,7 +46,8 @@ class File_System extends Action implements Hooks_Interface {
 		$this->base_folder          = $external_base_folder;
 		$this->is_read_item_folders = false;
 		$this->wp_filesystem_base   = null;
-		$this->on_ready_callbacks   = array();
+		$this->on_loaded_callbacks  = array();
+		$this->is_loaded            = false;
 	}
 
 	protected function read_item_folders(): void {
@@ -405,9 +407,13 @@ class File_System extends Action implements Hooks_Interface {
 				function () use ( $current_screen ): void {
 					$this->set_base_folder( $current_screen );
 
-					foreach ( $this->on_ready_callbacks as $callback ) {
+					$this->is_loaded = true;
+
+					foreach ( $this->on_loaded_callbacks as $callback ) {
 						$callback();
 					}
+
+					$this->on_loaded_callbacks = array();
 				}
 			);
 		}
@@ -416,7 +422,11 @@ class File_System extends Action implements Hooks_Interface {
 	/**
 	 * @param callable(): void $callback
 	 */
-	public function add_on_ready_callback( callable $callback ): void {
-		$this->on_ready_callbacks[] = $callback;
+	public function add_on_loaded_callback( callable $callback ): void {
+		if ( $this->is_loaded ) {
+			$callback();
+		} else {
+			$this->on_loaded_callbacks[] = $callback;
+		}
 	}
 }

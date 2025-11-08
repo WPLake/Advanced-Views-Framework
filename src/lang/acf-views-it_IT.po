@@ -620,7 +620,7 @@ msgstr "CSS & JS"
 
 #: src/Groups/translations.php:335
 #: src/Groups/translations.php:390
-#: src/Plugin/Plugin_Loader_Base.php:432
+#: src/Plugin/Plugin_Loader_Base.php:431
 msgid "Layout"
 msgstr "Layout"
 
@@ -1699,15 +1699,15 @@ msgstr "Sincronizza"
 msgid "items successfully synced"
 msgstr "elementi sincronizzati con successo"
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:106
+#: src/Parents/Cpt_Data_Storage/File_System.php:112
 msgid "The FS storage directory is not writable."
 msgstr "La directory di archiviazione FS non è scrivibile."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:109
+#: src/Parents/Cpt_Data_Storage/File_System.php:115
 msgid "Check and fix file permissions to work with Views and Cards."
 msgstr "Controlla e correggi i permessi dei file per lavorare con Viste e Carte."
 
-#: src/Parents/Cpt_Data_Storage/File_System.php:115
+#: src/Parents/Cpt_Data_Storage/File_System.php:121
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Nota: Non disabilitare la funzione di archiviazione FS prima di risolvere il problema, altrimenti i tuoi dati andranno persi."
 
@@ -2657,15 +2657,15 @@ msgid_plural "Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Plugin/Plugin_Loader_Base.php:436
+#: src/Plugin/Plugin_Loader_Base.php:435
 msgid "Layouts"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:456
+#: src/Plugin/Plugin_Loader_Base.php:455
 msgid "Post Selection"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:460
+#: src/Plugin/Plugin_Loader_Base.php:459
 msgid "Post Selections"
 msgstr ""
 
@@ -2679,10 +2679,6 @@ msgstr ""
 #: src/Post_Selections/Cpt/Post_Selections_Cpt.php:46
 #, php-format
 msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the %s</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">the shortcode</a>, to display queried items with their fields."
-msgstr ""
-
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:53
-msgid "(The assigned Layout determines which fields are displayed)"
 msgstr ""
 
 #. translators: %s - singular name of the CPT.
@@ -2723,4 +2719,8 @@ msgstr ""
 #: src/Tools/Tools.php:511
 #, php-format
 msgid "Wrong %s"
+msgstr ""
+
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:53
+msgid "(The assigned item Layout determines which fields are displayed)"
 msgstr ""

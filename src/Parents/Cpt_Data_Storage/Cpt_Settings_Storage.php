@@ -199,6 +199,6 @@ abstract class Cpt_Settings_Storage extends Item_Management {
 	 * @param callable(): void $callback
 	 */
 	public function add_on_loaded_callback( callable $callback ): void {
-		$this->get_file_system()->add_on_ready_callback( $callback );
+		$this->get_file_system()->add_on_loaded_callback( $callback );
 	}
 }

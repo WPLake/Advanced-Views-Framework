@@ -22,7 +22,7 @@ final class Migration_Fs_Field extends Migration_Base {
 	}
 
 	public function migrate(): void {
-		$this->file_system->add_on_ready_callback(
+		$this->file_system->add_on_loaded_callback(
 			function (): void {
 				if ( $this->file_system->is_active() ) {
 					$base_folder = $this->file_system->get_base_folder();
