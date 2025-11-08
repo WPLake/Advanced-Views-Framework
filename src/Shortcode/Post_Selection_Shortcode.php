@@ -54,7 +54,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $post_selection_id, $this->get_post_type() );
 
 		if ( '' === $card_unique_id ) {
-			$this->print_error_markup(
+			return $this->get_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
 				sprintf(
@@ -63,8 +63,6 @@ final class Post_Selection_Shortcode extends Shortcode {
 					$this->public_cpt->labels()->singular_name()
 				)
 			);
-
-			return '';
 		}
 
 		$classes = $attrs['class'] ?? '';

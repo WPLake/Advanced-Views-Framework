@@ -104,20 +104,19 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	/**
 	 * @param mixed[] $args
 	 */
-	protected function print_error_markup( string $shortcode, array $args, string $error ): void {
+	protected function get_error_markup( string $shortcode, array $args, string $error ): string {
 		$attrs = array();
+
 		foreach ( $args as $name => $value ) {
 			// skip complex types (that may be passed from Bridge).
-			if ( false === is_string( $value ) ) {
-				continue;
+			if ( is_string( $value ) ) {
+				$attrs[] = sprintf( '%s="%s"', $name, $value );
 			}
-
-			$attrs[] = sprintf( '%s="%s"', $name, $value );
 		}
 
-		printf(
+		return sprintf(
 			"<p style='color:red;'>%s %s %s</p>",
-			esc_html( __( 'AVF shortcode render error:', 'acf-views' ) ),
+			esc_html__( 'AVF shortcode render error:', 'acf-views' ),
 			esc_html( $error ),
 			esc_html( sprintf( '(%s %s)', $shortcode, implode( ' ', $attrs ) ) )
 		);

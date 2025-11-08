@@ -79,7 +79,7 @@ final class Layout_Shortcode extends Shortcode {
 		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $layout_id, $this->get_post_type() );
 
 		if ( '' === $view_unique_id ) {
-			$this->print_error_markup(
+			return $this->get_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
 				sprintf(
@@ -88,8 +88,6 @@ final class Layout_Shortcode extends Shortcode {
 					$this->public_cpt->labels()->singular_name()
 				)
 			);
-
-			return '';
 		}
 
 		if ( ! $this->is_shortcode_available_for_user( wp_get_current_user()->roles, $attrs ) ) {
@@ -170,7 +168,7 @@ final class Layout_Shortcode extends Shortcode {
 		);
 
 		if ( '' === $data_post_id ) {
-			$this->print_error_markup(
+			return $this->get_error_markup(
 				$this->get_shortcode_name(),
 				$attrs,
 				__( 'object-id argument contains the wrong value', 'acf-views' )
