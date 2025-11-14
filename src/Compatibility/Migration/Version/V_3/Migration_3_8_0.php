@@ -38,7 +38,7 @@ final class Migration_3_8_0 extends Version_Migration_Base {
 
 	public function get_upgrade_notice_text(): string {
 		return __(
-			'Views renamed to Layouts and Cards renamed to Post Selections. Same great features, just easier to use!',
+			'Views are now called Layouts and Cards are called Post Selections. Same great features, just easier to use! (v. 3.8.0)',
 			'acf-views'
 		);
 	}

@@ -134,17 +134,17 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 			return;
 		}
 
-		$upgrade_notice      = self::get_upgrade_notice();
-		$safe_upgrade_notice = esc_html( $upgrade_notice );
+		$upgrade_notice = self::get_upgrade_notice();
 
 		echo '<div class="notice notice-info">';
 		echo '<p>';
 
 		echo esc_html__( 'Advanced Views plugin has been successfully upgraded!', 'acf-views' );
 
-		echo '<br><br>';
+		echo '<br>';
 
-		echo str_replace( "\n", '<br>', $safe_upgrade_notice );
+		// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo str_replace( "\n", '<br>', esc_html( $upgrade_notice ) );
 
 		if ( Avf_User::can_manage() ) {
 			$dismiss_url = add_query_arg(
@@ -260,7 +260,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 				}
 
 				if ( count( $upgrade_notices ) > 0 ) {
-					$upgrade_notice = implode( "\n\n", $upgrade_notices );
+					$upgrade_notice = implode( "\n", $upgrade_notices );
 
 					Options::set_transient( Options::TRANSIENT_UPGRADE_NOTICE, $upgrade_notice, WEEK_IN_SECONDS );
 				}

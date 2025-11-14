@@ -78,9 +78,9 @@ class Wp_Data_Vendor extends Data_Vendor {
 				Post_Fields::FIELD_TITLE_LINK       => false === $is_field_name_as_label ?
 					__( 'Title with link', 'acf-views' ) : 'post_title_link',
 				Post_Fields::FIELD_CONTENT          => false === $is_field_name_as_label ?
-					__( 'Content (product description)', 'acf-views' ) : 'post_content',
+					__( 'Post Content / Product Description', 'acf-views' ) : 'post_content',
 				Post_Fields::FIELD_EXCERPT          => false === $is_field_name_as_label ?
-					__( 'Excerpt (product short description)', 'acf-views' ) : 'post_excerpt',
+					__( 'Post Excerpt / Short Product Description', 'acf-views' ) : 'post_excerpt',
 				Post_Fields::FIELD_THUMBNAIL        => false === $is_field_name_as_label ?
 					__( 'Featured Image', 'acf-views' ) : 'post_featured_image',
 				Post_Fields::FIELD_THUMBNAIL_LINK   => false === $is_field_name_as_label ?

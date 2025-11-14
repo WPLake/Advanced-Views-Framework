@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Advanced Views Lite
- * Plugin URI: https://wplake.org/advanced-views-lite/
+ * Plugin URI: https://advanced-views.com/
  * Description: Effortlessly display WordPress posts, custom fields, and WooCommerce data.
  * Version: 3.8.0
  * Author: WPLake
- * Author URI: https://wplake.org/advanced-views-lite/
+ * Author URI: https://advanced-views.com/
  * Text Domain: acf-views
  * Domain Path: /src/lang
  */
