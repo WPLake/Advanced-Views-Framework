@@ -33,7 +33,7 @@ class Tools_Settings extends Group {
 	public string $export_message;
 	/**
 	 * @a-type true_false
-	 * @label Export All Views
+	 * @label Export All Layouts
 	 */
 	public bool $is_export_all_views;
 	/**
@@ -45,8 +45,8 @@ class Tools_Settings extends Group {
 	/**
 	 * @a-type checkbox
 	 * @multiple 1
-	 * @label Export Views
-	 * @instructions Select Views to be exported
+	 * @label Export Layout
+	 * @instructions Select Layouts to be exported
 	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-export-all-views","operator": "!=","value": "1"}]]
 	 * @var string[]
 	 */
@@ -113,8 +113,8 @@ class Tools_Settings extends Group {
 	/**
 	 * @a-type checkbox
 	 * @multiple 1
-	 * @label Include specific Views data in your debug dump
-	 * @instructions Select the View items related to your issue to include them in the debug dump.
+	 * @label Include specific Layouts data in your debug dump
+	 * @instructions Select the Layout items related to your issue to include them in the debug dump.
 	 * @conditional_logic [[{"field": "local_acf_views_tools-data__is-generate-installation-dump","operator": "==","value": "1"}]]
 	 * @var string[]
 	 */

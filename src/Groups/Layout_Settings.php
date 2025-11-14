@@ -43,7 +43,7 @@ class Layout_Settings extends Cpt_Settings {
 	/**
 	 * @item \Org\Wplake\Advanced_Views\Groups\Item_Settings
 	 * @var Item_Settings[]
-	 * @label Fields
+	 * @label Assign Fields
 	 * @instructions Assign fields to your Layout. <br> Tip: hover mouse on the field number column and drag to reorder.
 	 * @button_label Add Field
 	 * @collapsed local_acf_views_field__key

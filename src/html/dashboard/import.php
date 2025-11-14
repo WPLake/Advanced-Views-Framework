@@ -50,21 +50,34 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 		<div class="av-introduction av-dashboard__block">
 			<p class="av-introduction__title">
 				<?php
-				echo esc_html( __( 'Import Demo to get started in seconds', 'acf-views' ) );
+				echo esc_html( __( 'Import Demo to Get Started in Seconds', 'acf-views' ) );
 				?>
 			</p>
 			<p class="av-introduction__description">
 				<?php
 				echo esc_html__(
-					'Whether you are new to Advanced Views or you just want to get the basic setup quickly then this tool will help you with the following scenarios:',
+					"Whether you're new to Advanced Views or just want a quick way to set up the basics, this demo import will automatically create a working example for you.",
 					'acf-views'
 				);
+				echo '<br>';
+				echo esc_html__( "It's perfect for exploring how Layouts, Post Selections, and ACF fields work together.", 'acf-views' );
 				?>
-				<br><br>
+				<br>
+			</p>
+
+			<hr>
+
+			<p>
+				<b>
+				<?php
+				echo esc_html__( 'What this demo does', 'acf-views' );
+				?>
+				</b>
+				<br>
 			</p>
 			<p><b>
 					<?php
-					echo esc_html( __( 'Display page\'s ACF fields on the same page', 'acf-views' ) );
+					echo esc_html( __( "Display page's ACF fields on the same page", 'acf-views' ) );
 					?>
 				</b></p>
 			<ol class="av-introduction__description av-introduction__ol">
@@ -72,7 +85,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							"Create 'draft' pages for 'Samsung Galaxy A53', 'Nokia X20' and 'Xiaomi 12T'.",
+							"Creates 'draft' pages for 'Samsung Galaxy A53', 'Nokia X20' and 'Xiaomi 12T'.",
 							'acf-views'
 						)
 					);
@@ -82,7 +95,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							'Create an ACF Field Group called "Phone" with location set to those pages.',
+							'Creates an ACF Field Group called "Phone" assigned to those pages.',
 							'acf-views'
 						)
 					);
@@ -92,7 +105,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							'Create a View called "Phone" with fields assigned from the "Phone" Field Group.',
+							'Creates a Layout called "Phone" that displays fields from the "Phone" Field Group.',
 							'acf-views'
 						)
 					);
@@ -102,7 +115,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							'Fill each page’s ACF fields with text and add the View shortcode to the page content.',
+							'Populates each page’s ACF fields with sample text and adds the Layout shortcode to the page content.',
 							'acf-views'
 						)
 					);
@@ -117,14 +130,14 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 			<ol class="av-introduction__description av-introduction__ol">
 				<li>
 					<?php
-					echo esc_html__( 'Create a "draft" page called "Article about Samsung"', 'acf-views' );
+					echo esc_html__( 'Creates a "draft" page called "Article about Samsung"', 'acf-views' );
 					?>
 				</li>
 				<li>
 					<?php
 					echo esc_html(
 						__(
-							'Add the View shortcode to the page content with "object-id" argument to "Samsung Galaxy A53".',
+							'Adds a Layout shortcode to the page content with "object-id" parameter pointing to "Samsung Galaxy A53".',
 							'acf-views'
 						)
 					);
@@ -135,14 +148,10 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							'Display specific posts, pages or CPT items and their fields by using filters',
+							'Display multiple items using Post Selections',
 							'acf-views'
 						)
 					);
-					?>
-					<br>
-					<?php
-					echo esc_html( __( 'or by manually assigning items', 'acf-views' ) );
 					?>
 				</b></p>
 			<ol class="av-introduction__description av-introduction__ol">
@@ -150,7 +159,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							'Create a Card for "List of Phones" with View "Phone" assigned and filtered to.',
+							'Creates a Post Selection called "List of Phones" using the "Phone" Layout and filtering for the phone pages.',
 							'acf-views'
 						)
 					);
@@ -160,7 +169,7 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 					<?php
 					echo esc_html(
 						__(
-							"Create a 'draft' page called 'Most popular phones in 2022' and add the Card shortcode to the page content.",
+							"Create a 'draft' page called 'Most popular phones in 2022' and adds the Post Selection shortcode to the page content.",
 							'acf-views'
 						)
 					);
@@ -168,35 +177,53 @@ $is_with_form_message = $view['isWithFormMessage'] ?? '';
 				</li>
 			</ol>
 
-			<p class="av-introduction__description">
+			<hr>
+			<p>
+				<b>
+					<?php
+					echo esc_html__( 'Importing', 'acf-views' );
+					?>
+				</b>
 				<br>
+			</p>
+
+			<p class="av-introduction__description">
 				<?php
-				echo esc_html( __( 'Press the Import button and wait a few seconds.', 'acf-views' ) );
+				echo esc_html( __( 'Click Import Demo and wait a few seconds.', 'acf-views' ) );
 				?>
-				<br><br>
 				<?php
 				echo esc_html(
 					__(
-						"When the process has completed, you'll see links to all the items for quick editing.",
+						"When done, you'll see quick links to edit all imported items.",
 						'acf-views'
 					)
 				);
 				?>
-				<br><br>
+			</p>
+
+			<p>
 				<b>
 					<?php
-					echo esc_html(
-						__(
-							'Note: After the import, a delete button will appear, that can be used to remove the imported items.',
-							'acf-views'
-						)
-					);
+					echo esc_html__( 'After Import', 'acf-views' );
 					?>
-				</b><br><br>
+				</b>
+				<br>
 			</p>
+
+			<p>
+			<?php
+					echo esc_html__( 'A Delete Demo button will appear if you’d like to remove the demo content later.', 'acf-views' );
+			?>
+				<br>
+			</p>
+
+			<hr>
+
+			<br><br>
+			
 			<button class="button button-primary button-large" name="_import" value="import">
 				<?php
-				echo esc_html( __( 'Import demo now', 'acf-views' ) );
+				echo esc_html( __( 'Import Demo Now', 'acf-views' ) );
 				?>
 			</button>
 			<?php

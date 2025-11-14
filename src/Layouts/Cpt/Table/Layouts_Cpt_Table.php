@@ -18,11 +18,11 @@ use WP_Query;
 defined( 'ABSPATH' ) || exit;
 
 class Layouts_Cpt_Table extends Cpt_Table {
-	const COLUMN_DESCRIPTION    = self::COLUMN_PREFIX . 'description';
-	const COLUMN_SHORTCODE      = self::COLUMN_PREFIX . 'shortcode';
-	const COLUMN_LAST_MODIFIED  = self::COLUMN_PREFIX . 'lastModified';
-	const COLUMN_RELATED_GROUPS = self::COLUMN_PREFIX . 'relatedGroups';
-	const COLUMN_RELATED_CARDS  = self::COLUMN_PREFIX . 'relatedCards';
+	const COLUMN_DESCRIPTION             = self::COLUMN_PREFIX . 'description';
+	const COLUMN_SHORTCODE               = self::COLUMN_PREFIX . 'shortcode';
+	const COLUMN_LAST_MODIFIED           = self::COLUMN_PREFIX . 'lastModified';
+	const COLUMN_RELATED_GROUPS          = self::COLUMN_PREFIX . 'relatedGroups';
+	const COLUMN_RELATED_POST_SELECTIONS = self::COLUMN_PREFIX . 'relatedPostSelections';
 
 	private Html $html;
 	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
@@ -71,7 +71,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				// without the not found message.
 				$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data, true );
 				break;
-			case self::COLUMN_RELATED_CARDS:
+			case self::COLUMN_RELATED_POST_SELECTIONS:
 				$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box( $view_data, true );
 				break;
 			case self::COLUMN_LAST_MODIFIED:
@@ -129,15 +129,15 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		return array_merge(
 			$columns,
 			array(
-				self::COLUMN_DESCRIPTION    => __( 'Description', 'acf-views' ),
-				self::COLUMN_SHORTCODE      => __( 'Shortcode', 'acf-views' ),
-				self::COLUMN_RELATED_GROUPS => __( 'Assigned Group', 'acf-views' ),
-				self::COLUMN_RELATED_CARDS  => sprintf(
+				self::COLUMN_DESCRIPTION             => __( 'Description', 'acf-views' ),
+				self::COLUMN_SHORTCODE               => __( 'Shortcode', 'acf-views' ),
+				self::COLUMN_RELATED_GROUPS          => __( 'Assigned Field Group', 'acf-views' ),
+				self::COLUMN_RELATED_POST_SELECTIONS => sprintf(
 					// translators: %s - singular name of the CPT.
 					__( 'Assigned to %s', 'acf-views' ),
 					$this->post_selection_cpt->labels()->singular_name()
 				),
-				self::COLUMN_LAST_MODIFIED  => __( 'Last modified', 'acf-views' ),
+				self::COLUMN_LAST_MODIFIED           => __( 'Last modified', 'acf-views' ),
 			)
 		);
 	}
