@@ -255,7 +255,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 					$version_upgrade_notice = $version_migration->get_upgrade_notice_text();
 
 					if ( is_string( $version_upgrade_notice ) ) {
-						$upgrade_notices[] = $version_upgrade_notice;
+						$upgrade_notices[] = sprintf( '%s (v. %s)', $version_upgrade_notice, $version_migration->introduced_version() );
 					}
 				}
 

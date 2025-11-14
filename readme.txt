@@ -78,13 +78,14 @@ High-quality results without the time-consuming steps.
 
 == Screenshots ==
 
-1. Views list management via the familiar interface.
+1. Layouts list managed using the familiar interface.
 2. Get a basic setup in seconds with Demo import.
-3. Assign multiple fields within your View.
-4. The generated template can easily be customized.
-5. Display a set of posts with a Card.
+3. Assign multiple fields to Layouts.
+4. The default template can easily be customized.
+5. Query items with Post Selections and display using the selected Layout.
 6. Posts can be filtered, sorted and styled.
 7. Import and Export Tool helps with site migration.
+8. Tools for Import and Export.
 
 == Installation ==
 
