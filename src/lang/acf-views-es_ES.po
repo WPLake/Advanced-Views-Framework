@@ -2741,14 +2741,14 @@ msgstr ""
 msgid "Thanks, hide"
 msgstr ""
 
-#: src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php:40
-msgid "Views are now called Layouts and Cards are called Post Selections. Same great features, just easier to use! (v. 3.8.0)"
-msgstr ""
-
 #: src/Data_Vendors/Wp/Wp_Data_Vendor.php:81
 msgid "Post Content / Product Description"
 msgstr ""
 
 #: src/Data_Vendors/Wp/Wp_Data_Vendor.php:83
 msgid "Post Excerpt / Short Product Description"
+msgstr ""
+
+#: src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php:40
+msgid "Views are now called Layouts and Cards are called Post Selections. Same great features, just easier to use!"
 msgstr ""
