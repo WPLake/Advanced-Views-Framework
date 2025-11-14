@@ -516,6 +516,8 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->file_systems,
 				array( $this->layouts_settings_storage, $this->post_selections_settings_storage )
 			);
+
+			parent::environment();
 		}
 	};
 

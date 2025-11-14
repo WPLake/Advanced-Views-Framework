@@ -32,25 +32,21 @@ class Post_Selections_Cpt extends Cpt {
 		$plural_name   = $labels->plural_name();
 
 		$description = sprintf(
-			// translators: %s - singular name of the CPT.
+		// translators: %s - singular name of the CPT.
 			__(
-				'Add a %s and select a set of posts or import a pre-built component.',
+				'Add a %s to display a set of posts or import a ready-made component.',
 				'acf-views'
 			),
 			$singular_name
 		);
 		$description .= '<br>';
 		$description .=
-			sprintf(
 			// translators: %s - singular name of the CPT.
-				__(
-					'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach the %s</a> to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/card-shortcode">the shortcode</a>, to display queried items with their fields.',
-					'acf-views'
-				),
-				$singular_name
-			) .
-						'<br>'
-						. __( '(The assigned item Layout determines which fields are displayed)', 'acf-views' );
+			__(
+				'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach it</a> where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/card-shortcode">via shortcode</a>).',
+				'acf-views'
+			) . '<br/>'
+						. __( 'The assigned Layout determines which fields are displayed.', 'acf-views' );
 
 		$description .= '<br><br>';
 		$description .= $this->get_storage_label();
