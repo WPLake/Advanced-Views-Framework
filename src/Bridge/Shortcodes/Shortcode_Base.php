@@ -114,7 +114,7 @@ abstract class Shortcode_Base implements Shortcode_Interface {
 	}
 
 	/**
-	 * @param array<string,mixed> $custom_arguments
+	 * @param mixed[] $custom_arguments
 	 *
 	 * @return static
 	 * @deprecated use set_customArguments() instead

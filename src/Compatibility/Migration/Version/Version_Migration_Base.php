@@ -52,4 +52,8 @@ abstract class Version_Migration_Base extends Migration_Base implements Version_
 
 	public function migrate_previous_cpt_settings( Cpt_Settings $cpt_settings ): void {
 	}
+
+	public function get_upgrade_notice_text(): ?string {
+		return null;
+	}
 }

@@ -96,7 +96,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 
 		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
 		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
-		$is_activated_after_another_deactivation = $this->options->get_transient(
+		$is_activated_after_another_deactivation = $this->options::get_transient(
 			Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
 		);
 

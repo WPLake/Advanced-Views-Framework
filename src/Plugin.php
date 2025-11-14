@@ -4,12 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
+use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
@@ -173,6 +175,27 @@ class Plugin extends Hookable implements Hooks_Interface {
 		return $this->plugin_url;
 	}
 
+	/**
+	 * @param callable(): void $callback
+	 */
+	public static function on_translations_ready( callable $callback ): void {
+		add_action( 'init', $callback );
+	}
+
+	public static function get_current_admin_url(): string {
+		$uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
+		$uri = preg_replace( '|^.*/wp-admin/|i', '', $uri );
+
+		if ( null === $uri ) {
+			return '';
+		}
+
+		return remove_query_arg(
+			array( '_wpnonce' ),
+			admin_url( $uri )
+		);
+	}
+
 	public function is_pro_field_locked(): bool {
 		return true;
 	}
@@ -275,7 +298,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 				continue;
 			}
 
-			$this->options->set_transient(
+			$this->options::set_transient(
 				Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES,
 				$deactivated_notice_id,
 				1 * HOUR_IN_SECONDS
@@ -291,10 +314,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	// notice when either Basic or Pro was automatically deactivated.
 	public function show_plugin_deactivated_notice(): void {
-		$deactivate_notice_id = $this->options->get_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
-		$deactivate_notice_id = is_numeric( $deactivate_notice_id ) ?
-			(int) $deactivate_notice_id :
-			0;
+		$deactivate_notice_id = $this->options::get_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
+		$deactivate_notice_id = int( $deactivate_notice_id );
 
 		// not set = false = 0.
 		if ( ! in_array( $deactivate_notice_id, array( 1, 2 ), true ) ) {
@@ -312,7 +333,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 				__( 'Advanced Views Pro', 'acf-views' )
 		);
 
-		$this->options->delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
+		$this->options::delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
 
 		printf(
 			'<div class="notice notice-warning">' .

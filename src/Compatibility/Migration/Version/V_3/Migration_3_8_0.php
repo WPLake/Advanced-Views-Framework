@@ -9,8 +9,11 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Fs_Field;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Post_Type;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt_Base;
 
@@ -30,6 +33,14 @@ final class Migration_3_8_0 extends Version_Migration_Base {
 			new Migration_Post_Type( $card_cpt_settings_storage, $this->get_cards_cpt(), $post_selections_cpt ),
 			new Migration_Fs_Field( $file_system, 'view.php', 'controller.php' ),
 			new Migration_Fs_Field( $file_system, 'card.php', 'controller.php' ),
+		);
+	}
+
+	public function get_upgrade_notice_text(): string {
+		// fixme
+		return __(
+			'In 3.8.0 View and Card names became Layout and Post Selection correspondintly.',
+			'acf-views'
 		);
 	}
 

@@ -270,8 +270,8 @@ class Settings {
 
 	public function delete_data(): void {
 		$this->options->delete_option( Options::OPTION_SETTINGS );
-		$this->options->delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
-		$this->options->delete_transient( Options::TRANSIENT_LICENSE_EXPIRATION_DISMISS );
+		$this->options::delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
+		$this->options::delete_transient( Options::TRANSIENT_LICENSE_EXPIRATION_DISMISS );
 	}
 
 	protected function load(): void {

@@ -247,7 +247,13 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
-					echo esc_html( __( 'Your View shortcode is available after publishing.', 'acf-views' ) );
+					echo esc_html(
+						sprintf(
+							// translators: %s is the singular name of the CPT.
+							__( 'Your %s shortcode is available after publishing.', 'acf-views' ),
+							$this->public_cpt->labels()->singular_name()
+						)
+					);
 
 					return;
 				}

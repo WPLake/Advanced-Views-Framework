@@ -12,19 +12,31 @@ class Options {
 	const OPTION_SETTINGS                       = self::PREFIX . 'settings';
 	const TRANSIENT_DEACTIVATED_OTHER_INSTANCES = self::PREFIX . 'deactivated_other_instances';
 	const TRANSIENT_LICENSE_EXPIRATION_DISMISS  = self::PREFIX . 'license_expiration_dismiss';
+	const TRANSIENT_UPGRADE_NOTICE              = self::PREFIX . 'upgrade_notice';
+
+	/**
+	 * @return mixed
+	 */
+	public static function get_transient( string $name ) {
+		return get_transient( $name );
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public static function set_transient( string $name, $value, int $expiration_in_seconds ): void {
+		set_transient( $name, $value, $expiration_in_seconds );
+	}
+
+	public static function delete_transient( string $name ): void {
+		delete_transient( $name );
+	}
 
 	/**
 	 * @return mixed
 	 */
 	public function get_option( string $name ) {
 		return get_option( $name, '' );
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function get_transient( string $name ) {
-		return get_transient( $name );
 	}
 
 	/**
@@ -36,18 +48,7 @@ class Options {
 		update_option( $name, $value, $is_autoload );
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	public function set_transient( string $name, $value, int $expiration_in_seconds ): void {
-		set_transient( $name, $value, $expiration_in_seconds );
-	}
-
 	public function delete_option( string $name ): void {
 		delete_option( $name );
-	}
-
-	public function delete_transient( string $name ): void {
-		delete_transient( $name );
 	}
 }
