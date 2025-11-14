@@ -4,7 +4,7 @@ Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.8.0
+Stable tag: 3.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,7 +138,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.0 (2025-11-14) =
+= 3.8.1 (2025-11-14) =
 - Better entity names: View => Layout, Card => Post Selection
 
 = 3.7.20 (2025-09-19) =
