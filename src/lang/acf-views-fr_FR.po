@@ -611,8 +611,6 @@ msgstr "Classes CSS"
 msgid "CSS & JS"
 msgstr "CSS & JS"
 
-#: src/Groups/translations.php:335
-#: src/Groups/translations.php:390
 #: src/Plugin/Plugin_Loader_Base.php:431
 msgid "Layout"
 msgstr "Mise en page"
@@ -621,14 +619,6 @@ msgstr "Mise en page"
 #: src/Groups/translations.php:391
 msgid "Enable Slider"
 msgstr "Activer le curseur"
-
-#: src/Groups/translations.php:392
-msgid "Enable Layout rules"
-msgstr "Activer les règles de mise en page"
-
-#: src/Groups/translations.php:393
-msgid "Layout Rules"
-msgstr "Règles de mise en page"
 
 #: src/Groups/translations.php:394
 msgid "Meta Filters"
@@ -784,10 +774,6 @@ msgstr "Espacement vertical"
 #: src/Groups/translations.php:342
 msgid "Controls to which screen size the rule applies"
 msgstr "Contrôle à quelle taille d'écran la règle s'applique"
-
-#: src/Groups/translations.php:343
-msgid "Change the type of layout"
-msgstr "Changer le type de mise en page"
 
 #: src/Groups/translations.php:344
 msgid "Define how many columns each row should have. By default, columns have equal width"
@@ -1961,10 +1947,6 @@ msgstr "Ajoutez un nom de classe sans point (par exemple, 'nom-de-classe') ou pl
 msgid "Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab."
 msgstr "Sélectionnez la bibliothèque de curseurs à activer. <br> Personnalisez le curseur après l'enregistrement, en éditant le code JS dans l'onglet CSS & JS."
 
-#: src/Groups/translations.php:434
-msgid "When enabled CSS layout styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Layout CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code."
-msgstr "Lorsque activé, les styles de mise en page CSS sont ajoutés au champ CSS Code. Ces styles sont automatiquement mis à jour chaque fois que vous enregistrez. <br> Astuce : Si vous souhaitez modifier le CSS de mise en page manuellement, désactivez simplement cette option. La désactivation n'efface pas le CSS ajouté précédemment."
-
 #: src/Groups/translations.php:436
 msgid "If enabled then the selected pagination type is applied and the 'Posts per page' rule takes effect. <a target='_blank' href='https://docs.advanced-views.com/query-content/pagination-pro'>Read more</a>."
 msgstr "Si activé, le type de pagination sélectionné est appliqué et la règle 'Publications par page' prend effet. <a target='_blank' href='https://docs.advanced-views.com/query-content/pagination-pro'>En savoir plus</a>."
@@ -2036,11 +2018,6 @@ msgstr ""
 #: src/Groups/translations.php:137
 #: src/Groups/translations.php:376
 msgid "Template Engine"
-msgstr ""
-
-#: src/Groups/translations.php:153
-#: src/Groups/translations.php:427
-msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup."
 msgstr ""
 
 #: src/Groups/translations.php:428
@@ -2187,10 +2164,6 @@ msgstr ""
 
 #: src/Groups/translations.php:207
 msgid "Value that will be compared.<br>Can be empty, in case you want to compare with empty string.<br>Use <strong>&#36;post&#36;</strong> to pick up the actual ID or <strong>&#36;post&#36;.field-name</strong> to pick up field value dynamically. <br>Use <strong>&#36;now&#36;</strong> to pick up the current datetime dynamically. <br>Use <strong>&#36;query&#36;.my-field</strong> to pick up the query value (from &#36;_GET) dynamically. <br>Use <strong>&#36;custom-arguments&#36;.my-field</strong> to pick up the <a target='_blank' href='https://docs.advanced-views.com/shortcode-attributes/common-arguments#custom-argument'>custom shortcode argument</a> value dynamically."
-msgstr ""
-
-#: src/Groups/translations.php:307
-msgid "Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In the Pro edition, the license key/domain pair is always sent, regardless of this setting."
 msgstr ""
 
 #: src/Groups/translations.php:501
@@ -2343,10 +2316,6 @@ msgstr ""
 msgid "Enable to store Layout and Post Selection data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a>"
 msgstr ""
 
-#: src/Groups/translations.php:306
-msgid "This setting improves loading speed by disabling third-party scripts on Layout and Post Selection admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on Layout and Post Selection screens)."
-msgstr ""
-
 #: src/Groups/translations.php:308
 msgid "Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Layouts and Post Selections."
 msgstr ""
@@ -2395,28 +2364,12 @@ msgstr ""
 msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Post Selection."
 msgstr ""
 
-#: src/Groups/translations.php:425
-msgid "For debug purposes. Here you can see the query that will be executed to get posts for this Post Selection. Important! Publish or Update your Post Selection and reload the page to see the latest query."
-msgstr ""
-
 #: src/Groups/translations.php:426
 msgid "Using the Custom Post Selection Data PHP snippet you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/query-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
-#: src/Groups/translations.php:431
-msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the View fields here, each View has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
-msgstr ""
-
 #: src/Groups/translations.php:432
 msgid "Add Custom Javascript code to your Post Selection.<br><br> By default, the Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
-msgstr ""
-
-#: src/Groups/translations.php:435
-msgid "The rules control the layout of Post Selection items. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'."
-msgstr ""
-
-#: src/Groups/translations.php:437
-msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it (using the 'CSS Code' field in the 'Advanced' tab)."
 msgstr ""
 
 #: src/Groups/translations.php:528
@@ -2736,4 +2689,60 @@ msgstr ""
 
 #: src/Post_Selections/Cpt/Post_Selections_Cpt.php:49
 msgid "The assigned Layout determines which fields are displayed."
+msgstr ""
+
+#: src/Groups/translations.php:153
+msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup."
+msgstr ""
+
+#: src/Groups/translations.php:306
+msgid "Enable this setting to improve loading speed by disabling third-party scripts on Layout and Post Selection screens. <br> Note: This can significantly reduce load times on plugin-heavy sites. However, with some themes, it may cause layout issues on these admin screens."
+msgstr ""
+
+#: src/Groups/translations.php:307
+msgid "Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In Advanced Views Pro, the license key/domain pair is always sent, regardless of this setting."
+msgstr ""
+
+#: src/Groups/translations.php:335
+msgid "Arrange"
+msgstr ""
+
+#: src/Groups/translations.php:343
+msgid "Choose how items are arranged"
+msgstr ""
+
+#: src/Groups/translations.php:390
+msgid "Display Settings"
+msgstr ""
+
+#: src/Groups/translations.php:392
+msgid "Enable Responsive rules"
+msgstr ""
+
+#: src/Groups/translations.php:393
+msgid "Responsive Rules"
+msgstr ""
+
+#: src/Groups/translations.php:425
+msgid "For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query."
+msgstr ""
+
+#: src/Groups/translations.php:427
+msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup."
+msgstr ""
+
+#: src/Groups/translations.php:431
+msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the Layout fields here, each Layout has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
+msgstr ""
+
+#: src/Groups/translations.php:434
+msgid "When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code."
+msgstr ""
+
+#: src/Groups/translations.php:435
+msgid "These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'."
+msgstr ""
+
+#: src/Groups/translations.php:437
+msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab."
 msgstr ""

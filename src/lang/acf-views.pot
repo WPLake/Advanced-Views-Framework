@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-14T09:36:07+00:00\n"
+"POT-Creation-Date: 2025-11-14T09:55:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: acf-views\n"
@@ -939,8 +939,7 @@ msgid "If you're making an internal Layout for the <a target='_blank' href='http
 msgstr ""
 
 #: src/Groups/translations.php:153
-#: src/Groups/translations.php:427
-msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup."
+msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup."
 msgstr ""
 
 #: src/Groups/translations.php:154
@@ -1315,11 +1314,11 @@ msgid "Controls the period after which Live Reload Mode is paused when no mouse 
 msgstr ""
 
 #: src/Groups/translations.php:306
-msgid "This setting improves loading speed by disabling third-party scripts on Layout and Post Selection admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on Layout and Post Selection screens)."
+msgid "Enable this setting to improve loading speed by disabling third-party scripts on Layout and Post Selection screens. <br> Note: This can significantly reduce load times on plugin-heavy sites. However, with some themes, it may cause layout issues on these admin screens."
 msgstr ""
 
 #: src/Groups/translations.php:307
-msgid "Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In the Pro edition, the license key/domain pair is always sent, regardless of this setting."
+msgid "Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In Advanced Views Pro, the license key/domain pair is always sent, regardless of this setting."
 msgstr ""
 
 #: src/Groups/translations.php:308
@@ -1355,9 +1354,7 @@ msgid "Screen Size"
 msgstr ""
 
 #: src/Groups/translations.php:335
-#: src/Groups/translations.php:390
-#: src/Plugin/Plugin_Loader_Base.php:431
-msgid "Layout"
+msgid "Arrange"
 msgstr ""
 
 #: src/Groups/translations.php:336
@@ -1377,7 +1374,7 @@ msgid "Controls to which screen size the rule applies"
 msgstr ""
 
 #: src/Groups/translations.php:343
-msgid "Change the type of layout"
+msgid "Choose how items are arranged"
 msgstr ""
 
 #: src/Groups/translations.php:344
@@ -1481,12 +1478,16 @@ msgstr ""
 msgid "Use the Post ID as the Post Selection ID in the markup"
 msgstr ""
 
+#: src/Groups/translations.php:390
+msgid "Display Settings"
+msgstr ""
+
 #: src/Groups/translations.php:392
-msgid "Enable Layout rules"
+msgid "Enable Responsive rules"
 msgstr ""
 
 #: src/Groups/translations.php:393
-msgid "Layout Rules"
+msgid "Responsive Rules"
 msgstr ""
 
 #: src/Groups/translations.php:394
@@ -1578,11 +1579,15 @@ msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.co
 msgstr ""
 
 #: src/Groups/translations.php:425
-msgid "For debug purposes. Here you can see the query that will be executed to get posts for this Post Selection. Important! Publish or Update your Post Selection and reload the page to see the latest query."
+msgid "For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query."
 msgstr ""
 
 #: src/Groups/translations.php:426
 msgid "Using the Custom Post Selection Data PHP snippet you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/query-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr ""
+
+#: src/Groups/translations.php:427
+msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup."
 msgstr ""
 
 #: src/Groups/translations.php:428
@@ -1598,7 +1603,7 @@ msgid "Add a class name without a dot (e.g. 'class-name') or multiple classes wi
 msgstr ""
 
 #: src/Groups/translations.php:431
-msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the View fields here, each View has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
+msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the Layout fields here, each Layout has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
 msgstr ""
 
 #: src/Groups/translations.php:432
@@ -1610,11 +1615,11 @@ msgid "Select the slider library to enable. <br> Customize the slider after savi
 msgstr ""
 
 #: src/Groups/translations.php:434
-msgid "When enabled CSS layout styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Layout CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code."
+msgid "When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code."
 msgstr ""
 
 #: src/Groups/translations.php:435
-msgid "The rules control the layout of Post Selection items. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'."
+msgid "These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'."
 msgstr ""
 
 #: src/Groups/translations.php:436
@@ -1622,7 +1627,7 @@ msgid "If enabled then the selected pagination type is applied and the 'Posts pe
 msgstr ""
 
 #: src/Groups/translations.php:437
-msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it (using the 'CSS Code' field in the 'Advanced' tab)."
+msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab."
 msgstr ""
 
 #: src/Groups/translations.php:438
@@ -2479,6 +2484,10 @@ msgstr ""
 
 #: src/Plugin.php:312
 msgid "Advanced Views Pro"
+msgstr ""
+
+#: src/Plugin/Plugin_Loader_Base.php:431
+msgid "Layout"
 msgstr ""
 
 #: src/Plugin/Plugin_Loader_Base.php:435
