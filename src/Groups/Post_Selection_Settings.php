@@ -212,7 +212,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	/**
 	 * @a-type textarea
 	 * @label Query Preview
-	 * @instructions For debug purposes. Here you can see the query that will be executed to get posts for this Post Selection. Important! Publish or Update your Post Selection and reload the page to see the latest query.
+	 * @instructions For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query.
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public string $query_preview;
@@ -233,7 +233,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @a-type textarea
 	 * @new_lines br
 	 * @label Default Template
-	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup.
+	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup.
 	 * @disabled 1
 	 */
 	public string $markup;
@@ -262,7 +262,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	/**
 	 * @a-type textarea
 	 * @label CSS Code
-	 * @instructions Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the View fields here, each View has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__').
+	 * @instructions Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the Layout fields here, each Layout has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__').
 	 * /
 	 */
 	public string $css_code;
@@ -275,7 +275,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 
 	/**
 	 * @a-type tab
-	 * @label Layout
+	 * @label Display Settings
 	 */
 	public bool $layout_tab;
 	/**
@@ -288,15 +288,15 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 */
 	public string $slider_type;
 	/**
-	 * @label Enable Layout rules
-	 * @instructions When enabled CSS layout styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Layout CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
+	 * @label Enable Responsive rules
+	 * @instructions When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
 	 */
 	public bool $is_use_layout_css;
 	/**
 	 * @var Post_Selection_Layout_Settings[]
 	 * @item \Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings
-	 * @label Layout Rules
-	 * @instructions The rules control the layout of Post Selection items. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
+	 * @label Responsive Rules
+	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
 	 * @button_label Add Rule
 	 * @a-no-tab 1
 	 */
@@ -349,7 +349,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @a-type select
 	 * @required 1
 	 * @label Pagination Type
-	 * @instructions Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it (using the 'CSS Code' field in the 'Advanced' tab).
+	 * @instructions Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab.
 	 * @choices {"load_more_button":"Load More Button","infinity_scroll":"Infinity Scroll","page_numbers":"Page Numbers"}
 	 * @default_value load_more_button
 	 * @a-pro The field must be not required or have default value!

@@ -117,7 +117,7 @@ __("Add Sub Field", "acf-views");
 // Layout_Settings.php : labels
 
 __("Fields", "acf-views");
-__("Fields", "acf-views");
+__("Assign Fields", "acf-views");
 __("Parent group (for Nested repeater or Flexible layout)", "acf-views");
 __("Parent field", "acf-views");
 __("Template", "acf-views");
@@ -138,7 +138,7 @@ __("Template Engine", "acf-views");
 __("Web Component Type", "acf-views");
 __("Classes generation", "acf-views");
 __("Render template when it's empty", "acf-views");
-__("Use the Post ID as the View ID in the markup", "acf-views");
+__("Use the Post ID as the Layout ID in the markup", "acf-views");
 __("Use the Post ID in the Gutenberg block's name", "acf-views");
 __("Preview", "acf-views");
 __("Preview Object", "acf-views");
@@ -558,9 +558,9 @@ __("OR", "acf-views");
 // Tools_Settings.php : labels
 
 __("Export", "acf-views");
-__("Export All Views", "acf-views");
+__("Export All Layouts", "acf-views");
 __("Export All Post Selections", "acf-views");
-__("Export Views", "acf-views");
+__("Export Layout", "acf-views");
 __("Export Post Selections", "acf-views");
 __("Import", "acf-views");
 __("Select a file to import", "acf-views");
@@ -568,16 +568,16 @@ __("Debugging", "acf-views");
 __("Error logs", "acf-views");
 __("Internal logs", "acf-views");
 __("Generate debug dump", "acf-views");
-__("Include specific Views data in your debug dump", "acf-views");
+__("Include specific Layouts data in your debug dump", "acf-views");
 __("Include specific Post Selections data in your debug dump", "acf-views");
 
 // Tools_Settings.php : descriptions
 
-__("Select Views to be exported", "acf-views");
+__("Select Layouts to be exported", "acf-views");
 __("Select Post Selections to be exported", "acf-views");
 __("Note: Layouts and Post Selections with the same IDs are overridden.", "acf-views");
 __("Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation.", "acf-views");
 __("Contains plugin warnings and debug messages if the development mode is enabled in <a target='_blank' href='/wp-admin/edit.php?post_type=acf_views&page=acf-views-settings'>the settings</a>. The logs are deleted upon plugin deactivation.", "acf-views");
 __("Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.", "acf-views");
-__("Select the View items related to your issue to include them in the debug dump.", "acf-views");
+__("Select the Layout items related to your issue to include them in the debug dump.", "acf-views");
 __("Select the Post Selection items related to your issue to include them in the debug dump.", "acf-views");

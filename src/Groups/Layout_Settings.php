@@ -81,7 +81,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-type textarea
 	 * @new_lines br
 	 * @label Default Template
-	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your view to see the latest markup.
+	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup.
 	 * @disabled 1
 	 */
 	public string $markup;
@@ -191,7 +191,7 @@ class Layout_Settings extends Cpt_Settings {
 	public bool $is_render_when_empty;
 	/**
 	 * @a-type true_false
-	 * @label Use the Post ID as the View ID in the markup
+	 * @label Use the Post ID as the Layout ID in the markup
 	 * @instructions Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.
 	 */
 	public bool $is_markup_with_digital_id;

@@ -33,8 +33,8 @@ class Post_Selection_Layout_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @required 1
-	 * @label Layout
-	 * @instructions Change the type of layout
+	 * @label Arrange
+	 * @instructions Choose how items are arranged
 	 * @choices {"row":"Row","column":"Column","grid":"Grid"}
 	 * @default_value row
 	 */

@@ -55,12 +55,12 @@ class Plugin_Settings extends Group {
 	public int $live_reload_inactive_delay_seconds;
 	/**
 	 * @label Optimize Layout and Post Selection admin screen performance
-	 * @instructions This setting improves loading speed by disabling third-party scripts on Layout and Post Selection admin screens. <br> Note: While it noticeably reduces loading time for plugin-heavy installations, with specific themes it also may cause layout issues (on Layout and Post Selection screens).
+	 * @instructions Enable this setting to improve loading speed by disabling third-party scripts on Layout and Post Selection screens. <br> Note: This can significantly reduce load times on plugin-heavy sites. However, with some themes, it may cause layout issues on these admin screens.
 	 */
 	public bool $is_cpt_admin_optimization_enabled;
 	/**
 	 * @label Disable automatic reports
-	 * @instructions Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In the Pro edition, the license key/domain pair is always sent, regardless of this setting.
+	 * @instructions Automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement. <br> The reports do not include any private or sensitive information. <br> Note: In Advanced Views Pro, the license key/domain pair is always sent, regardless of this setting.
 	 */
 	public bool $is_automatic_reports_disabled;
 	/**

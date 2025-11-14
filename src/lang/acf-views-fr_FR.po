@@ -72,8 +72,8 @@ msgstr "Données personnalisées"
 msgid "Add New"
 msgstr "Ajouter nouveau"
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:93
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:96
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:89
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:92
 msgid "Card updated."
 msgstr "Carte mise à jour."
 
@@ -81,37 +81,37 @@ msgstr "Carte mise à jour."
 msgid "Not Found In Trash"
 msgstr "Non trouvé dans la corbeille"
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:78
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:74
 msgid "Card scheduled for:"
 msgstr "Carte programmée pour :"
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:87
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:83
 msgid "Card restored to revision from"
 msgstr "Carte restaurée à la révision de"
 
 #: src/Layouts/Cpt/Layouts_Cpt.php:78
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:94
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:90
 msgid "Custom field updated."
 msgstr "Champ personnalisé mis à jour."
 
 #: src/Layouts/Cpt/Layouts_Cpt.php:79
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:95
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:91
 msgid "Custom field deleted."
 msgstr "Champ personnalisé supprimé."
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:98
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:94
 msgid "Card published."
 msgstr "Carte publiée."
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:99
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:95
 msgid "Card saved."
 msgstr "Carte enregistrée."
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:100
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:96
 msgid "Card submitted."
 msgstr "Carte soumise."
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:102
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:98
 msgid "Card draft updated."
 msgstr "Brouillon de la carte mis à jour."
 
@@ -1168,7 +1168,6 @@ msgid "OR"
 msgstr "OU"
 
 #: src/Groups/translations.php:119
-#: src/Groups/translations.php:120
 #: src/Groups/translations.php:244
 msgid "Fields"
 msgstr "Champs"
@@ -1279,10 +1278,6 @@ msgstr "Journaux internes"
 msgid "Generate debug dump"
 msgstr "Générer un dump de débogage"
 
-#: src/Groups/translations.php:571
-msgid "Include specific Views data in your debug dump"
-msgstr "Inclure des données de Vues spécifiques dans votre dump de débogage"
-
 #: src/Groups/translations.php:302
 msgid "Enable to display quick access links on the front and make error messages more detailed (both for admins only)."
 msgstr "Activer pour afficher des liens d'accès rapide à l'avant et rendre les messages d'erreur plus détaillés (pour les administrateurs uniquement)."
@@ -1290,10 +1285,6 @@ msgstr "Activer pour afficher des liens d'accès rapide à l'avant et rendre les
 #: src/Groups/translations.php:579
 msgid "Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation."
 msgstr "Contient des avertissements et des erreurs PHP liés au plugin. Les journaux d'erreurs sont supprimés lors de la mise à niveau ou de la désactivation du plugin."
-
-#: src/Groups/translations.php:582
-msgid "Select the View items related to your issue to include them in the debug dump."
-msgstr "Sélectionnez les éléments de Vue liés à votre problème pour les inclure dans le dump de débogage."
 
 #: src/Groups/translations.php:317
 msgid "Add Repository"
@@ -1335,14 +1326,6 @@ msgstr "Ajouter une taxonomie"
 msgid "Export"
 msgstr "Exporter"
 
-#: src/Groups/translations.php:561
-msgid "Export All Views"
-msgstr "Exporter toutes les vues"
-
-#: src/Groups/translations.php:563
-msgid "Export Views"
-msgstr "Exporter les vues"
-
 #: src/Groups/translations.php:565
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:177
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:221
@@ -1352,10 +1335,6 @@ msgstr "Importer"
 #: src/Groups/translations.php:566
 msgid "Select a file to import"
 msgstr "Sélectionner un fichier à importer"
-
-#: src/Groups/translations.php:576
-msgid "Select Views to be exported"
-msgstr "Sélectionner les vues à exporter"
 
 #: src/Groups/translations.php:122
 msgid "Parent field"
@@ -1380,10 +1359,6 @@ msgstr "Enregistrer un bloc Gutenberg"
 #: src/Groups/translations.php:140
 msgid "Render template when it's empty"
 msgstr "Rendre le modèle quand il est vide"
-
-#: src/Groups/translations.php:141
-msgid "Use the Post ID as the View ID in the markup"
-msgstr "Utiliser l'ID de l'article comme ID de la vue dans le balisage"
 
 #: src/Groups/translations.php:142
 msgid "Use the Post ID in the Gutenberg block's name"
@@ -1445,81 +1420,23 @@ msgstr "(utilisation interne uniquement)"
 msgid "Delete imported objects"
 msgstr "Supprimer les objets importés"
 
-#: src/html/dashboard/import.php:53
-msgid "Import Demo to get started in seconds"
-msgstr "Importer la démo pour commencer en quelques secondes"
-
-#: src/html/dashboard/import.php:58
-msgid "Whether you are new to Advanced Views or you just want to get the basic setup quickly then this tool will help you with the following scenarios:"
-msgstr "Que vous soyez nouveau sur Advanced Views ou que vous souhaitiez simplement obtenir la configuration de base rapidement, cet outil vous aidera dans les scénarios suivants :"
-
-#: src/html/dashboard/import.php:67
+#: src/html/dashboard/import.php:80
 #: src/html/dashboard/import_result.php:40
 msgid "Display page's ACF fields on the same page"
 msgstr "Afficher les champs ACF de la page sur la même page"
 
-#: src/html/dashboard/import.php:74
-msgid "Create 'draft' pages for 'Samsung Galaxy A53', 'Nokia X20' and 'Xiaomi 12T'."
-msgstr "Créer des pages 'brouillon' pour 'Samsung Galaxy A53', 'Nokia X20' et 'Xiaomi 12T'."
-
-#: src/html/dashboard/import.php:84
-msgid "Create an ACF Field Group called \"Phone\" with location set to those pages."
-msgstr "Créer un groupe de champs ACF appelé \"Téléphone\" avec l'emplacement défini pour ces pages."
-
-#: src/html/dashboard/import.php:94
-msgid "Create a View called \"Phone\" with fields assigned from the \"Phone\" Field Group."
-msgstr "Créer une vue appelée \"Téléphone\" avec des champs attribués du groupe de champs \"Téléphone\"."
-
-#: src/html/dashboard/import.php:104
-msgid "Fill each page’s ACF fields with text and add the View shortcode to the page content."
-msgstr "Remplir les champs ACF de chaque page avec du texte et ajouter le shortcode de la Vue au contenu de la page."
-
-#: src/html/dashboard/import.php:114
+#: src/html/dashboard/import.php:127
 #: src/html/dashboard/import_result.php:70
 msgid "Display a specific post, page or CPT item with its fields"
 msgstr "Afficher un post spécifique, une page ou un élément CPT avec ses champs"
 
-#: src/html/dashboard/import.php:120
-msgid "Create a \"draft\" page called \"Article about Samsung\""
-msgstr "Créer une page \"brouillon\" appelée \"Article sur Samsung\""
-
-#: src/html/dashboard/import.php:126
-msgid "Add the View shortcode to the page content with \"object-id\" argument to \"Samsung Galaxy A53\"."
-msgstr "Ajouter le shortcode de la Vue au contenu de la page avec l'argument \"object-id\" pour \"Samsung Galaxy A53\"."
-
-#: src/html/dashboard/import.php:137
 #: src/html/dashboard/import_result.php:80
 msgid "Display specific posts, pages or CPT items and their fields by using filters"
 msgstr "Afficher des posts spécifiques, des pages ou des éléments CPT et leurs champs en utilisant des filtres"
 
-#: src/html/dashboard/import.php:145
 #: src/html/dashboard/import_result.php:81
 msgid "or by manually assigning items"
 msgstr "ou en attribuant manuellement des éléments"
-
-#: src/html/dashboard/import.php:152
-msgid "Create a Card for \"List of Phones\" with View \"Phone\" assigned and filtered to."
-msgstr "Créer une carte pour \"Liste de téléphones\" avec la Vue \"Téléphone\" assignée et filtrée."
-
-#: src/html/dashboard/import.php:162
-msgid "Create a 'draft' page called 'Most popular phones in 2022' and add the Card shortcode to the page content."
-msgstr "Créer une page 'brouillon' appelée 'Téléphones les plus populaires en 2022' et ajouter le shortcode de la Carte au contenu de la page."
-
-#: src/html/dashboard/import.php:174
-msgid "Press the Import button and wait a few seconds."
-msgstr "Appuyez sur le bouton Importer et attendez quelques secondes."
-
-#: src/html/dashboard/import.php:179
-msgid "When the process has completed, you'll see links to all the items for quick editing."
-msgstr "Lorsque le processus sera terminé, vous verrez des liens vers tous les éléments pour une édition rapide."
-
-#: src/html/dashboard/import.php:189
-msgid "Note: After the import, a delete button will appear, that can be used to remove the imported items."
-msgstr "Note : Après l'importation, un bouton de suppression apparaîtra, qui pourra être utilisé pour supprimer les éléments importés."
-
-#: src/html/dashboard/import.php:199
-msgid "Import demo now"
-msgstr "Importer la démo maintenant"
 
 #: src/html/dashboard/import_result.php:18
 msgid "Import was successful. You’re all set!"
@@ -1737,10 +1654,6 @@ msgstr "Très probablement, le répertoire des téléchargements WordPress n'est
 #: src/Template_Engines/Template_Engines.php:143
 msgid "Check and fix file permissions, then deactivate and activate back the Advanced Views plugin. If the issue persists, contact support."
 msgstr "Vérifiez et corrigez les permissions de fichier, puis désactivez et réactivez le plugin Advanced Views. Si le problème persiste, contactez le support."
-
-#: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:134
-msgid "Assigned Group"
-msgstr "Groupe Assigné"
 
 #: src/Layouts/Cpt/Layouts_Cpt.php:77
 #: src/Layouts/Cpt/Layouts_Cpt.php:80
@@ -2663,18 +2576,6 @@ msgid "Post Selections"
 msgstr ""
 
 #. translators: %s - singular name of the CPT.
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:36
-#, php-format
-msgid "Add a %s and select a set of posts or import a pre-built component."
-msgstr ""
-
-#. translators: %s - singular name of the CPT.
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:46
-#, php-format
-msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the %s</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">the shortcode</a>, to display queried items with their fields."
-msgstr ""
-
-#. translators: %s - singular name of the CPT.
 #: src/Post_Selections/Cpt/Post_Selections_Cpt_Meta_Boxes.php:52
 #, php-format
 msgid "No related %s."
@@ -2714,6 +2615,125 @@ msgstr ""
 msgid "Wrong %s"
 msgstr ""
 
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:53
-msgid "(The assigned item Layout determines which fields are displayed)"
+#: src/Groups/translations.php:120
+msgid "Assign Fields"
+msgstr ""
+
+#: src/Groups/translations.php:141
+msgid "Use the Post ID as the Layout ID in the markup"
+msgstr ""
+
+#: src/Groups/translations.php:561
+msgid "Export All Layouts"
+msgstr ""
+
+#: src/Groups/translations.php:563
+msgid "Export Layout"
+msgstr ""
+
+#: src/Groups/translations.php:571
+msgid "Include specific Layouts data in your debug dump"
+msgstr ""
+
+#: src/Groups/translations.php:576
+msgid "Select Layouts to be exported"
+msgstr ""
+
+#: src/Groups/translations.php:582
+msgid "Select the Layout items related to your issue to include them in the debug dump."
+msgstr ""
+
+#: src/html/dashboard/import.php:53
+msgid "Import Demo to Get Started in Seconds"
+msgstr ""
+
+#: src/html/dashboard/import.php:58
+msgid "Whether you're new to Advanced Views or just want a quick way to set up the basics, this demo import will automatically create a working example for you."
+msgstr ""
+
+#: src/html/dashboard/import.php:63
+msgid "It's perfect for exploring how Layouts, Post Selections, and ACF fields work together."
+msgstr ""
+
+#: src/html/dashboard/import.php:73
+msgid "What this demo does"
+msgstr ""
+
+#: src/html/dashboard/import.php:87
+msgid "Creates 'draft' pages for 'Samsung Galaxy A53', 'Nokia X20' and 'Xiaomi 12T'."
+msgstr ""
+
+#: src/html/dashboard/import.php:97
+msgid "Creates an ACF Field Group called \"Phone\" assigned to those pages."
+msgstr ""
+
+#: src/html/dashboard/import.php:107
+msgid "Creates a Layout called \"Phone\" that displays fields from the \"Phone\" Field Group."
+msgstr ""
+
+#: src/html/dashboard/import.php:117
+msgid "Populates each page’s ACF fields with sample text and adds the Layout shortcode to the page content."
+msgstr ""
+
+#: src/html/dashboard/import.php:133
+msgid "Creates a \"draft\" page called \"Article about Samsung\""
+msgstr ""
+
+#: src/html/dashboard/import.php:139
+msgid "Adds a Layout shortcode to the page content with \"object-id\" parameter pointing to \"Samsung Galaxy A53\"."
+msgstr ""
+
+#: src/html/dashboard/import.php:150
+msgid "Display multiple items using Post Selections"
+msgstr ""
+
+#: src/html/dashboard/import.php:161
+msgid "Creates a Post Selection called \"List of Phones\" using the \"Phone\" Layout and filtering for the phone pages."
+msgstr ""
+
+#: src/html/dashboard/import.php:171
+msgid "Create a 'draft' page called 'Most popular phones in 2022' and adds the Post Selection shortcode to the page content."
+msgstr ""
+
+#: src/html/dashboard/import.php:184
+msgid "Importing"
+msgstr ""
+
+#: src/html/dashboard/import.php:192
+msgid "Click Import Demo and wait a few seconds."
+msgstr ""
+
+#: src/html/dashboard/import.php:196
+msgid "When done, you'll see quick links to edit all imported items."
+msgstr ""
+
+#: src/html/dashboard/import.php:207
+msgid "After Import"
+msgstr ""
+
+#: src/html/dashboard/import.php:215
+msgid "A Delete Demo button will appear if you’d like to remove the demo content later."
+msgstr ""
+
+#: src/html/dashboard/import.php:226
+msgid "Import Demo Now"
+msgstr ""
+
+#: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:134
+msgid "Assigned Field Group"
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:36
+#, php-format
+msgid "Add a %s to display a set of posts or import a ready-made component."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:45
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach it</a> where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">via shortcode</a>)."
+msgstr ""
+
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:49
+msgid "The assigned Layout determines which fields are displayed."
 msgstr ""
