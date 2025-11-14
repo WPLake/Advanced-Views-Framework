@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:181
-#: src/Plugin.php:311
+#: src/Plugin.php:204
+#: src/Plugin.php:332
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -1478,7 +1478,7 @@ msgstr "Copiar al portapapeles"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:80
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:98
-#: src/Plugin.php:168
+#: src/Plugin.php:170
 msgid "Read more"
 msgstr "Leer más"
 
@@ -1609,23 +1609,23 @@ msgstr "Nota: No desactives la función de almacenamiento FS antes de arreglarla
 
 #: src/Dashboard/Dashboard.php:232
 #: src/html/postbox/upgrade.php:23
-#: src/Plugin.php:110
+#: src/Plugin.php:112
 msgid "Upgrade to Pro"
 msgstr "Actualizar a Pro"
 
-#: src/Plugin.php:153
+#: src/Plugin.php:155
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "¡Problema de compatibilidad detectado! El plugin \"Advanced Views\" requiere comentarios \"PHPDoc\" en el código."
 
-#: src/Plugin.php:157
+#: src/Plugin.php:159
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Por favor, cambia la opción \"opcache.save_comments\" en tu archivo php.ini al valor predeterminado de \"1\" en tu hosting."
 
-#: src/Plugin.php:306
+#: src/Plugin.php:327
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' y 'Advanced Views Pro' no deben estar activos al mismo tiempo. Hemos desactivado automáticamente"
 
-#: src/Plugin.php:312
+#: src/Plugin.php:333
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1674,11 +1674,7 @@ msgstr "Borrador de vista actualizado."
 msgid "No assigned ACF Groups."
 msgstr "No hay Grupos ACF asignados."
 
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:250
-msgid "Your View shortcode is available after publishing."
-msgstr "Tu shortcode de Vista estará disponible después de publicar."
-
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:276
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:282
 msgid "Assigned Groups"
 msgstr "Grupos Asignados"
 
@@ -1785,12 +1781,6 @@ msgstr "Error de Advanced Views: El editor Gutenberg está desactivado, lo que i
 msgid "Please %1$s reach out %2$s to our support team for further assistance."
 msgstr "Por favor, %1$s contacta %2$s a nuestro equipo de soporte para obtener más ayuda."
 
-#. Plugin URI of the plugin
-#. Author URI of the plugin
-#: acf-views.php
-msgid "https://wplake.org/advanced-views-lite/"
-msgstr "https://wplake.org/advanced-views-lite/"
-
 #: src/Post_Selections/Cpt/Table/Post_Selections_Pre_Built_Tab.php:59
 msgid "View for Card along with responsive CSS rules are included."
 msgstr "Vista para Tarjeta junto con reglas CSS responsivas incluidas."
@@ -1808,39 +1798,11 @@ msgstr "aquí"
 msgid "See how to load from other sources or limit visibility by roles"
 msgstr "Vea cómo cargar desde otras fuentes o limitar la visibilidad por roles"
 
-#: src/Automatic_Reports.php:209
-msgid "Please tell us the reason why you are deactivating the plugin (optionally)"
-msgstr "Por favor, díganos la razón por la cual está desactivando el plugin (opcionalmente)"
-
-#: src/Automatic_Reports.php:213
-msgid "Tell us more about your case to help us improve the plugin"
-msgstr "Cuéntenos más sobre su caso para ayudarnos a mejorar el plugin"
-
 #: src/Automatic_Reports.php:219
 msgid "Delete data and deactivate"
 msgstr "Eliminar datos y desactivar"
 
-#: src/Automatic_Reports.php:221
-msgid "Does not suit my use case"
-msgstr "No se adapta a mi caso de uso"
-
-#: src/Automatic_Reports.php:222
-msgid "Compatibility issues"
-msgstr "Problemas de compatibilidad"
-
-#: src/Automatic_Reports.php:223
-msgid "Requires coding"
-msgstr "Requiere programación"
-
-#: src/Automatic_Reports.php:224
-msgid "Too complex"
-msgstr "Demasiado complejo"
-
-#: src/Automatic_Reports.php:225
-msgid "I found an alternative"
-msgstr "Encontré una alternativa"
-
-#: src/Automatic_Reports.php:227
+#: src/Automatic_Reports.php:226
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Eliminar todos los datos del plugin (no se puede deshacer)"
 
@@ -2217,14 +2179,6 @@ msgstr ""
 msgid "Product specific fields (WooCommerce)"
 msgstr ""
 
-#: src/Data_Vendors/Wp/Wp_Data_Vendor.php:81
-msgid "Content (product description)"
-msgstr ""
-
-#: src/Data_Vendors/Wp/Wp_Data_Vendor.php:83
-msgid "Excerpt (product short description)"
-msgstr ""
-
 #: src/Data_Vendors/Wp/Wp_Data_Vendor.php:256
 msgid "Post & Product fields (WordPress, WooCommerce)"
 msgstr ""
@@ -2261,7 +2215,7 @@ msgstr ""
 msgid "Unlock with Pro"
 msgstr ""
 
-#: src/Plugin.php:109
+#: src/Plugin.php:111
 msgid "Unlock Pro"
 msgstr ""
 
@@ -2438,14 +2392,14 @@ msgid "No assigned %s."
 msgstr ""
 
 #. translators: %s is the plural name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:292
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:298
 #, php-format
 msgid "Assigned %s"
 msgstr ""
 
 #. translators: %s is the plural name of the CPT.
 #. translators: %s - singular name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:311
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:317
 #: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:137
 #, php-format
 msgid "Assigned to %s"
@@ -2534,7 +2488,9 @@ msgstr ""
 msgid "No related %s."
 msgstr ""
 
+#. translators: %s is the singular name of the CPT.
 #. translators: %s - singular name of the CPT.
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:253
 #: src/Post_Selections/Cpt/Post_Selections_Cpt_Meta_Boxes.php:84
 #, php-format
 msgid "Your %s shortcode is available after publishing."
@@ -2745,4 +2701,54 @@ msgstr ""
 
 #: src/Groups/translations.php:437
 msgid "Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab."
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: acf-views.php
+msgid "https://advanced-views.com/"
+msgstr ""
+
+#: src/Automatic_Reports.php:209
+msgid "We'd love to know why you're deactivating Advanced Views. Your feedback helps us improve (Optional)"
+msgstr ""
+
+#: src/Automatic_Reports.php:213
+msgid "Tell us a bit more about your situation - what didn't work or what you were hoping to achieve."
+msgstr ""
+
+#: src/Automatic_Reports.php:221
+msgid "Setup was too complex for me"
+msgstr ""
+
+#: src/Automatic_Reports.php:222
+msgid "Plugin conflicted with my theme or another plugin"
+msgstr ""
+
+#: src/Automatic_Reports.php:223
+msgid "Required coding or technical knowledge I don't have"
+msgstr ""
+
+#: src/Automatic_Reports.php:224
+msgid "Found a plugin that better fits my workflow"
+msgstr ""
+
+#: src/Compatibility/Migration/Version/Version_Migrator.php:142
+msgid "Advanced Views plugin has been successfully upgraded!"
+msgstr ""
+
+#: src/Compatibility/Migration/Version/Version_Migrator.php:161
+msgid "Thanks, hide"
+msgstr ""
+
+#: src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php:40
+msgid "Views are now called Layouts and Cards are called Post Selections. Same great features, just easier to use! (v. 3.8.0)"
+msgstr ""
+
+#: src/Data_Vendors/Wp/Wp_Data_Vendor.php:81
+msgid "Post Content / Product Description"
+msgstr ""
+
+#: src/Data_Vendors/Wp/Wp_Data_Vendor.php:83
+msgid "Post Excerpt / Short Product Description"
 msgstr ""

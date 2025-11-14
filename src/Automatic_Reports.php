@@ -207,27 +207,25 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		$data = array(
 			'plugin_slug'                 => $plugin_slug,
 			'message'                     => __(
-				'Please tell us the reason why you are deactivating the plugin (optionally)',
+				"We'd love to know why you're deactivating Advanced Views. Your feedback helps us improve (Optional)",
 				'acf-views'
 			),
 			'notes_label'                 => __(
-				'Tell us more about your case to help us improve the plugin',
+				"Tell us a bit more about your situation - what didn't work or what you were hoping to achieve.",
 				'acf-views'
 			),
 			'cancel_label'                => __( 'Cancel', 'acf-views' ),
 			'deactivate_label'            => __( 'Deactivate', 'acf-views' ),
 			'deactivate_and_delete_label' => __( 'Delete data and deactivate', 'acf-views' ),
 			'options'                     => array(
-				'not_suit_my_case'     => __( 'Does not suit my use case', 'acf-views' ),
-				'compatibility_issues' => __( 'Compatibility issues', 'acf-views' ),
-				'requires_coding'      => __( 'Requires coding', 'acf-views' ),
-				'too_complex'          => __( 'Too complex', 'acf-views' ),
-				'found_better'         => __( 'I found an alternative', 'acf-views' ),
+				'not_suit_my_case'     => __( 'Setup was too complex for me', 'acf-views' ),
+				'compatibility_issues' => __( 'Plugin conflicted with my theme or another plugin', 'acf-views' ),
+				'requires_coding'      => __( "Required coding or technical knowledge I don't have", 'acf-views' ),
+				'too_complex'          => __( 'Found a plugin that better fits my workflow', 'acf-views' ),
 			),
 			'delete_data_option'          => __( 'Delete all the plugin data (cannot be undone)', 'acf-views' ),
 			'is_with_survey'              => false === $this->settings->is_automatic_reports_disabled(),
 		);
-
 		?>
 		<style>
 			/*hide other action links while survey is open,
@@ -262,7 +260,7 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			(function () {
 				class DeactivationSurveyPopup {
 					constructor() {
-						this.data = JSON.parse('<?php echo wp_json_encode( $data ); ?>');
+						this.data = <?php echo wp_json_encode( $data ); ?>;
 						'loading' === document.readyState ?
 							document.addEventListener('DOMContentLoaded', this.init.bind(this)) :
 							this.init();
