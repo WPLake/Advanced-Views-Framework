@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use WP_Filesystem_Base;

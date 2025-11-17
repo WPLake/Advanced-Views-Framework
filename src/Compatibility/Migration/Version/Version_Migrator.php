@@ -8,13 +8,14 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -30,10 +31,12 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	 * @var Migration[]
 	 */
 	private array $migrations;
+	private Logger $logger;
 
-	public function __construct( Plugin $plugin, Settings $settings ) {
+	public function __construct( Plugin $plugin, Settings $settings, Logger $logger ) {
 		$this->plugin   = $plugin;
 		$this->settings = $settings;
+		$this->logger   = $logger;
 
 		$this->version_migrations = array();
 		$this->migrations         = array();
@@ -186,12 +189,26 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 
 	public function migrate( string $previous_version ): void {
 		foreach ( $this->migrations as $migration ) {
+			$this->logger->info(
+				'Running migration case',
+				array(
+					'migration' => $this->get_migration_name( $migration ),
+				)
+			);
+
 			$migration->migrate();
 		}
 
 		$version_migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $version_migrations as $version_migration ) {
+			$this->logger->info(
+				'Running version migration case',
+				array(
+					'migration' => $this->get_migration_name( $version_migration ),
+				)
+			);
+
 			$version_migration->migrate();
 		}
 
@@ -211,16 +228,26 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function perform_upgrade(): void {
-		// all versions since 1.6.0 has a version.
-		$previous_version = $this->settings->get_version();
+		$db_version = $this->settings->get_version();
+		// all versions since 1.6.0 have DB version record.
+		$previous_version = strlen( $db_version ) > 0 ?
+			$db_version :
+			'1.6.0';
 
-		// skip the very first run, no data is available, nothing to fix.
-		if ( strlen( $previous_version ) > 0 ) {
-			$this->migrate( $previous_version );
-		}
+		$this->logger->info(
+			'Performing version upgrade',
+			array(
+				'previous_version' => $previous_version,
+				'current_version'  => $this->plugin->get_version(),
+			)
+		);
 
-		$this->settings->set_version( $this->plugin->get_version() );
-		$this->settings->save();
+		$this->migrate( $previous_version );
+
+		// fixme
+
+		// $this->settings->set_version( $this->plugin->get_version() );
+		// $this->settings->save();
 	}
 
 	/**
@@ -266,5 +293,12 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 				}
 			}
 		);
+	}
+
+	protected function get_migration_name( Migration $migration ): string {
+		$full_class_name  = get_class( $migration );
+		$class_name_parts = explode( '\\', $full_class_name );
+
+		return end( $class_name_parts );
 	}
 }

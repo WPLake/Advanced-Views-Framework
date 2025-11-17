@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;

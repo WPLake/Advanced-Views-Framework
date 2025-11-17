@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 

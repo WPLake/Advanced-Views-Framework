@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Fs_Fiel
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Post_Type;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
@@ -22,17 +23,20 @@ final class Migration_3_8_0 extends Version_Migration_Base {
 	const ORDER              = self::ORDER_BEFORE_ALL;
 
 	public function __construct(
+		Logger $logger,
 		Cpt_Settings_Storage $view_cpt_settings_storage,
 		Cpt_Settings_Storage $card_cpt_settings_storage,
 		Plugin_Cpt $layouts_cpt,
 		Plugin_Cpt $post_selections_cpt
 	) {
+		parent::__construct( $logger );
+
 		$file_system      = $view_cpt_settings_storage->get_file_system();
 		$this->migrations = array(
-			new Migration_Post_Type( $view_cpt_settings_storage, $this->get_views_cpt(), $layouts_cpt ),
-			new Migration_Post_Type( $card_cpt_settings_storage, $this->get_cards_cpt(), $post_selections_cpt ),
-			new Migration_Fs_Field( $file_system, 'view.php', 'controller.php' ),
-			new Migration_Fs_Field( $file_system, 'card.php', 'controller.php' ),
+			new Migration_Post_Type( $logger, $view_cpt_settings_storage, $this->get_views_cpt(), $layouts_cpt ),
+			new Migration_Post_Type( $logger, $card_cpt_settings_storage, $this->get_cards_cpt(), $post_selections_cpt ),
+			new Migration_Fs_Field( $logger, $file_system, 'view.php', 'controller.php' ),
+			new Migration_Fs_Field( $logger, $file_system, 'card.php', 'controller.php' ),
 		);
 	}
 

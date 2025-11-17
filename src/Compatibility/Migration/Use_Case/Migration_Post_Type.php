@@ -7,9 +7,10 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 
 final class Migration_Post_Type extends Migration_Base {
@@ -18,10 +19,13 @@ final class Migration_Post_Type extends Migration_Base {
 	private Cpt_Settings_Storage $cpt_settings_storage;
 
 	public function __construct(
+		Logger $logger,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Plugin_Cpt $from_cpt,
 		Plugin_Cpt $to_cpt
 	) {
+		parent::__construct( $logger );
+
 		$this->from_cpt             = $from_cpt;
 		$this->to_cpt               = $to_cpt;
 		$this->cpt_settings_storage = $cpt_settings_storage;

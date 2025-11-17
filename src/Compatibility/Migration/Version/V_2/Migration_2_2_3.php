@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 
 final class Migration_2_2_3 extends Version_Migration_Base {
@@ -15,9 +16,12 @@ final class Migration_2_2_3 extends Version_Migration_Base {
 	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
 
 	public function __construct(
+		Logger $logger,
 		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
 		Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions
 	) {
+		parent::__construct( $logger );
+
 		$this->layouts_cpt_save_actions         = $layouts_cpt_save_actions;
 		$this->post_selections_cpt_save_actions = $post_selections_cpt_save_actions;
 	}

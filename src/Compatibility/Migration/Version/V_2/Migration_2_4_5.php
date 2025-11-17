@@ -7,11 +7,14 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Logger;
 
 final class Migration_2_4_5 extends Version_Migration_Base {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 
-	public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
+	public function __construct( Logger $logger, Layouts_Settings_Storage $layouts_settings_storage ) {
+		parent::__construct( $logger );
+
 		$this->layouts_settings_storage = $layouts_settings_storage;
 	}
 

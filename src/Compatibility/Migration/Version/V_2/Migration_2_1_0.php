@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
@@ -18,7 +19,9 @@ final class Migration_2_1_0 extends Version_Migration_Base {
 	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 	private Layouts_Settings_Storage $layouts_settings_storage;
 
-	public function __construct( Layouts_Cpt_Save_Actions $layouts_cpt_save_actions, Layouts_Settings_Storage $layouts_settings_storage ) {
+	public function __construct( Logger $logger, Layouts_Cpt_Save_Actions $layouts_cpt_save_actions, Layouts_Settings_Storage $layouts_settings_storage ) {
+		parent::__construct( $logger );
+
 		$this->layouts_cpt_save_actions = $layouts_cpt_save_actions;
 		$this->layouts_settings_storage = $layouts_settings_storage;
 	}

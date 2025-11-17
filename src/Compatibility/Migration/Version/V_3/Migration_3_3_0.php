@@ -16,13 +16,14 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 final class Migration_3_3_0 extends Version_Migration_Base {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Logger $logger;
 
 	public function __construct(
+		Logger $logger,
 		Layouts_Settings_Storage $layouts_settings_storage,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Logger $logger
+		Post_Selections_Settings_Storage $post_selections_settings_storage
 	) {
+		parent::__construct( $logger );
+
 		$this->layouts_settings_storage         = $layouts_settings_storage;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->logger                           = $logger;

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Parents;
+namespace Org\Wplake\Advanced_Views\Utils;
 
 defined( 'ABSPATH' ) || exit;
 

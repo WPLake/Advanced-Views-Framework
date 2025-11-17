@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;

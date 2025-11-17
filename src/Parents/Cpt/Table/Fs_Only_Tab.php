@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 

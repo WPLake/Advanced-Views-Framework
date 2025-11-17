@@ -9,14 +9,14 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 

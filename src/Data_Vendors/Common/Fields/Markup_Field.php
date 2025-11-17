@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 

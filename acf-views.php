@@ -23,6 +23,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -159,6 +160,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 			$this->version_migrator        = new Version_Migrator(
 				$this->plugin,
 				$this->settings,
+				$this->logger,
 			);
 
 			$this->add_file_systems(
@@ -513,6 +515,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->template_engines,
 				$this->automatic_reports,
 				$this->settings,
+				$this->plugin,
 				$this->file_systems,
 				array( $this->layouts_settings_storage, $this->post_selections_settings_storage )
 			);

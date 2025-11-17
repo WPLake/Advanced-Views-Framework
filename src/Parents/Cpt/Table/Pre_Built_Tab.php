@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 abstract class Pre_Built_Tab extends External_Storage_Tab {
 	use Safe_Array_Arguments;

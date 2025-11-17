@@ -6,12 +6,15 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 final class Migration_2_3_0 extends Version_Migration_Base {
 	private Template_Engines $template_engines;
 
-	public function __construct( Template_Engines $template_engines ) {
+	public function __construct( Logger $logger, Template_Engines $template_engines ) {
+		parent::__construct( $logger );
+
 		$this->template_engines = $template_engines;
 	}
 

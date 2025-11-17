@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -20,7 +21,9 @@ class Migration_2_2_0 extends Version_Migration_Base {
 	protected Layouts_Settings_Storage $layouts_settings_storage;
 	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+	public function __construct( Logger $logger, Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+		parent::__construct( $logger );
+
 		$this->layouts_settings_storage         = $layouts_settings_storage;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}

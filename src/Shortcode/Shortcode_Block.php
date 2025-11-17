@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use WP_Block;
 use WP_Block_Template;

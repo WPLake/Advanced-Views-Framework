@@ -2,9 +2,9 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views;
+namespace Org\Wplake\Advanced_Views\Utils;
 
-use Org\Wplake\Advanced_Views\Parents\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 
 defined( 'ABSPATH' ) || exit;

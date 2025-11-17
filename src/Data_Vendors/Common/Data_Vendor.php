@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 
 defined( 'ABSPATH' ) || exit;

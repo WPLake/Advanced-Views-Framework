@@ -7,15 +7,18 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration_Base;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Parents\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 
 final class Migration_Fs_Field extends Migration_Base {
 	private File_System $file_system;
 	private string $from_name;
 	private string $to_name;
 
-	public function __construct( File_System $file_system, string $from_name, string $to_name ) {
+	public function __construct( Logger $logger, File_System $file_system, string $from_name, string $to_name ) {
+		parent::__construct( $logger );
+
 		$this->file_system = $file_system;
 		$this->from_name   = $from_name;
 		$this->to_name     = $to_name;

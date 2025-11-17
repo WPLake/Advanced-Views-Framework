@@ -29,7 +29,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
-use Org\Wplake\Advanced_Views\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -355,30 +355,32 @@ abstract class Plugin_Loader_Base {
 		$this->version_migrator->add_version_migrations(
 			array(
 				// v1.
-				new Migration_1_6_0(),
-				new Migration_1_7_0( $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
+				new Migration_1_6_0( $this->logger ),
+				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
 				// v2.
-				new Migration_2_0_0( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
-				new Migration_2_1_0( $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
-				new Migration_2_2_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_2( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_3( $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
-				new Migration_2_3_0( $this->template_engines ),
+				new Migration_2_0_0( $this->logger, $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_1_0( $this->logger, $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
+				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_2_3( $this->logger, $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_3_0( $this->logger, $this->template_engines ),
 				new Migration_2_4_0(
+					$this->logger,
 					$this->layouts_cpt_save_actions,
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage
 				),
-				new Migration_2_4_2( $this->layouts_settings_storage ),
-				new Migration_2_4_5( $this->layouts_settings_storage ),
+				new Migration_2_4_2( $this->logger, $this->layouts_settings_storage ),
+				new Migration_2_4_5( $this->logger, $this->layouts_settings_storage ),
 				// v3.
-				new Migration_3_0_0( $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_3_0_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_3_3_0(
+					$this->logger,
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage,
-					$this->logger
 				),
 				new Migration_3_8_0(
+					$this->logger,
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage,
 					$this->layout_cpt,
