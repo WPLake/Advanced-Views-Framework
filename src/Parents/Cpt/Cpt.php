@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -77,10 +77,10 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		self::add_action( 'init', array( $this, 'add_cpt' ) );
 
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 

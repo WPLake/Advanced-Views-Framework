@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
@@ -25,20 +25,20 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 
 	private Html $html;
 	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
-	private Plugin_Cpt $layout_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Public_Cpt $public_cpt,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $post_selections_settings_storage, $public_cpt );
 
 		$this->html                           = $html;
 		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
-		$this->layout_cpt                     = $layout_cpt;
+		$this->plugin_cpt                     = $plugin_cpt;
 	}
 
 	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
@@ -115,7 +115,7 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 				self::COLUMN_RELATED_VIEW  => sprintf(
 					// translators: %s - singular name of the CPT.
 					__( 'Related %s', 'acf-views' ),
-					$this->layout_cpt->labels()->singular_name()
+					$this->plugin_cpt->labels()->singular_name()
 				),
 				self::COLUMN_LAST_MODIFIED => __( 'Last modified', 'acf-views' ),
 			)
@@ -136,10 +136,10 @@ class Post_Selections_Cpt_Table extends Cpt_Table {
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		parent::set_hooks( $current_screen );
+	public function set_hooks( Route_Detector $route_detector ): void {
+		parent::set_hooks( $route_detector );
 
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 

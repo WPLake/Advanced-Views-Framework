@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:204
-#: src/Plugin.php:332
+#: src/Plugin.php:205
+#: src/Plugin.php:333
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -143,9 +143,9 @@ msgid "Settings"
 msgstr "Einstellungen"
 
 #: src/Dashboard/Dashboard.php:224
-#: src/Groups/Tools_Settings.php:168
-#: src/Tools/Tools.php:249
-#: src/Tools/Tools.php:250
+#: src/Groups/Tools_Settings.php:179
+#: src/Tools/Tools.php:258
+#: src/Tools/Tools.php:259
 msgid "Tools"
 msgstr "Werkzeuge"
 
@@ -274,15 +274,15 @@ msgstr "Einstellungen erfolgreich aktualisiert."
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: src/Tools/Tools.php:604
+#: src/Tools/Tools.php:640
 msgid "Import file not found."
 msgstr "Importdatei nicht gefunden."
 
-#: src/Tools/Tools.php:616
+#: src/Tools/Tools.php:652
 msgid "Import file is not a valid JSON."
 msgstr "Importdatei ist kein gültiges JSON."
 
-#: src/Tools/Tools.php:253
+#: src/Tools/Tools.php:262
 msgid "Process"
 msgstr "Prozess"
 
@@ -611,7 +611,7 @@ msgstr "CSS-Klassen"
 msgid "CSS & JS"
 msgstr "CSS & JS"
 
-#: src/Plugin/Plugin_Loader_Base.php:431
+#: src/Plugin/Plugin_Loader_Base.php:429
 msgid "Layout"
 msgstr "Layout"
 
@@ -1268,7 +1268,7 @@ msgstr "Debug-Dump erstellen"
 msgid "Enable to display quick access links on the front and make error messages more detailed (both for admins only)."
 msgstr "Aktivieren, um Schnellzugriff-Links auf der Vorderseite anzuzeigen und Fehlermeldungen detaillierter zu gestalten (beides nur für Admins)."
 
-#: src/Groups/translations.php:579
+#: src/Groups/translations.php:581
 msgid "Contains PHP warnings and errors related to the plugin. The error logs are deleted upon plugin upgrade or deactivation."
 msgstr "Enthält PHP-Warnungen und -Fehler, die sich auf das Plugin beziehen. Die Fehlerprotokolle werden beim Upgrade oder bei der Deaktivierung des Plugins gelöscht."
 
@@ -1478,7 +1478,7 @@ msgstr "In die Zwischenablage kopieren"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:80
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:98
-#: src/Plugin.php:170
+#: src/Plugin.php:171
 msgid "Read more"
 msgstr "Mehr lesen"
 
@@ -1609,23 +1609,23 @@ msgstr "Hinweis: Deaktivieren Sie die FS-Speicherfunktion nicht, bevor Sie sie r
 
 #: src/Dashboard/Dashboard.php:232
 #: src/html/postbox/upgrade.php:23
-#: src/Plugin.php:112
+#: src/Plugin.php:113
 msgid "Upgrade to Pro"
 msgstr "Auf Pro upgraden"
 
-#: src/Plugin.php:155
+#: src/Plugin.php:156
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "Kompatibilitätsproblem festgestellt! Das \"Advanced Views\" Plugin erfordert \"PHPDoc\" Kommentare im Code."
 
-#: src/Plugin.php:159
+#: src/Plugin.php:160
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Bitte ändern Sie die Option \"opcache.save_comments\" in Ihrer php.ini-Datei auf den Standardwert \"1\" bei Ihrem Hosting."
 
-#: src/Plugin.php:327
+#: src/Plugin.php:328
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' und 'Advanced Views Pro' sollten nicht gleichzeitig aktiv sein. Wir haben automatisch deaktiviert"
 
-#: src/Plugin.php:333
+#: src/Plugin.php:334
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1699,19 +1699,19 @@ msgid "Pre-built components"
 msgstr "Vorgefertigte Komponenten"
 
 #. translators: Successfully imported x Layout(s) and y Post Selection(s).
-#: src/Tools/Tools.php:443
+#: src/Tools/Tools.php:479
 #, php-format
 msgid "Successfully imported %1$d %2$s and %3$d %4$s."
 msgstr "Erfolgreich %1$d %2$s und %3$d %4$s importiert."
 
 #. translators: Something went wrong. Imported x from y Layout(s) and x from y Post Selections.
-#: src/Tools/Tools.php:454
+#: src/Tools/Tools.php:490
 #, php-format
 msgid "Something went wrong. Imported %1$d from %2$d %3$s and %4$d from %5$d %6$s."
 msgstr "Etwas ist schiefgelaufen. %1$d von %2$d %3$s und %4$d von %5$d %6$s importiert."
 
 #. translators: Success! There were x View(s) and y Card(s) exported.
-#: src/Tools/Tools.php:206
+#: src/Tools/Tools.php:215
 #, php-format
 msgid "Success! There were %1$d %2$s and %3$d %4$s exported."
 msgstr "Erfolg! Es wurden %1$d %2$s und %3$d %4$s exportiert."
@@ -1747,23 +1747,23 @@ msgstr "Metafelder und deren Feldgruppen zusammen mit responsiven CSS-Regeln sin
 msgid "Hover on the title and click Import."
 msgstr "Fahren Sie mit der Maus über den Titel und klicken Sie auf Importieren."
 
-#: src/Automatic_Reports.php:172
+#: src/Automated_Reports.php:174
 msgid "The Advanced Views plugin sends automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement."
 msgstr "Das Advanced Views-Plugin sendet automatische Fehler- und Nutzungsberichte an die Entwickler, was eine schnellere Problemlösung und Verbesserung des Plugins ermöglicht."
 
-#: src/Automatic_Reports.php:179
+#: src/Automated_Reports.php:181
 msgid "Automatic reports do not include any private or sensitive information and can be disabled in the plugin settings."
 msgstr "Automatische Berichte enthalten keine privaten oder sensiblen Informationen und können in den Plugin-Einstellungen deaktiviert werden."
 
-#: src/Automatic_Reports.php:196
+#: src/Automated_Reports.php:198
 msgid "Got it, hide"
 msgstr "Verstanden, ausblenden"
 
-#: src/Automatic_Reports.php:217
+#: src/Automated_Reports.php:219
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Automatic_Reports.php:218
+#: src/Automated_Reports.php:220
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
@@ -1798,11 +1798,11 @@ msgstr "hier"
 msgid "See how to load from other sources or limit visibility by roles"
 msgstr "Sehen Sie, wie Sie aus anderen Quellen laden oder die Sichtbarkeit durch Rollen einschränken können"
 
-#: src/Automatic_Reports.php:219
+#: src/Automated_Reports.php:221
 msgid "Delete data and deactivate"
 msgstr "Daten löschen und deaktivieren"
 
-#: src/Automatic_Reports.php:226
+#: src/Automated_Reports.php:228
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Alle Plugin-Daten löschen (kann nicht rückgängig gemacht werden)"
 
@@ -2191,11 +2191,11 @@ msgstr ""
 msgid "Comment & Review fields (WordPress, WooCommerce)"
 msgstr ""
 
-#: src/Groups/translations.php:580
+#: src/Groups/translations.php:582
 msgid "Contains plugin warnings and debug messages if the development mode is enabled in <a target='_blank' href='/wp-admin/edit.php?post_type=acf_views&page=acf-views-settings'>the settings</a>. The logs are deleted upon plugin deactivation."
 msgstr ""
 
-#: src/Groups/translations.php:581
+#: src/Groups/translations.php:583
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
@@ -2203,7 +2203,7 @@ msgstr ""
 msgid "AVF shortcode render error:"
 msgstr ""
 
-#: src/Tools/Tools.php:195
+#: src/Tools/Tools.php:204
 msgid "Action successfully complete"
 msgstr ""
 
@@ -2215,7 +2215,7 @@ msgstr ""
 msgid "Unlock with Pro"
 msgstr ""
 
-#: src/Plugin.php:111
+#: src/Plugin.php:112
 msgid "Unlock Pro"
 msgstr ""
 
@@ -2342,15 +2342,15 @@ msgstr ""
 msgid "Include specific Post Selections data in your debug dump"
 msgstr ""
 
-#: src/Groups/translations.php:577
+#: src/Groups/translations.php:579
 msgid "Select Post Selections to be exported"
 msgstr ""
 
-#: src/Groups/translations.php:578
+#: src/Groups/translations.php:580
 msgid "Note: Layouts and Post Selections with the same IDs are overridden."
 msgstr ""
 
-#: src/Groups/translations.php:583
+#: src/Groups/translations.php:585
 msgid "Select the Post Selection items related to your issue to include them in the debug dump."
 msgstr ""
 
@@ -2470,15 +2470,15 @@ msgid_plural "Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Plugin/Plugin_Loader_Base.php:435
+#: src/Plugin/Plugin_Loader_Base.php:433
 msgid "Layouts"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:455
+#: src/Plugin/Plugin_Loader_Base.php:453
 msgid "Post Selection"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:459
+#: src/Plugin/Plugin_Loader_Base.php:457
 msgid "Post Selections"
 msgstr ""
 
@@ -2511,15 +2511,15 @@ msgid "%s is missing"
 msgstr ""
 
 #. translators: %s - plural name of the CPT.
-#: src/Tools/Tools.php:469
-#: src/Tools/Tools.php:483
+#: src/Tools/Tools.php:505
+#: src/Tools/Tools.php:519
 #, php-format
 msgid "Imported %s"
 msgstr ""
 
 #. translators: %s - plural name of the CPT.
-#: src/Tools/Tools.php:497
-#: src/Tools/Tools.php:511
+#: src/Tools/Tools.php:533
+#: src/Tools/Tools.php:547
 #, php-format
 msgid "Wrong %s"
 msgstr ""
@@ -2544,11 +2544,11 @@ msgstr ""
 msgid "Include specific Layouts data in your debug dump"
 msgstr ""
 
-#: src/Groups/translations.php:576
+#: src/Groups/translations.php:578
 msgid "Select Layouts to be exported"
 msgstr ""
 
-#: src/Groups/translations.php:582
+#: src/Groups/translations.php:584
 msgid "Select the Layout items related to your issue to include them in the debug dump."
 msgstr ""
 
@@ -2709,35 +2709,35 @@ msgstr ""
 msgid "https://advanced-views.com/"
 msgstr ""
 
-#: src/Automatic_Reports.php:209
+#: src/Automated_Reports.php:211
 msgid "We'd love to know why you're deactivating Advanced Views. Your feedback helps us improve (Optional)"
 msgstr ""
 
-#: src/Automatic_Reports.php:213
+#: src/Automated_Reports.php:215
 msgid "Tell us a bit more about your situation - what didn't work or what you were hoping to achieve."
 msgstr ""
 
-#: src/Automatic_Reports.php:221
+#: src/Automated_Reports.php:223
 msgid "Setup was too complex for me"
 msgstr ""
 
-#: src/Automatic_Reports.php:222
+#: src/Automated_Reports.php:224
 msgid "Plugin conflicted with my theme or another plugin"
 msgstr ""
 
-#: src/Automatic_Reports.php:223
+#: src/Automated_Reports.php:225
 msgid "Required coding or technical knowledge I don't have"
 msgstr ""
 
-#: src/Automatic_Reports.php:224
+#: src/Automated_Reports.php:226
 msgid "Found a plugin that better fits my workflow"
 msgstr ""
 
-#: src/Compatibility/Migration/Version/Version_Migrator.php:142
+#: src/Compatibility/Migration/Upgrade_Notice.php:79
 msgid "Advanced Views plugin has been successfully upgraded!"
 msgstr ""
 
-#: src/Compatibility/Migration/Version/Version_Migrator.php:161
+#: src/Compatibility/Migration/Upgrade_Notice.php:98
 msgid "Thanks, hide"
 msgstr ""
 
@@ -2751,4 +2751,24 @@ msgstr ""
 
 #: src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php:40
 msgid "Views are now called Layouts and Cards are called Post Selections. Same great features, just easier to use!"
+msgstr ""
+
+#: src/Groups/translations.php:573
+msgid "Upgrade from version"
+msgstr ""
+
+#: src/Groups/translations.php:574
+msgid "Flush caches"
+msgstr ""
+
+#: src/Groups/translations.php:586
+msgid "If the automatic version migration was interrupted, enter your previous Advanced Views version number here and press 'Process' to manually trigger the migration."
+msgstr ""
+
+#: src/Groups/translations.php:587
+msgid "Activate the option and click 'Process' to flush caches. Note: use separately from other options."
+msgstr ""
+
+#: src/Tools/Tools.php:339
+msgid "You entered the invalid version number"
 msgstr ""

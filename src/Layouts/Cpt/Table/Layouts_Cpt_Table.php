@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
@@ -26,20 +26,20 @@ class Layouts_Cpt_Table extends Cpt_Table {
 
 	private Html $html;
 	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
-	private Plugin_Cpt $post_selection_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Public_Cpt $public_cpt,
 		Html $html,
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
-		Plugin_Cpt $post_selection_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $cpt_settings_storage, $public_cpt );
 
 		$this->html                   = $html;
 		$this->layouts_cpt_meta_boxes = $layouts_cpt_meta_boxes;
-		$this->post_selection_cpt     = $post_selection_cpt;
+		$this->plugin_cpt             = $plugin_cpt;
 	}
 
 	protected function get_views_meta_boxes(): Layouts_Cpt_Meta_Boxes {
@@ -135,17 +135,17 @@ class Layouts_Cpt_Table extends Cpt_Table {
 				self::COLUMN_RELATED_POST_SELECTIONS => sprintf(
 					// translators: %s - singular name of the CPT.
 					__( 'Assigned to %s', 'acf-views' ),
-					$this->post_selection_cpt->labels()->singular_name()
+					$this->plugin_cpt->labels()->singular_name()
 				),
 				self::COLUMN_LAST_MODIFIED           => __( 'Last modified', 'acf-views' ),
 			)
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		parent::set_hooks( $current_screen );
+	public function set_hooks( Route_Detector $route_detector ): void {
+		parent::set_hooks( $route_detector );
 
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 

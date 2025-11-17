@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -99,7 +99,14 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 		return 1 === preg_match( '/^\d+\.\d+\.\d+$/', $version );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		// avoid requests with incomplete hooks cycle.
+		if ( wp_doing_ajax() ||
+			wp_doing_cron() ||
+			wp_is_maintenance_mode() ) {
+			return;
+		}
+
 		// don't use 'upgrader_process_complete' hook, as user can update the plugin manually by FTP.
 		$db_version   = $this->settings->get_version();
 		$code_version = $this->plugin->get_version();
@@ -118,16 +125,21 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 			'plugins_loaded',
 			array(
 				$this,
-				'upgrade_from_previous_version',
+				'migrate_from_previous_version',
 			),
 			// with the priority higher than in the Data_Vendors.
 			Data_Vendors::PLUGINS_LOADED_HOOK_PRIORITY + 1
 		);
 
-		// late "wp_loaded" hook ensures all migration hooks are called.
+		/**
+		 * Running lately, inside the "wp_loaded" hook ensures all migration hooks are called.
+		 *
+		 * Plus, we ensure that migration wasn't interrupted by some redirect or another request-breaker:
+		 * otherwise, we don't save the new version and will have another migration.
+		 */
 		self::add_action(
 			'wp_loaded',
-			array( $this, 'complete_version_upgrade' )
+			array( $this, 'complete_version_migration' )
 		);
 	}
 
@@ -151,25 +163,25 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	public function upgrade_from_previous_version(): void {
+	public function migrate_from_previous_version(): void {
 		// previous error logs are not relevant anymore.
 		$this->logger->clear_error_logs();
 
 		// all versions since 1.6.0 have a DB version record.
 		$previous_version = $this->settings->get_version();
 
-		$this->upgrade_from_version( $previous_version );
+		$this->migrate_from_version( $previous_version );
 	}
 
-	public function complete_version_upgrade(): void {
+	public function complete_version_migration(): void {
 		$this->cache_flusher->flush_caches();
 
 		$this->update_db_plugin_version();
 
-		$this->logger->info( 'Version upgrade completed' );
+		$this->logger->info( 'Version upgrade is complete' );
 	}
 
-	public function upgrade_from_version( string $from_version ): void {
+	public function migrate_from_version( string $from_version ): void {
 		$version_migrations = $this->get_version_migrations( $from_version );
 
 		$version_migration_names = array_map(
@@ -180,9 +192,9 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 		$this->logger->info(
 			'Performing version upgrade',
 			array(
-				'previous_version'   => $from_version,
-				'current_version'    => $this->plugin->get_version(),
-				'version_migrations' => $version_migration_names,
+				'previous_version' => $from_version,
+				'current_version'  => $this->plugin->get_version(),
+				'migrations'       => $version_migration_names,
 			)
 		);
 

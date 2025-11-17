@@ -570,6 +570,8 @@ __("Internal logs", "acf-views");
 __("Generate debug dump", "acf-views");
 __("Include specific Layouts data in your debug dump", "acf-views");
 __("Include specific Post Selections data in your debug dump", "acf-views");
+__("Upgrade from version", "acf-views");
+__("Flush caches", "acf-views");
 
 // Tools_Settings.php : descriptions
 
@@ -581,3 +583,5 @@ __("Contains plugin warnings and debug messages if the development mode is enabl
 __("Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.", "acf-views");
 __("Select the Layout items related to your issue to include them in the debug dump.", "acf-views");
 __("Select the Post Selection items related to your issue to include them in the debug dump.", "acf-views");
+__("If the automatic version migration was interrupted, enter your previous Advanced Views version number here and press 'Process' to manually trigger the migration.", "acf-views");
+__("Activate the option and click 'Process' to flush caches. Note: use separately from other options.", "acf-views");

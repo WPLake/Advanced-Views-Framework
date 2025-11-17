@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -272,8 +272,8 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		return $this->render_shortcode( $attrs );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( true === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( true === $route_detector->is_admin_route() ) {
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 

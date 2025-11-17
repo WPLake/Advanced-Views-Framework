@@ -4,13 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Utils;
 
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
-
 defined( 'ABSPATH' ) || exit;
 
-// unlike get_current_screen it fits for early calls.
-class Current_Screen {
+/**
+ * Unlike get_current_screen, it's safe to use it in early calls.
+ */
+final class Route_Detector {
 
 	/**
 	 * This constant includes: the settings, tools and other plugin pages
@@ -33,7 +32,7 @@ class Current_Screen {
 		$this->cache = array();
 	}
 
-	protected function is_rest_cpt_related( string $cpt_name ): bool {
+	protected function is_cpt_rest_route( string $cpt_name ): bool {
 		$request_url = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 
 		return false !== strpos( $request_url, '/wp-json/' ) &&
@@ -41,7 +40,7 @@ class Current_Screen {
 	}
 
 	// includes any rest requests.
-	public function is_admin(): bool {
+	public function is_admin_route(): bool {
 		if ( false === key_exists( 'isAdmin', $this->cache ) ) {
 			$request_uri            = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 			$this->cache['isAdmin'] = true === is_admin() ||
@@ -51,24 +50,12 @@ class Current_Screen {
 		return $this->cache['isAdmin'];
 	}
 
-	// no arguments, as during ajax it's impossible to detect the specific plugin.
-	public function is_ajax(): bool {
-		if ( ! key_exists( 'isAjax', $this->cache ) ) {
-			// do not use 'is_ajax()' function, it may be not available yet.
-			$this->cache['isAjax'] = defined( 'DOING_AJAX' ) &&
-									// @phpstan-ignore-next-line.
-										bool( DOING_AJAX );
-		}
-
-		return $this->cache['isAjax'];
-	}
-
 	// includes cptRelated rest requests.
-	public function is_admin_cpt_related(
+	public function is_cpt_admin_route(
 		string $cpt_name,
 		string $screen = self::CPT_ANY
 	): bool {
-		if ( false === $this->is_admin() ) {
+		if ( false === $this->is_admin_route() ) {
 			return false;
 		}
 
@@ -121,7 +108,7 @@ class Current_Screen {
 		}
 
 		$this->cache[ $cache_key ] = true === $is_admin_cpt_related ||
-									true === $this->is_rest_cpt_related( $cpt_name );
+									true === $this->is_cpt_rest_route( $cpt_name );
 
 		return $this->cache[ $cache_key ];
 	}

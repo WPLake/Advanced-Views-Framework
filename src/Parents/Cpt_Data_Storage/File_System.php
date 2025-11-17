@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -333,7 +333,7 @@ class File_System extends Action implements Hooks_Interface {
 		return $this->base_folder;
 	}
 
-	public function set_base_folder( ?Current_Screen $current_screen = null ): void {
+	public function set_base_folder( ?Route_Detector $route_detector = null ): void {
 		$target_templates_folder = $this->get_target_base_folder();
 		$wp_filesystem           = $this->get_wp_filesystem();
 
@@ -346,10 +346,10 @@ class File_System extends Action implements Hooks_Interface {
 		}
 
 		// null if called from the SettingsPage.
-		if ( null !== $current_screen ) {
+		if ( null !== $route_detector ) {
 			// check only for the list screens (for better performance).
-			if ( true === $current_screen->is_admin_cpt_related( Hard_Layout_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ||
-				true === $current_screen->is_admin_cpt_related( Hard_Post_Selection_Cpt::cpt_name(), Current_Screen::CPT_LIST ) ) {
+			if ( true === $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ||
+				true === $route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ) {
 				if ( false === $this->is_base_folder_writable() ) {
 					$this->show_folder_is_not_writable_warning();
 
@@ -398,14 +398,14 @@ class File_System extends Action implements Hooks_Interface {
 		return $this->wp_filesystem_base;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		// set only if it isn't an external folder.
 		if ( '' === $this->base_folder ) {
 			// theme is loaded since this hook.
 			self::add_action(
 				'after_setup_theme',
-				function () use ( $current_screen ): void {
-					$this->set_base_folder( $current_screen );
+				function () use ( $route_detector ): void {
+					$this->set_base_folder( $route_detector );
 
 					$this->is_loaded = true;
 

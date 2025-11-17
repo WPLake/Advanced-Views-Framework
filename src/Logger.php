@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Filesystem_Base;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
@@ -328,7 +328,7 @@ class Logger extends Hookable implements Hooks_Interface {
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
 		set_error_handler( array( $this, 'maybe_log_php_error' ) );
 

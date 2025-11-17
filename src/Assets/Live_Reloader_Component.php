@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Assets;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
@@ -162,8 +162,8 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 		return remove_query_arg( self::QUERY_ARG, );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( true === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( true === $route_detector->is_admin_route() ) {
 			return;
 		}
 

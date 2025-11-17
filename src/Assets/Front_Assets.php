@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
@@ -605,8 +605,8 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return $src;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( true === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( true === $route_detector->is_admin_route() ) {
 			return;
 		}
 

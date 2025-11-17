@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use WP_Block;
 use WP_Block_Template;
@@ -30,7 +30,7 @@ final class Shortcode_Block extends Hookable implements Hooks_Interface {
 		$this->context_post_id = - 1;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		self::add_filter( 'register_block_type_args', array( $this, 'extend_core_shortcode_block' ), 10, 2 );
 
 		self::add_filter( 'get_block_templates', array( $this, 'trim_shortcode_brackets' ) );

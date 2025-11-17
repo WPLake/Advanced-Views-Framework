@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
@@ -18,17 +18,17 @@ class Post_Selection_Settings_Integration extends Acf_Integration {
 	use Safe_Array_Arguments;
 
 	private Data_Vendors $data_vendors;
-	private Plugin_Cpt $layout_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		string $target_cpt_name,
 		Data_Vendors $data_vendors,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $target_cpt_name );
 
 		$this->data_vendors = $data_vendors;
-		$this->layout_cpt   = $layout_cpt;
+		$this->plugin_cpt   = $plugin_cpt;
 	}
 
 	/**
@@ -99,18 +99,18 @@ class Post_Selection_Settings_Integration extends Acf_Integration {
 				sprintf(
 				// translators: %s is the singular name of the CPT.
 					__( 'Add new %s', 'acf-views' ),
-					$this->layout_cpt->labels()->singular_name()
+					$this->plugin_cpt->labels()->singular_name()
 				)
 			)
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		parent::set_hooks( $current_screen );
+	public function set_hooks( Route_Detector $route_detector ): void {
+		parent::set_hooks( $route_detector );
 
-		if ( false === $current_screen->is_admin_cpt_related(
+		if ( false === $route_detector->is_cpt_admin_route(
 			Hard_Post_Selection_Cpt::cpt_name(),
-			Current_Screen::CPT_EDIT
+			Route_Detector::CPT_EDIT
 		) ) {
 			return;
 		}

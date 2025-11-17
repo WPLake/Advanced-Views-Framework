@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Acf;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
@@ -68,11 +68,11 @@ class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 		self::add_action( 'acf/input/admin_enqueue_scripts', array( $this, 'input_admin_enqueue_scripts' ) );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin() ||
-			( false === $current_screen->is_admin_cpt_related( Hard_Layout_Cpt::cpt_name() ) &&
-				false === $current_screen->is_admin_cpt_related( Hard_Post_Selection_Cpt::cpt_name() ) &&
-				false === $current_screen->is_ajax() ) ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ||
+			( false === $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name() ) &&
+				false === $route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name() ) &&
+				! wp_doing_ajax() ) ) {
 			return;
 		}
 

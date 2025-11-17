@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents;
 
-use Org\Wplake\Advanced_Views\Profiler;
+use Org\Wplake\Advanced_Views\Utils\Profiler;
 
 abstract class Hookable {
 	public static function add_action( string $hook_name, callable $callback, int $priority = 10, int $accepted_args = 1 ): void {

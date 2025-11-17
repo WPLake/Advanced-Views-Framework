@@ -24,7 +24,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Public_Cpt $public_cpt;
-	private Plugin_Cpt $post_selection_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Html $html,
@@ -32,14 +32,14 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
 		Public_Cpt $public_cpt,
-		Plugin_Cpt $post_selection_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $html, $plugin );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->data_vendors             = $data_vendors;
 		$this->public_cpt               = $public_cpt;
-		$this->post_selection_cpt       = $post_selection_cpt;
+		$this->plugin_cpt               = $plugin_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -188,7 +188,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 					sprintf(
 					// translators: %s is the plural name of the CPT.
 						__( 'Not assigned to any %s.', 'acf-views' ),
-						$this->post_selection_cpt->labels()->plural_name()
+						$this->plugin_cpt->labels()->plural_name()
 					)
 				)
 			);
@@ -221,7 +221,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		if ( 0 !== $post_id ) {
 			$url = add_query_arg(
 				array(
-					'post_type' => $this->post_selection_cpt->cpt_name(),
+					'post_type' => $this->plugin_cpt->cpt_name(),
 					Post_Selections_View_Integration::ARGUMENT_FROM => $post_id,
 					'_wpnonce'  => wp_create_nonce( Post_Selections_View_Integration::NONCE_MAKE_NEW ),
 				),
@@ -315,7 +315,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			sprintf(
 			// translators: %s is the plural name of the CPT.
 				__( 'Assigned to %s', 'acf-views' ),
-				$this->post_selection_cpt->labels()->plural_name()
+				$this->plugin_cpt->labels()->plural_name()
 			),
 			function ( WP_Post $wp_post ): void {
 				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );

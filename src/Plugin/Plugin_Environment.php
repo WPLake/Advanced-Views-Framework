@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Automatic_Reports;
+use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -15,7 +15,7 @@ use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 final class Plugin_Environment {
 	private Template_Engines $template_engines;
-	private Automatic_Reports $automatic_reports;
+	private Automated_Reports $automated_reports;
 	private Settings $settings;
 	private Plugin $plugin;
 	/**
@@ -33,14 +33,14 @@ final class Plugin_Environment {
 	 */
 	public function __construct(
 		Template_Engines $template_engines,
-		Automatic_Reports $automatic_reports,
+		Automated_Reports $automated_reports,
 		Settings $settings,
 		Plugin $plugin,
 		array $file_systems,
 		array $storages
 	) {
 		$this->template_engines  = $template_engines;
-		$this->automatic_reports = $automatic_reports;
+		$this->automated_reports = $automated_reports;
 		$this->settings          = $settings;
 		$this->plugin            = $plugin;
 
@@ -51,11 +51,11 @@ final class Plugin_Environment {
 	public function prepare_environment(): void {
 		$this->set_initial_plugin_version();
 		$this->template_engines->create_templates_dir();
-		$this->automatic_reports->plugin_activated();
+		$this->automated_reports->plugin_activated();
 	}
 
 	public function clean_environment(): void {
-		$this->automatic_reports->plugin_deactivated();
+		$this->automated_reports->plugin_deactivated();
 		$this->template_engines->remove_templates_dir();
 
 		// do not check for a security token, as the deactivation plugin link contains it,

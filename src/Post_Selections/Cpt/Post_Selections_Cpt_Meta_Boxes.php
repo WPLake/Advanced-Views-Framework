@@ -20,8 +20,8 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Public_Cpt $post_selection_cpt;
-	private Plugin_Cpt $layout_cpt;
+	private Public_Cpt $public_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Html $html,
@@ -29,14 +29,14 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Public_Cpt $public_cpt,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $html, $plugin );
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->layouts_settings_storage         = $layouts_settings_storage;
-		$this->post_selection_cpt               = $public_cpt;
-		$this->layout_cpt                       = $layout_cpt;
+		$this->public_cpt                       = $public_cpt;
+		$this->plugin_cpt                       = $plugin_cpt;
 	}
 
 	protected function get_cpt_name(): string {
@@ -50,7 +50,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		$message = sprintf(
 			// translators: %s - singular name of the CPT.
 			__( 'No related %s.', 'acf-views' ),
-			$this->layout_cpt->labels()->singular_name()
+			$this->plugin_cpt->labels()->singular_name()
 		);
 
 		if ( '' === $post_selection_settings->acf_view_id ) {
@@ -82,7 +82,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 						sprintf(
 							// translators: %s - singular name of the CPT.
 							__( 'Your %s shortcode is available after publishing.', 'acf-views' ),
-							$this->post_selection_cpt->labels()->singular_name()
+							$this->public_cpt->labels()->singular_name()
 						)
 					);
 
@@ -94,7 +94,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 				$this->get_html()->print_postbox_shortcode(
 					$card_unique_id,
 					false,
-					$this->post_selection_cpt,
+					$this->public_cpt,
 					get_the_title( $post ),
 					true
 				);
@@ -111,7 +111,7 @@ class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			sprintf(
 				// translators: %s - singular name of the CPT.
 				__( 'Related %s', 'acf-views' ),
-				$this->layout_cpt->labels()->singular_name()
+				$this->plugin_cpt->labels()->singular_name()
 			),
 			function ( WP_Post $wp_post ): void {
 				$card_data = $this->post_selections_settings_storage->get( $wp_post->post_name );

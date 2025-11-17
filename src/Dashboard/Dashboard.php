@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
@@ -161,8 +161,8 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		return array_merge( $links, $this->get_promo_links() );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
@@ -197,11 +197,11 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		$is_docs_blank = false === $is_https;
 
 		$cpts_labels = array_map(
-			fn( Plugin_Cpt $cpt )=>
+			fn( Plugin_Cpt $plugin_cpt )=>
 			array(
 				'isLeftBlock' => true,
-				'url'         => $this->plugin->get_admin_url( '', $cpt->cpt_name() ),
-				'label'       => $cpt->labels()->plural_name(),
+				'url'         => $this->plugin->get_admin_url( '', $plugin_cpt->cpt_name() ),
+				'label'       => $plugin_cpt->labels()->plural_name(),
 				'isActive'    => false,
 				'isSecondary' => false,
 			),
@@ -317,10 +317,10 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	 */
 	protected function get_cpt_links(): array {
 		return array_map(
-			fn( Plugin_Cpt $cpt ) => sprintf(
+			fn( Plugin_Cpt $plugin_cpt ) => sprintf(
 				'<a href="%s" target="_self">%s</a>',
-				esc_url( $this->plugin->get_admin_url( '', $cpt->cpt_name() ) ),
-				$cpt->labels()->plural_name()
+				esc_url( $this->plugin->get_admin_url( '', $plugin_cpt->cpt_name() ) ),
+				$plugin_cpt->labels()->plural_name()
 			),
 			$this->plugin_cpts
 		);

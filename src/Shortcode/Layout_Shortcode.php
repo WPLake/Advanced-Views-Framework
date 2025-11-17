@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
@@ -53,10 +53,10 @@ final class Layout_Shortcode extends Shortcode {
 		$this->displaying_views = array();
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		parent::set_hooks( $current_screen );
+	public function set_hooks( Route_Detector $route_detector ): void {
+		parent::set_hooks( $route_detector );
 
-		if ( true === $current_screen->is_ajax() ) {
+		if ( wp_doing_ajax() ) {
 			self::add_action( 'wp_ajax_nopriv_advanced_views', array( $this, 'get_ajax_response' ) );
 			self::add_action( 'wp_ajax_advanced_views', array( $this, 'get_ajax_response' ) );
 		}

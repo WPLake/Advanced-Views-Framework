@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
@@ -70,8 +70,8 @@ abstract class Cpt_Table_Tab extends Hookable implements Hooks_Interface {
 		$this->cpt_table->add_tab( $tab_data );
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin_cpt_related( $this->get_cpt_name(), Current_Screen::CPT_LIST ) ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_cpt_admin_route( $this->get_cpt_name(), Route_Detector::CPT_LIST ) ) {
 			return;
 		}
 

@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Automatic_Reports;
+use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -34,7 +34,7 @@ final class Debug_Dump_Creator {
 			'error_logs'  => $this->logger->get_error_logs(),
 			'logs'        => $this->logger->get_logs(),
 			'cpt_data'    => $this->get_cpt_dump_data(),
-			'environment' => Automatic_Reports::get_environment_data(),
+			'environment' => Automated_Reports::get_environment_data(),
 		);
 
 		$redirect_url = add_query_arg(

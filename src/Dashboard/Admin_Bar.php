@@ -9,7 +9,7 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
@@ -87,9 +87,9 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		// we need to show this only on frontend.
-		if ( true === $current_screen->is_admin() ) {
+		if ( true === $route_detector->is_admin_route() ) {
 			return;
 		}
 

@@ -38,7 +38,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	private Layout_Factory $layout_factory;
 	private Data_Vendor_Interface $data_vendor;
 	private Layout_Shortcode $layout_shortcode;
-	private Plugin_Cpt $layout_cpt;
+	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Item_Settings $item_settings,
@@ -49,7 +49,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		Data_Vendor_Interface $data_vendor,
 		Layout_Shortcode $layout_shortcode,
 		Settings $settings,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $settings );
 
@@ -60,7 +60,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		$this->layout_factory           = $layout_factory;
 		$this->data_vendor              = $data_vendor;
 		$this->layout_shortcode         = $layout_shortcode;
-		$this->layout_cpt               = $layout_cpt;
+		$this->plugin_cpt               = $plugin_cpt;
 	}
 
 	abstract protected function get_vendor_post_type(): string;
@@ -240,7 +240,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			__( 'Assigned to %s:', 'acf-views' ) . ' ' :
 			// translators: %s: the name of the CPT.
 			__( 'Not assigned to any %s.', 'acf-views' );
-		$label = sprintf( $label, $this->layout_cpt->labels()->plural_name() );
+		$label = sprintf( $label, $this->plugin_cpt->labels()->plural_name() );
 
 		if ( ! $is_list_look ) {
 			echo esc_html( $label );

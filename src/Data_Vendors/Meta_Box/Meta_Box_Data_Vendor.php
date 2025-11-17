@@ -361,7 +361,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
 		Settings $settings,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	): ?Data_Vendor_Integration_Interface {
 		return new Meta_Box_Integration(
 			$item_settings,
@@ -372,7 +372,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			$this,
 			$layout_shortcode,
 			$settings,
-			$layout_cpt
+			$plugin_cpt
 		);
 	}
 

@@ -32,7 +32,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 		Pods_Data_Vendor $pods_data_vendor,
 		Layout_Shortcode $layout_shortcode,
 		Settings $settings,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct(
 			$item_settings,
@@ -43,7 +43,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 			$pods_data_vendor,
 			$layout_shortcode,
 			$settings,
-			$layout_cpt
+			$plugin_cpt
 		);
 
 		$this->pods_data_vendor = $pods_data_vendor;

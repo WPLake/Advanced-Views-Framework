@@ -4,7 +4,7 @@ Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.8.1
+Stable tag: 3.8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,8 +139,8 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.8.2 (2025-11-17) =
-- Enhancement: Migrations - automated caches flush, logging
-- Enhancement: Tools - Debugging: added a Flush caches option
+- Enhancement: Migrations - automated flush caches, logging, incomplete upgrade detection
+- Enhancement: Tools - Debugging: added 'Flush caches' & 'Upgrade from version' options
 
 = 3.8.1 (2025-11-14) =
 - Better entity names: View => Layout, Card => Post Selection

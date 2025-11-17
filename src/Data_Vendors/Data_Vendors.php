@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Data_Vendors;
 
 use DateTime;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Acf\Acf_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Interface;
@@ -82,12 +82,12 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	}
 
 	protected function load_integration_instance(
-		Current_Screen $current_screen,
+		Route_Detector $route_detector,
 		Data_Vendor_Integration_Interface $data_vendor_integration,
 		Layouts_Settings_Storage $layouts_settings_storage
 	): void {
 		// functions below only for the admin part.
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
@@ -386,7 +386,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	}
 
 	public function make_integration_instances(
-		Current_Screen $current_screen,
+		Route_Detector $route_detector,
 		Item_Settings $item_settings,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
@@ -394,13 +394,13 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
 		Settings $settings,
-		Plugin_Cpt $layout_cpt
+		Plugin_Cpt $plugin_cpt
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
 		// 2. must be on or later 'after_setup_theme', when FS only Views and Cards are available
 		$layouts_settings_storage->add_on_loaded_callback(
 			function () use (
-				$current_screen,
+				$route_detector,
 				$item_settings,
 				$layouts_settings_storage,
 				$layouts_cpt_save_actions,
@@ -408,7 +408,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 				$repeater_field_settings,
 				$layout_shortcode,
 				$settings,
-				$layout_cpt
+				$plugin_cpt
 			): void {
 				foreach ( $this->data_vendors as $vendor ) {
 					$integration_instance = $vendor->make_integration_instance(
@@ -420,7 +420,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 						$repeater_field_settings,
 						$layout_shortcode,
 						$settings,
-						$layout_cpt
+						$plugin_cpt
 					);
 
 					// integration instance is optional (e.g. Woo and WP don't have).
@@ -428,7 +428,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 						continue;
 					}
 
-					$this->load_integration_instance( $current_screen, $integration_instance, $layouts_settings_storage );
+					$this->load_integration_instance( $route_detector, $integration_instance, $layouts_settings_storage );
 				}
 			}
 		);
@@ -506,7 +506,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		return $related_groups_import_result;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		// 1. with the higher priority than the default one, to make sure all vendor codes are loaded.
 		// 2. still small, to be earlier than the rest of AVF code listening to this hook
 		self::add_action(

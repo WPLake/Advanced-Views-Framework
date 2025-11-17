@@ -8,20 +8,21 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Utils\Profiler;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Automatic reports about plugin errors and usage. It allows to fix issues faster and improve the plugin.
+ * Automated reports send data about plugin errors and usage. It allows to fix issues faster and improve the plugin.
  * IT DOESN'T SEND ANY PERSONAL OR SENSITIVE DATA.
  * Can be disabled in the plugin settings.
  * FYI: built-in WordPress growth counter was removed https://meta.trac.wordpress.org/ticket/6511
  */
-class Automatic_Reports extends Action implements Hooks_Interface {
+class Automated_Reports extends Action implements Hooks_Interface {
 	const DELAY_MIN_HR  = 12;
 	const DELAY_MAX_HRS = 48;
 	const REQUEST_URL   = 'https://wplake.org/wp-json/wplake/v1/plugin_analytics';
@@ -68,8 +69,8 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( true === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( true === $route_detector->is_admin_route() ) {
 			$request_uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 
 			// deactivation survey includes the 'delete data' option, which should be visible even if reports are off
@@ -109,13 +110,13 @@ class Automatic_Reports extends Action implements Hooks_Interface {
 			$this->send_active_installation_request();
 		}
 
-		$is_cpt_list_screen = true === $current_screen->is_admin_cpt_related(
+		$is_cpt_list_screen = true === $route_detector->is_cpt_admin_route(
 			Hard_Layout_Cpt::cpt_name(),
-			Current_Screen::CPT_LIST
+			Route_Detector::CPT_LIST
 		) ||
-								true === $current_screen->is_admin_cpt_related(
+								true === $route_detector->is_cpt_admin_route(
 									Hard_Post_Selection_Cpt::cpt_name(),
-									Current_Screen::CPT_LIST
+									Route_Detector::CPT_LIST
 								);
 
 		if ( true === $is_cpt_list_screen &&

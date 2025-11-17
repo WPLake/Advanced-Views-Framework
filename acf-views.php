@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Views Lite
  * Plugin URI: https://advanced-views.com/
  * Description: Effortlessly display WordPress posts, custom fields, and WooCommerce data.
- * Version: 3.8.1
+ * Version: 3.8.2
  * Author: WPLake
  * Author URI: https://advanced-views.com/
  * Text Domain: acf-views
@@ -21,11 +21,10 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
 	Cpt\Post_Selections_Cpt,
@@ -394,7 +393,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 			parent::post_selections();
 		}
 
-		protected function integration( Current_Screen $current_screen ): void {
+		protected function integration( Route_Detector $route_detector ): void {
 			$this->acf_dependency = new Acf_Dependency( $this->plugin );
 
 			$this->layout_settings_integration         = new Layout_Settings_Integration(
@@ -435,7 +434,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 			);
 			$this->custom_acf_field_types                 = new Custom_Acf_Field_Types( $this->layouts_settings_storage );
 
-			parent::integration( $current_screen );
+			parent::integration( $route_detector );
 		}
 
 		protected function others(): void {
@@ -476,7 +475,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->cache_flusher
 			);
 
-			$this->automatic_reports = new Automatic_Reports(
+			$this->automatic_reports = new Automated_Reports(
 				$this->logger,
 				$this->plugin,
 				$this->settings,

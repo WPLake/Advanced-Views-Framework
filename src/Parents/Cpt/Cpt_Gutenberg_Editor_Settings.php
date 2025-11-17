@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 use WPCom_Markdown;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use WP_Post;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -95,7 +95,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 	}
 
 	// Jetpack's markdown module "very polite" and breaks json in our post_content.
-	public function disable_jetpack_markdown_module( Current_Screen $current_screen ): void {
+	public function disable_jetpack_markdown_module( Route_Detector $route_detector ): void {
 		if ( ! class_exists( 'WPCom_Markdown' ) ||
 			// check for future version.
 			! is_callable( array( 'WPCom_Markdown', 'get_instance' ) ) ) {
@@ -103,7 +103,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		}
 
 		// only for our edit screens.
-		if ( false === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_EDIT ) ) {
+		if ( false === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ) {
 			return;
 		}
 
@@ -118,8 +118,8 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 	 *
 	 * @return array<string,string>|false
 	 */
-	public function classic_editor_plugin_settings_patch( $settings, Current_Screen $current_screen ) {
-		if ( false === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_EDIT ) ) {
+	public function classic_editor_plugin_settings_patch( $settings, Route_Detector $route_detector ) {
+		if ( false === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ) {
 			return $settings;
 		}
 
@@ -162,8 +162,8 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 	 *
 	 * @return array<string|int,mixed>
 	 */
-	public function disable_gutenberg_auto_save( array $editor_settings, Current_Screen $current_screen ): array {
-		if ( false === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_EDIT ) ) {
+	public function disable_gutenberg_auto_save( array $editor_settings, Route_Detector $route_detector ): array {
+		if ( false === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ) {
 			return $editor_settings;
 		}
 
@@ -176,7 +176,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		);
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		self::add_filter(
 			'wp_insert_post_data',
 			array( $this, 'avoid_override_post_content_by_gutenberg_and_theme_builders' ),
@@ -185,7 +185,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 			4
 		);
 
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
@@ -195,15 +195,15 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		// priority '9' is earlier than Jetpack's.
 		self::add_action(
 			'init',
-			function () use ( $current_screen ): void {
-				$this->disable_jetpack_markdown_module( $current_screen );
+			function () use ( $route_detector ): void {
+				$this->disable_jetpack_markdown_module( $route_detector );
 			},
 			9
 		);
 
 		self::add_filter(
 			'classic_editor_plugin_settings',
-			fn( $settings ) => $this->classic_editor_plugin_settings_patch( $settings, $current_screen )
+			fn( $settings ) => $this->classic_editor_plugin_settings_patch( $settings, $route_detector )
 		);
 		self::add_filter(
 			'classic_editor_enabled_editors_for_post_type',
@@ -216,7 +216,7 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		self::add_filter( 'use_block_editor_for_post_type', array( $this, 'force_gutenberg_for_cpt_pages' ), 99999, 2 );
 		self::add_filter(
 			'block_editor_settings_all',
-			fn( array $editor_settings ): array => $this->disable_gutenberg_auto_save( $editor_settings, $current_screen )
+			fn( array $editor_settings ): array => $this->disable_gutenberg_auto_save( $editor_settings, $route_detector )
 		);
 	}
 }

@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
@@ -32,15 +32,15 @@ class Acf_Integration extends Hookable implements Hooks_Interface {
 	}
 
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
 		// load only on targetCpt pages
 		// (but not only on edit pages, as there are Settings & Tools groups).
 		if ( '' !== $this->target_cpt_name &&
-			false === $current_screen->is_admin_cpt_related( $this->target_cpt_name ) ) {
+			false === $route_detector->is_cpt_admin_route( $this->target_cpt_name ) ) {
 			return;
 		}
 

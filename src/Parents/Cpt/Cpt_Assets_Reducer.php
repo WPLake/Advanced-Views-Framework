@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -254,8 +254,8 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 		<?php
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_EDIT ) ||
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ||
 		false === $this->settings->is_cpt_admin_optimization_enabled() ) {
 			return;
 		}

@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -28,14 +28,14 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 		$this->dismiss_nonce_action = 'avf-upgrade-notice';
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( $route_detector->is_admin_route() ) {
 			$upgrade_notice = $this->get_upgrade_notice();
 
 			if ( strlen( $upgrade_notice ) > 0 ) {
 				self::add_action(
 					'admin_notices',
-					function () {
+					function (): void {
 						if ( ! $this->hide_notice() ) {
 							$this->print_notice();
 						}
@@ -50,7 +50,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 	 */
 	public function setup_upgrade_notice( array $version_migrations ): void {
 		Plugin::on_translations_ready(
-			function () use ( $version_migrations ) {
+			function () use ( $version_migrations ): void {
 				$upgrade_notices = array();
 
 				foreach ( $version_migrations as $version_migration ) {

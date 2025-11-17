@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
@@ -562,8 +562,8 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$this->add_tab_callbacks[] = $new_tab_callback;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
@@ -572,7 +572,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			array( $this, 'get_columns' ),
 		);
 
-		if ( true === $current_screen->is_admin_cpt_related( $this->cpt_name, Current_Screen::CPT_LIST ) ) {
+		if ( true === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_LIST ) ) {
 			self::add_action( 'admin_init', array( $this, 'make_table_actions' ) );
 			self::add_action( 'admin_notices', array( $this, 'show_action_result_message' ) );
 			self::add_filter( 'admin_body_class', array( $this, 'add_acf_class_to_body' ) );

@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Automatic_Reports;
+use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_6_0;
@@ -29,8 +29,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
-use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -77,7 +76,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Val
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Cpt_Table;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Profiler;
+use Org\Wplake\Advanced_Views\Utils\Profiler;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
@@ -146,7 +145,7 @@ abstract class Plugin_Loader_Base {
 	protected Dashboard $dashboard;
 	protected Demo_Import $demo_import;
 	protected Acf_Internal_Features $acf_internal_features;
-	protected Automatic_Reports $automatic_reports;
+	protected Automated_Reports $automatic_reports;
 	protected Tools $tools;
 	protected Admin_Assets $admin_assets;
 	protected Settings_Page $settings_page;
@@ -166,24 +165,24 @@ abstract class Plugin_Loader_Base {
 	public function load_plugin(): void {
 		$start_timestamp = microtime( true );
 
-		$current_screen = new Current_Screen();
+		$route_detector = new Route_Detector();
 
-		$this->load_modules( $current_screen );
+		$this->load_modules( $route_detector );
 
 		foreach ( $this->hookable as $hookable ) {
-			$hookable->set_hooks( $current_screen );
+			$hookable->set_hooks( $route_detector );
 		}
 
 		Profiler::plugin_loaded( $start_timestamp );
 	}
 
-	protected function load_modules( Current_Screen $current_screen ): void {
-		$this->translations( $current_screen );
+	protected function load_modules( Route_Detector $route_detector ): void {
+		$this->translations( $route_detector );
 		$this->primary();
-		$this->acf_groups( $current_screen );
+		$this->acf_groups( $route_detector );
 		$this->layouts();
 		$this->post_selections();
-		$this->integration( $current_screen );
+		$this->integration( $route_detector );
 		$this->others();
 		$this->bridge();
 		$this->version_migrations();
@@ -193,9 +192,9 @@ abstract class Plugin_Loader_Base {
 	/**
 	 * @param string[] $paths
 	 */
-	protected function translations( Current_Screen $current_screen, array $paths = array() ): void {
+	protected function translations( Route_Detector $route_detector, array $paths = array() ): void {
 		// on the whole admin area, as menu items need translations.
-		if ( false === $current_screen->is_admin() ) {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
@@ -237,10 +236,10 @@ abstract class Plugin_Loader_Base {
 		$this->add_hookable( $this->file_systems );
 	}
 
-	protected function acf_groups( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_ajax() &&
-			false === $current_screen->is_admin_cpt_related( $this->layout_cpt->cpt_name() ) &&
-			false === $current_screen->is_admin_cpt_related( $this->post_selection_cpt->cpt_name() ) ) {
+	protected function acf_groups( Route_Detector $route_detector ): void {
+		if ( ! wp_doing_ajax() &&
+			false === $route_detector->is_cpt_admin_route( $this->layout_cpt->cpt_name() ) &&
+			false === $route_detector->is_cpt_admin_route( $this->post_selection_cpt->cpt_name() ) ) {
 			return;
 		}
 
@@ -295,7 +294,7 @@ abstract class Plugin_Loader_Base {
 		);
 	}
 
-	protected function integration( Current_Screen $current_screen ): void {
+	protected function integration( Route_Detector $route_detector ): void {
 		$this->add_hookable(
 			array(
 				$this->acf_dependency,
@@ -314,7 +313,7 @@ abstract class Plugin_Loader_Base {
 
 		// only now, when layouts() are called.
 		$this->data_vendors->make_integration_instances(
-			$current_screen,
+			$route_detector,
 			$this->item_settings,
 			$this->layouts_settings_storage,
 			$this->layouts_cpt_save_actions,

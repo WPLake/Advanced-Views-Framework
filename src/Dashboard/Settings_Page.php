@@ -7,9 +7,9 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Exception;
-use Org\Wplake\Advanced_Views\Automatic_Reports;
+use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Current_Screen;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
 use Org\Wplake\Advanced_Views\Logger;
@@ -35,7 +35,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
-	private Automatic_Reports $automatic_reports;
+	private Automated_Reports $automated_reports;
 
 	public function __construct(
 		Logger $logger,
@@ -44,7 +44,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Post_Selections_Settings_Storage $post_selections_settings_storage,
 		Git_Repository $git_repository,
-		Automatic_Reports $automatic_reports
+		Automated_Reports $automated_reports
 	) {
 		parent::__construct( $logger );
 
@@ -55,7 +55,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->saved_message                    = '';
 		$this->git_repository                   = $git_repository->getDeepClone();
-		$this->automatic_reports                = $automatic_reports;
+		$this->automated_reports                = $automated_reports;
 	}
 
 	/**
@@ -299,7 +299,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 		// send only after the setting is updated.
 		if ( true === $is_do_not_track_request_needed ) {
-			$this->automatic_reports->send_do_not_track_request();
+			$this->automated_reports->send_do_not_track_request();
 		}
 
 		if ( true === $this->plugin_settings->is_file_system_storage &&
@@ -329,8 +329,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		exit;
 	}
 
-	public function set_hooks( Current_Screen $current_screen ): void {
-		if ( false === $current_screen->is_admin() ) {
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
 			return;
 		}
 
