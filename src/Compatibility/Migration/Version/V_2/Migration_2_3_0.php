@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 

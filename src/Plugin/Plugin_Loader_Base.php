@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Error_Logs;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_6_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_7_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_0_0;
@@ -152,6 +153,7 @@ abstract class Plugin_Loader_Base {
 	protected Settings_Page $settings_page;
 	protected Live_Reloader $live_reloader;
 	protected Admin_Bar $admin_bar;
+	protected Upgrade_Notice $upgrade_notice;
 	/**
 	 * @var Hooks_Interface[]
 	 */
@@ -228,6 +230,7 @@ abstract class Plugin_Loader_Base {
 				$this->data_vendors,
 				$this->live_reloader_component,
 				$this->version_migrator,
+				$this->upgrade_notice,
 			)
 		);
 

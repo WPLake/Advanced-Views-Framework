@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;

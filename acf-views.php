@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
@@ -157,10 +158,12 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$layouts_file_system,
 				$this->live_reloader_component
 			);
+			$this->upgrade_notice          = new Upgrade_Notice( $this->plugin );
 			$this->version_migrator        = new Version_Migrator(
 				$this->plugin,
 				$this->settings,
 				$this->logger,
+				$this->upgrade_notice
 			);
 
 			$this->add_file_systems(
