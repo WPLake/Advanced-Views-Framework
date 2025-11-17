@@ -6,55 +6,56 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
-class Version_Migrator extends Hookable implements Hooks_Interface {
+final class Version_Migrator extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	/**
 	 * @var array<string,Version_Migration> version => migrationInstance
 	 */
 	private array $version_migrations;
-	/**
-	 * @var Migration[]
-	 */
-	private array $migrations;
 	private Logger $logger;
 	private Upgrade_Notice $upgrade_notice;
+	private Cache_Flusher $cache_flusher;
 
-	public function __construct( Plugin $plugin, Settings $settings, Logger $logger, Upgrade_Notice $upgrade_notice ) {
+	public function __construct(
+		Plugin $plugin,
+		Settings $settings,
+		Logger $logger,
+		Upgrade_Notice $upgrade_notice,
+		Cache_Flusher $cache_flusher
+	) {
 		$this->plugin         = $plugin;
 		$this->settings       = $settings;
 		$this->logger         = $logger;
 		$this->upgrade_notice = $upgrade_notice;
+		$this->cache_flusher  = $cache_flusher;
 
 		$this->version_migrations = array();
-		$this->migrations         = array();
 	}
 
 	public static function is_version_lower( string $version, string $target_version ): bool {
-		// empty means the very first run, no data is available, nothing to fix.
-		if ( '' === $version ) {
+		if ( ! self::is_valid_version( $version ) ||
+			! self::is_valid_version( $target_version ) ) {
 			return false;
 		}
 
 		$current_version = explode( '.', $version );
 		$target_version  = explode( '.', $target_version );
 
-		// versions are broken.
+		// check for IDE.
 		if ( 3 !== count( $current_version ) ||
 			3 !== count( $target_version ) ) {
 			return false;
@@ -63,10 +64,10 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 		// convert to int.
 
 		foreach ( $current_version as &$part ) {
-			$part = (int) $part;
+			$part = int( $part );
 		}
 		foreach ( $target_version as &$part ) {
-			$part = (int) $part;
+			$part = int( $part );
 		}
 
 		// compare.
@@ -91,6 +92,10 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 		}
 
 		return true;
+	}
+
+	public static function is_valid_version( string $version ): bool {
+		return 1 === preg_match( '/^\d+\.\d+\.\d+$/', $version );
 	}
 
 	public function set_hooks( Current_Screen $current_screen ): void {
@@ -133,18 +138,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	/**
-	 * @param Migration[] $migrations
-	 */
-	public function add_migrations( array $migrations ): void {
-		$this->migrations = array_merge( $this->migrations, $migrations );
-	}
-
 	public function migrate_cpt_settings( string $previous_version, Cpt_Settings $cpt_settings ): void {
-		foreach ( $this->migrations as $migration ) {
-			$migration->migrate_cpt_settings( $cpt_settings );
-		}
-
 		$version_migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $version_migrations as $version_migration ) {
@@ -153,6 +147,9 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function upgrade_from_previous_version(): void {
+		// previous error logs are not relevant anymore.
+		$this->logger->clear_error_logs();
+
 		$db_version = $this->settings->get_version();
 		// all versions since 1.6.0 have DB version record.
 		$previous_version = strlen( $db_version ) > 0 ?
@@ -163,7 +160,7 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function complete_version_upgrade(): void {
-		$this->flush_caches();
+		$this->cache_flusher->flush_caches();
 
 		$this->update_db_plugin_version();
 
@@ -173,10 +170,6 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	public function upgrade_from_version( string $from_version ): void {
 		$version_migrations = $this->get_version_migrations( $from_version );
 
-		$migration_names         = array_map(
-			fn( Migration $migration )=> $this->get_migration_name( $migration ),
-			$this->migrations
-		);
 		$version_migration_names = array_map(
 			fn( Version_Migration $version_migration )=> $this->get_migration_name( $version_migration ),
 			$version_migrations
@@ -187,21 +180,9 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 			array(
 				'previous_version'   => $from_version,
 				'current_version'    => $this->plugin->get_version(),
-				'migrations'         => $migration_names,
 				'version_migrations' => $version_migration_names,
 			)
 		);
-
-		foreach ( $this->migrations as $migration ) {
-			$this->logger->info(
-				'Running migration case',
-				array(
-					'migration' => $this->get_migration_name( $migration ),
-				)
-			);
-
-			$migration->migrate();
-		}
 
 		foreach ( $version_migrations as $version_migration ) {
 			$this->logger->info(
@@ -220,26 +201,6 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	protected function update_db_plugin_version(): void {
 		$this->settings->set_version( $this->plugin->get_version() );
 		$this->settings->save();
-	}
-
-	protected function flush_caches(): void {
-		$is_opcache_cache_cleared = false;
-
-		// Redis - upgrades may have had direct DB changes.
-		$is_wp_cache_cleared = wp_cache_flush();
-
-		// Opcache - upgrades may have had FS changes (e.g. theme template updates).
-		if ( function_exists( 'opcache_reset' ) ) {
-			$is_opcache_cache_cleared = opcache_reset();
-		}
-
-		$this->logger->info(
-			'Cleared caches',
-			array(
-				'wp_cache_cleared'      => $is_wp_cache_cleared,
-				'opcache_cache_cleared' => $is_opcache_cache_cleared,
-			)
-		);
 	}
 
 	/**
@@ -261,8 +222,6 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 
 		return $target_migrations;
 	}
-
-
 
 	protected function get_migration_name( Migration $migration ): string {
 		$full_class_name  = get_class( $migration );

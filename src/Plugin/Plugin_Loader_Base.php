@@ -13,7 +13,6 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Error_Logs;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_6_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_7_0;
@@ -30,6 +29,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
@@ -63,7 +63,6 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
@@ -154,6 +153,7 @@ abstract class Plugin_Loader_Base {
 	protected Live_Reloader $live_reloader;
 	protected Admin_Bar $admin_bar;
 	protected Upgrade_Notice $upgrade_notice;
+
 	/**
 	 * @var Hooks_Interface[]
 	 */
@@ -349,12 +349,6 @@ abstract class Plugin_Loader_Base {
 	}
 
 	protected function version_migrations(): void {
-		$this->version_migrator->add_migrations(
-			array(
-				new Migration_Error_Logs( $this->logger ),
-			)
-		);
-
 		$this->version_migrator->add_version_migrations(
 			array(
 				// v1.
@@ -470,5 +464,25 @@ abstract class Plugin_Loader_Base {
 
 	protected static function uploads_folder(): string {
 		return wp_upload_dir()['basedir'] . '/acf-views';
+	}
+
+	/**
+	 * @return array<string, callable():boolean>
+	 */
+	protected function get_cache_cleaners(): array {
+		/**
+		 * @var array<string, callable():boolean> $cache_cleaners
+		 */
+		$cache_cleaners = array(
+			// Redis - upgrades may have had direct DB changes.
+			'wpdb' => 'wp_cache_flush',
+		);
+
+		// Opcache - upgrades may have had FS changes (e.g. theme template updates).
+		if ( function_exists( 'opcache_reset' ) ) {
+			$cache_cleaners['opcache'] = 'opcache_reset';
+		}
+
+		return $cache_cleaners;
 	}
 }

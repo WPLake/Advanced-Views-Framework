@@ -6,8 +6,11 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Tools;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
@@ -49,6 +52,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin_Cpt $layouts_cpt;
 	private Plugin_Cpt $post_selections_cpt;
+	private Settings $settings;
+	private Cache_Flusher $cache_flusher;
 
 	public function __construct(
 		Tools_Settings $tools_settings,
@@ -58,7 +63,9 @@ final class Tools extends Hookable implements Hooks_Interface {
 		Logger $logger,
 		Debug_Dump_Creator $debug_dump_creator,
 		Plugin_Cpt $layouts_cpt,
-		Plugin_Cpt $post_selections_cpt
+		Plugin_Cpt $post_selections_cpt,
+		Settings $settings,
+		Cache_Flusher $cache_flusher
 	) {
 		$this->tools_settings                   = $tools_settings;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
@@ -68,6 +75,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 		$this->debug_dump_creator               = $debug_dump_creator;
 		$this->layouts_cpt                      = $layouts_cpt;
 		$this->post_selections_cpt              = $post_selections_cpt;
+		$this->settings                         = $settings;
+		$this->cache_flusher                    = $cache_flusher;
 
 		$this->values                = array();
 		$this->export_data           = array();
@@ -304,6 +313,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 							array() !== $this->tools_settings->export_cards,
 			'import'                     => 0 !== $this->tools_settings->import_file,
 			'generate_installation_dump' => $this->tools_settings->is_generate_installation_dump,
+			'version_upgrade'            => '' !== $this->tools_settings->upgrade_from_version,
+			'flush_caches'               => $this->tools_settings->should_flush_caches,
 		);
 
 		$current_action = array_search( true, $actions, true );
@@ -317,6 +328,31 @@ final class Tools extends Hookable implements Hooks_Interface {
 				break;
 			case 'generate_installation_dump':
 				$this->debug_dump_creator->echo_dump_file();
+				break;
+			case 'version_upgrade':
+				$from_version    = $this->tools_settings->upgrade_from_version;
+				$current_version = $this->plugin->get_version();
+
+				if ( ! Version_Migrator::is_valid_version( $from_version ) ||
+					// allow entering only previous plugin versions.
+				Version_Migrator::is_version_lower( $current_version, $from_version ) ) {
+					$invalid_version_message = __( 'You entered the invalid version number', 'acf-views' );
+
+					wp_die(
+						sprintf(
+							'%s (%s)',
+							esc_html( $invalid_version_message ),
+							esc_html( $from_version )
+						)
+					);
+				}
+
+				$this->settings->set_version( $from_version );
+				$this->settings->save();
+
+				break;
+			case 'flush_caches':
+				$this->cache_flusher->flush_caches();
 				break;
 		}
 	}

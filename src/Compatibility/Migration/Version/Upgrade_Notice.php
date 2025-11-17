@@ -33,8 +33,14 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 			$upgrade_notice = $this->get_upgrade_notice();
 
 			if ( strlen( $upgrade_notice ) > 0 ) {
-				self::add_action( 'admin_init', array( $this, 'handle_delete_notice' ) );
-				self::add_action( 'admin_notices', array( $this, 'print_upgrade_notice' ) );
+				self::add_action(
+					'admin_notices',
+					function () {
+						if ( ! $this->hide_notice() ) {
+							$this->print_notice();
+						}
+					}
+				);
 			}
 		}
 	}
@@ -64,7 +70,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 		);
 	}
 
-	public function print_upgrade_notice(): void {
+	public function print_notice(): void {
 		$upgrade_notice = $this->get_upgrade_notice();
 
 		echo '<div class="notice notice-info">';
@@ -96,7 +102,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 		echo '</div>';
 	}
 
-	public function handle_delete_notice(): void {
+	protected function hide_notice(): bool {
 		$dismiss_value = Query_Arguments::get_string_for_admin_action(
 			$this->dismiss_key,
 			$this->dismiss_nonce_action
@@ -105,7 +111,11 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 		if ( strlen( $dismiss_value ) > 0 &&
 			Avf_User::can_manage() ) {
 			Options::delete_transient( Options::TRANSIENT_UPGRADE_NOTICE );
+
+			return true;
 		}
+
+		return false;
 	}
 
 	protected function get_upgrade_notice(): string {

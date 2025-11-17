@@ -109,7 +109,6 @@ class Tools_Settings extends Group {
 	 * @instructions Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request.
 	 */
 	public bool $is_generate_installation_dump;
-
 	/**
 	 * @a-type checkbox
 	 * @multiple 1
@@ -129,6 +128,18 @@ class Tools_Settings extends Group {
 	 * @var string[]
 	 */
 	public array $dump_cards;
+	/**
+	 * @label Upgrade from version
+	 * @instructions If the automatic version migration was interrupted, enter your previous Advanced Views version number here and press 'Process' to manually trigger the migration.
+	 */
+	public string $upgrade_from_version;
+	/**
+	 * @a-type true_false
+	 * @ui 1
+	 * @label Flush caches
+	 * @instructions Activate the option and click 'Process' to flush caches. Note: use separately from other options.
+	 */
+	public bool $should_flush_caches;
 
 	/**
 	 * @return array<int,string[]>

@@ -24,6 +24,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Post_Selection_Markup,
@@ -98,6 +99,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 		private Post_Selection_Settings $post_selection_settings;
 		private Post_Selection_Factory $post_selection_factory;
 		private Options $options;
+		private Cache_Flusher $cache_flusher;
 
 		protected function primary(): void {
 			$this->layout_cpt         = self::make_layout_cpt();
@@ -159,11 +161,13 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->live_reloader_component
 			);
 			$this->upgrade_notice          = new Upgrade_Notice( $this->plugin );
+			$this->cache_flusher           = new Cache_Flusher( $this->logger, $this->get_cache_cleaners() );
 			$this->version_migrator        = new Version_Migrator(
 				$this->plugin,
 				$this->settings,
 				$this->logger,
-				$this->upgrade_notice
+				$this->upgrade_notice,
+				$this->cache_flusher
 			);
 
 			$this->add_file_systems(
@@ -467,7 +471,9 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 				$this->logger,
 				$debug_dump_creator,
 				$this->layout_cpt,
-				$this->post_selection_cpt
+				$this->post_selection_cpt,
+				$this->settings,
+				$this->cache_flusher
 			);
 
 			$this->automatic_reports = new Automatic_Reports(
