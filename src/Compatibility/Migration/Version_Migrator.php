@@ -2,11 +2,12 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Current_Screen;
@@ -103,8 +104,12 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 		$db_version   = $this->settings->get_version();
 		$code_version = $this->plugin->get_version();
 
-		// run upgrade if version in the DB is different from the code version.
-		if ( $db_version === $code_version ) {
+		/**
+		 * Run upgrade if the DB version is set, and different from the code version.
+		 * (it's unset until the plugin activation hook called, which happens later than wp_loaded)
+		 */
+		if ( '' === $db_version ||
+			$db_version === $code_version ) {
 			return;
 		}
 
@@ -150,11 +155,8 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 		// previous error logs are not relevant anymore.
 		$this->logger->clear_error_logs();
 
-		$db_version = $this->settings->get_version();
-		// all versions since 1.6.0 have DB version record.
-		$previous_version = strlen( $db_version ) > 0 ?
-			$db_version :
-			'1.6.0';
+		// all versions since 1.6.0 have a DB version record.
+		$previous_version = $this->settings->get_version();
 
 		$this->upgrade_from_version( $previous_version );
 	}

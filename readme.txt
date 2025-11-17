@@ -138,6 +138,10 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.8.2 (2025-11-17) =
+- Enhancement: Migrations - automated caches flush, logging
+- Enhancement: Tools - Debugging: added a Flush caches option
+
 = 3.8.1 (2025-11-14) =
 - Better entity names: View => Layout, Card => Post Selection
 

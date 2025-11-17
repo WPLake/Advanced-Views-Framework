@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration;
 
 defined( 'ABSPATH' ) || exit;
 

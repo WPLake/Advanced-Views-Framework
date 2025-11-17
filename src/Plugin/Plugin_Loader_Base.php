@@ -13,7 +13,7 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Automatic_Reports;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Upgrade_Notice;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_6_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1\Migration_1_7_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_0_0;
@@ -28,7 +28,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Current_Screen;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;

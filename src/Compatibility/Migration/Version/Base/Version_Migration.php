@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Migration;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration;
 
 interface Version_Migration extends Migration {
 	public function introduced_version(): string;

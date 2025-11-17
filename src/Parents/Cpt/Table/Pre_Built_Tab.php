@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Version_Migrator;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;

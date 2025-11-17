@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Compatibility\Migration;
+namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Base;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 
