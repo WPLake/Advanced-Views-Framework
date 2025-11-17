@@ -188,6 +188,27 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 	}
 
 	public function migrate( string $previous_version ): void {
+		$version_migrations = $this->get_version_migrations( $previous_version );
+
+		$migration_names         = array_map(
+			fn( Migration $migration )=> $this->get_migration_name( $migration ),
+			$this->migrations
+		);
+		$version_migration_names = array_map(
+			fn( Version_Migration $version_migration )=> $this->get_migration_name( $version_migration ),
+			$version_migrations
+		);
+
+		$this->logger->info(
+			'Performing version upgrade',
+			array(
+				'previous_version'   => $previous_version,
+				'current_version'    => $this->plugin->get_version(),
+				'migrations'         => $migration_names,
+				'version_migrations' => $version_migration_names,
+			)
+		);
+
 		foreach ( $this->migrations as $migration ) {
 			$this->logger->info(
 				'Running migration case',
@@ -198,8 +219,6 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 
 			$migration->migrate();
 		}
-
-		$version_migrations = $this->get_version_migrations( $previous_version );
 
 		foreach ( $version_migrations as $version_migration ) {
 			$this->logger->info(
@@ -234,18 +253,9 @@ class Version_Migrator extends Hookable implements Hooks_Interface {
 			$db_version :
 			'1.6.0';
 
-		$this->logger->info(
-			'Performing version upgrade',
-			array(
-				'previous_version' => $previous_version,
-				'current_version'  => $this->plugin->get_version(),
-			)
-		);
-
 		$this->migrate( $previous_version );
 
-		// fixme
-
+		// fixme it seems WP updates has shorter hooks
 		// $this->settings->set_version( $this->plugin->get_version() );
 		// $this->settings->save();
 	}

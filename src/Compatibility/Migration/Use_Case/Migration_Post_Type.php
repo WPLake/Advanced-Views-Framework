@@ -34,29 +34,41 @@ final class Migration_Post_Type extends Migration_Base {
 	public function migrate(): void {
 		$this->replace_type_in_posts_table();
 
-		$this->cpt_settings_storage->add_on_loaded_callback(
-			function (): void {
-				$file_system = $this->cpt_settings_storage->get_file_system();
+		$this->cpt_settings_storage->add_on_loaded_callback( array( $this, 'replace_type_in_file_system' ) );
+	}
 
-				if ( $file_system->is_active() ) {
-					$base_folder = $file_system->get_base_folder();
+	public function replace_type_in_file_system(): void {
+		$file_system = $this->cpt_settings_storage->get_file_system();
 
-					$this->rename_cpt_folder( $base_folder );
-				}
-			}
-		);
+		if ( $file_system->is_active() ) {
+			$base_folder = $file_system->get_base_folder();
+
+			$this->rename_cpt_folder( $base_folder );
+		} else {
+			$this->logger->info(
+				'File system is not active, skipping folder replacement',
+				$this->get_log_args()
+			);
+		}
 	}
 
 	protected function replace_type_in_posts_table(): void {
 		global $wpdb;
 
 		// @phpcs:ignore
-		$wpdb->query(
+		$update_response = $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$wpdb->posts} SET post_type = %s WHERE post_type = %s",
 				$this->to_cpt->cpt_name(),
 				$this->from_cpt->cpt_name()
 			)
+		);
+
+		$updated_rows_count = intval( $update_response );
+
+		$this->logger->info(
+			'Replaced post type in posts table.',
+			$this->get_log_args( array( 'updated_rows_count' => $updated_rows_count ) )
 		);
 	}
 
@@ -68,6 +80,40 @@ final class Migration_Post_Type extends Migration_Base {
 
 		if ( $wp_filesystem->exists( $from_path ) ) {
 			$wp_filesystem->move( $from_path, $to_path );
+
+			$this->logger->info(
+				'Renamed folder in file system.',
+				$this->get_log_args(
+					array(
+						'from_path' => $from_path,
+						'to_path'   => $to_path,
+					)
+				)
+			);
+		} else {
+			$this->logger->info(
+				'Skipping folder renaming: folder does not exist.',
+				$this->get_log_args(
+					array(
+						'from_path' => $from_path,
+					)
+				)
+			);
 		}
+	}
+
+	/**
+	 * @param array<string,mixed> $details
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected function get_log_args( array $details = array() ): array {
+		return array_merge(
+			array(
+				'from_cpt_name' => $this->from_cpt->cpt_name(),
+				'to_cpt_name'   => $this->to_cpt->cpt_name(),
+			),
+			$details
+		);
 	}
 }
