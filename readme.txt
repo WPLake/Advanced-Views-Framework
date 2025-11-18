@@ -138,7 +138,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.2 (2025-11-17) =
+= 3.8.2 (2025-11-18) =
 - Enhancement: Migrations - automated flush caches, logging, incomplete upgrade detection
 - Enhancement: Tools - Debugging: added 'Flush caches' & 'Upgrade from version' options
 
