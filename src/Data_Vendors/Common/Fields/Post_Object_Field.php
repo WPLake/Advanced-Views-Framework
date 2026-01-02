@@ -86,7 +86,7 @@ class Post_Object_Field extends List_Field {
 	 */
 	public function get_validation_template_variables( Variable_Field_Data $variable_field_data ): array {
 		return array_merge(
-			parent::get_template_variables( $variable_field_data ),
+			parent::get_validation_template_variables( $variable_field_data ),
 			array(
 				'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
 			)
