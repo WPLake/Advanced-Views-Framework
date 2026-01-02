@@ -2,7 +2,7 @@
 Contributors: wplakeorg
 Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 3.8.2
 License: GPLv2 or later
@@ -137,6 +137,10 @@ Yes, we maintain an [official Git repository](https://github.com/wplake/advanced
 You're welcome to open issues or PRs there.
 
 == Changelog ==
+
+= 3.8.3 (2025-) =
+- Support: tested with the latest WordPress 6.9
+
 
 = 3.8.2 (2025-11-18) =
 - Enhancement: Migrations - automated flush caches, logging, incomplete upgrade detection

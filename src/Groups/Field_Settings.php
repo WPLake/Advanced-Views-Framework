@@ -10,10 +10,10 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Fields\Woo_Fields;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Woo_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
-use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -77,7 +77,6 @@ class Field_Settings extends Group {
 	 * @label Field Layout
 	 * @instructions If filled then data within this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
 	 * @a-order 2
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public string $acf_view_id;
 	/**
@@ -353,5 +352,9 @@ class Field_Settings extends Group {
 
 	public function get_short_unique_acf_view_id(): string {
 		return str_replace( Layout_Settings::UNIQUE_ID_PREFIX, '', $this->acf_view_id );
+	}
+
+	public function has_external_layout(): bool {
+		return strlen( $this->acf_view_id ) > 0;
 	}
 }

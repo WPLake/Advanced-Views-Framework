@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use WP_Comment;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 class Comment_Items_List_Field extends Markup_Field {
 	use Custom_Field;
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+	protected function print_internal_item_layout( string $item_id, Markup_Field_Data $markup_field_data ): void {
 		// opening 'comment' div.
 		printf(
 			'<div class="%s">',
@@ -81,6 +82,14 @@ class Comment_Items_List_Field extends Markup_Field {
 		echo '</div>';
 	}
 
+	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
+		echo ' object-id="comment"';
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'comment-id', $item_id, 'comment_id' );
+		echo ']';
+	}
+
 	/**
 	 * @return array<string,string>
 	 */
@@ -89,6 +98,22 @@ class Comment_Items_List_Field extends Markup_Field {
 		Field_Settings $field_settings,
 		bool $is_for_validation = false
 	): array {
+		if ( $field_settings->has_external_layout() ) {
+			if ( $is_for_validation ) {
+				return array(
+					'comment_id' => '1',
+				);
+			}
+
+			$comment_id = null !== $wp_comment ?
+				$wp_comment->comment_ID :
+				0;
+
+			return array(
+				'comment_id' => (string) $comment_id,
+			);
+		}
+
 		if ( $is_for_validation ||
 			null === $wp_comment ) {
 			return array(
@@ -171,7 +196,8 @@ class Comment_Items_List_Field extends Markup_Field {
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
 		$args = array(
-			'value' => array(),
+			'value'   => array(),
+			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
 		);
 
 		$post = $this->get_post( $variable_field_data->get_value() );
@@ -205,9 +231,10 @@ class Comment_Items_List_Field extends Markup_Field {
 	 */
 	public function get_validation_template_variables( Variable_Field_Data $variable_field_data ): array {
 		return array(
-			'value' => array(
+			'value'   => array(
 				$this->get_item_twig_args( null, $variable_field_data->get_field_data(), true ),
 			),
+			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
 		);
 	}
 

@@ -7,9 +7,9 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,6 +17,17 @@ abstract class Markup_Field implements Markup_Field_Interface {
 	use Safe_Array_Arguments;
 
 	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		if ( $markup_field_data->get_field_data()->has_external_layout() ) {
+			$this->print_external_item_layout( $field_id, $item_id, $markup_field_data );
+		} else {
+			$this->print_internal_item_layout( $item_id, $markup_field_data );
+		}
+	}
+
+	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+	}
+
+	protected function print_internal_item_layout( string $item_id, Markup_Field_Data $markup_field_data ): void {
 	}
 
 	protected function print_item( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
