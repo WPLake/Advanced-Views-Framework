@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
@@ -26,10 +27,16 @@ class Menu_Items_Field extends Markup_Field {
 		$this->link_field = $link_field;
 	}
 
-	protected function print_item_markup( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+	protected function print_internal_item_layout( string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$this->link_field->print_markup( $item_id, $markup_field_data );
 	}
 
+	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'object-id', $item_id, 'value' );
+		echo ']';
+	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		echo "\r\n";
@@ -198,6 +205,43 @@ class Menu_Items_Field extends Markup_Field {
 		Variable_Field_Data $variable_field_data,
 		bool $is_for_validation = false
 	): array {
+		if ( $variable_field_data->get_field_data()->has_external_layout() ) {
+			$args = array(
+				'value'         => 0,
+				'isActive'      => false,
+				'isChildActive' => false,
+				'children'      => array(),
+			);
+
+			if ( $is_for_validation ) {
+				return $args;
+			}
+
+			$is_child_active = false;
+			$args['value']   = null !== $wp_post ?
+				$wp_post->ID :
+				0;
+
+			foreach ( $children as $child ) {
+				$is_sub_active = $this->is_active_item( $child );
+
+				$args['children'][] = array(
+					'value'    => $child->ID,
+					'isActive' => $is_sub_active,
+				);
+
+				$is_child_active = $is_child_active || $is_sub_active;
+			}
+
+			return array_merge(
+				$args,
+				array(
+					'isActive'      => null !== $wp_post && $this->is_active_item( $wp_post ),
+					'isChildActive' => $is_child_active,
+				)
+			);
+		}
+
 		$link_args = null !== $wp_post ?
 			$this->get_menu_item_info( $wp_post ) :
 			array();
@@ -267,7 +311,8 @@ class Menu_Items_Field extends Markup_Field {
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
 		$args = array(
-			'value' => array(),
+			'value'   => array(),
+			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
 		);
 
 		$menu = $this->get_term( $variable_field_data->get_value(), 'nav_menu' );

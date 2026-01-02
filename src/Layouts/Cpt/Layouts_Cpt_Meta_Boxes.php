@@ -6,19 +6,18 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use WP_Post;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
+use WP_Post;
 
 class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
@@ -295,7 +294,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			'acf-views_related_views',
 			sprintf(
 			// translators: %s is the plural name of the CPT.
-				__( 'Assigned %s', 'acf-views' ),
+				__( 'Field %s', 'acf-views' ),
 				$this->public_cpt->labels()->plural_name()
 			),
 			function ( WP_Post $wp_post ): void {

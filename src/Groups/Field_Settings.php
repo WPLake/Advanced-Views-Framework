@@ -75,7 +75,7 @@ class Field_Settings extends Group {
 	 * @a-type av_slug_select
 	 * @allow_null 1
 	 * @label Field Layout
-	 * @instructions If filled then data within this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
+	 * @instructions If filled then data from this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
 	 * @a-order 2
 	 */
 	public string $acf_view_id;
