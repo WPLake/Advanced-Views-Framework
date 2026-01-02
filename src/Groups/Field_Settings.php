@@ -74,8 +74,8 @@ class Field_Settings extends Group {
 	/**
 	 * @a-type av_slug_select
 	 * @allow_null 1
-	 * @label Field Layout
-	 * @instructions If filled then data from this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
+	 * @label Object Layout
+	 * @instructions By default, an Object field is rendered in the Layout template as an HTML link to the selected object. <br><br> To display fields from within the selected object, assign a separate Layout with the target object fields. <br><br> Example: To display an excerpt from a Post Object, create a separate Layout with the Post Excerpt field and assign it here. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>
 	 * @a-order 2
 	 */
 	public string $acf_view_id;

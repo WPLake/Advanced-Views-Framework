@@ -294,7 +294,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			'acf-views_related_views',
 			sprintf(
 			// translators: %s is the plural name of the CPT.
-				__( 'Field %s', 'acf-views' ),
+				__( 'Object %s', 'acf-views' ),
 				$this->public_cpt->labels()->plural_name()
 			),
 			function ( WP_Post $wp_post ): void {

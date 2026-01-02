@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -102,9 +103,7 @@ class Post_Object_Field extends List_Field {
 			);
 		}
 
-		$value = is_numeric( $variable_field_data->get_value() ) ?
-			(int) $variable_field_data->get_value() :
-			0;
+		$value = int( $variable_field_data->get_value() );
 
 		$link_args = $this->get_post_info( $value );
 
