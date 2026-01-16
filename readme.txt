@@ -139,7 +139,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.8.3 (2025-) =
-- Feature adoption: Custom field layout for object fields (before Pro-only)
+- Feature adoption: Layout / Fields / Object Layout (allows displaying inner object fields; before Pro-only)
 - Support: tested with the latest WordPress 6.9
 
 = 3.8.2 (2025-11-18) =
