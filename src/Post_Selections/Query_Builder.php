@@ -114,11 +114,10 @@ class Query_Builder {
 		$query_args = $this->get_query_args( $post_selection_settings, $page_number, $custom_arguments );
 		$wp_query   = new WP_Query( $query_args );
 
-		// only ids, as the 'fields' argument is set.
 		/**
-		 * @var int[] $post_ids
+		 * @var int[] $post_ids only ids, as the 'fields' argument is set.
 		 */
-		$post_ids = $wp_query->get_posts();
+		$post_ids = $wp_query->posts;
 
 		global $wpdb;
 		$this->logger->debug(
