@@ -27,19 +27,15 @@ final class Post_Filters_Builder implements Post_Filters {
 	 * @return array<string, mixed>
 	 */
 	public static function get_active_filters( array $conditional_filters ): array {
-		$active_filters = array();
+		$filter_values = array_map(
+			fn( array $filter ) => $filter['enabled'] ? $filter['value']() : null,
+			$conditional_filters
+		);
 
-		$enabled_filters = array_filter( $conditional_filters, fn( $filter ) => $filter['enabled'] );
-
-		foreach ( $enabled_filters as $filter_name => $filter ) {
-			$value = $filter['value']();
-
-			if ( ! is_null( $value ) ) {
-				$active_filters[ $filter_name ] = $value;
-			}
-		}
-
-		return $active_filters;
+		return array_filter(
+			$filter_values,
+			fn( $filter_value ) => ! is_null( $filter_value )
+		);
 	}
 
 	public function get_post_filters( Post_Selection_Settings $settings ): array {

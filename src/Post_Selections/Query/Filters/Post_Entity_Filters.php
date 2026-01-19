@@ -20,17 +20,15 @@ final class Post_Entity_Filters implements Post_Filters {
 
 		$conditional_filters = Post_Filters_Builder::get_active_filters(
 			array(
-				array(
-					'post__in'     => array(
-						'enabled' => count( $settings->post_in ) > 0,
-						'value'   => fn() => $settings->post_in,
-					),
-					'post__not_in' => array(
-						'enabled' => count( $settings->post_not_in ) > 0,
-						'value'   => fn() => $settings->post_not_in,
-					),
+				'post__in'     => array(
+					'enabled' => count( $settings->post_in ) > 0,
+					'value'   => fn() => $settings->post_in,
 				),
-			)
+				'post__not_in' => array(
+					'enabled' => count( $settings->post_not_in ) > 0,
+					'value'   => fn() => $settings->post_not_in,
+				),
+			),
 		);
 
 		return array_merge(

@@ -534,3 +534,5 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
 
 	$plugin_loader->load_plugin();
 } )();
+if ( function_exists( 'opcache_reset' ) ) {
+	opcache_reset();}
