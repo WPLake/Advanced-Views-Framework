@@ -2,28 +2,26 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Filters;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Filters;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Filters_Builder;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Post_Order_Filters implements Post_Filters {
+final class Post_Order_Query implements Post_Query {
 	private Data_Vendors $data_vendors;
 
 	public function __construct( Data_Vendors $data_vendors ) {
 		$this->data_vendors = $data_vendors;
 	}
 
-	public function get_post_filters( Post_Selection_Settings $settings ): array {
-		$filters = array(
+	public function get_query_arguments( Post_Selection_Settings $settings ): array {
+		$arguments = array(
 			'order' => $settings->order,
 		);
 
-		$conditional_filters = Post_Filters_Builder::get_active_filters(
+		$conditional_arguments = Post_Query_Builder::get_active_arguments(
 			array(
 				'orderby'  => array(
 					'enabled' => 'none' !== $settings->order_by,
@@ -38,8 +36,8 @@ final class Post_Order_Filters implements Post_Filters {
 		);
 
 		return array_merge(
-			$filters,
-			$conditional_filters
+			$arguments,
+			$conditional_arguments
 		);
 	}
 

@@ -2,23 +2,21 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Filters;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query;
 
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Filters;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Filters_Builder;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Post_Entity_Filters implements Post_Filters {
-	public function get_post_filters( Post_Selection_Settings $settings ): array {
-		$filters = array(
+final class Post_Entity_Query implements Post_Query {
+	public function get_query_arguments( Post_Selection_Settings $settings ): array {
+		$arguments = array(
 			'post_type'           => $settings->post_types,
 			'post_status'         => $settings->post_statuses,
 			'ignore_sticky_posts' => $settings->is_ignore_sticky_posts,
 		);
 
-		$conditional_filters = Post_Filters_Builder::get_active_filters(
+		$conditional_arguments = Post_Query_Builder::get_active_arguments(
 			array(
 				'post__in'     => array(
 					'enabled' => count( $settings->post_in ) > 0,
@@ -32,8 +30,8 @@ final class Post_Entity_Filters implements Post_Filters {
 		);
 
 		return array_merge(
-			$filters,
-			$conditional_filters
+			$arguments,
+			$conditional_arguments
 		);
 	}
 }
