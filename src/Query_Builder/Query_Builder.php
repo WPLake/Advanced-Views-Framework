@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query;
+namespace Org\Wplake\Advanced_Views\Query_Builder;
 
 defined( 'ABSPATH' ) || exit;
 
-interface Post_Query {
+interface Query_Builder {
 	/**
-	 * @return array<string|int,mixed>
+	 * @return mixed[]
 	 */
 	public function get_query_arguments(): array;
 }

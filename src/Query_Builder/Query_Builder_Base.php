@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query;
+namespace Org\Wplake\Advanced_Views\Query_Builder;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Post_Query_Base implements Post_Query {
+abstract class Query_Builder_Base implements Query_Builder {
 	/**
 	 * @param array<string, array{ enabled: bool, value: callable():mixed }> $conditional_arguments
 	 *
@@ -34,7 +34,7 @@ abstract class Post_Query_Base implements Post_Query {
 	}
 
 	/**
-	 * @return array<string,mixed>
+	 * @return mixed[]
 	 */
 	protected function get_arguments(): array {
 		return array();

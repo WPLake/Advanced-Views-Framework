@@ -2,14 +2,14 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Parts;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
 
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Base;
+use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Post_Entity_Query extends Post_Query_Base {
+final class Entity_Query_Builder extends Query_Builder_Base {
 	private Post_Selection_Settings $settings;
 
 	public function __construct( Post_Selection_Settings $settings ) {
