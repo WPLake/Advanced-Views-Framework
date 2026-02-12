@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups;
 
-use Org\Wplake\Advanced_Views\Groups\Parents\Group;
-
 defined( 'ABSPATH' ) || exit;
+
+use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 
 class Meta_Field_Settings extends Group {
 	// to fix the group name in case class name changes.
