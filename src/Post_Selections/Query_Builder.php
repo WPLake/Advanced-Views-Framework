@@ -7,6 +7,9 @@ namespace Org\Wplake\Advanced_Views\Post_Selections;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Entity_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Order_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
 use WP_Query;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
@@ -52,41 +55,18 @@ class Query_Builder {
 	 * @return array<string,mixed>
 	 */
 	// phpcs:ignore
-	public function get_query_args( Post_Selection_Settings $post_selection_settings, int $page_number, array $custom_arguments = array() ): array {
-		$args = array(
-			'fields'              => 'ids',
-			'post_type'           => $post_selection_settings->post_types,
-			'post_status'         => $post_selection_settings->post_statuses,
-			'posts_per_page'      => $post_selection_settings->limit,
-			'order'               => $post_selection_settings->order,
-			'ignore_sticky_posts' => $post_selection_settings->is_ignore_sticky_posts,
+	public function get_query_args( Post_Selection_Settings $selection, int $page_number, array $custom_arguments = array() ): array {
+		/**
+		 * @var \Org\Wplake\Advanced_Views\Query_Builder\Query_Builder[] $sub_queries
+		 */
+		$sub_queries = array(
+			new Entity_Query_Builder( $selection ),
+			new Order_Query_Builder( $selection, $this->data_vendors ),
 		);
 
-		if ( 'none' !== $post_selection_settings->order_by ) {
-			$args['orderby'] = $post_selection_settings->order_by;
-		}
+		$post_query_builder = new Post_Query_Builder( $selection, $sub_queries );
 
-		if ( array() !== $post_selection_settings->post_in ) {
-			$args['post__in'] = $post_selection_settings->post_in;
-		}
-
-		if ( array() !== $post_selection_settings->post_not_in ) {
-			$args['post__not_in'] = $post_selection_settings->post_not_in;
-		}
-
-		if ( true === in_array( $post_selection_settings->order_by, array( 'meta_value', 'meta_value_num' ), true ) ) {
-			$field_meta = $this->data_vendors->get_field_meta(
-				$post_selection_settings->get_order_by_meta_field_source(),
-				$post_selection_settings->get_order_by_meta_acf_field_id()
-			);
-
-			if ( true === $field_meta->is_field_exist() ) {
-				// phpcs:ignore
-				$args['meta_key'] = $field_meta->get_name();
-			}
-		}
-
-		return $args;
+		return $post_query_builder->get_query_arguments();
 	}
 
 	/**
@@ -153,6 +133,13 @@ class Query_Builder {
 			$wp_query,
 			$query_args
 		);
+	}
+
+	/**
+	 * @return \Org\Wplake\Advanced_Views\Query_Builder\Query_Builder[]
+	 */
+	protected function get_sub_queries(): array {
+		// fixme.
 	}
 
 	/**
