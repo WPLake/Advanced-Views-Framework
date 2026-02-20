@@ -4,46 +4,43 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Query_Builder;
 
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
+
 defined( 'ABSPATH' ) || exit;
 
-abstract class Query_Builder_Base implements Query_Builder {
+abstract class Query_Builder_Base {
 	/**
-	 * @param array<string, array{ enabled: bool, value: callable():mixed }> $conditional_arguments
+	 * @param array<string, array{ condition?: bool, value: callable():mixed | mixed }> $conditional_arguments
 	 *
 	 * @return array<string, mixed>
 	 */
-	public static function get_active_arguments( array $conditional_arguments ): array {
-		$argument_values = array_map(
-			fn( array $filter ) => $filter['enabled'] ? $filter['value']() : null,
+	public static function filter_arguments( array $conditional_arguments ): array {
+		$active_arguments = array_map(
+			fn( array $filter ) => self::filter_argument( $filter ),
 			$conditional_arguments
 		);
 
 		return array_filter(
-			$argument_values,
+			$active_arguments,
 			fn( $argument_value ) => ! is_null( $argument_value )
 		);
 	}
 
-	public function get_query_arguments(): array {
-		$conditional_arguments = $this->get_conditional_arguments();
-
-		return array_merge(
-			$this->get_arguments(),
-			self::get_active_arguments( $conditional_arguments )
-		);
-	}
-
 	/**
-	 * @return mixed[]
+	 * @param array{ condition?: bool, value: callable():mixed | mixed } $filter
+	 *
+	 * @return mixed
 	 */
-	protected function get_arguments(): array {
-		return array();
-	}
+	protected static function filter_argument( array $filter ) {
+		$condition = bool( $filter, 'condition', true );
 
-	/**
-	 * @return array<string, array{ enabled: bool, value: callable():mixed }>
-	 */
-	protected function get_conditional_arguments(): array {
-		return array();
+		if ( $condition ) {
+			$value = $filter['value'];
+
+			return is_callable( $value ) ?
+				$value() : $value;
+		}
+
+		return null;
 	}
 }
