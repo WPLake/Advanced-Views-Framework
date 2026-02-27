@@ -16,16 +16,6 @@ defined( 'ABSPATH' ) || exit;
 class Post_Author_Field extends User_Field {
 	use Custom_Field;
 
-	// todo remove as it's already handled by User_Field.
-	/*
-		protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
-		echo ' object-id="user"';
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'user-id', $field_id, 'value' );
-		echo ']';
-	}*/
-
 	/**
 	 * @param mixed $post_id
 	 */

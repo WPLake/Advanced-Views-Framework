@@ -288,8 +288,6 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Pods\\Pods_Data_Vendor' => $baseDir . '/../pro/Data_Vendors/Pods/Pods_Data_Vendor.php',
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Pods\\Pods_Integration' => $baseDir . '/../pro/Data_Vendors/Pods/Pods_Integration.php',
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Comment_Items\\Comment_Items_List_Field' => $baseDir . '/../pro/Data_Vendors/Wp/Fields/Comment_Items/Comment_Items_List_Field.php',
-    'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Menu\\Menu_Items_Field' => $baseDir . '/../pro/Data_Vendors/Wp/Fields/Menu/Menu_Items_Field.php',
-    'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Post\\Post_Author_Field' => $baseDir . '/../pro/Data_Vendors/Wp/Fields/Post/Post_Author_Field.php',
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Post\\Post_Thumbnail_Field' => $baseDir . '/../pro/Data_Vendors/Wp/Fields/Post/Post_Thumbnail_Field.php',
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Taxonomy_Terms\\Taxonomy_Terms_Field' => $baseDir . '/../pro/Data_Vendors/Wp/Fields/Taxonomy_Terms/Taxonomy_Terms_Field.php',
     'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Wp_Data_Vendor' => $baseDir . '/../pro/Data_Vendors/Wp/Wp_Data_Vendor.php',

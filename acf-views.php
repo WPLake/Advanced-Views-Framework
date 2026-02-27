@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Advanced Views Lite
  * Plugin URI: https://advanced-views.com/
- * Description: Effortlessly display WordPress posts, custom fields, and WooCommerce data.
- * Version: 3.8.2
+ * Description: Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
+ * Version: 3.8.3
  * Author: WPLake
  * Author URI: https://advanced-views.com/
  * Text Domain: acf-views
@@ -21,13 +21,45 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
+use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
+use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
+use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Groups\{Git_Repository,
+	Item_Settings,
+	Layout_Settings,
+	Plugin_Settings,
+	Post_Selection_Settings,
+	Tools_Settings};
+use Org\Wplake\Advanced_Views\Groups_Integration\{Custom_Acf_Field_Types,
+	Field_Settings_Integration,
+	Item_Settings_Integration,
+	Layout_Settings_Integration,
+	Meta_Field_Settings_Integration,
+	Mount_Point_Settings_Integration,
+	Post_Selection_Settings_Integration,
+	Tax_Field_Settings_Integration,
+	Tools_Settings_Integration,};
+use Org\Wplake\Advanced_Views\Layouts\{Cpt\Layouts_Cpt,
+	Cpt\Layouts_Cpt_Meta_Boxes,
+	Cpt\Layouts_Cpt_Save_Actions,
+	Cpt\Table\Layouts_Bulk_Validation_Tab,
+	Cpt\Table\Layouts_Cpt_Table,
+	Cpt\Table\Layouts_Pre_Built_Tab,
+	Data_Storage\Layouts_Settings_Storage,
+	Fields\Field_Markup,
+	Layout_Factory,
+	Layout_Markup};
+use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
+use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
+use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
-use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
-	Post_Selection_Markup,
-	Cpt\Post_Selections_Cpt,
+use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
 	Cpt\Post_Selections_Cpt_Meta_Boxes,
 	Cpt\Post_Selections_Cpt_Save_Actions,
 	Cpt\Post_Selections_View_Integration,
@@ -36,53 +68,19 @@ use Org\Wplake\Advanced_Views\Post_Selections\{Post_Selection_Factory,
 	Cpt\Table\Post_Selections_Pre_Built_Tab,
 	Data_Storage\Post_Selection_Fs_Fields,
 	Data_Storage\Post_Selections_Settings_Storage,
+	Post_Selection_Factory,
+	Post_Selection_Markup,
 	Query_Builder};
-use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
-use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
-use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
-use Org\Wplake\Advanced_Views\Tools\Demo_Import;
-use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
-use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
-use Org\Wplake\Advanced_Views\Tools\Tools;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups_Integration\{
-	Post_Selection_Settings_Integration,
-	Custom_Acf_Field_Types,
-	Field_Settings_Integration,
-	Item_Settings_Integration,
-	Meta_Field_Settings_Integration,
-	Mount_Point_Settings_Integration,
-	Tax_Field_Settings_Integration,
-	Tools_Settings_Integration,
-	Layout_Settings_Integration,
-};
-use Org\Wplake\Advanced_Views\Groups\{Post_Selection_Settings,
-	Git_Repository,
-	Item_Settings,
-	Plugin_Settings,
-	Tools_Settings,
-	Layout_Settings};
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
+use Org\Wplake\Advanced_Views\Tools\Demo_Import;
+use Org\Wplake\Advanced_Views\Tools\Tools;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
-use Org\Wplake\Advanced_Views\Layouts\{Cpt\Table\Layouts_Bulk_Validation_Tab,
-	Cpt\Table\Layouts_Cpt_Table,
-	Cpt\Table\Layouts_Pre_Built_Tab,
-	Cpt\Layouts_Cpt,
-	Cpt\Layouts_Cpt_Meta_Boxes,
-	Cpt\Layouts_Cpt_Save_Actions,
-	Data_Storage\Layouts_Settings_Storage,
-	Fields\Field_Markup,
-	Layout_Factory,
-	Layout_Markup};
 
 ( function (): void {
 	// omit loading if the Pro version is already loaded.
