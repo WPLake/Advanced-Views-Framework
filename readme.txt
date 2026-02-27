@@ -122,7 +122,7 @@ See our official [plugin documentation](https://docs.advanced-views.com/getting-
 
 **Installation for Advanced Views: Pro edition**
 
-To purchase a Pro license key click [here](https://wplake.org/advanced-views-pro/).
+To purchase a Pro license key click [here](https://advanced-views.com/pro/#pricing).
 After payment you'll receive an email with your license key which includes the Pro plugin archive.
 
 1. Visit the Plugins list, click "Add New", then click "Upload Plugin"
@@ -133,7 +133,7 @@ After payment you'll receive an email with your license key which includes the P
 5. Copy and paste your Pro License Key, then click "Activate"
 
 Enjoy all the features and settings the Advanced Views Framework has to offer with automatic updates.
-Customers with an active Pro license have personal support via our [support form](https://wplake.org/acf-views-support/).
+Customers with an active Pro license have personal support via our [support form](https://advanced-views.com/support/).
 
 == Frequently Asked Questions ==
 
