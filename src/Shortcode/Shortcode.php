@@ -7,17 +7,16 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_REST_Request;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -104,7 +103,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	/**
 	 * @param mixed[] $args
 	 */
-	protected function get_error_markup( string $shortcode, array $args, string $error ): string {
+	protected function create_error_markup( string $shortcode, array $args, string $error ): string {
 		$attrs = array();
 
 		foreach ( $args as $name => $value ) {
@@ -120,6 +119,17 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			esc_html( $error ),
 			esc_html( sprintf( '(%s %s)', $shortcode, implode( ' ', $attrs ) ) )
 		);
+	}
+
+	/**
+	 * @param mixed[] $args
+	 */
+	protected function get_error_markup( string $shortcode, array $args, string $error ): string {
+		if ( Avf_User::can_see_errors() ) {
+			return $this->create_error_markup( $shortcode, $args, $error );
+		}
+
+		return '';
 	}
 
 	protected function get_shortcode_name(): string {

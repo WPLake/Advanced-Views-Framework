@@ -19,6 +19,14 @@ final class Avf_User {
 		);
 	}
 
+	public static function can_see_errors(): bool {
+		$is_user_logged_in = is_user_logged_in();
+
+		return bool(
+			apply_filters( 'acf_views/user_can_see_errors', $is_user_logged_in )
+		);
+	}
+
 	public static function get_manage_capability(): string {
 		/**
 		 * Since Views and Cards templates support Blade with the ability to execute arbitrary PHP code,
