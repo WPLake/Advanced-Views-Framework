@@ -9,7 +9,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Entity_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Order_Query_Builder;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
 use WP_Query;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
@@ -64,7 +64,7 @@ class Query_Builder {
 			new Order_Query_Builder( $selection, $this->data_vendors ),
 		);
 
-		$post_query_builder = new Post_Query_Builder( $selection, $sub_queries );
+		$post_query_builder = new Selection_Query_Builder( $selection, $sub_queries );
 
 		return $post_query_builder->get_query_arguments();
 	}

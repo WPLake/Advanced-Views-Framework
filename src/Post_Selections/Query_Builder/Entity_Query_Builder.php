@@ -9,11 +9,8 @@ use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Entity_Query_Builder {
-	/**
-	 * @return array<string,mixed>
-	 */
-	public function build_entity_query( Post_Selection_Settings $selection ): array {
+final class Entity_Query_Builder implements Post_Query_Builder {
+	public function build_post_query( Post_Selection_Settings $selection ): array {
 		$arguments = array(
 			'post_type'           => array(
 				'value' => $selection->post_types,

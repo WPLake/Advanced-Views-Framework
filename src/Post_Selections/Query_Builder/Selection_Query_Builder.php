@@ -1,0 +1,21 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
+
+defined( 'ABSPATH' ) || exit;
+
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+
+final class Selection_Query_Builder implements Post_Query_Builder {
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function build_post_query( Post_Selection_Settings $selection ): array {
+		return array(
+			'fields'         => 'ids',
+			'posts_per_page' => $selection->limit,
+		);
+	}
+}
