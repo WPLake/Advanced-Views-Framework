@@ -9,8 +9,9 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Entity_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Order_Query_Builder;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
 use WP_Query;
+use function Org\Wplake\Advanced_Views\Utils\flap_map;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,10 +19,26 @@ defined( 'ABSPATH' ) || exit;
 class Query_Builder {
 	private Data_Vendors $data_vendors;
 	private Logger $logger;
+	/**
+	 * @var Post_Query_Builder[]
+	 */
+	private array $query_builders;
 
 	public function __construct( Data_Vendors $data_vendors, Logger $logger ) {
 		$this->data_vendors = $data_vendors;
 		$this->logger       = $logger;
+
+		$this->query_builders = array(
+			new Entity_Query_Builder(),
+			new Order_Query_Builder( $this->data_vendors ),
+		);
+	}
+
+	/**
+	 * @param Post_Query_Builder[] $query_builders
+	 */
+	protected function add_query_builders( array $query_builders ): void {
+		$this->query_builders = array_merge( $this->query_builders, $query_builders );
 	}
 
 	/**
@@ -52,21 +69,22 @@ class Query_Builder {
 	/**
 	 * @param array<string,mixed> $custom_arguments
 	 *
-	 * @return array<string,mixed>
+	 * @return mixed[]
 	 */
 	// phpcs:ignore
 	public function get_query_args( Post_Selection_Settings $selection, int $page_number, array $custom_arguments = array() ): array {
-		/**
-		 * @var \Org\Wplake\Advanced_Views\Query_Builder\Query_Builder[] $sub_queries
-		 */
-		$sub_queries = array(
-			new Entity_Query_Builder( $selection ),
-			new Order_Query_Builder( $selection, $this->data_vendors ),
+		$arguments = flap_map(
+			$this->query_builders,
+			fn( Post_Query_Builder $query_builder ) =>  $query_builder->build_post_query( $selection )
 		);
 
-		$post_query_builder = new Selection_Query_Builder( $selection, $sub_queries );
-
-		return $post_query_builder->get_query_arguments();
+		return array_merge(
+			array(
+				'fields'         => 'ids',
+				'posts_per_page' => $selection->limit,
+			),
+			$arguments
+		);
 	}
 
 	/**
@@ -135,12 +153,6 @@ class Query_Builder {
 		);
 	}
 
-	/**
-	 * @return \Org\Wplake\Advanced_Views\Query_Builder\Query_Builder[]
-	 */
-	protected function get_sub_queries(): array {
-		// fixme.
-	}
 
 	/**
 	 * @return array<string,mixed>
