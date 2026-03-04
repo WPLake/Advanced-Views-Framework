@@ -4,19 +4,20 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Entity_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Order_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Pro\Post_Selections\Query_Builder\Context\Context_Container_Base;
 use WP_Query;
 use function Org\Wplake\Advanced_Views\Utils\flap_map;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
-defined( 'ABSPATH' ) || exit;
-
-class Query_Builder {
+class Query_Builder extends Context_Container_Base implements Post_Query_Builder {
 	private Data_Vendors $data_vendors;
 	private Logger $logger;
 	/**
@@ -25,6 +26,8 @@ class Query_Builder {
 	private array $query_builders;
 
 	public function __construct( Data_Vendors $data_vendors, Logger $logger ) {
+		parent::__construct();
+
 		$this->data_vendors = $data_vendors;
 		$this->logger       = $logger;
 
@@ -34,11 +37,10 @@ class Query_Builder {
 		);
 	}
 
-	/**
-	 * @param Post_Query_Builder[] $query_builders
-	 */
-	protected function add_query_builders( array $query_builders ): void {
-		$this->query_builders = array_merge( $this->query_builders, $query_builders );
+	protected function add_query_builder( Post_Query_Builder $query_builder ): self {
+		$this->query_builders[] = $query_builder;
+
+		return $this;
 	}
 
 	/**
@@ -52,7 +54,6 @@ class Query_Builder {
 		int $pages_amount,
 		array $post_ids,
 		string $short_unique_card_id,
-		int $page_number,
 		WP_Query $wp_query,
 		array $query_args
 	): array {
@@ -66,13 +67,7 @@ class Query_Builder {
 		return $this->data_vendors;
 	}
 
-	/**
-	 * @param array<string,mixed> $custom_arguments
-	 *
-	 * @return mixed[]
-	 */
-	// phpcs:ignore
-	public function get_query_args( Post_Selection_Settings $selection, int $page_number, array $custom_arguments = array() ): array {
+	public function build_post_query( Post_Selection_Settings $selection ): array {
 		$arguments = flap_map(
 			$this->query_builders,
 			fn( Post_Query_Builder $query_builder ) =>  $query_builder->build_post_query( $selection )
@@ -92,12 +87,8 @@ class Query_Builder {
 	 *
 	 * @return array<string,mixed>
 	 */
-	public function get_posts_data(
-		Post_Selection_Settings $post_selection_settings,
-		int $page_number = 1,
-		array $custom_arguments = array()
-	): array {
-		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS === $post_selection_settings->items_source ) {
+	public function get_posts_data( Post_Selection_Settings $selection ): array {
+		if ( Post_Selection_Settings::ITEMS_SOURCE_CONTEXT_POSTS === $selection->items_source ) {
 			return $this->get_global_posts_data();
 		}
 
@@ -109,7 +100,7 @@ class Query_Builder {
 			);
 		}
 
-		$query_args = $this->get_query_args( $post_selection_settings, $page_number, $custom_arguments );
+		$query_args = $this->build_post_query( $selection );
 		$wp_query   = new WP_Query( $query_args );
 
 		/**
@@ -121,8 +112,8 @@ class Query_Builder {
 		$this->logger->debug(
 			'Card executed WP_Query',
 			array(
-				'card_id'     => $post_selection_settings->get_unique_id(),
-				'page_number' => $page_number,
+				'card_id'     => $selection->get_unique_id(),
+				'page_number' => $this->query_context->get_page_number(),
 				'query_args'  => $query_args,
 				'found_posts' => $wp_query->found_posts,
 				'post_ids'    => $post_ids,
@@ -131,9 +122,9 @@ class Query_Builder {
 			)
 		);
 
-		$found_posts = ( - 1 !== $post_selection_settings->limit &&
-						$wp_query->found_posts > $post_selection_settings->limit ) ?
-			$post_selection_settings->limit :
+		$found_posts = ( - 1 !== $selection->limit &&
+						$wp_query->found_posts > $selection->limit ) ?
+			$selection->limit :
 			$wp_query->found_posts;
 
 		$posts_per_page = int( $query_args, 'posts_per_page' );
@@ -146,8 +137,7 @@ class Query_Builder {
 		return $this->filter_posts_data(
 			$pages_amount,
 			$post_ids,
-			$post_selection_settings->get_unique_id( true ),
-			$page_number,
+			$selection->get_unique_id( true ),
 			$wp_query,
 			$query_args
 		);

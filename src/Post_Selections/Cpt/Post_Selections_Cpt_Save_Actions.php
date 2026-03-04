@@ -6,22 +6,22 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
-use WP_REST_Request;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
+use WP_REST_Request;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/card-refresh';
@@ -96,7 +96,10 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 	protected function update_query_preview( Post_Selection_Settings $post_selection_settings ): void {
 		// @phpcs:ignore
-		$post_selection_settings->query_preview = print_r( $this->query_builder->get_query_args( $post_selection_settings, 1 ), true );
+		$post_selection_settings->query_preview = print_r(
+			$this->query_builder->build_post_query( $post_selection_settings ),
+			true
+		);
 	}
 
 	protected function add_layout_css( Post_Selection_Settings $post_selection_settings ): void {
