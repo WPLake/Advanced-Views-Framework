@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return mixed[]
  */
-function flap_map( array $items, callable $mapper ): array {
+function flat_map( array $items, callable $mapper ): array {
 	$chunks = array();
 
 	foreach ( $items as $key => $item ) {
