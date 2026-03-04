@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Context_Container_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context_Container;
 use function Org\Wplake\Advanced_Views\Utils\flap_map;
@@ -17,15 +16,13 @@ class Selection_Query_Builder implements Post_Query_Builder, Query_Context_Conta
 	use Context_Container_Base;
 
 	private Data_Vendors $data_vendors;
-	private Logger $logger;
 	/**
 	 * @var Post_Query_Builder[]
 	 */
 	private array $query_builders;
 
-	public function __construct( Data_Vendors $data_vendors, Logger $logger ) {
+	public function __construct( Data_Vendors $data_vendors ) {
 		$this->data_vendors = $data_vendors;
-		$this->logger       = $logger;
 
 		$this->query_builders = array(
 			new Entity_Query_Builder(),

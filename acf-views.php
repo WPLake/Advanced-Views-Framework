@@ -71,6 +71,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
 	Post_Query,
 	Post_Selection_Factory,
 	Post_Selection_Markup};
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
@@ -280,7 +281,8 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 		}
 
 		protected function post_selections(): void {
-			$query_builder                          = new Post_Query( $this->data_vendors, $this->logger );
+			$query_builder                          = new Selection_Query_Builder( $this->data_vendors );
+			$post_query                             = new Post_Query( $query_builder, $this->logger );
 			$post_selection_markup                  = new Post_Selection_Markup(
 				$this->front_assets,
 				$this->template_engines,
@@ -288,7 +290,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			);
 			$this->post_selection_factory           = new Post_Selection_Factory(
 				$this->front_assets,
-				$query_builder,
+				$post_query,
 				$post_selection_markup,
 				$this->template_engines,
 				$this->post_selections_settings_storage
@@ -540,4 +542,7 @@ if ( function_exists( 'opcache_reset' ) ) {
 	opcache_reset();}
 if ( function_exists( 'opcache_reset' ) ) {
 	opcache_reset();}
+if ( function_exists( 'opcache_reset' ) ) {
+	opcache_reset();}
+if(function_exists('opcache_reset')){opcache_reset();}
 if(function_exists('opcache_reset')){opcache_reset();}

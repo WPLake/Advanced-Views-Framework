@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Post_Selection extends Instance {
 	private Post_Selection_Settings $settings;
-	private Post_Query $query_builder;
+	private Post_Query $post_query;
 	private Post_Selection_Markup $post_selection_markup;
 	private int $pages_amount;
 	/**
@@ -28,14 +28,14 @@ class Post_Selection extends Instance {
 	public function __construct(
 		Template_Engines $template_engines,
 		Post_Selection_Settings $post_selection_settings,
-		Post_Query $query_builder,
+		Post_Query $post_query,
 		Post_Selection_Markup $post_selection_markup,
 		string $classes = ''
 	) {
 		parent::__construct( $template_engines, $post_selection_settings, '', $classes );
 
 		$this->settings              = $post_selection_settings;
-		$this->query_builder         = $query_builder;
+		$this->post_query            = $post_query;
 		$this->post_selection_markup = $post_selection_markup;
 		$this->pages_amount          = 0;
 		$this->post_ids              = array();
@@ -127,8 +127,7 @@ class Post_Selection extends Instance {
 		bool $is_minify_markup = true,
 		bool $is_load_more = false
 	): void {
-		$this->query_builder->set_query_context( $query_context );
-		$posts_data = $this->query_builder->query_posts( $this->settings );
+		$posts_data = $this->post_query->query_posts( $this->settings, $query_context );
 
 		$this->pages_amount = int( $posts_data, 'pagesAmount' );
 
