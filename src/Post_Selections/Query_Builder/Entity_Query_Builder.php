@@ -29,6 +29,9 @@ final class Entity_Query_Builder implements Post_Query_Builder {
 				'condition' => count( $selection->post_not_in ) > 0,
 				'value'     => $selection->post_not_in,
 			),
+			'posts_per_page'      => array(
+				'value' => $selection->limit,
+			),
 		);
 
 		return Query_Builder_Base::filter_arguments( $arguments );

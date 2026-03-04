@@ -18,16 +18,16 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Query;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
 use WP_REST_Request;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/card-refresh';
 
 	private Post_Selection_Markup $post_selection_markup;
-	private Query_Builder $query_builder;
+	private Post_Query $query_builder;
 	private Html $html;
 	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
 	private Post_Selection_Factory $post_selection_factory;
@@ -44,7 +44,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Post_Selection_Settings $post_selection_settings,
 		Front_Assets $front_assets,
 		Post_Selection_Markup $post_selection_markup,
-		Query_Builder $query_builder,
+		Post_Query $query_builder,
 		Html $html,
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Post_Selection_Factory $post_selection_factory,

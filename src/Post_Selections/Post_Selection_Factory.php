@@ -15,14 +15,14 @@ use WP_REST_Request;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selection_Factory extends Instance_Factory {
-	private Query_Builder $query_builder;
+	private Post_Query $query_builder;
 	private Post_Selection_Markup $post_selection_markup;
 	private Template_Engines $template_engines;
 	private Post_Selections_Settings_Storage $post_selections_settings_storage;
 
 	public function __construct(
 		Front_Assets $front_assets,
-		Query_Builder $query_builder,
+		Post_Query $query_builder,
 		Post_Selection_Markup $post_selection_markup,
 		Template_Engines $template_engines,
 		Post_Selections_Settings_Storage $post_selections_settings_storage
@@ -35,7 +35,7 @@ class Post_Selection_Factory extends Instance_Factory {
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}
 
-	protected function get_query_builder(): Query_Builder {
+	protected function get_query_builder(): Post_Query {
 		return $this->query_builder;
 	}
 

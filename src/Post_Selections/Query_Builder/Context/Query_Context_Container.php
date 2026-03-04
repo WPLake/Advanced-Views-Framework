@@ -8,4 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 interface Query_Context_Container {
 	public function set_query_context( Query_Context $query_context ): void;
+
+	public function get_query_context(): Query_Context;
 }

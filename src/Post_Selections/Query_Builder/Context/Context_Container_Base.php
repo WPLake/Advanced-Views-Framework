@@ -16,4 +16,8 @@ trait Context_Container_Base {
 	public function set_query_context( Query_Context $query_context ): void {
 		$this->query_context = $query_context;
 	}
+
+	public function get_query_context(): Query_Context {
+		return $this->query_context;
+	}
 }
