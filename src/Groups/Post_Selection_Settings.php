@@ -7,11 +7,12 @@ namespace Org\Wplake\Advanced_Views\Groups;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
+
 class Post_Selection_Settings extends Cpt_Settings {
 	// to fix the group name in case the class name changes.
 	const CUSTOM_GROUP_NAME = self::GROUP_NAME_PREFIX . 'acf-card-data';
@@ -304,6 +305,20 @@ class Post_Selection_Settings extends Cpt_Settings {
 
 	/**
 	 * @a-type tab
+	 * @label Taxonomy Filters
+	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
+	 */
+	public bool $tax_filters_tab;
+	/**
+	 * @label Rules
+	 * @a-no-tab 1
+	 * @display seamless
+	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
+	 */
+	public Tax_Filter_Settings $tax_filter;
+
+	/**
+	 * @a-type tab
 	 * @label Meta Filters
 	 * @a-pro 1
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
@@ -315,21 +330,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public Meta_Filter_Settings $meta_filter;
-
-	/**
-	 * @a-type tab
-	 * @label Taxonomy Filters
-	 * @a-pro 1
-	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
-	 */
-	public bool $tax_filters_tab;
-	/**
-	 * @label Rules
-	 * @a-no-tab 1
-	 * @display seamless
-	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
-	 */
-	public Tax_Filter_Settings $tax_filter;
 
 	/**
 	 * @a-type tab

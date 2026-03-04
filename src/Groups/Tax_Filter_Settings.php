@@ -21,7 +21,6 @@ class Tax_Filter_Settings extends Group {
 	 * @choices {"AND":"AND","OR":"OR"}
 	 * @default_value AND
 	 * @conditional_logic [[{"field": "local_acf_views_tax-filter__rules","operator": ">","value": "1"}]]
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public string $relation;
 	/**
@@ -32,7 +31,6 @@ class Tax_Filter_Settings extends Group {
 	 * @button_label Add Rule
 	 * @a-no-tab 1
 	 * @layout block
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public array $rules;
 }

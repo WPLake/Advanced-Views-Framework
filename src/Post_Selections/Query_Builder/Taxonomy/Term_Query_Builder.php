@@ -51,10 +51,10 @@ final class Term_Query_Builder implements Query_Context_Container {
 	 * @return array<string,mixed>
 	 */
 	public function build_term_query( Tax_Field_Settings $term ): array {
-		$is_no_value_comparison = in_array( $term->comparison, self::NO_VALUE_COMPARISONS, true );
-		$term_value             = $is_no_value_comparison ?
-			null :
-			$this->resolve_term_value( $term );
+		$is_value_comparison = ! in_array( $term->comparison, self::NO_VALUE_COMPARISONS, true );
+		$term_value          = $is_value_comparison ?
+			$this->resolve_term_value( $term ) :
+			null;
 
 		$arguments = array(
 			'taxonomy' => array(
@@ -67,7 +67,7 @@ final class Term_Query_Builder implements Query_Context_Container {
 				'value' => fn() => $this->get_query_field( $term_value ),
 			),
 			'terms'    => array(
-				'condition' => $is_no_value_comparison,
+				'condition' => $is_value_comparison,
 				'value'     => $term_value,
 			),
 		);
