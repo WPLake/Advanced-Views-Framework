@@ -4,27 +4,28 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -123,7 +124,11 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		$card_data = $this->post_selections_settings_storage->get( $post->post_name );
 		ob_start();
-		$this->post_selection_factory->make_and_print_html( $card_data, 1, false );
+		$this->post_selection_factory->make_and_print_html(
+			$card_data,
+			Query_Context::new_instance(),
+			false
+		);
 		$card_html = (string) ob_get_clean();
 		$view_data = $this->layouts_settings_storage->get( $card_data->acf_view_id );
 

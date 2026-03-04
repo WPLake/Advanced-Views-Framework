@@ -4,9 +4,10 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections;
 
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
@@ -15,7 +16,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selection extends Instance {
-	private Post_Selection_Settings $post_selection_settings;
+	private Post_Selection_Settings $settings;
 	private Query_Builder $query_builder;
 	private Post_Selection_Markup $post_selection_markup;
 	private int $pages_amount;
@@ -33,11 +34,11 @@ class Post_Selection extends Instance {
 	) {
 		parent::__construct( $template_engines, $post_selection_settings, '', $classes );
 
-		$this->post_selection_settings = $post_selection_settings;
-		$this->query_builder           = $query_builder;
-		$this->post_selection_markup   = $post_selection_markup;
-		$this->pages_amount            = 0;
-		$this->post_ids                = array();
+		$this->settings              = $post_selection_settings;
+		$this->query_builder         = $query_builder;
+		$this->post_selection_markup = $post_selection_markup;
+		$this->pages_amount          = 0;
+		$this->post_ids              = array();
 	}
 
 	/**
@@ -48,14 +49,14 @@ class Post_Selection extends Instance {
 	protected function get_template_variables( bool $is_for_validation = false, array $custom_arguments = array() ): array {
 		return array(
 			'_card' => array(
-				'id'                     => $this->post_selection_settings->get_markup_id(),
+				'id'                     => $this->settings->get_markup_id(),
 				// short unique id is expected in the shortcode arguments.
 				'view_id'                => str_replace(
 					Layout_Settings::UNIQUE_ID_PREFIX,
 					'',
-					$this->post_selection_settings->acf_view_id
+					$this->settings->acf_view_id
 				),
-				'no_posts_found_message' => $this->post_selection_settings->get_no_posts_found_message_translation(),
+				'no_posts_found_message' => $this->settings->get_no_posts_found_message_translation(),
 				'post_ids'               => $this->post_ids,
 				'classes'                => $this->get_classes(),
 				'pages_amount'           => $this->get_pages_amount(),
@@ -71,13 +72,13 @@ class Post_Selection extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		$template_engine = $this->get_template_engines()->get_template_engine( $this->post_selection_settings->template_engine );
+		$template_engine = $this->get_template_engines()->get_template_engine( $this->settings->template_engine );
 
 		ob_start();
 
 		if ( null !== $template_engine ) {
 			$template_engine->print(
-				$this->post_selection_settings->get_unique_id(),
+				$this->settings->get_unique_id(),
 				$template,
 				$variables,
 				$is_for_validation
@@ -97,7 +98,7 @@ class Post_Selection extends Instance {
 	}
 
 	protected function get_card_data(): Post_Selection_Settings {
-		return $this->post_selection_settings;
+		return $this->settings;
 	}
 
 	/**
@@ -121,23 +122,21 @@ class Post_Selection extends Instance {
 		return array();
 	}
 
-	/**
-	 * @param array<string,mixed> $custom_arguments
-	 */
 	public function query_insert_and_print_html(
-		int $page_number,
+		Query_Context $query_context,
 		bool $is_minify_markup = true,
-		bool $is_load_more = false,
-		array $custom_arguments = array()
+		bool $is_load_more = false
 	): void {
-		$posts_data         = $this->query_builder->get_posts_data( $this->post_selection_settings, $page_number, $custom_arguments );
+		$this->query_builder->set_query_context( $query_context );
+		$posts_data = $this->query_builder->get_posts_data( $this->settings );
+
 		$this->pages_amount = int( $posts_data, 'pagesAmount' );
 
 		$post_ids       = arr( $posts_data, 'postIds' );
 		$this->post_ids = array_map( fn( $post_id )=>int( $post_id ), $post_ids );
 
 		ob_start();
-		$this->post_selection_markup->print_markup( $this->post_selection_settings, $is_load_more );
+		$this->post_selection_markup->print_markup( $this->settings, $is_load_more );
 		$template = (string) ob_get_clean();
 
 		if ( true === $is_minify_markup ) {
@@ -148,7 +147,7 @@ class Post_Selection extends Instance {
 
 			// Blade requires at least some spacing between its tokens.
 			if ( true === in_array(
-				$this->post_selection_settings->template_engine,
+				$this->settings->template_engine,
 				array( Template_Engines::TWIG, '' ),
 				true
 			) ) {
@@ -160,18 +159,18 @@ class Post_Selection extends Instance {
 			$template = str_replace( $unnecessary_symbols, '', $template );
 		}
 
-		$twig_variables = $this->get_template_variables( false, $custom_arguments );
+		$twig_variables = $this->get_template_variables( false, $query_context->get_custom_arguments() );
 
 		$this->render_template_and_print_html( $template, $twig_variables );
 	}
 
 	public function getCardData(): Post_Selection_Settings {
-		return $this->post_selection_settings;
+		return $this->settings;
 	}
 
 	public function get_markup_validation_error(): string {
 		ob_start();
-		$this->post_selection_markup->print_markup( $this->post_selection_settings );
+		$this->post_selection_markup->print_markup( $this->settings );
 		$template = (string) ob_get_clean();
 
 		$this->set_template( $template );

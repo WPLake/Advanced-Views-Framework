@@ -9,15 +9,18 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Context_Container_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context_Container;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Entity_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Order_Query_Builder;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
-use Org\Wplake\Advanced_Views\Pro\Post_Selections\Query_Builder\Context\Context_Container_Base;
 use WP_Query;
 use function Org\Wplake\Advanced_Views\Utils\flap_map;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
-class Query_Builder extends Context_Container_Base implements Post_Query_Builder {
+class Query_Builder implements Post_Query_Builder, Query_Context_Container {
+	use Context_Container_Base;
+
 	private Data_Vendors $data_vendors;
 	private Logger $logger;
 	/**
@@ -26,8 +29,6 @@ class Query_Builder extends Context_Container_Base implements Post_Query_Builder
 	private array $query_builders;
 
 	public function __construct( Data_Vendors $data_vendors, Logger $logger ) {
-		parent::__construct();
-
 		$this->data_vendors = $data_vendors;
 		$this->logger       = $logger;
 
@@ -83,8 +84,6 @@ class Query_Builder extends Context_Container_Base implements Post_Query_Builder
 	}
 
 	/**
-	 * @param array<string,mixed> $custom_arguments
-	 *
 	 * @return array<string,mixed>
 	 */
 	public function get_posts_data( Post_Selection_Settings $selection ): array {
