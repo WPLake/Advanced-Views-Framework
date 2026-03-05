@@ -37,14 +37,12 @@ class Post_Query {
 	 * @return array<string,mixed>
 	 */
 	protected function fetch_posts( Post_Selection_Settings $selection, Query_Context $context ): array {
-		if ( $this->is_live_mode() ) {
-			$selection_query = $this->make_selection_query( $selection, $context );
-			$pages_count     = $selection_query->calc_pages_count( $selection->limit );
+		$is_live_mode = class_exists( 'WP_Query' );
 
-			return array(
-				'pagesAmount' => $pages_count,
-				'postIds'     => $selection_query->post_ids,
-			);
+		if ( $is_live_mode ) {
+			$selection_query = $this->make_selection_query( $selection, $context );
+
+			return $this->fetch_post_ids( $selection, $context, $selection_query );
 		}
 
 		// stub for tests.
@@ -52,10 +50,6 @@ class Post_Query {
 			'pagesAmount' => 0,
 			'postIds'     => array(),
 		);
-	}
-
-	protected function is_live_mode(): bool {
-		return class_exists( 'WP_Query' );
 	}
 
 	protected function make_selection_query( Post_Selection_Settings $selection, Query_Context $context ): WP_Selection_Query {
@@ -78,6 +72,22 @@ class Post_Query {
 		);
 
 		return $selection_query;
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function fetch_post_ids(
+		Post_Selection_Settings $selection,
+		Query_Context $context,
+		WP_Selection_Query $selection_query
+	): array {
+		$pages_count = $selection_query->calc_pages_count( $selection->limit );
+
+		return array(
+			'pagesAmount' => $pages_count,
+			'postIds'     => $selection_query->post_ids,
+		);
 	}
 
 	/**
