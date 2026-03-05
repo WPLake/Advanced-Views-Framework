@@ -108,7 +108,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		$card_id = Query_Arguments::get_string_for_non_action( '_cardId', 'post' );
 
 		if ( '' === $card_id ) {
-			// it may be a Card request.
+			// it may be a Layout request.
 			return;
 		}
 

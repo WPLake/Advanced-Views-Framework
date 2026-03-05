@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Context_Container_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context_Container;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Taxonomy\Taxonomy_Query_Builder;
@@ -16,8 +15,6 @@ use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Taxonomy\Term_Query_
 use function Org\Wplake\Advanced_Views\Utils\flat_map;
 
 class Selection_Query_Builder implements Post_Query_Builder, Query_Context_Container {
-	use Context_Container_Base;
-
 	private Data_Vendors $data_vendors;
 	/**
 	 * @var Post_Query_Builder[]
@@ -45,11 +42,9 @@ class Selection_Query_Builder implements Post_Query_Builder, Query_Context_Conta
 		);
 	}
 
-	public function set_query_context( Query_Context $query_context ): void {
-		$this->query_context = $query_context;
-
+	public function set_query_context( Query_Context $context ): void {
 		foreach ( $this->context_containers as $container ) {
-			$container->set_query_context( $query_context );
+			$container->set_query_context( $context );
 		}
 	}
 

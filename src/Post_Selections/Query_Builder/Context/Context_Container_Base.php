@@ -7,17 +7,17 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context;
 defined( 'ABSPATH' ) || exit;
 
 trait Context_Container_Base {
-	protected Query_Context $query_context;
+	private ?Query_Context $context = null;
 
-	public function __construct() {
-		$this->query_context = Query_Context::new_instance();
+	public function set_query_context( Query_Context $context ): void {
+		$this->context = $context;
 	}
 
-	public function set_query_context( Query_Context $query_context ): void {
-		$this->query_context = $query_context;
-	}
+	public function get_context(): Query_Context {
+		if ( is_null( $this->context ) ) {
+			$this->context = Query_Context::new_instance();
+		}
 
-	public function get_query_context(): Query_Context {
-		return $this->query_context;
+		return $this->context;
 	}
 }

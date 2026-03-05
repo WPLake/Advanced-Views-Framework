@@ -141,7 +141,7 @@ final class Term_Query_Builder implements Query_Context_Container {
 	 * @return mixed[]
 	 */
 	protected function resolve_custom_value( Tax_Field_Settings $term ): array {
-		$value = any( $this->query_context->get_custom_arguments(), $term->custom_argument_name );
+		$value = any( $this->get_context()->get_custom_arguments(), $term->custom_argument_name );
 
 		if ( is_numeric( $value ) ) {
 			return array( int( $value ) );
