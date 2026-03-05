@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\WP_Selection_Query;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
-use WP_Query;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 class Post_Query {
@@ -37,8 +37,14 @@ class Post_Query {
 	 * @return array<string,mixed>
 	 */
 	protected function fetch_posts( Post_Selection_Settings $selection, Query_Context $context ): array {
-		if ( class_exists( 'WP_Query' ) ) {
-			return $this->fetch_post_ids( $selection, $context );
+		if ( $this->is_live_mode() ) {
+			$selection_query = $this->make_selection_query( $selection, $context );
+			$pages_count     = $selection_query->calc_pages_count( $selection->limit );
+
+			return array(
+				'pagesAmount' => $pages_count,
+				'postIds'     => $selection_query->post_ids,
+			);
 		}
 
 		// stub for tests.
@@ -48,72 +54,30 @@ class Post_Query {
 		);
 	}
 
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function fetch_post_ids( Post_Selection_Settings $selection, Query_Context $context ): array {
-		[
-			'post_ids'          => $post_ids,
-			'total_count'       => $total_count,
-			'per_page'          => $per_page,
-		] = $this->run_wp_query( $selection, $context );
-
-		$limit       = $selection->limit;
-		$found_posts = - 1 !== $limit && $total_count > $limit ?
-			$limit : $total_count;
-
-		// otherwise, can be DivisionByZero error.
-		$pages_amount = 0 !== $per_page ?
-			(int) ceil( $found_posts / $per_page ) :
-			0;
-
-		return array(
-			'pagesAmount' => $pages_amount,
-			'postIds'     => $post_ids,
-		);
+	protected function is_live_mode(): bool {
+		return class_exists( 'WP_Query' );
 	}
 
-	/**
-	 * @return array{post_ids: int[], total_count: int, per_page: int}
-	 */
-	protected function run_wp_query( Post_Selection_Settings $selection, Query_Context $context ): array {
+	protected function make_selection_query( Post_Selection_Settings $selection, Query_Context $context ): WP_Selection_Query {
 		$this->query_builder->set_query_context( $context );
 		$post_query = $this->query_builder->build_post_query( $selection );
 
-		$wp_query_args = array_merge(
-			$post_query,
-			array( 'fields' => 'ids' )
-		);
-
-		$wp_query = new WP_Query( $wp_query_args );
-
-		/**
-		 * @var int[] $post_ids only ids, as the 'fields' argument is set.
-		 */
-		$post_ids    = $wp_query->posts;
-		$total_count = $wp_query->found_posts;
-		$per_page    = int( $wp_query_args, 'posts_per_page' );
-
-		global $wpdb;
+		$selection_query = new WP_Selection_Query( $post_query );
 
 		$this->logger->debug(
 			'Selection executed WP_Query',
 			array(
 				'card_id'           => $selection->get_unique_id(),
 				'page_number'       => $context->get_page_number(),
-				'query_args'        => $wp_query_args,
-				'total_posts_count' => $total_count,
-				'post_ids'          => $post_ids,
-				'query'             => $wp_query->request,
-				'query_error'       => $wpdb->last_error,
+				'query_args'        => $post_query,
+				'total_posts_count' => $selection_query->wp_query->found_posts,
+				'post_ids'          => $selection_query->post_ids,
+				'query'             => $selection_query->wp_query->request,
+				'query_error'       => $selection_query->error,
 			)
 		);
 
-		return array(
-			'post_ids'    => $post_ids,
-			'total_count' => $total_count,
-			'per_page'    => $per_page,
-		);
+		return $selection_query;
 	}
 
 	/**
