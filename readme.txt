@@ -1,80 +1,100 @@
-=== Advanced Views - Display Posts, Custom Fields, and More ===
+=== Advanced Views - Display Custom Fields (ACF, Pods, MetaBox), Posts, CPT and Woo Products anywhere in Gutenberg, Elementor, Divi, Beaver... ===
 Contributors: wplakeorg
-Tags: WooCommerce, ACF, Meta Box, Posts, Query
+Tags: post grid, wp_query, meta fields, custom post types, taxonomy, shortcodes, elementor, divi, bricks, layout
 Requires at least: 5.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 3.8.4
+Stable tag: 3.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Effortlessly display WordPress posts, custom fields, and WooCommerce data.
+Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
 
 == Description ==
 
-Advanced Views is a powerful, flexible tool that lets you **display posts, custom fields, and content from ACF, MetaBox, Pods, WooCommerce, and WordPress itself**.
+Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
 
-Whether you're building a custom layout, creating dynamic templates, or designing advanced content displays, this plugin simplifies the process - without relying on bulky page builders.
+==⭐ Why Choose Advanced Views?==
 
-==Why Choose Advanced Views?==
+Advanced Views is a framework that empowers you to craft layouts and selections that you miss, without bloatware or heavy dependencies.
 
-✅ **Display Posts & Custom Fields Anywhere** – Show posts, Custom Post Types (CPT), WooCommerce products, and metadata effortlessly.
-✅ **Supports ACF, MetaBox, and Pods** – Retrieve and display data from [multiple field plugins](https://docs.advanced-views.com/getting-started/supported-data-vendors) with ease.
-✅ **Solution for Everyone** – Perfect for site owners, developers, and designers who want full control over content display.
-✅ **Smart, Lightweight, and Developer-Friendly** – Uses [Twig & Blade templates](https://docs.advanced-views.com/templates/template-engines) with automatic escaping, and [Just-in-Time assets strategy](https://docs.advanced-views.com/templates/css-and-js#id-1.1-just-in-time-assets) for smooth performance.
+✅ **Solid by design**: craft modular and reusable layouts. Eliminate replications, style conflicts, and avoid messy code snippets.
+✅ **Content-driven**: pull content dynamically, with granular filtering and sorting options, built on top of the native WordPress Query. Master advanced database queries with post fields, taxonomies, and meta values.
+✅ **Time-saver**: automate the groundwork and data fetching. Focus on creating while leaving typical routines behind.
+✅ **Fully customizable**: directly access the template code to create advanced elements, like Grids and Sliders, and harness your theme styles and scripts.
+✅ **Easy to embed**: copy and paste a native WordPress shortcode to add layouts anywhere.
 
-==🎨 One Plugin – Multiple Content Sources==
+==🧩 Plenty of Use Cases==
 
-Advanced Views [seamlessly integrates](https://docs.advanced-views.com/getting-started/supported-data-vendors) with:
+Custom fields and Post Types are essential to WordPress. Advanced Views natively supports them – giving you the freedom to pull, mix, and combine them in a common layout.
 
-🔹 WordPress Posts & Pages
-🔹 Custom Post Types (CPTs)
-🔹 [WooCommerce](https://wordpress.org/plugins/woocommerce/) Products & Fields
-🔹 [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/) (ACF)
-🔹 [MetaBox](https://wordpress.org/plugins/meta-box/) & [Pods](https://wordpress.org/plugins/pods/) Fields
+Popular scenarios include:
 
-Whether you're crafting a blog, directory, or custom WooCommerce store, Advanced Views makes it easy to query and display dynamic content.
+**Displaying custom fields:**
 
-== 🚀 Powerful Features ==
+🔹On a single page: to enrich landing page sections
+🔹CPT-wide: estimated delivery time for all Products
+🔹Site-wide: contact details from the Options page
+🔹User-specific: fields of the current user in a custom banner or profile page
 
-High-quality results without the time-consuming steps.
+**Displaying Posts, Products and CPT:**
 
-**🔄 Smart Content Queries & Display**
+🔹Posts: blog posts from a specific category
+🔹WooCommerce: related Products in a grid or carousel
+🔹Event lists: Show upcoming events, hide past events
+🔹Real Estate listings: properties by location, size, or type
+🔹Locations map: display all pick-up location markers on a single map
+🔹Reviews and Comments: product reviews or user comments
 
-🔹 Easily [display posts, custom fields](https://docs.advanced-views.com/getting-started/introduction/creating-your-first-view), and taxonomies with powerful [WP_Query enhancements](https://docs.advanced-views.com/getting-started/introduction/creating-your-first-card)
-🔹 Filter, sort, and customize results with Twig or Blade templates.
+==🔗 Multiple Content Sources==
 
-**📌 Pre-Built Components for Quick Setup**
+Advanced Views is vendor-independent and plugin-agnostic - so it will work with WordPress Posts, WooCommerce Products, and any CPT on your website.
 
-🔹 Use [ready-made components](https://docs.advanced-views.com/templates/pre-built-components) for fast and easy content structuring.
-🔹 Includes meta fields, responsive CSS rules, and reusable templates.
+Learn it once and use it everywhere with built-in support for:
 
-**⚡ Streamlined Development Workflow**
+🔹All Custom Post Types registered in WordPress
+🔹[WordPress post fields](https://wplake.gitbook.io/advanced-views/getting-started/supported-data-vendors#id-1.-wordpress) (title, featured image, author, taxonomy terms...)
+🔹[Woo Product fields](https://wplake.gitbook.io/advanced-views/getting-started/supported-data-vendors#id-2.-woocoomerce-plugin) (price, sku, stock status, weight...)
+🔹[Advanced Custom Fields](https://wplake.gitbook.io/advanced-views/getting-started/supported-data-vendors#id-3.-advanced-custom-fields-plugin) (whether it’s text, select, image, gallery, repeater or relationship)
+🔹[MetaBox fields](https://wplake.gitbook.io/advanced-views/getting-started/supported-data-vendors#id-4.-metabox-plugin) (like map, oEmbed, taxonomy, group... )
+🔹[Pods fields](https://wplake.gitbook.io/advanced-views/getting-started/supported-data-vendors#id-5.-pods-plugin) (from WYSIWYG, price, date and time... )
 
-🔹 **[Built-in Data Binding](https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-3.1-built-in-data-binding) & [Template Generation](https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-3.2-automated-template-generation)** – No need to manually convert field data.
-🔹 **[File System Storage option](https://docs.advanced-views.com/templates/file-system-storage) & [Live Reload feature](https://docs.advanced-views.com/templates/live-reload)** – Works seamlessly with IDEs, Git, Sass, and TypeScript.
+You can integrate data from any external source, including API-based, directly into Layouts using snippets.
 
-**🛠️ Simplified WordPress Queries**
+==🚀 Powerful features==
 
-🔹 Master WP_Query with [intuitive wrappers](https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-4.-card-component) that make querying posts and fields easier.
-🔹 Bulk template validation to keep everything running smoothly.
+Whether you’re a developer working on a child theme, a web creator using a page builder, or a tech-savvy website owner, customizing your block-based theme, Advanced Views makes it easier for you with:
 
-**📚 Extensive Documentation & Friendly Support**
+🔹[Storage options](https://wplake.gitbook.io/advanced-views/templates/file-system-storage): craft Layouts using the on-site editor, or edit them inside your favourite IDE, with git-friendly templates.
+🔹[Multilingual-friendly](https://wplake.gitbook.io/advanced-views/templates/multilingual): translate any text or label in the Layouts using your favourite tool  (like WPML or Polylang)
+🔹[Automatic template validation](https://wplake.gitbook.io/advanced-views/getting-started/introduction/key-aspects#id-3.3-seamless-data-connection): keep all the Layouts up-to-date with bulk validation, and get prompted to update the relevant layouts when used meta fields have been changed.
+🔹[Template engine options](https://wplake.gitbook.io/advanced-views/templates/template-engines): opt for the Twig or Blade template engine site-wide, or mix it up and make a per Layout decision.
+🔹[Just-in-time assets loader](https://wplake.gitbook.io/advanced-views/templates/css-and-js#id-1.1-just-in-time-assets): get layout styles and scripts injected just-in-time, on a per-page basis. Make fast page loading and great speed metrics your defaults.
+🔹[Live reload and Dev mode](https://wplake.gitbook.io/advanced-views/templates/live-reload): see live changes to Layouts on the page, and find used layouts without searching.
 
-🔹 [Step-by-step guides](https://docs.advanced-views.com/) to help you get started.
-🔹 [Community forum](https://wordpress.org/support/plugin/acf-views/) for free support, plus [Pro version support](https://wplake.org/acf-views-support/) for premium users.
+==📚 Extensive Documentation & Friendly Support==
+
+🔹[Helpful guides](https://docs.advanced-views.com/), FAQs, tips, and common use cases with code snippets
+🔹Lite users are supported via the public [wordpress.org forum](https://wordpress.org/support/plugin/acf-views/)
+🔹Pro users get priority support via [our website](https://advanced-views.com/support/)
+🔹Actively maintained and tested against the latest WordPress releases
 
 ==🔓 Unlock More with Advanced Views Pro==
 
-[Advanced Views Pro](https://advanced-views.com/pro/) takes your content displays to the next level with powerful features designed for flexibility, interactivity, and efficiency:
+Advanced Views Pro takes your content displays to the next level with extended features:
 
-✅ **Repeater, Group & Flexible Fields Support** - Display complex nested fields — including repeaters within repeaters and flexible content layouts.
-✅ **Meta & Taxonomy Filters** - Powerful backend filters based on custom fields and taxonomies.
-✅ **AJAX Pagination** - Improve user experience by loading new content pages seamlessly without full page reloads.
-✅ **Sliders & Gallery Field Integration** - Assign slider and gallery fields directly in your Views, enabling slick interactive carousels and image galleries out of the box.
-✅ **Custom Data Integration** - Inject additional PHP variables into templates for more tailored content outputs beyond the standard fields.
-✅ **Custom Gutenberg Blocks** - Turn any View into a reusable Gutenberg block, making it simple to insert dynamic content inside the block editor.
-✅ **Reusable Component Libraries** - Build and manage a library of reusable components to maintain design consistency and speed up site building.
+**Layouts get:**
+
+🔹[Repeater, Group, and Flexible fields support](https://wplake.gitbook.io/advanced-views/display-content/meta-fields/layout-fields/repeater-pro) - display complex nested fields — including repeaters within repeaters.
+🔹[Gutenberg block option](https://wplake.gitbook.io/advanced-views/display-content/custom-gutenberg-blocks-pro) - turn any layout into a Gutenberg block with a single checkbox. Same template with full markup control and zero React coding.
+🔹[Masonry, LightBox, Slider integrations](https://wplake.gitbook.io/advanced-views/display-content/front-end-assets-management-pro#supported-libraries-and-field-types) - turn your Repeater or User fields into a slider, Gallery Images into Masonry, or enable LightBox for single images.
+🔹[Reusable components library](https://wplake.gitbook.io/advanced-views/templates/reusable-components-library-pro) - reuse existing Layouts on other websites with a single-click Git sync.
+
+**Post Selections get:**
+
+🔹[Meta filters](https://wplake.gitbook.io/advanced-views/query-content/meta-filters-pro) - precise post selections with filtering by meta fields: define bindings to URL arguments, current meta values, and more.
+🔹[Ajax pagination](https://wplake.gitbook.io/advanced-views/query-content/pagination-pro) of results: choose between options for load more button, infinity scroll, or page numbers.
+🔹Post carousels: turn queried posts into sliders.
 
 == Screenshots ==
 
@@ -102,7 +122,7 @@ See our official [plugin documentation](https://docs.advanced-views.com/getting-
 
 **Installation for Advanced Views: Pro edition**
 
-To purchase a Pro license key click [here](https://wplake.org/advanced-views-pro/).
+To purchase a Pro license key click [here](https://advanced-views.com/pro/#pricing).
 After payment you'll receive an email with your license key which includes the Pro plugin archive.
 
 1. Visit the Plugins list, click "Add New", then click "Upload Plugin"
@@ -113,7 +133,7 @@ After payment you'll receive an email with your license key which includes the P
 5. Copy and paste your Pro License Key, then click "Activate"
 
 Enjoy all the features and settings the Advanced Views Framework has to offer with automatic updates.
-Customers with an active Pro license have personal support via our [support form](https://wplake.org/acf-views-support/).
+Customers with an active Pro license have personal support via our [support form](https://advanced-views.com/support/).
 
 == Frequently Asked Questions ==
 
@@ -138,13 +158,10 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.4 (2025-03-10) =
-- Enhance: $_GET support for custom Ajax requests
-
 = 3.8.3 (2025-02-27) =
 - Feature adoption: Custom field layout for object fields (before Pro-only)
 - Support: tested with the latest WordPress 6.9
-- Enhance: “Layout not found” error message is hidden for guests
+- Enhance: "Layout not found" error message is hidden for guests
 
 = 3.8.2 (2025-11-18) =
 - Enhancement: Migrations - automated flush caches, logging, incomplete upgrade detection

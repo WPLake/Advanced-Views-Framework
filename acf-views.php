@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Advanced Views Lite
  * Plugin URI: https://advanced-views.com/
- * Description: Effortlessly display WordPress posts, custom fields, and WooCommerce data.
- * Version: 3.8.4
+ * Description: Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
+ * Version: 3.8.3
  * Author: WPLake
  * Author URI: https://advanced-views.com/
  * Text Domain: acf-views
@@ -532,5 +532,3 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 	$plugin_loader->load_plugin();
 } )();
-if ( function_exists( 'opcache_reset' ) ) {
-	opcache_reset();}

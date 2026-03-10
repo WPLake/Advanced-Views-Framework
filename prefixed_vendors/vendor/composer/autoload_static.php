@@ -339,8 +339,6 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Pods\\Pods_Data_Vendor' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Pods/Pods_Data_Vendor.php',
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Pods\\Pods_Integration' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Pods/Pods_Integration.php',
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Comment_Items\\Comment_Items_List_Field' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Fields/Comment_Items/Comment_Items_List_Field.php',
-        'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Menu\\Menu_Items_Field' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Fields/Menu/Menu_Items_Field.php',
-        'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Post\\Post_Author_Field' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Fields/Post/Post_Author_Field.php',
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Post\\Post_Thumbnail_Field' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Fields/Post/Post_Thumbnail_Field.php',
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Fields\\Taxonomy_Terms\\Taxonomy_Terms_Field' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Fields/Taxonomy_Terms/Taxonomy_Terms_Field.php',
         'Org\\Wplake\\Advanced_Views\\Pro\\Data_Vendors\\Wp\\Wp_Data_Vendor' => __DIR__ . '/../..' . '/../pro/Data_Vendors/Wp/Wp_Data_Vendor.php',
