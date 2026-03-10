@@ -6,15 +6,15 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use WP_Comment;
 use WP_Term;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -233,25 +233,31 @@ final class Layout_Shortcode extends Shortcode {
 	}
 
 	public function get_ajax_response(): void {
-		$view_id = Query_Arguments::get_string_for_non_action( '_viewId', 'post' );
+		$layout_id = Query_Arguments::get_string_for_non_action(
+			array( '_viewId', '_layout-id' ),
+			Query_Arguments::SOURCE_REQUEST
+		);
 
-		if ( '' === $view_id ) {
-			// it may be a Card request.
+		if ( 0 === strlen( $layout_id ) ) {
+			// it may be a Selection request.
 			return;
 		}
 
-		$view_unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id( $view_id, $this->get_post_type() );
+		$unique_id = $this->layouts_settings_storage->get_unique_id_from_shortcode_id(
+			$layout_id,
+			$this->get_post_type()
+		);
 
-		if ( '' === $view_unique_id ) {
+		if ( 0 === strlen( $unique_id ) ) {
 			wp_json_encode(
 				array(
-					'_error' => __( 'View id is wrong', 'acf-views' ),
+					'_error' => __( 'Layout id is wrong', 'acf-views' ),
 				)
 			);
 			exit;
 		}
 
-		$response = $this->layout_factory->get_ajax_response( $view_unique_id );
+		$response = $this->layout_factory->get_ajax_response( $unique_id );
 
 		echo wp_json_encode( $response );
 		exit;

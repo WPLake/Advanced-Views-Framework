@@ -6,20 +6,19 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Shortcode\Shortcode;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
 final class Post_Selection_Shortcode extends Shortcode {
-	protected Post_Selection_Factory $card_factory;
+	protected Post_Selection_Factory $selection_factory;
 	protected Post_Selections_Settings_Storage $cards_data_storage;
 
 	public function __construct(
@@ -33,7 +32,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		parent::__construct( $public_cpt, $settings, $post_selections_settings_storage, $post_selection_factory, $front_assets, $live_reloader_component );
 
 		$this->cards_data_storage = $post_selections_settings_storage;
-		$this->card_factory       = $post_selection_factory;
+		$this->selection_factory  = $post_selection_factory;
 	}
 
 	protected function get_unique_id_prefix(): string {
@@ -84,7 +83,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		$this->get_live_reloader_component()->set_parent_card_id( $card_unique_id );
 
 		ob_start();
-		$this->card_factory->make_and_print_html(
+		$this->selection_factory->make_and_print_html(
 			$card_data,
 			1,
 			true,
@@ -100,16 +99,22 @@ final class Post_Selection_Shortcode extends Shortcode {
 	}
 
 	public function get_ajax_response(): void {
-		$card_id = Query_Arguments::get_string_for_non_action( '_cardId', 'post' );
+		$selection_id = Query_Arguments::get_string_for_non_action(
+			array( '_cardId', '_post-selection-id' ),
+			Query_Arguments::SOURCE_REQUEST
+		);
 
-		if ( '' === $card_id ) {
+		if ( 0 === strlen( $selection_id ) ) {
 			// it may be a Card request.
 			return;
 		}
 
-		$card_unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id( $card_id, $this->get_post_type() );
+		$unique_id = $this->cards_data_storage->get_unique_id_from_shortcode_id(
+			$selection_id,
+			$this->get_post_type()
+		);
 
-		if ( '' === $card_unique_id ) {
+		if ( 0 === strlen( $unique_id ) ) {
 			wp_json_encode(
 				array(
 					'_error' => __( 'Card id is wrong', 'acf-views' ),
@@ -118,7 +123,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 			exit;
 		}
 
-		$response = $this->card_factory->get_ajax_response( $card_unique_id );
+		$response = $this->selection_factory->get_ajax_response( $unique_id );
 
 		echo wp_json_encode( $response );
 		exit;

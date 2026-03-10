@@ -4,7 +4,7 @@ Tags: WooCommerce, ACF, Meta Box, Posts, Query
 Requires at least: 5.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 3.8.2
+Stable tag: 3.8.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,9 +138,13 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.3 (2025-) =
-- Feature adoption: Layout / Fields / Object Layout (allows displaying inner object fields; before Pro-only)
+= 3.8.4 (2025-03-10) =
+- Enhance: $_GET support for custom Ajax requests
+
+= 3.8.3 (2025-02-27) =
+- Feature adoption: Custom field layout for object fields (before Pro-only)
 - Support: tested with the latest WordPress 6.9
+- Enhance: “Layout not found” error message is hidden for guests
 
 = 3.8.2 (2025-11-18) =
 - Enhancement: Migrations - automated flush caches, logging, incomplete upgrade detection
