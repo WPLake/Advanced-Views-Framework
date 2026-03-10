@@ -158,6 +158,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.8.4 (2025-03-10) =
+- Enhance: $_GET support for custom Ajax requests
+
 = 3.8.3 (2025-02-27) =
 - Feature adoption: Custom field layout for object fields (before Pro-only)
 - Support: tested with the latest WordPress 6.9
