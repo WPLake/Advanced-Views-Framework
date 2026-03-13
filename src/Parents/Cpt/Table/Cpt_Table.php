@@ -5,21 +5,21 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt\Table;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_List_Table;
 use WP_Post;
 use WP_Post_Type;
 use WP_Query;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -118,7 +118,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		}
 
 		echo '<div class="notice notice-success"><p>' .
-			esc_html( __( 'Item success cloned.', 'acf-views' ) ) .
+			esc_html( __( 'Item successfully cloned.', 'acf-views' ) ) .
 			'</p></div>';
 	}
 
