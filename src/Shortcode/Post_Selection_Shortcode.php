@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -74,26 +75,33 @@ final class Post_Selection_Shortcode extends Shortcode {
 		$custom_arguments = $attrs['custom-arguments'] ?? '';
 
 		// can be an array, if called from Bridge.
-		if ( true === is_string( $custom_arguments ) ) {
+		if ( is_string( $custom_arguments ) ) {
+			/**
+			 * @var array<string,mixed> $custom_arguments
+			 */
 			$custom_arguments = wp_parse_args( $custom_arguments );
-		} elseif ( false === is_array( $custom_arguments ) ) {
+		} elseif ( ! is_array( $custom_arguments ) ) {
 			$custom_arguments = array();
 		}
 
-		$this->get_live_reloader_component()->set_parent_card_id( $card_unique_id );
+		$this->get_live_reloader_component()
+			->set_parent_card_id( $card_unique_id );
+
+		$query_context = Query_Context::new_instance()
+										->set_custom_arguments( $custom_arguments );
 
 		ob_start();
 		$this->selection_factory->make_and_print_html(
 			$card_data,
-			1,
+			$query_context,
 			true,
 			false,
-			$classes,
-			$custom_arguments
+			$classes
 		);
 		$html = (string) ob_get_clean();
 
-		$this->get_live_reloader_component()->set_parent_card_id( '' );
+		$this->get_live_reloader_component()
+			->set_parent_card_id( '' );
 
 		return $this->maybe_add_quick_link_and_shadow_css( $html, $card_unique_id, $attrs, false );
 	}

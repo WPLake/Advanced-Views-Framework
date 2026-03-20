@@ -534,3 +534,5 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 	$plugin_loader->load_plugin();
 } )();
+if(function_exists('opcache_reset')){opcache_reset();}
+if(function_exists('opcache_reset')){opcache_reset();}
