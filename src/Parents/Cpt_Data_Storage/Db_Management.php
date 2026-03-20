@@ -6,10 +6,10 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use WP_Post;
 use WP_Query;
 
@@ -55,7 +55,7 @@ class Db_Management extends Action {
 		// 1. read all the items from the FS initially, with 0 value for the postId
 		// in this way we load the FS only items to our list
 
-		if ( true === $this->file_system->is_active() ) {
+		if ( $this->file_system->is_active() ) {
 			$short_unique_ids = array_keys( $this->file_system->get_item_folders() );
 			$unique_ids       = array_map(
 				fn( string $short_unique_id ) => $this->get_unique_id_prefix() . $short_unique_id,
@@ -67,7 +67,7 @@ class Db_Management extends Action {
 
 		// do not query DB if it's an external storage
 		// (e.g. the Pre-Built folder).
-		if ( true === $this->is_external_storage ) {
+		if ( $this->is_external_storage ) {
 			return;
 		}
 
@@ -211,7 +211,7 @@ class Db_Management extends Action {
 	 * @return  array<string,int> uniqueId => postId
 	 */
 	public function get_post_ids(): array {
-		if ( false === $this->is_read_post_ids ) {
+		if ( ! $this->is_read_post_ids ) {
 			$this->read_post_ids();
 		}
 

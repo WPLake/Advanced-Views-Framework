@@ -105,7 +105,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		);
 
 		if ( 0 === strlen( $selection_id ) ) {
-			// it may be a Card request.
+			// it may be a Layout request.
 			return;
 		}
 
@@ -114,18 +114,18 @@ final class Post_Selection_Shortcode extends Shortcode {
 			$this->get_post_type()
 		);
 
-		if ( 0 === strlen( $unique_id ) ) {
+		if ( strlen( $unique_id ) > 0 ) {
+			$response = $this->selection_factory->get_ajax_response( $unique_id );
+
+			echo wp_json_encode( $response );
+		} else {
 			wp_json_encode(
 				array(
-					'_error' => __( 'Card id is wrong', 'acf-views' ),
+					'_error' => __( 'Post Selection ID is wrong', 'acf-views' ),
 				)
 			);
-			exit;
 		}
 
-		$response = $this->selection_factory->get_ajax_response( $unique_id );
-
-		echo wp_json_encode( $response );
 		exit;
 	}
 

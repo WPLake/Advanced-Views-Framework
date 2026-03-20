@@ -4,12 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -186,25 +188,24 @@ abstract class Item_Management extends Action {
 				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
 			$unique_id = $id_prefix . $id;
-
-			$post_ids = $this->db_management->get_post_ids();
+			$post_ids  = $this->db_management->get_post_ids();
 
 			// do not check trashedPostIds, as we don't allow to use trashed items in the shortcodes.
-			return true === key_exists( $unique_id, $post_ids ) ?
+			return key_exists( $unique_id, $post_ids ) ?
 				$unique_id :
 				'';
 		}
 
 		// B) digital post id (back compatibility).
-		$post = get_post( (int) $id );
+		$post = get_post( int( $id ) );
 
-		if ( null === $post ||
-			$post_type !== $post->post_type ||
-			'trash' === $post->post_type ) {
-			return '';
+		if ( $post instanceof WP_Post &&
+		$post_type === $post->post_type &&
+		! in_array( $post->post_status, array( 'trash' ), true ) ) {
+			return $post->post_name;
 		}
 
-		return $post->post_name;
+		return '';
 	}
 
 	public function save( Cpt_Settings $cpt_settings, bool $is_force_to_db = false ): void {
