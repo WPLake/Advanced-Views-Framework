@@ -41,10 +41,10 @@ class Selection_Query_Builder implements Post_Query_Builder, Query_Context_Conta
 			->add_taxonomy_builder();
 	}
 
-	public function build_post_query( Post_Selection_Settings $selection ): array {
+	public function build_post_query( Post_Selection_Settings $selection_settings ): array {
 		return flat_map(
 			$this->query_builders,
-			fn( Post_Query_Builder $query_builder ) =>  $query_builder->build_post_query( $selection )
+			fn( Post_Query_Builder $query_builder ) =>  $query_builder->build_post_query( $selection_settings )
 		);
 	}
 

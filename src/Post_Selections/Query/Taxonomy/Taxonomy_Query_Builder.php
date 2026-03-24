@@ -20,8 +20,8 @@ final class Taxonomy_Query_Builder implements Post_Query_Builder {
 		$this->term_query_builder = $term_query_builder;
 	}
 
-	public function build_post_query( Post_Selection_Settings $selection ): array {
-		$filter = $selection->tax_filter;
+	public function build_post_query( Post_Selection_Settings $selection_settings ): array {
+		$filter = $selection_settings->tax_filter;
 
 		$arguments = array(
 			// @phpcs:ignore.

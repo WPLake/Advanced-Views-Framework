@@ -18,21 +18,21 @@ final class Order_Query_Builder implements Post_Query_Builder {
 		$this->data_vendors = $data_vendors;
 	}
 
-	public function build_post_query( Post_Selection_Settings $selection ): array {
+	public function build_post_query( Post_Selection_Settings $selection_settings ): array {
 		$meta_order_keys = array( 'meta_value', 'meta_value_num' );
 
 		$arguments = array(
 			'order'    => array(
-				'value' => $selection->order,
+				'value' => $selection_settings->order,
 			),
 			'orderby'  => array(
-				'condition' => 'none' !== $selection->order_by,
-				'value'     => $selection->order_by,
+				'condition' => 'none' !== $selection_settings->order_by,
+				'value'     => $selection_settings->order_by,
 			),
 			// @phpcs:ignore
 			'meta_key'     => array(
-				'condition' => in_array( $selection->order_by, $meta_order_keys, true ),
-				'value'     => fn() => $this->get_order_by_meta_key( $selection ),
+				'condition' => in_array( $selection_settings->order_by, $meta_order_keys, true ),
+				'value'     => fn() => $this->get_order_by_meta_key( $selection_settings ),
 			),
 		);
 

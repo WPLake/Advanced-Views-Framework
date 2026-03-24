@@ -12,5 +12,5 @@ interface Post_Query_Builder {
 	/**
 	 * @return array<string, mixed>
 	 */
-	public function build_post_query( Post_Selection_Settings $selection ): array;
+	public function build_post_query( Post_Selection_Settings $selection_settings ): array;
 }

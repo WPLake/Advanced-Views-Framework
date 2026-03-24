@@ -35,7 +35,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	 * @var Post_Selection_Settings
 	 */
 	private Post_Selection_Settings $post_selection_settings;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Post_Selections_Settings_Storage $selection_settings_storage;
 
 	public function __construct(
 		Logger $logger,
@@ -62,13 +62,13 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 			$public_cpt
 		);
 
-		$this->post_selections_settings_storage = $post_selections_settings_storage;
-		$this->post_selection_settings          = $post_selection_settings;
-		$this->post_selection_markup            = $post_selection_markup;
-		$this->query_builder                    = $query_builder;
-		$this->html                             = $html;
-		$this->post_selections_cpt_meta_boxes   = $post_selections_cpt_meta_boxes;
-		$this->post_selection_factory           = $post_selection_factory;
+		$this->selection_settings_storage     = $post_selections_settings_storage;
+		$this->post_selection_settings        = $post_selection_settings;
+		$this->post_selection_markup          = $post_selection_markup;
+		$this->query_builder                  = $query_builder;
+		$this->html                           = $html;
+		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
+		$this->post_selection_factory         = $post_selection_factory;
 	}
 
 	protected function get_cpt_name(): string {
@@ -94,10 +94,10 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		$cpt_settings->markup = (string) ob_get_clean();
 	}
 
-	protected function update_query_preview( Post_Selection_Settings $post_selection_settings ): void {
+	protected function update_query_preview( Post_Selection_Settings $selection_settings ): void {
 		// @phpcs:ignore
-		$post_selection_settings->query_preview = print_r(
-			$this->query_builder->build_post_query( $post_selection_settings ),
+		$selection_settings->query_preview = print_r(
+			$this->query_builder->build_post_query( $selection_settings ),
 			true
 		);
 	}
@@ -141,22 +141,22 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		}
 
 		// skip save, it'll be below.
-		$card_data = parent::perform_save_actions( $post_id, true );
+		$selection_settings = parent::perform_save_actions( $post_id, true );
 
 		// not just on null, but also on the type, for IDE.
-		if ( ! ( $card_data instanceof Post_Selection_Settings ) ) {
+		if ( ! ( $selection_settings instanceof Post_Selection_Settings ) ) {
 			return null;
 		}
 
-		$this->update_query_preview( $card_data );
-		$this->update_markup( $card_data );
-		$this->add_layout_css( $card_data );
+		$this->update_query_preview( $selection_settings );
+		$this->update_markup( $selection_settings );
+		$this->add_layout_css( $selection_settings );
 
 		if ( ! $is_skip_save ) {
-			$this->post_selections_settings_storage->save( $card_data );
+			$this->selection_settings_storage->save( $selection_settings );
 		}
 
-		return $card_data;
+		return $selection_settings;
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 
 		$card_unique_id = get_post( $card_id )->post_name ?? '';
 
-		$card_data = $this->post_selections_settings_storage->get( $card_unique_id );
+		$card_data = $this->selection_settings_storage->get( $card_unique_id );
 		ob_start();
 		// ignore customMarkup (we need the preview).
 		$this->post_selection_markup->print_markup( $card_data, false, true );
