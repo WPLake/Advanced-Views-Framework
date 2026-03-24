@@ -2,15 +2,15 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Taxonomy;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Taxonomy;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Context_Container_Base;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context_Container;
-use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Context_Container_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context_Container;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Query_Utils;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
@@ -72,7 +72,7 @@ final class Term_Query_Builder implements Query_Context_Container {
 			),
 		);
 
-		return Query_Builder_Base::filter_arguments( $arguments );
+		return Query_Utils::filter_arguments( $arguments );
 	}
 
 	/**

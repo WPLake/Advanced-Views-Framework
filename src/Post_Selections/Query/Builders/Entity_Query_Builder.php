@@ -2,12 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
-
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Builders;
 
 defined( 'ABSPATH' ) || exit;
+
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Query_Utils;
 
 final class Entity_Query_Builder implements Post_Query_Builder {
 	public function build_post_query( Post_Selection_Settings $selection ): array {
@@ -34,6 +35,6 @@ final class Entity_Query_Builder implements Post_Query_Builder {
 			),
 		);
 
-		return Query_Builder_Base::filter_arguments( $arguments );
+		return Query_Utils::filter_arguments( $arguments );
 	}
 }

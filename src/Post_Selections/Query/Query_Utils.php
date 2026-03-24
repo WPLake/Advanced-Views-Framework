@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Query_Builder;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query;
 
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Query_Builder_Base {
+abstract class Query_Utils {
 	/**
 	 * @param array<string, array{ condition?: bool, value: callable():mixed | mixed }> $conditional_arguments
 	 *

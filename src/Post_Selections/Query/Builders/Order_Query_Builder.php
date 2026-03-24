@@ -2,13 +2,14 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Builders;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Query_Utils;
 
 final class Order_Query_Builder implements Post_Query_Builder {
 	private Data_Vendors $data_vendors;
@@ -35,7 +36,7 @@ final class Order_Query_Builder implements Post_Query_Builder {
 			),
 		);
 
-		return Query_Builder_Base::filter_arguments( $arguments );
+		return Query_Utils::filter_arguments( $arguments );
 	}
 
 	protected function get_order_by_meta_key( Post_Selection_Settings $selection ): ?string {

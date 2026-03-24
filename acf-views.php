@@ -71,7 +71,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
 	Post_Query,
 	Post_Selection_Factory,
 	Post_Selection_Markup};
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
@@ -534,5 +534,8 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 	$plugin_loader->load_plugin();
 } )();
-if(function_exists('opcache_reset')){opcache_reset();}
+if ( function_exists( 'opcache_reset' ) ) {
+	opcache_reset();}
+if ( function_exists( 'opcache_reset' ) ) {
+	opcache_reset();}
 if(function_exists('opcache_reset')){opcache_reset();}

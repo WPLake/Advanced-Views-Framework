@@ -20,7 +20,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
 use WP_REST_Request;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {

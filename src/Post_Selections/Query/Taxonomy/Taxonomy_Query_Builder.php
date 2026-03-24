@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Taxonomy;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Taxonomy;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Filter_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Rule_Settings;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Post_Query_Builder;
-use Org\Wplake\Advanced_Views\Query_Builder\Query_Builder_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Query_Utils;
 
 final class Taxonomy_Query_Builder implements Post_Query_Builder {
 	private Term_Query_Builder $term_query_builder;
@@ -31,7 +31,7 @@ final class Taxonomy_Query_Builder implements Post_Query_Builder {
 			),
 		);
 
-		return Query_Builder_Base::filter_arguments( $arguments );
+		return Query_Utils::filter_arguments( $arguments );
 	}
 
 	/**

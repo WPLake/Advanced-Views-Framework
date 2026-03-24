@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Builder;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\WP_Selection_Query;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context\Query_Context;
-use Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Selection_Query_Builder;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 class Post_Query {

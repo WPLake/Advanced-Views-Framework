@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Query_Builder\Context;
+namespace Org\Wplake\Advanced_Views\Post_Selections\Query\Context;
 
 defined( 'ABSPATH' ) || exit;
 
