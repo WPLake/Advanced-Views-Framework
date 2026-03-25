@@ -11,9 +11,9 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -444,7 +444,13 @@ class Layout extends Instance {
 
 		$twig_variables = $this->get_template_variables( false, $custom_arguments );
 
-		return $this->render_template_and_print_html( $template, $twig_variables );
+		ob_start();
+		$is_rendered = $this->render_template_and_print_html( $template, $twig_variables );
+
+		// shortcode support (necessary for the relationship field with the Field Layout option and others).
+		echo do_shortcode( (string) ob_get_clean() );
+
+		return $is_rendered;
 	}
 
 	public function get_view_data(): Layout_Settings {

@@ -200,6 +200,7 @@ You're welcome to open issues or PRs there.
 
 = 3.8.5 (2025-) =
 - Feature adoption: Post Selection - Taxonomy filters (before Pro-only)
+- Feature adoption: Layout - in-template shortcode support (before Pro-only)
 
 = 3.8.4 (2025-03-10) =
 - Enhance: $_GET support for custom Ajax requests
