@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 /**
  * Common class for both AcfViews and AcfCards
@@ -44,7 +45,7 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 	/**
 	 * Return array with structure: postType => postId => Mount_Point_Settings[]
 	 *
-	 * @return Mount_Point_Settings
+	 * @return array<string, array<int, Mount_Point_Settings[]>>
 	 * @throws Exception
 	 */
 	protected function query_mount_points_data( string $current_post_type, int $current_post_id ): array {
@@ -73,8 +74,8 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 		);
 
 		foreach ( $source_posts as $source_post ) {
-			// for some reasons it's string.
-			$source_post_id = $source_post->ID;
+			// for some reason the field may contain a string.
+			$source_post_id = int( $source_post->ID );
 
 			/**
 			 * @var Layout_Settings|Post_Selection_Settings $cpt_data
@@ -88,8 +89,10 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 
 			foreach ( $cpt_data->mount_points as $mount_point ) {
 				// without strict comparison, as in the posts array can be strings.
-				if ( ! in_array( $current_post_type, $mount_point->post_types ) &&
-					! in_array( $current_post_id, $mount_point->posts ) ) {
+				// @phpcs:ignore
+				if ( ! in_array( $current_post_type, $mount_point->post_types, false ) && // @phpstan-ignore-line
+				     // @phpcs:ignore
+					! in_array( $current_post_id, $mount_point->posts, false ) ) { // @phpstan-ignore-line
 					continue;
 				}
 
