@@ -150,12 +150,12 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 				break;
 		}
 
-		if ( $is_run_shortcode ) {
-			$shortcode_args = '' !== $mount_point_settings->shortcode_args ?
-				' ' . $mount_point_settings->shortcode_args :
-				'';
-			$shortcode      = $this->compose_shortcode( $source_post_type, $source_post_id, $shortcode_args );
+		$shortcode_args = strlen( $mount_point_settings->shortcode_args ) > 0 ?
+			' ' . $mount_point_settings->shortcode_args :
+			'';
+		$shortcode      = $this->compose_shortcode( $source_post_type, $source_post_id, $shortcode_args );
 
+		if ( $is_run_shortcode ) {
 			$shortcode = do_shortcode( $shortcode );
 		}
 
@@ -171,15 +171,17 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 				if ( is_string( $content ) &&
 					$queried_object instanceof WP_Post &&
 					$this->is_supported_place() ) {
-					$this->mount( $queried_object, $content );
+					return $this->mount( $queried_object, $content );
 				}
+
+				return $content;
 			}
 		);
 	}
 
 	protected function compose_shortcode( string $source_post_type, int $source_post_id, string $shortcode_args ): string {
 		if ( Hard_Layout_Cpt::cpt_name() === $source_post_type ) {
-			if ( wp_is_block_theme() ) {
+			if ( $this->should_claim_point() ) {
 				$shortcode_args .= ' mount-point="1"';
 			}
 
@@ -213,5 +215,9 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 		return is_singular() &&
 				in_the_loop() &&
 				is_main_query();
+	}
+
+	protected function should_claim_point(): bool {
+		return wp_is_block_theme();
 	}
 }
