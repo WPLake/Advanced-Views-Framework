@@ -98,14 +98,15 @@ Whether you're a developer working on a child theme, a web creator using a page 
 
 == Screenshots ==
 
-1. Layouts list managed using the familiar interface.
-2. Get a basic setup in seconds with Demo import.
-3. Assign multiple fields to Layouts.
-4. The default template can easily be customized.
-5. Query items with Post Selections and display using the selected Layout.
-6. Posts can be filtered, sorted and styled.
-7. Import and Export Tool helps with site migration.
-8. Tools for Import and Export.
+1. Workflow overview.
+2. Layouts list managed using the familiar interface.
+3. Get a basic setup in seconds with Demo import.
+4. Assign multiple fields to Layouts.
+5. The default template can easily be customized.
+6. Query items with Post Selections and display using the selected Layout.
+7. Posts can be filtered, sorted and styled.
+8. Settings allow easily adjusting default behavior.
+9. Import and Export Tool helps with site migration.
 
 == Installation ==
 
