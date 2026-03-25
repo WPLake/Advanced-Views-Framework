@@ -515,6 +515,13 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->settings
 			);
 
+			$this->mount_points = new Mount_Points(
+				$this->layouts_settings_storage,
+				$this->post_selections_settings_storage,
+				$this->layout_cpt,
+				$this->post_selection_cpt
+			);
+
 			parent::others();
 		}
 

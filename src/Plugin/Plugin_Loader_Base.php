@@ -29,7 +29,6 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -56,6 +55,7 @@ use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
@@ -76,7 +76,6 @@ use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Val
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Cpt_Table;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Profiler;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
@@ -84,6 +83,8 @@ use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
+use Org\Wplake\Advanced_Views\Utils\Profiler;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
@@ -152,6 +153,7 @@ abstract class Plugin_Loader_Base {
 	protected Live_Reloader $live_reloader;
 	protected Admin_Bar $admin_bar;
 	protected Upgrade_Notice $upgrade_notice;
+	protected Mount_Points $mount_points;
 
 	/**
 	 * @var Hooks_Interface[]
@@ -338,6 +340,7 @@ abstract class Plugin_Loader_Base {
 				$this->settings_page,
 				$this->live_reloader,
 				$this->admin_bar,
+				$this->mount_points,
 			)
 		);
 	}

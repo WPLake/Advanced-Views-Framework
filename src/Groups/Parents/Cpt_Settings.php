@@ -47,7 +47,6 @@ abstract class Cpt_Settings extends Group {
 	 * @a-type tab
 	 * @label Mount Points
 	 * @a-order 2
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public bool $mount_points_tab;
 	/**
@@ -58,7 +57,6 @@ abstract class Cpt_Settings extends Group {
 	 * @button_label Add Mount Point
 	 * @a-no-tab 1
 	 * @a-order 2
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public array $mount_points;
 	// just define without any annotations, it'll be overwritten by children.
