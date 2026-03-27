@@ -4,10 +4,10 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
+use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
@@ -43,7 +43,7 @@ class Post_Selections_Cpt extends Cpt {
 		$description .=
 			// translators: %s - singular name of the CPT.
 			__(
-				'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach it</a> where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/card-shortcode">via shortcode</a>).',
+				'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach it</a> where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode">via shortcode</a>).',
 				'acf-views'
 			) . '<br/>'
 						. __( 'The assigned Layout determines which fields are displayed.', 'acf-views' );

@@ -58,7 +58,7 @@ if ( ! $is_short ) {
 			esc_html_e( 'See how to limit visibility by roles', 'acf-views' );
 			echo ' ';
 			printf(
-				'<a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/card-shortcode">%s</a>',
+				'<a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode">%s</a>',
 				esc_html( __( 'here', 'acf-views' ) )
 			);
 			echo '.';
@@ -77,7 +77,7 @@ if ( ! $is_short ) {
 			esc_html_e( 'See how to load from other sources or limit visibility by roles', 'acf-views' );
 			echo ' ';
 			printf(
-				'<a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/view-shortcode">%s</a>',
+				'<a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/layout-shortcode">%s</a>',
 				esc_html( __( 'here', 'acf-views' ) )
 			);
 			echo '.';

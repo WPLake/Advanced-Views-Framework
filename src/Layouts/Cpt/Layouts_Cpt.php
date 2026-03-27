@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -30,7 +30,7 @@ class Layouts_Cpt extends Cpt {
 						sprintf(
 							// translators: %s - singular name of the CPT.
 							__(
-								'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach the %s</a> to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/view-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
+								'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach the %s</a> to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/layout-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
 								'acf-views'
 							),
 							$this->plugin_cpt->labels()->singular_name()
