@@ -1,14 +1,1 @@
-.tablenav-pages .pagination-links .button {
-  color: transparent !important;
-}
-
-#posts-filter .search-box {
-  position: relative;
-}
-#posts-filter .search-box::after {
-  display: block;
-  position: absolute;
-  bottom: -20px;
-  right: 0;
-  font-size: 11px;
-}
+.tablenav-pages .pagination-links .button{color:transparent!important}#posts-filter .search-box{position:relative}#posts-filter .search-box:after{bottom:-20px;display:block;font-size:11px;position:absolute;right:0}
