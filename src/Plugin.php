@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -20,10 +20,11 @@ defined( 'ABSPATH' ) || exit;
 class Plugin extends Hookable implements Hooks_Interface {
 	const DOCS_URL          = 'https://docs.advanced-views.com/';
 	const PRO_VERSION_URL   = 'https://advanced-views.com/pro/';
-	const PRO_PRICING_URL   = 'https://advanced-views.com/pro/#tiers';
+	const PRO_PRICING_URL   = 'https://advanced-views.com/pro/#pricing';
 	const BASIC_VERSION_URL = 'https://advanced-views.com';
 	const SURVEY_URL        = 'https://forms.gle/Wjb16B4mzgLEQvru6';
 	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/compatibility#conflicts';
+	const PROLONG_POINT_URL = 'https://wplake.org';
 	const PRODUCT_SLUG      = 'acf-views';
 
 	private string $slug       = 'acf-views/acf-views.php';

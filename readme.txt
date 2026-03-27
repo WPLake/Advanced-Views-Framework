@@ -4,7 +4,7 @@ Tags: post grid, wp_query, meta fields, custom post types, taxonomy, shortcodes,
 Requires at least: 5.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 3.8.4
+Stable tag: 3.8.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -198,10 +198,12 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.5 (2025-) =
+= 3.8.5 (2025-03-27) =
 - Feature adoption: Layout & Post selection - Mount Points (before Pro-only)
 - Feature adoption: Layout - in-template shortcode support
 - Feature adoption: Post Selection - Taxonomy filters
+- Bugfix: minor UI and message bugfixes
+- Readme update
 
 = 3.8.4 (2025-03-10) =
 - Enhance: $_GET support for custom Ajax requests
