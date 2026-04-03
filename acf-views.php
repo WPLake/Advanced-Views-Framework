@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Views Lite
  * Plugin URI: https://advanced-views.com/
  * Description: Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
- * Version: 3.8.5
+ * Version: 3.8.6
  * Author: WPLake
  * Author URI: https://advanced-views.com/
  * Text Domain: acf-views

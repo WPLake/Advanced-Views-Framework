@@ -37,10 +37,27 @@ abstract class Query_Utils {
 		if ( $condition ) {
 			$value = $filter['value'];
 
-			return is_callable( $value ) ?
-				$value() : $value;
+			return self::resolve_value( $value );
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @return mixed
+	 */
+	protected static function resolve_value( $value ) {
+		if ( is_callable( $value ) ) {
+			// return callable string as is - we expect co-incidence, like 'rand'.
+			if ( is_string( $value ) ) {
+				return $value;
+			}
+
+			return $value();
+		}
+
+		return $value;
 	}
 }
