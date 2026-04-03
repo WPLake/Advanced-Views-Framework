@@ -446,9 +446,10 @@ class Layout extends Instance {
 
 		ob_start();
 		$is_rendered = $this->render_template_and_print_html( $template, $twig_variables );
+		$html        = (string) ob_get_clean();
 
 		// shortcode support (necessary for the relationship field with the Field Layout option and others).
-		echo do_shortcode( (string) ob_get_clean() );
+		echo do_shortcode( $html );
 
 		return $is_rendered;
 	}
