@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups;
 
+defined( 'ABSPATH' ) || exit;
+
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
-
-defined( 'ABSPATH' ) || exit;
 
 class Layout_Settings extends Cpt_Settings {
 	// to fix the group name in case class name changes.
@@ -100,6 +100,12 @@ class Layout_Settings extends Cpt_Settings {
 	 */
 	public string $template_engine;
 	/**
+	 * @a-type textarea
+	 * @label PHP Controller
+	 * @instructions By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 */
+	public string $php_variables;
+	/**
 	 * @label BEM Unique Name
 	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-view').
 	 */
@@ -121,13 +127,6 @@ class Layout_Settings extends Cpt_Settings {
 	 * @instructions By default, empty wrappers in the markup are skipped to optimize the output. For example, the '__row' wrapper will be skipped if there is no field label. <br> Enable this feature if you need all the wrappers in the output.
 	 */
 	public bool $is_with_unnecessary_wrappers;
-	/**
-	 * @a-type textarea
-	 * @label Custom Data
-	 * @instructions Using the Custom View Data PHP snippet you can add custom variables to the template and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
-	 * @a-pro The field must be not required or have default value!
-	 */
-	public string $php_variables;
 
 	/**
 	 * @a-type tab
@@ -236,7 +235,7 @@ class Layout_Settings extends Cpt_Settings {
 		// @phpcs:ignore
 		$field_info = parent::getFieldInfo( $fieldName );
 
-		if ( null === $field_info ) {
+		if ( is_null( $field_info ) ) {
 			return null;
 		}
 
@@ -249,7 +248,7 @@ class Layout_Settings extends Cpt_Settings {
 
 declare(strict_types=1);
 
-use Org\Wplake\Advanced_Views\Pro\Bridge\Controllers\Layout\Layout_Controller_Base;
+use Org\Wplake\Advanced_Views\Bridge\Controllers\Layout\Layout_Controller_Base;
 
 return new class extends Layout_Controller_Base {
     /**
