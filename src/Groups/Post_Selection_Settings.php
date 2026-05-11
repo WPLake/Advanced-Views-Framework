@@ -182,14 +182,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public bool $is_ignore_sticky_posts;
 	/**
 	 * @a-type select
-	 * @label Template Engine
-	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Post Selection.
-	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
-	 * @default_value twig
-	 */
-	public string $template_engine;
-	/**
-	 * @a-type select
 	 * @label Web Component Type
 	 * @instructions By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>.
 	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
@@ -244,6 +236,14 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work.
 	 */
 	public string $custom_markup;
+	/**
+	 * @a-type select
+	 * @label Template Engine
+	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Post Selection.
+	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @default_value twig
+	 */
+	public string $template_engine;
 	/**
 	 * @label BEM Unique Name
 	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-card').

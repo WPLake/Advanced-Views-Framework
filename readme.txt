@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.8.7 (2025-05) =
+- UX: Layout & Selection settings - put "Template engine" below "Custom Template"
+
 = 3.8.6 (2025-04-03) =
 - Bugfix: Post Selection - sortby
 

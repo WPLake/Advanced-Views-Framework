@@ -92,6 +92,14 @@ class Layout_Settings extends Cpt_Settings {
 	 */
 	public string $custom_markup;
 	/**
+	 * @a-type select
+	 * @label Template Engine
+	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this View.
+	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @default_value twig
+	 */
+	public string $template_engine;
+	/**
 	 * @label BEM Unique Name
 	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-view').
 	 */
@@ -159,14 +167,6 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-pro The field must be not required or have default value!
 	 */
 	public string $gutenberg_block_vendor;
-	/**
-	 * @a-type select
-	 * @label Template Engine
-	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this View.
-	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
-	 * @default_value twig
-	 */
-	public string $template_engine;
 	/**
 	 * @a-type select
 	 * @label Web Component Type
