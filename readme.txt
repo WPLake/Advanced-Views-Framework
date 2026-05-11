@@ -199,6 +199,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.8.7 (2025-05) =
+- Bugfix: Layout with default Blade template repeats in Post Selection
 - UX: Layout & Selection settings - put "Template engine" below "Custom Template"
 
 = 3.8.6 (2025-04-03) =

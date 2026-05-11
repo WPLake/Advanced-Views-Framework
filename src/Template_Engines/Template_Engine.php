@@ -74,11 +74,11 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 		$template_file = $this->templates_folder . '/' . $template_name;
 		$wp_filesystem = $this->wp_filesystem_base;
 
-		$is_written = false !== $wp_filesystem->put_contents( $template_file, $template );
+		$is_written = $wp_filesystem->put_contents( $template_file, $template );
 
 		// check 'is_file' too, as it seems on some servers 'put_contents' returns true, but the dir/file is missing.
-		if ( false === $is_written ||
-			false === $wp_filesystem->is_file( $template_file ) ) {
+		if ( ! $is_written ||
+			! $wp_filesystem->is_file( $template_file ) ) {
 			$this->get_logger()->warning(
 				"can't write the template file",
 				array(
@@ -136,7 +136,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 		$cache_file = $this->get_cache_file( $unique_id );
 
 		// e.g. Blade doesn't allow to disable caching, so we must clean up manually.
-		if ( '' !== $cache_file ) {
+		if ( strlen( $cache_file ) > 0 ) {
 			$wp_filesystem->delete( $cache_file );
 		}
 	}

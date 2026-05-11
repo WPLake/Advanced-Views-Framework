@@ -8,8 +8,8 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
+use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,14 +31,14 @@ class Layout_Markup {
 		$this->markups_safe     = array();
 	}
 
-	protected function print_row_markup(
+	protected function generate_row_markup(
 		Layout_Settings $layout_settings,
 		Field_Meta_Interface $field_meta,
 		Item_Settings $item_settings
 	): void {
-		if ( false === $field_meta->is_field_exist() ||
+		if ( ! $field_meta->is_field_exist() ||
 			// e.g. tab.
-		true === $field_meta->is_ui_only() ) {
+		$field_meta->is_ui_only() ) {
 			return;
 		}
 
@@ -47,8 +47,8 @@ class Layout_Markup {
 		$field_id   = $item_settings->field->get_template_field_id();
 		$field_type = $field_meta->get_type();
 
-		$is_condition_with_true_stub = true === $item_settings->field->is_visible_when_empty ||
-							true === $this->data_vendors->is_empty_value_supported_in_markup(
+		$is_condition_with_true_stub = $item_settings->field->is_visible_when_empty ||
+							$this->data_vendors->is_empty_value_supported_in_markup(
 								$item_settings->field->get_vendor_name(),
 								$field_type
 							);
@@ -56,7 +56,7 @@ class Layout_Markup {
 
 		$row_type = 'row';
 
-		if ( true === $this->data_vendors->is_field_type_with_sub_fields(
+		if ( $this->data_vendors->is_field_type_with_sub_fields(
 			$field_meta->get_vendor_name(),
 			$field_meta->get_type()
 		) ) {
@@ -91,15 +91,7 @@ class Layout_Markup {
 		echo "\r\n\r\n";
 	}
 
-	protected function print_markup_from_cache( Layout_Settings $layout_settings, bool $is_skip_cache ): void {
-		$short_unique_id = $layout_settings->get_unique_id( true );
-
-		if ( true === key_exists( $short_unique_id, $this->markups_safe ) &&
-			false === $is_skip_cache ) {
-			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $this->markups_safe[ $short_unique_id ];
-		}
-
+	protected function generate_markup( Layout_Settings $layout_settings ): void {
 		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
 
 		$bem_name = $layout_settings->get_bem_name();
@@ -130,7 +122,7 @@ class Layout_Markup {
 		}
 
 		foreach ( $layout_settings->items as $item ) {
-			$this->print_row_markup(
+			$this->generate_row_markup(
 				$layout_settings,
 				$item->field->get_field_meta(),
 				$item
@@ -147,6 +139,18 @@ class Layout_Markup {
 		echo "\r\n";
 	}
 
+	protected function print_safe_markup( Layout_Settings $layout_settings, bool $is_cache_disabled ): void {
+		$short_unique_id = $layout_settings->get_unique_id( true );
+
+		if ( key_exists( $short_unique_id, $this->markups_safe ) &&
+			! $is_cache_disabled ) {
+			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $this->markups_safe[ $short_unique_id ];
+		} else {
+			$this->generate_markup( $layout_settings );
+		}
+	}
+
 	public function print_markup(
 		Layout_Settings $layout_settings,
 		int $page_id,
@@ -154,14 +158,14 @@ class Layout_Markup {
 		bool $is_skip_cache = false,
 		bool $is_ignore_custom_markup = false
 	): void {
-		$view_markup_safe = ( '' !== $view_markup_safe ||
-								true === $is_ignore_custom_markup ) ?
+		$view_markup_safe = ( strlen( $view_markup_safe ) > 0 ||
+								$is_ignore_custom_markup ) ?
 			$view_markup_safe :
 			trim( $layout_settings->custom_markup );
 
-		if ( '' === $view_markup_safe ) {
+		if ( 0 === strlen( $view_markup_safe ) ) {
 			ob_start();
-			$this->print_markup_from_cache( $layout_settings, $is_skip_cache );
+			$this->print_safe_markup( $layout_settings, $is_skip_cache );
 			$view_markup_safe = (string) ob_get_clean();
 
 			// remove the empty class attribute if the generation is disabled.
@@ -176,6 +180,7 @@ class Layout_Markup {
 			echo $view_markup_safe;
 		}
 
-		$this->markups_safe[ $layout_settings->get_unique_id( true ) ] = $view_markup_safe;
+		$layout_id                        = $layout_settings->get_unique_id( true );
+		$this->markups_safe[ $layout_id ] = $view_markup_safe;
 	}
 }
