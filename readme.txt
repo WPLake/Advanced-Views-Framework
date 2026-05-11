@@ -201,6 +201,7 @@ You're welcome to open issues or PRs there.
 = 3.8.7 (2025-05) =
 - Bugfix: Layout with default Blade template repeats in Post Selection
 - UX: Layout & Selection settings - put "Template engine" below "Custom Template"
+- UI: Layout - field dropdown font-size adjustment
 
 = 3.8.6 (2025-04-03) =
 - Bugfix: Post Selection - sortby
