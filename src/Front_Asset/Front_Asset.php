@@ -107,8 +107,8 @@ abstract class Front_Asset implements Front_Asset_Interface {
 	}
 
 	protected function is_enabled_js_handle( string $js_handle ): bool {
-		return true === key_exists( $js_handle, $this->js_handles ) &&
-				true === $this->js_handles[ $js_handle ];
+		return key_exists( $js_handle, $this->js_handles ) &&
+				$this->js_handles[ $js_handle ];
 	}
 
 	protected function set_is_with_web_component( bool $is_with_web_component ): void {

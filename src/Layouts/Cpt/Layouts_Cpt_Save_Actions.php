@@ -8,21 +8,21 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Instance;
-use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
-use WP_REST_Request;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Parents\Instance;
+use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use WP_REST_Request;
 
 class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 	const REST_REFRESH_ROUTE = '/view-refresh';
@@ -106,7 +106,7 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		// remove all other characters.
 		$name = preg_replace( '/[^a-z0-9\-]/', '', $name );
 
-		return true === is_string( $name ) ?
+		return is_string( $name ) ?
 			$name :
 			'';
 	}

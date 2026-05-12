@@ -16,19 +16,19 @@ class Template_Tokenizer {
 	}
 
 	protected function is_twig_engine(): bool {
-		return true === in_array( $this->template_engine, array( Template_Engines::TWIG, '' ), true );
+		return in_array( $this->template_engine, array( Template_Engines::TWIG, '' ), true );
 	}
 
 	protected function print_token_begin_expression( bool $is_raw = false ): void {
-		echo ( true === $this->is_twig_engine() ||
-				false === $is_raw ) ?
+		echo ( $this->is_twig_engine() ||
+				! $is_raw ) ?
 			'{{ ' :
 			'{!! ';
 	}
 
 	protected function print_token_end_expression( bool $is_raw = false ): void {
-		if ( true === $is_raw ) {
-			echo true === $this->is_twig_engine() ?
+		if ( $is_raw ) {
+			echo $this->is_twig_engine() ?
 				' }}' :
 				' !!}';
 
@@ -39,27 +39,27 @@ class Template_Tokenizer {
 	}
 
 	protected function print_token_begin_if(): void {
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			echo '{% ';
 		}
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'if ' :
 			'@if (';
 	}
 
 	protected function print_token_begin_elseif(): void {
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			echo '{% ';
 		}
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'elseif ' :
 			'@elseif (';
 	}
 
 	protected function print_token_end_if(): void {
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			echo ' %}';
 		} else {
 			echo ')';
@@ -67,17 +67,17 @@ class Template_Tokenizer {
 	}
 
 	protected function print_token_begin_foreach(): void {
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			echo '{% ';
 		}
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'for ' :
 			'@foreach (';
 	}
 
 	protected function print_token_end_foreach(): void {
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			echo ' %}';
 		} else {
 			echo ')';
@@ -85,20 +85,20 @@ class Template_Tokenizer {
 	}
 
 	protected function print_token_condition_or(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			' or ' :
 			' || ';
 	}
 
 	protected function print_token_condition_and(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			' and ' :
 			' && ';
 	}
 
 	protected function print_token_variable( string $variable ): void {
 		printf(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				'%s' :
 				'$%s',
 			esc_html( $variable ),
@@ -111,7 +111,7 @@ class Template_Tokenizer {
 	protected function print_token_items( array $item_keys ): void {
 		foreach ( $item_keys as $item_key ) {
 			printf(
-				true === $this->is_twig_engine() ?
+				$this->is_twig_engine() ?
 					'.%s' :
 					'["%s"]',
 				esc_html( $item_key ),
@@ -120,7 +120,7 @@ class Template_Tokenizer {
 	}
 
 	protected function print_token_filter_raw(): void {
-		if ( false === $this->is_twig_engine() ) {
+		if ( ! $this->is_twig_engine() ) {
 			return;
 		}
 

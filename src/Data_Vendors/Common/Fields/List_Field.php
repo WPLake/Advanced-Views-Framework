@@ -33,17 +33,17 @@ abstract class List_Field extends Markup_Field {
 	 * @return mixed
 	 */
 	protected function get_value( Field_Meta_Interface $field_meta, $value ) {
-		if ( true === $field_meta->is_multiple() ) {
-			if ( true === is_array( $value ) ) {
+		if ( $field_meta->is_multiple() ) {
+			if ( is_array( $value ) ) {
 				return $value;
 			}
 
 			return array();
 		}
 
-		if ( true === is_string( $value ) ||
-			true === is_numeric( $value ) ||
-			true === is_bool( $value ) ) {
+		if ( is_string( $value ) ||
+			is_numeric( $value ) ||
+			is_bool( $value ) ) {
 			return $value;
 		}
 
@@ -51,7 +51,7 @@ abstract class List_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		if ( true === $markup_field_data->get_field_meta()->is_multiple() ) {
+		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n";
 			$markup_field_data->print_tabs();
 
@@ -123,7 +123,7 @@ abstract class List_Field extends Markup_Field {
 			'value' => array(),
 		);
 
-		if ( true === $variable_field_data->get_field_meta()->is_multiple() ) {
+		if ( $variable_field_data->get_field_meta()->is_multiple() ) {
 			$args['options_delimiter'] = $variable_field_data->get_field_data()->options_delimiter;
 		}
 
@@ -173,7 +173,7 @@ abstract class List_Field extends Markup_Field {
 			'value' => array(),
 		);
 
-		if ( true === $variable_field_data->get_field_meta()->is_multiple() ) {
+		if ( $variable_field_data->get_field_meta()->is_multiple() ) {
 			$args['options_delimiter'] = $variable_field_data->get_field_data()->options_delimiter;
 		}
 

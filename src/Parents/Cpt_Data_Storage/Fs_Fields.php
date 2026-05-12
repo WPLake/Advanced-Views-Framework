@@ -114,7 +114,7 @@ class Fs_Fields {
 		bool $is_skip_auto_generated = false
 	): array {
 		// only links.md is needed for bulk refresh.
-		if ( true === $is_bulk_refresh ) {
+		if ( $is_bulk_refresh ) {
 			return array(
 				'links.md' => $this->get_links_md_content( $cpt_settings ),
 			);

@@ -66,7 +66,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 		}
 
 		$classes = $attrs['class'] ?? '';
-		$classes = true === is_string( $classes ) ?
+		$classes = is_string( $classes ) ?
 			$classes :
 			'';
 

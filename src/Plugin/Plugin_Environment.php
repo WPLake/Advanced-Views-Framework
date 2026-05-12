@@ -62,11 +62,11 @@ final class Plugin_Environment {
 		// and WP already has checked it.
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$is_delete_data = true === key_exists( 'advanced-views-delete-data', $_GET ) &&
+		$is_delete_data = key_exists( 'advanced-views-delete-data', $_GET ) &&
 		                  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 							'yes' === $_GET['advanced-views-delete-data'];
 
-		if ( true === $is_delete_data ) {
+		if ( $is_delete_data ) {
 			$this->delete_data();
 		}
 	}

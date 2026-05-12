@@ -94,7 +94,7 @@ class Layouts_Cpt extends Cpt {
 
 		global $submenu;
 
-		if ( false === key_exists( $url, $submenu ) ||
+		if ( ! key_exists( $url, $submenu ) ||
 			false === is_array( $submenu[ $url ] ) ) {
 			// @phpcs:ignore
 			$submenu[ $url ] = array();

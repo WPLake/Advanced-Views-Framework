@@ -383,23 +383,23 @@ class Wp_Data_Vendor extends Data_Vendor {
 							0 === strpos( $field_id, Comment_Fields::PREFIX );
 
 		if ( false === $source->is_options() &&
-			( true === $is_post_group ||
-				true === $is_taxonomy_terms_group ||
-				true === $is_menu_item_group ||
-				true === $is_comment_items_group ) ) {
+			( $is_post_group ||
+				$is_taxonomy_terms_group ||
+				$is_menu_item_group ||
+				$is_comment_items_group ) ) {
 			return $source->get_id();
 		}
 
-		if ( true === $is_user_group ) {
+		if ( $is_user_group ) {
 			return $source->get_user_id();
 		}
 
-		if ( true === $is_term_group ||
-			true === $is_menu_group ) {
+		if ( $is_term_group ||
+			$is_menu_group ) {
 			return $source->get_term_id();
 		}
 
-		if ( true === $is_comment_group ) {
+		if ( $is_comment_group ) {
 			return $source->get_comment_id();
 		}
 

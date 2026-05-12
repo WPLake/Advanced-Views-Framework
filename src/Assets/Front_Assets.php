@@ -4,19 +4,19 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -97,7 +97,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		$tag_name                   = $cpt_settings->get_tag_name();
 		$is_wp_interactivity_in_use = $cpt_settings->is_wp_interactivity_in_use();
 
-		if ( true === $is_wp_interactivity_in_use ) {
+		if ( $is_wp_interactivity_in_use ) {
 			$this->is_custom_interactivity_api_import_map_required = true;
 		}
 
@@ -123,7 +123,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		}
 
 		$is_with_shadow_dom = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_settings->web_component;
-		$box_shadow_js      = true === $is_with_shadow_dom ?
+		$box_shadow_js      = $is_with_shadow_dom ?
 			'var html=this.innerHTML;this.attachShadow({mode:"open"});this.shadowRoot.innerHTML=html;' :
 			'';
 
@@ -161,7 +161,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 			$global_selector = $prefix . $selector;
 
-			if ( true === key_exists( $global_selector, $this->tailwind_css_rules ) ) {
+			if ( key_exists( $global_selector, $this->tailwind_css_rules ) ) {
 				continue;
 			}
 
@@ -171,12 +171,12 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		}
 
 		$is_important_rule_required = '' !== $prefix &&
-									true === $this->live_reloader_component->is_active();
+									$this->live_reloader_component->is_active();
 
 		foreach ( $css_rules as $selector => $rules ) {
 			// tailwind @media rules require '!important' to make sure they work regardless of the position
 			// (it's actual with the live reloading mode).
-			if ( true === $is_important_rule_required ) {
+			if ( $is_important_rule_required ) {
 				$rules  = str_replace( ';', '!important;', $rules );
 				$rules .= '!important';
 			}
@@ -298,7 +298,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 			$code = str_replace( ' ?', '?', $code );
 			$code = str_replace( '? ', '?', $code );
 		} else {
-			$code .= true === $is_tailwind ?
+			$code .= $is_tailwind ?
 				"\n/*advanced-views:tailwind*/" :
 				'';
 		}
@@ -372,7 +372,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		// empty potentially the large array, as it's not needed anymore.
 		$this->tailwind_css_rules = array();
 
-		if ( true === $is_tailwind_in_use ) {
+		if ( $is_tailwind_in_use ) {
 			$global_tailwind_styles = $this->get_global_tailwind_styles();
 
 			if ( '' !== $global_tailwind_styles ) {
@@ -418,7 +418,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 			if ( false !== strpos( $page_content, '<!--advanced-views:styles/custom-location-->' ) ) {
 				// introduce a styles variable, which allows to detect the styles root inside a webcomponent.
-				if ( true === $this->live_reloader_component->is_active() ) {
+				if ( $this->live_reloader_component->is_active() ) {
 					$all_css_code .= '<avf-styles-location></avf-styles-location>';
 					$all_css_code .= '<script>class AvfStylesLocation extends HTMLElement{connectedCallback(){"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this.setup.bind(this)):this.setup()}setup(){window["avfStylesRoot"]=this.parentElement;}}customElements.define("avf-styles-location", AvfStylesLocation)</script>';
 					// it's necessary to make .parentElement work.
@@ -606,7 +606,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( true === $route_detector->is_admin_route() ) {
+		if ( $route_detector->is_admin_route() ) {
 			return;
 		}
 

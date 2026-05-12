@@ -168,14 +168,14 @@ class Post_Selection extends Instance {
 		$this->post_selection_markup->print_markup( $this->settings, $is_load_more );
 		$template = (string) ob_get_clean();
 
-		if ( true === $is_minify_markup ) {
+		if ( $is_minify_markup ) {
 			$unnecessary_symbols = array(
 				"\n",
 				"\r",
 			);
 
 			// Blade requires at least some spacing between its tokens.
-			if ( true === in_array(
+			if ( in_array(
 				$this->settings->template_engine,
 				array( Template_Engines::TWIG, '' ),
 				true

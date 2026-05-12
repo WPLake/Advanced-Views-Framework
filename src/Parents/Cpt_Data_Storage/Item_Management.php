@@ -59,7 +59,7 @@ abstract class Item_Management extends Action {
 		$post_id            = 0;
 		$is_present_in_list = false;
 
-		if ( true === key_exists( $unique_id, $post_ids ) ) {
+		if ( key_exists( $unique_id, $post_ids ) ) {
 			$post_id            = $post_ids[ $unique_id ];
 			$is_present_in_list = true;
 		}
@@ -68,7 +68,7 @@ abstract class Item_Management extends Action {
 		if ( 0 === $post_id ) {
 			$trashed_post_ids = $this->db_management->get_trashed_post_ids();
 
-			if ( true === key_exists( $unique_id, $trashed_post_ids ) ) {
+			if ( key_exists( $unique_id, $trashed_post_ids ) ) {
 				$post_id = $trashed_post_ids[ $unique_id ];
 
 				// trashed items should be loaded from the DB
@@ -82,7 +82,7 @@ abstract class Item_Management extends Action {
 
 		// $isForceFromDb used in the activation method
 		if ( false === $this->file_system->is_active() ||
-			true === $is_force_from_db ) {
+			$is_force_from_db ) {
 			if ( 0 === $post_id ) {
 				return;
 			}
@@ -150,7 +150,7 @@ abstract class Item_Management extends Action {
 			$json :
 			'';
 
-		if ( true === $this->file_system->is_active() ) {
+		if ( $this->file_system->is_active() ) {
 			$item_id = $this->get_item_by_unique_id( $unique_id );
 
 			$this->file_system->write_fields_to_fs(
@@ -213,7 +213,7 @@ abstract class Item_Management extends Action {
 
 		// trashed posts are saved to DB only.
 		if ( 0 !== $cpt_settings->get_post_id() &&
-			true === in_array( $cpt_settings->get_post_id(), $trashed_post_ids, true ) ) {
+			in_array( $cpt_settings->get_post_id(), $trashed_post_ids, true ) ) {
 			$is_force_to_db = true;
 		}
 
@@ -336,7 +336,7 @@ abstract class Item_Management extends Action {
 
 	public function delete_and_bypass_trash( Cpt_Settings $cpt_settings ): void {
 		// 1. remove in FS (optionally)
-		if ( true === $this->file_system->is_active() ) {
+		if ( $this->file_system->is_active() ) {
 			$this->file_system->delete_item( $cpt_settings->get_unique_id( true ) );
 		}
 

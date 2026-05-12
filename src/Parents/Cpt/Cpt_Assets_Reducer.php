@@ -63,7 +63,7 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 		foreach ( $styles as $style_handle => $style_data ) {
 			// can be false or even NULL.
 			if ( false === is_string( $style_data->src ) ||
-				true === $this->is_necessary_plugin_asset( $style_data->src, $style_handle ) ) {
+				$this->is_necessary_plugin_asset( $style_data->src, $style_handle ) ) {
 				continue;
 			}
 
@@ -77,7 +77,7 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 		foreach ( $scripts as $script_handle => $script_data ) {
 			// can be false or even NULL.
 			if ( false === is_string( $script_data->src ) ||
-				true === $this->is_necessary_plugin_asset( $script_data->src, $script_handle ) ) {
+				$this->is_necessary_plugin_asset( $script_data->src, $script_handle ) ) {
 				continue;
 			}
 
@@ -92,7 +92,7 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 			// can be false or even NULL.
 			if ( false === is_string( $style_data->src ) ||
 				false === $this->is_theme_asset( $style_data->src ) ||
-				true === $this->is_necessary_handle( $style_handle ) ) {
+				$this->is_necessary_handle( $style_handle ) ) {
 				continue;
 			}
 
@@ -107,7 +107,7 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 			// can be false or even NULL.
 			if ( false === is_string( $script_data->src ) ||
 				false === $this->is_theme_asset( $script_data->src ) ||
-				true === $this->is_necessary_handle( $script_handle ) ) {
+				$this->is_necessary_handle( $script_handle ) ) {
 				continue;
 			}
 
@@ -134,14 +134,14 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 		);
 
 		foreach ( $styles as $style_handle => $style_data ) {
-			if ( true === is_bool( $style_data->src ) ) {
+			if ( is_bool( $style_data->src ) ) {
 				continue;
 			}
 
 			$is_wp_asset = false !== strpos( $style_data->src, '/wp-includes/' );
 
 			if ( false === $is_wp_asset ||
-				true === in_array( $style_handle, $necessary_styles, true ) ) {
+				in_array( $style_handle, $necessary_styles, true ) ) {
 				continue;
 			}
 

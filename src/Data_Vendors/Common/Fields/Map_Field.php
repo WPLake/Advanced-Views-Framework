@@ -216,7 +216,7 @@ class Map_Field extends Markup_Field {
 		echo '>';
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 
-		if ( true === $markup_field_data->get_field_data()->is_visible_when_empty &&
+		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
 			false === $markup_field_data->get_field_meta()->is_multiple() ) {
 			$markup_field_data->get_template_generator()->print_if_for_array_item( $field_id, 'value' );
 			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
@@ -235,13 +235,13 @@ class Map_Field extends Markup_Field {
 		$this->print_map_marker_attributes( $field_id, $item_id, $markup_field_data );
 		echo '></div>';
 
-		if ( true === $markup_field_data->get_field_meta()->is_multiple() ) {
+		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n";
 			echo esc_html( str_repeat( "\t", --$current_tabs_number ) );
 			$markup_field_data->get_template_generator()->print_end_for();
 		}
 
-		if ( true === $markup_field_data->get_field_data()->is_visible_when_empty &&
+		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
 			false === $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
 			$markup_field_data->get_template_generator()->print_end_if();

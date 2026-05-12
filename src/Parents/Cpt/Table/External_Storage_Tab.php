@@ -72,7 +72,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		$title = '' === $title ?
 			( $data_json[ Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE ) ] ?? '' ) :
 			$title;
-		$title = true === is_string( $title ) ?
+		$title = is_string( $title ) ?
 			$title :
 			'';
 
@@ -158,7 +158,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 			// while in this class we have only the single one.
 			$cpt_data = $this->get_cpt_data( $unique_id );
 
-			if ( true === ( $cpt_data instanceof Layout_Settings ) ) {
+			if ( ( $cpt_data instanceof Layout_Settings ) ) {
 				++$views_count;
 			} else {
 				++$cards_count;

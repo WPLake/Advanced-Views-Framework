@@ -70,8 +70,8 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 		$is_removed = $wp_filesystem->delete( $test_file );
 
-		return true === $is_writable &&
-				true === $is_removed;
+		return $is_writable &&
+				$is_removed;
 	}
 
 	protected function get_uploads_folder(): string {
@@ -131,7 +131,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 			return;
 		}
 
-		if ( true === $this->is_templates_dir_writable() ) {
+		if ( $this->is_templates_dir_writable() ) {
 			return;
 		}
 
@@ -154,7 +154,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		$wp_filesystem = $this->get_wp_filesystem();
 
 		// skip if already exists.
-		if ( true === $wp_filesystem->is_dir( $templates_dir ) ) {
+		if ( $wp_filesystem->is_dir( $templates_dir ) ) {
 			return;
 		}
 
@@ -184,7 +184,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 	public function remove_templates_dir(): void {
 		// do not remove if switching versions.
 		// Because activation hooks won't be called, so dir will be missing.
-		if ( true === $this->plugin->is_switching_versions() ) {
+		if ( $this->plugin->is_switching_versions() ) {
 			return;
 		}
 
@@ -201,7 +201,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 	}
 
 	public function get_template_engine( string $name ): ?Template_Engine_Interface {
-		if ( false === key_exists( $name, $this->template_engines ) ) {
+		if ( ! key_exists( $name, $this->template_engines ) ) {
 			$this->template_engines[ $name ] = $this->make_template_engine( $name );
 		}
 
@@ -209,7 +209,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 	}
 
 	public function get_template_generator( string $template_engine ): Template_Generator {
-		if ( false === key_exists( $template_engine, $this->template_generators ) ) {
+		if ( ! key_exists( $template_engine, $this->template_generators ) ) {
 			$this->template_generators[ $template_engine ] = new Template_Generator( $template_engine );
 		}
 

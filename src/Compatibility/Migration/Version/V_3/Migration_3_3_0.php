@@ -70,7 +70,7 @@ final class Migration_3_3_0 extends Version_Migration_Base {
 	}
 
 	protected function move_is_without_web_component_to_select( Cpt_Settings $cpt_settings, bool $is_batch = false ): void {
-		$cpt_settings->web_component = true === $cpt_settings->is_without_web_component ?
+		$cpt_settings->web_component = $cpt_settings->is_without_web_component ?
 			Cpt_Settings::WEB_COMPONENT_NONE :
 			Cpt_Settings::WEB_COMPONENT_CLASSIC;
 		// set to the default, so it isn't saved to json anymore.

@@ -509,7 +509,7 @@ return new class extends Layout_Controller_Base {
 
 		$classes[] = $this->get_bem_name() . '__' . $field_data->id . '-' . $suffix;
 
-		if ( true === $this->is_with_common_classes ) {
+		if ( $this->is_with_common_classes ) {
 			$classes[] = $this->get_bem_name() . '__' . $suffix;
 		}
 

@@ -49,7 +49,7 @@ abstract class Cpt_Table_Tab extends Hookable implements Hooks_Interface {
 			return array();
 		}
 
-		return true === $is_batch_sync ?
+		return $is_batch_sync ?
 			Query_Arguments::get_string_array_for_admin_action( 'post', 'bulk-posts' ) :
 			array( Query_Arguments::get_string_for_admin_action( $key_single_action, 'bulk-posts' ) );
 	}

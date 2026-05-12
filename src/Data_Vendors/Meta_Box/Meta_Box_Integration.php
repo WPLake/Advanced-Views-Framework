@@ -26,14 +26,14 @@ class Meta_Box_Integration extends Settings_Vendor_Integration {
 
 		$fields = rwmb_get_registry( 'meta_box' )->get_by( array( 'id' => $wp_post->post_name ) );
 
-		$fields = true === is_array( $fields ) &&
+		$fields = is_array( $fields ) &&
 					count( $fields ) > 0 ?
 			array_shift( $fields ) :
 			null;
 
-		$fields = true === is_object( $fields ) &&
-					true === property_exists( $fields, 'meta_box' ) &&
-					true === is_array( $fields->meta_box ) ?
+		$fields = is_object( $fields ) &&
+					property_exists( $fields, 'meta_box' ) &&
+					is_array( $fields->meta_box ) ?
 			$fields->meta_box :
 			array();
 

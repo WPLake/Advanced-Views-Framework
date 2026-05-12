@@ -189,9 +189,9 @@ class Dashboard extends Hookable implements Hooks_Interface {
 	 */
 	protected function get_pages(): array {
 		// iframe with https isn't supported on localhost (and websites with http).
-		$is_https = true === wp_is_using_https();
+		$is_https = wp_is_using_https();
 
-		$docs_url      = true === $is_https ?
+		$docs_url      = $is_https ?
 			$this->plugin->get_admin_url( self::PAGE_DOCS ) :
 			Plugin::DOCS_URL;
 		$is_docs_blank = false === $is_https;

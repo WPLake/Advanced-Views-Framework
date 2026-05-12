@@ -40,7 +40,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 
 			$is_empty_custom_markup = '' === trim( $cpt_data->custom_markup );
 
-			if ( true === $is_empty_custom_markup ) {
+			if ( $is_empty_custom_markup ) {
 				continue;
 			}
 
@@ -64,7 +64,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	protected function get_tab(): ?Tab_Data {
 		$is_tab_active = self::NAME === $this->get_cpt_table()->get_current_tab();
 
-		$items = true === $is_tab_active ?
+		$items = $is_tab_active ?
 			$this->get_items_with_wrong_custom_template( $this->get_cpt_table()->get_current_search_value() ) :
 			array();
 
@@ -107,7 +107,7 @@ abstract class Bulk_Validation_Tab extends Cpt_Table_Tab {
 	}
 
 	public function print_row_title( Tab_Data $tab_data, Cpt_Settings $cpt_settings ): void {
-		if ( true === $this->cpt_settings_storage->is_fs_only_item( $cpt_settings->get_unique_id() ) ) {
+		if ( $this->cpt_settings_storage->is_fs_only_item( $cpt_settings->get_unique_id() ) ) {
 			$this->fs_only_tab->print_row_title( $tab_data, $cpt_settings );
 
 			return;

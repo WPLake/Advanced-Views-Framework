@@ -137,7 +137,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 				continue;
 			}
 
-			$only_field_types = true === $is_only_types_with_sub_fields ?
+			$only_field_types = $is_only_types_with_sub_fields ?
 				$data_vendor->get_field_types_with_sub_fields() :
 				array();
 
@@ -222,7 +222,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	 * @return string[]
 	 */
 	public function get_supported_field_types( string $vendor_name ): array {
-		if ( false === key_exists( $vendor_name, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor_name, $this->data_vendors ) ) {
 			return array();
 		}
 
@@ -234,7 +234,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 
 		$this->field_meta_cache[ $vendor_name ] ??= array();
 
-		if ( false === key_exists( $field_id, $this->field_meta_cache[ $vendor_name ] ) ) {
+		if ( ! key_exists( $field_id, $this->field_meta_cache[ $vendor_name ] ) ) {
 			$field_meta = new Field_Meta( $vendor_name, $field_id );
 
 			if ( null !== $vendor ) {
@@ -264,7 +264,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	) {
 		$vendor_name = $field_meta->get_vendor_name();
 
-		if ( false === key_exists( $vendor_name, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor_name, $this->data_vendors ) ) {
 			return null;
 		}
 
@@ -359,11 +359,11 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	}
 
 	public function is_field_type_with_sub_fields( string $vendor, string $field_type ): bool {
-		if ( false === key_exists( $vendor, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor, $this->data_vendors ) ) {
 			return false;
 		}
 
-		return true === in_array(
+		return in_array(
 			$field_type,
 			$this->data_vendors[ $vendor ]->get_field_types_with_sub_fields(),
 			true
@@ -375,7 +375,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		DateTime $date_time,
 		Field_Meta_Interface $field_meta
 	): string {
-		if ( false === key_exists( $vendor, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor, $this->data_vendors ) ) {
 			return '';
 		}
 
@@ -445,7 +445,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 			$group_id_without_vendor_prefix = $group_id;
 		}
 
-		if ( false === key_exists( $vendor_name, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor_name, $this->data_vendors ) ) {
 			return null;
 		}
 
@@ -455,7 +455,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function convert_string_to_date_time( Field_Meta_Interface $field_meta, string $value ): ?DateTime {
 		$vendor_name = $field_meta->get_vendor_name();
 
-		if ( false === key_exists( $vendor_name, $this->data_vendors ) ) {
+		if ( ! key_exists( $vendor_name, $this->data_vendors ) ) {
 			return null;
 		}
 
@@ -475,7 +475,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 
 			$file_vendor = str_replace( '.json', '', $file_name );
 
-			if ( false === key_exists( $file_vendor, $this->get_data_vendors() ) ) {
+			if ( ! key_exists( $file_vendor, $this->get_data_vendors() ) ) {
 				continue;
 			}
 

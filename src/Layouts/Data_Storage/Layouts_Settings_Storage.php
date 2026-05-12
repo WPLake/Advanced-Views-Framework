@@ -52,7 +52,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 		bool $is_force_from_db = false,
 		bool $is_force_from_fs = false
 	): Layout_Settings {
-		if ( true === key_exists( $unique_id, $this->items ) ) {
+		if ( key_exists( $unique_id, $this->items ) ) {
 			return $this->items[ $unique_id ];
 		}
 
@@ -61,7 +61,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 		$this->load( $layout_settings, $unique_id, $is_force_from_db, $is_force_from_fs );
 
 		// cache only existing items.
-		if ( true === $layout_settings->isLoaded() ) {
+		if ( $layout_settings->isLoaded() ) {
 			$this->items[ $unique_id ] = $layout_settings;
 		}
 
@@ -117,7 +117,7 @@ class Layouts_Settings_Storage extends Cpt_Settings_Storage {
 		foreach ( array_keys( $items_without_posts ) as $unique_id ) {
 			$view_data = $this->get( $unique_id );
 
-			if ( false === in_array( $meta_group_id, $view_data->get_used_meta_group_ids(), true ) ) {
+			if ( ! in_array( $meta_group_id, $view_data->get_used_meta_group_ids(), true ) ) {
 				continue;
 			}
 

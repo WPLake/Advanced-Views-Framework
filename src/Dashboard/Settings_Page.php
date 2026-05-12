@@ -105,7 +105,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 													true
 												);
 
-		if ( true === $is_removed ) {
+		if ( $is_removed ) {
 			return;
 		}
 
@@ -162,7 +162,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 				// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
 				// also check to make sure it's array (can be empty string).
 				if ( Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES ) === $field_name &&
-					true === is_array( $value ) ) {
+					is_array( $value ) ) {
 					$value = Group::convertRepeaterFieldValues( $field_name, $value );
 				}
 
@@ -215,7 +215,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 						$git_repositories_field_name = Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES );
 						$value                       = $this->plugin_settings->getFieldValues()[ $git_repositories_field_name ] ?? array();
 
-						$value = true === is_array( $value ) ?
+						$value = is_array( $value ) ?
 							Group::convertRepeaterFieldValues( $field_name, $value, false ) :
 							array();
 
@@ -293,22 +293,22 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->settings->set_git_repositories( $git_repositories );
 
 		$is_do_not_track_request_needed = false === $this->settings->is_automatic_reports_disabled() &&
-											true === $this->plugin_settings->is_automatic_reports_disabled;
+											$this->plugin_settings->is_automatic_reports_disabled;
 
 		$this->settings->set_is_automatic_reports_disabled( $this->plugin_settings->is_automatic_reports_disabled );
 
 		// send only after the setting is updated.
-		if ( true === $is_do_not_track_request_needed ) {
+		if ( $is_do_not_track_request_needed ) {
 			$this->automated_reports->send_do_not_track_request();
 		}
 
-		if ( true === $this->plugin_settings->is_file_system_storage &&
+		if ( $this->plugin_settings->is_file_system_storage &&
 			false === $this->layouts_settings_storage->get_file_system()->is_active() ) {
 			$this->activate_fs_storage();
 		}
 
 		if ( false === $this->plugin_settings->is_file_system_storage &&
-			true === $this->layouts_settings_storage->get_file_system()->is_active() ) {
+			$this->layouts_settings_storage->get_file_system()->is_active() ) {
 			$this->deactivate_fs_storage();
 		}
 

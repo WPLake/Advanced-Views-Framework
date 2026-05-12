@@ -190,14 +190,14 @@ class Layout extends Instance {
 	): bool {
 		$template = $this->get_template();
 
-		if ( true === $is_minify_markup ) {
+		if ( $is_minify_markup ) {
 			$unnecessary_symbols = array(
 				"\n",
 				"\r",
 			);
 
 			// Blade requires at least some spacing between its tokens.
-			if ( true === in_array(
+			if ( in_array(
 				$this->layout_settings->template_engine,
 				array( Template_Engines::TWIG, '' ),
 				true
@@ -230,8 +230,8 @@ class Layout extends Instance {
 		$markup_validation_error = parent::get_markup_validation_error();
 		$custom_markup           = trim( $this->layout_settings->custom_markup );
 
-		if ( '' !== $markup_validation_error ||
-			'' === $custom_markup ) {
+		if ( strlen( $markup_validation_error ) > 0 ||
+			0 === strlen( $custom_markup ) ) {
 			return $markup_validation_error;
 		}
 
@@ -646,7 +646,7 @@ class Layout extends Instance {
 			$missing_array_variable = $missing_array . '.value';
 
 			// skip inner views.
-			if ( true === in_array( $missing_array_variable, $inner_views, true ) ) {
+			if ( in_array( $missing_array_variable, $inner_views, true ) ) {
 				continue;
 			}
 

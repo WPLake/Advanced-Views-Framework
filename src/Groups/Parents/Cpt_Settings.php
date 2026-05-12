@@ -272,7 +272,7 @@ abstract class Cpt_Settings extends Group {
 	}
 
 	public function is_css_internal(): bool {
-		return true === $this->is_with_shadow_dom() &&
+		return $this->is_with_shadow_dom() &&
 				false === strpos( $this->get_markup(), '<!--advanced-views:styles/custom-location-->' );
 	}
 
@@ -285,7 +285,7 @@ abstract class Cpt_Settings extends Group {
 	}
 
 	public function is_with_shadow_dom(): bool {
-		return true === in_array(
+		return in_array(
 			$this->web_component,
 			array( self::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE, self::WEB_COMPONENT_SHADOW_DOM ),
 			true

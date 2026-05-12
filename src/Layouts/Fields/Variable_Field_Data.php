@@ -65,7 +65,7 @@ class Variable_Field_Data extends Template_Field_Data {
 	 */
 	public function get_formatted_value() {
 		// in case of repeater field, the formatted value isn't available directly.
-		if ( true === $this->is_set_formatted_value ) {
+		if ( $this->is_set_formatted_value ) {
 			return $this->formatted_value;
 		}
 

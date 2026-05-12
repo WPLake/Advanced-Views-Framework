@@ -6,17 +6,17 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
-use WP_REST_Request;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
+use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -126,7 +126,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 		array $old_code_hashes,
 		bool $is_assets_only
 	): array {
-		$renderer = true === ( $cpt_settings instanceof Layout_Settings ) ?
+		$renderer = ( $cpt_settings instanceof Layout_Settings ) ?
 			$this->layout_shortcode :
 			$this->post_selection_shortcode;
 
@@ -142,23 +142,23 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 			'codeHashes' => $new_code_hashes,
 		);
 
-		if ( true === $is_css_changed &&
+		if ( $is_css_changed &&
 			false === $cpt_settings->is_with_shadow_dom() ) {
 			$response['css'] = $this->get_css_code( $cpt_settings );
 		}
 
-		if ( true === $is_js_changed ) {
+		if ( $is_js_changed ) {
 			// js code isn't put inside the shadow root (it works on the global level),
 			// so it's always available.
 			$response['js'] = $cpt_settings->get_js_code();
 		}
 
-		if ( true === $is_html_changed &&
+		if ( $is_html_changed &&
 			false === $is_assets_only ) {
 			// we don't have the right queried_object_id anymore,
 			// so must define it obviously if it's missing,
 			// but only if it's set (e.g. post_id is 0 for archive pages).
-			if ( false === key_exists( 'object-id', $shortcode_arguments ) &&
+			if ( ! key_exists( 'object-id', $shortcode_arguments ) &&
 				0 !== $this->request_post_id ) {
 				$shortcode_arguments['object-id'] = $this->request_post_id;
 			}
@@ -177,8 +177,8 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 							$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_HTML ];
 
 		// 1. HTML changed for gutenberg blocks or on non-post related pages
-		if ( true === $is_html_changed &&
-			( true === $is_gutenberg_block || 0 === $this->request_post_id ) ) {
+		if ( $is_html_changed &&
+			( $is_gutenberg_block || 0 === $this->request_post_id ) ) {
 			return true;
 		}
 
@@ -191,8 +191,8 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 							$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
 
 		// 2. Html or CSS changed for elements with the Declarative Shadow DOM.
-		return true === $is_declarative_shadow_dom &&
-				( true === $is_html_changed || true === $is_css_changed );
+		return $is_declarative_shadow_dom &&
+				( $is_html_changed || $is_css_changed );
 	}
 
 	/**
@@ -209,8 +209,8 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 											$this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
 											$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
 
-		return true === $is_js_changed ||
-				true === $is_css_in_js_shadow_dom_changed;
+		return $is_js_changed ||
+				$is_css_in_js_shadow_dom_changed;
 	}
 
 	/**
@@ -245,7 +245,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 			$is_view_item = 0 === strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX );
 
-			$cpt_data = true === $is_view_item ?
+			$cpt_data = $is_view_item ?
 				$this->layouts_settings_storage->get( $unique_id ) :
 				$this->post_selections_settings_storage->get( $unique_id );
 
@@ -254,7 +254,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 				continue;
 			}
 
-			if ( true === $this->is_html_force_change_required( $cpt_data, $code_hashes ) ) {
+			if ( $this->is_html_force_change_required( $cpt_data, $code_hashes ) ) {
 				$code_hashes[ Cpt_Settings::HASH_HTML ] = '';
 			}
 
@@ -266,7 +266,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 			$is_page_reload_required = $this->is_page_reload_required( $cpt_data, $code_hashes, $is_gutenberg_block );
 
-			if ( true === $is_page_reload_required ) {
+			if ( $is_page_reload_required ) {
 				return array();
 			}
 
@@ -315,13 +315,13 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 			$is_view_item = 0 === strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX );
 
-			$cpt_data = true === $is_view_item ?
+			$cpt_data = $is_view_item ?
 				$this->layouts_settings_storage->get( $unique_id ) :
 				$this->post_selections_settings_storage->get( $unique_id );
 
 			$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $code_hashes ) !==
 								$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ] ||
-			true === $this->is_html_force_change_required( $cpt_data, $code_hashes );
+			$this->is_html_force_change_required( $cpt_data, $code_hashes );
 
 			if ( false === $cpt_data->isLoaded() ||
 				false === $is_html_changed ) {
@@ -358,7 +358,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 			$markup_element_id = sanitize_text_field( (string) $markup_element_id );
 			$unique_id         = sanitize_text_field( $this->get_string_arg( 'unique_id', $item_data ) );
 
-			if ( false === in_array( $unique_id, $card_ids_on_top_level_to_refresh, true ) ) {
+			if ( ! in_array( $unique_id, $card_ids_on_top_level_to_refresh, true ) ) {
 				continue;
 			}
 
@@ -383,7 +383,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 			$is_page_reload_required = $this->is_page_reload_required( $card_data, $code_hashes, $is_gutenberg_block );
 
-			if ( true === $is_page_reload_required ) {
+			if ( $is_page_reload_required ) {
 				return array();
 			}
 
@@ -417,7 +417,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 			$is_page_reload_required
 		);
 
-		if ( true === $is_page_reload_required ) {
+		if ( $is_page_reload_required ) {
 			return $page_changed_response;
 		}
 
@@ -437,7 +437,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 			)
 		);
 
-		if ( true === $is_page_reload_required ) {
+		if ( $is_page_reload_required ) {
 			return $page_changed_response;
 		}
 

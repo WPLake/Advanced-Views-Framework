@@ -124,11 +124,11 @@ class Plugin extends Hookable implements Hooks_Interface {
 	 * @return array<string,mixed>
 	 */
 	protected function add_deprecated_field_class( array $field ): array {
-		if ( false === key_exists( 'a-deprecated', $field ) ) {
+		if ( ! key_exists( 'a-deprecated', $field ) ) {
 			return $field;
 		}
 
-		if ( false === key_exists( 'wrapper', $field ) ||
+		if ( ! key_exists( 'wrapper', $field ) ||
 			false === is_array( $field['wrapper'] ) ) {
 			$field['wrapper'] = array();
 		}
@@ -245,7 +245,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 	}
 
 	public function maybe_show_compatibility_warnings(): void {
-		if ( true === function_exists( 'ini_get' ) &&
+		if ( function_exists( 'ini_get' ) &&
 			'0' === ini_get( 'opcache.save_comments' ) ) {
 			$this->print_opcache_compatibility_warning();
 		}
@@ -455,8 +455,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 		self::add_filter( 'acf/prepare_field', array( $this, 'amend_field_settings' ) );
 		self::add_filter( 'acf/field_wrapper_attributes', array( $this, 'add_class_to_admin_pro_field_classes' ), 10, 2 );
 
-		if ( true === $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name(), Route_Detector::CPT_ADD ) ||
-			true === $route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name(), Route_Detector::CPT_ADD ) ) {
+		if ( $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name(), Route_Detector::CPT_ADD ) ||
+			$route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name(), Route_Detector::CPT_ADD ) ) {
 			self::add_filter( 'acf/prepare_field', array( $this, 'set_global_defaults_for_field' ) );
 		}
 	}

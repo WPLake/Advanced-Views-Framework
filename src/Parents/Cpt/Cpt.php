@@ -157,7 +157,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 			'acf-views'
 		);
 		$description .= ' ';
-		$description .= true === $this->cpt_settings_storage->get_file_system()->is_active() ?
+		$description .= $this->cpt_settings_storage->get_file_system()->is_active() ?
 			__( 'enabled', 'acf-views' )
 			: __( 'disabled', 'acf-views' );
 		$description .= '.';

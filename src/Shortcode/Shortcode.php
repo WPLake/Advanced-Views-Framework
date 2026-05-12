@@ -63,7 +63,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		$user_with_roles = $shortcode_args['user-with-roles'] ?? '';
 
 		// can be an array, if called from Bridge.
-		if ( true === is_string( $user_with_roles ) ) {
+		if ( is_string( $user_with_roles ) ) {
 			$user_with_roles = trim( $user_with_roles );
 			$user_with_roles = '' !== $user_with_roles ?
 				explode( ',', $user_with_roles ) :
@@ -75,7 +75,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		$user_without_roles = $shortcode_args['user-without-roles'] ?? '';
 
 		// can be an array, if called from Bridge.
-		if ( true === is_string( $user_without_roles ) ) {
+		if ( is_string( $user_without_roles ) ) {
 			$user_without_roles = trim( $user_without_roles );
 			$user_without_roles = '' !== $user_without_roles ?
 				explode( ',', $user_without_roles ) :
@@ -149,13 +149,13 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 		array $shortcode_arguments,
 		bool $is_gutenberg_block
 	): string {
-		if ( false === key_exists( $unique_id, $this->rendered_ids ) ) {
+		if ( ! key_exists( $unique_id, $this->rendered_ids ) ) {
 			$this->rendered_ids[ $unique_id ] = true;
 		}
 
 		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
-		$is_with_quick_link = true === $this->settings->is_dev_mode() &&
+		$is_with_quick_link = $this->settings->is_dev_mode() &&
 								Avf_User::can_manage();
 
 		$html = $this->live_reloader_component->get_reloading_component(
@@ -166,7 +166,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 		$shadow_css = '';
 
-		if ( true === $cpt_data->is_css_internal() ) {
+		if ( $cpt_data->is_css_internal() ) {
 			$shadow_css = $this->front_assets->minify_code(
 				$cpt_data->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
 				Front_Assets::MINIFY_TYPE_CSS
@@ -210,7 +210,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 		$is_last_tag_not_defined = 0 === count( $matches[0] );
 
-		if ( true === $is_last_tag_not_defined ) {
+		if ( $is_last_tag_not_defined ) {
 			return $html;
 		}
 
@@ -220,7 +220,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 		$quick_link_html = '';
 
-		if ( true === $is_with_quick_link ) {
+		if ( $is_with_quick_link ) {
 			$label  = __( 'Edit', 'acf-views' );
 			$label .= sprintf( ' "%s"', $cpt_data->title );
 

@@ -71,8 +71,8 @@ final class Layout_Shortcode extends Shortcode {
 
 		// note: string $objectId is expected below.
 		$object_id = $attrs['object-id'] ?? '';
-		$object_id = true === is_string( $object_id ) ||
-					true === is_numeric( $object_id ) ?
+		$object_id = is_string( $object_id ) ||
+					is_numeric( $object_id ) ?
 			(string) $object_id :
 			'';
 
@@ -99,7 +99,7 @@ final class Layout_Shortcode extends Shortcode {
 		$current_page_id = get_queried_object_id();
 
 		$user_id = $attrs['user-id'] ?? get_current_user_id();
-		$user_id = true === is_numeric( $user_id ) ?
+		$user_id = is_numeric( $user_id ) ?
 			(int) $user_id :
 			0;
 
@@ -119,8 +119,8 @@ final class Layout_Shortcode extends Shortcode {
 
 		if ( 0 === $term_id ) {
 			$menu_slug = $attrs['menu-slug'] ?? '';
-			$menu_slug = true === is_string( $menu_slug ) ||
-						true === is_numeric( $menu_slug ) ?
+			$menu_slug = is_string( $menu_slug ) ||
+						is_numeric( $menu_slug ) ?
 				(string) $menu_slug :
 				'';
 			$menu_term = '' !== $menu_slug ?
@@ -135,7 +135,7 @@ final class Layout_Shortcode extends Shortcode {
 			$term_id;
 
 		$comment_id = $attrs['comment-id'] ?? 0;
-		$comment_id = true === is_numeric( $comment_id ) ?
+		$comment_id = is_numeric( $comment_id ) ?
 			(int) $comment_id :
 			0;
 
@@ -145,14 +145,14 @@ final class Layout_Shortcode extends Shortcode {
 			0;
 
 		$post_slug = $attrs['post-slug'] ?? '';
-		$post_slug = true === is_string( $post_slug ) ||
-					true === is_numeric( $post_slug ) ?
+		$post_slug = is_string( $post_slug ) ||
+					is_numeric( $post_slug ) ?
 			(string) $post_slug :
 			'';
 
 		// enable the 'term' mode by default if we're on a taxonomy page, nothing was set,
 		// and it doesn't happen inside the Gutenberg query loop.
-		$object_id = true === is_tax() &&
+		$object_id = is_tax() &&
 					'' === $object_id &&
 					! $this->shortcode_block->is_context_post_set() ?
 			'term' :
@@ -188,8 +188,8 @@ final class Layout_Shortcode extends Shortcode {
 		}
 
 		$classes = $attrs['class'] ?? '';
-		$classes = true === is_string( $classes ) ||
-					true === is_numeric( $classes ) ?
+		$classes = is_string( $classes ) ||
+					is_numeric( $classes ) ?
 			(string) $classes :
 			'';
 
@@ -206,7 +206,7 @@ final class Layout_Shortcode extends Shortcode {
 		$custom_arguments = $attrs['custom-arguments'] ?? '';
 
 		// can be an array, if called from Bridge.
-		if ( true === is_string( $custom_arguments ) ) {
+		if ( is_string( $custom_arguments ) ) {
 			$custom_arguments = wp_parse_args( $custom_arguments );
 		} elseif ( false === is_array( $custom_arguments ) ) {
 			$custom_arguments = array();
@@ -279,9 +279,9 @@ final class Layout_Shortcode extends Shortcode {
 			)
 		);
 
-		return true === is_object( $post ) &&
-				true === property_exists( $post, 'ID' ) &&
-				true === is_numeric( $post->ID ) ?
+		return is_object( $post ) &&
+				property_exists( $post, 'ID' ) &&
+				is_numeric( $post->ID ) ?
 			(int) $post->ID :
 			0;
 	}
@@ -315,7 +315,7 @@ final class Layout_Shortcode extends Shortcode {
 
 		// 1) page id
 
-		$data_post_id = true === is_numeric( $object_id ) ?
+		$data_post_id = is_numeric( $object_id ) ?
 			(int) $object_id :
 			0;
 

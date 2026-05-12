@@ -304,7 +304,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		// if permalink structure isn't set (?id=x), then the first postbox request is required
 		// (otherwise the post status will left 'auto-draft').
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
-									true === $is_our_add_screen;
+									$is_our_add_screen;
 
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,
@@ -540,7 +540,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 	protected function is_target_screen(): bool {
 		// can be missing, when called via Rest API by SiteGround_Optimizer in the 'enqueue_block_assets' hook.
-		$current_screen = true === function_exists( 'get_current_screen' ) ?
+		$current_screen = function_exists( 'get_current_screen' ) ?
 			get_current_screen() :
 			null;
 

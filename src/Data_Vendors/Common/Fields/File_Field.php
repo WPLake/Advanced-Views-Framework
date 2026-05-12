@@ -26,7 +26,7 @@ class File_Field extends List_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$object_id_source = true === $markup_field_data->get_field_meta()->is_multiple() ?
+		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'item' :
 			$field_id;
 
@@ -67,7 +67,7 @@ class File_Field extends List_Field {
 			);
 		}
 
-		$post_id = true === is_numeric( $variable_field_data->get_value() ) ?
+		$post_id = is_numeric( $variable_field_data->get_value() ) ?
 			(int) $variable_field_data->get_value() :
 			0;
 
@@ -103,7 +103,7 @@ class File_Field extends List_Field {
 			Field_Settings::FIELD_ACF_VIEW_ID,
 		);
 
-		if ( true === $field_meta->is_multiple() ) {
+		if ( $field_meta->is_multiple() ) {
 			$conditional_fields[] = Field_Settings::FIELD_SLIDER_TYPE;
 		}
 

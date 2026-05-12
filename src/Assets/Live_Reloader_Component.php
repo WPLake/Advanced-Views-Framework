@@ -5,14 +5,14 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Assets;
 
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -78,7 +78,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 
 		if ( '' !== $this->parent_card_id ) {
 			// we need to keep View reloaders unique inside the Card (to avoid unnecessary duplications).
-			if ( true === in_array( $unique_id, $this->view_ids_inside_card, true ) ) {
+			if ( in_array( $unique_id, $this->view_ids_inside_card, true ) ) {
 				return '';
 			}
 
@@ -96,7 +96,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 						'codeHashes'         => $cpt_settings->get_code_hashes(),
 						'parentCardId'       => $this->parent_card_id,
 						'shortcodeArguments' => $shortcode_arguments,
-						'isGutenbergBlock'   => true === $is_gutenberg_block,
+						'isGutenbergBlock'   => $is_gutenberg_block,
 					)
 				)
 			)
@@ -111,12 +111,12 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 		global $wp_query;
 
 		// currently live reloading is available only for post/page/CPT requests.
-		$is_post_related_request = true === ( $wp_query->queried_object instanceof WP_Post );
+		$is_post_related_request = $wp_query->queried_object instanceof WP_Post;
 
-		$queried_object_id = true === $is_post_related_request ?
+		$queried_object_id = $is_post_related_request ?
 			get_queried_object_id() :
 		0;
-		$page_hash         = true === $is_post_related_request ?
+		$page_hash         = $is_post_related_request ?
 			hash( 'md5', get_post( $queried_object_id )->post_modified ?? '' ) :
 		'';
 
@@ -141,7 +141,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 				'inactiveDelay' => $this->settings->get_live_reload_inactive_delay_seconds(),
 				// only when onPage dev mode is enabled, we don't need extensive console logging
 				// if the common dev mode is enabled.
-				'isDevMode'     => true === $this->settings->is_page_dev_mode(),
+				'isDevMode'     => $this->settings->is_page_dev_mode(),
 			)
 		);
 	}
@@ -151,7 +151,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 	}
 
 	public function get_manage_link( bool $is_activate ): string {
-		if ( true === $is_activate ) {
+		if ( $is_activate ) {
 			return add_query_arg(
 				array(
 					self::QUERY_ARG => '1',
@@ -163,7 +163,7 @@ class Live_Reloader_Component extends Hookable implements Hooks_Interface {
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( true === $route_detector->is_admin_route() ) {
+		if ( $route_detector->is_admin_route() ) {
 			return;
 		}
 

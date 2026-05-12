@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Utils\Profiler;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Query;
 
@@ -70,7 +70,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( true === $route_detector->is_admin_route() ) {
+		if ( $route_detector->is_admin_route() ) {
 			$request_uri = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
 
 			// deactivation survey includes the 'delete data' option, which should be visible even if reports are off
@@ -80,7 +80,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 			}
 		}
 
-		if ( true === $this->is_automatic_reports_completely_disabled() ) {
+		if ( $this->is_automatic_reports_completely_disabled() ) {
 			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
 			self::add_action(
 				self::hook(),
@@ -110,16 +110,16 @@ class Automated_Reports extends Action implements Hooks_Interface {
 			$this->send_active_installation_request();
 		}
 
-		$is_cpt_list_screen = true === $route_detector->is_cpt_admin_route(
+		$is_cpt_list_screen = $route_detector->is_cpt_admin_route(
 			Hard_Layout_Cpt::cpt_name(),
 			Route_Detector::CPT_LIST
 		) ||
-								true === $route_detector->is_cpt_admin_route(
+								$route_detector->is_cpt_admin_route(
 									Hard_Post_Selection_Cpt::cpt_name(),
 									Route_Detector::CPT_LIST
 								);
 
-		if ( true === $is_cpt_list_screen &&
+		if ( $is_cpt_list_screen &&
 			false === $this->settings->is_automatic_reports_confirmed() ) {
 			self::add_action( 'admin_notices', array( $this, 'show_automatic_reports_notice' ) );
 		}
@@ -293,7 +293,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 
 						let popup = document.createElement('div');
 
-						if (true === this.data['is_with_survey']) {
+						if ( this.data['is_with_survey']) {
 							popup.innerHTML +=
 								'<p>' + this.data['message'] + '</p>';
 
@@ -318,7 +318,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 							input.addEventListener('change', () => {
 								let isCheckboxChecked = input.checked;
 
-								popup.querySelector('.advanced-views-survey__deactivate').innerText = true === isCheckboxChecked ?
+								popup.querySelector('.advanced-views-survey__deactivate').innerText = isCheckboxChecked ?
 									this.data['deactivate_and_delete_label'] :
 									this.data['deactivate_label'];
 							});
@@ -331,7 +331,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 							let redirectLink = link.href;
 							let isWithDataDelete = popup.querySelector('.advanced-views-survey__delete-option input').checked;
 
-							if (true === this.data['is_with_survey']) {
+							if ( this.data['is_with_survey']) {
 								let reason = popup.querySelector('input[name="advanced-views-survey__reason"]:checked');
 								reason = null !== reason ?
 									reason.value :
@@ -341,7 +341,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 									'&advanced-views-notes=' + popup.querySelector('textarea[name="advanced-views-survey__notes"]').value;
 							}
 
-							if (true === isWithDataDelete) {
+							if ( isWithDataDelete) {
 								redirectLink += '&advanced-views-delete-data=yes';
 							}
 
@@ -368,7 +368,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	}
 
 	public function send_and_schedule_next(): void {
-		if ( true === $this->is_automatic_reports_completely_disabled() ) {
+		if ( $this->is_automatic_reports_completely_disabled() ) {
 			return;
 		}
 
@@ -379,7 +379,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	}
 
 	public function plugin_activated(): void {
-		if ( true === $this->is_automatic_reports_completely_disabled() ) {
+		if ( $this->is_automatic_reports_completely_disabled() ) {
 			return;
 		}
 
@@ -389,7 +389,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	public function send_do_not_track_request(): void {
 		// in Pro, the setting controls the usage data, but the license key/domain pair is always sent,
 		// so we mark as inactive only for the 'Lite' version.
-		$is_active = true === $this->plugin->is_pro_version();
+		$is_active = $this->plugin->is_pro_version();
 
 		$this->send_active_installation_request( $is_active );
 	}
@@ -398,7 +398,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 		// un_schedule in any case, as could be scheduled before disabling the automatic reports.
 		$this->un_schedule();
 
-		if ( true === $this->is_automatic_reports_completely_disabled() ) {
+		if ( $this->is_automatic_reports_completely_disabled() ) {
 			return;
 		}
 
@@ -540,7 +540,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 
 	// in Pro, the setting controls the usage data, but the license key/domain pair is always sent.
 	protected function is_automatic_reports_completely_disabled(): bool {
-		return true === $this->settings->is_automatic_reports_disabled() &&
+		return $this->settings->is_automatic_reports_disabled() &&
 				false === $this->plugin->is_pro_version();
 	}
 }

@@ -89,7 +89,7 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 
 	public function set_hooks( Route_Detector $route_detector ): void {
 		// we need to show this only on frontend.
-		if ( true === $route_detector->is_admin_route() ) {
+		if ( $route_detector->is_admin_route() ) {
 			return;
 		}
 

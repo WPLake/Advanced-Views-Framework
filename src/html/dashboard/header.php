@@ -52,10 +52,10 @@ $tabs = $view['tabs'] ?? array();
 				'<a class="av-toolbar__tab%s" href="%s" target="%s"',
 				esc_html( $class ),
 				esc_url( $tab['url'] ),
-				true === $is_blank ? '_blank' : '_self',
+				$is_blank ? '_blank' : '_self',
 			);
 
-			if ( true === key_exists( 'style', $tab ) ) {
+			if ( key_exists( 'style', $tab ) ) {
 				printf( ' style="%s"', esc_attr( $tab['style'] ) );
 			}
 
@@ -63,7 +63,7 @@ $tabs = $view['tabs'] ?? array();
 
 			printf( '<span>%s</span>', esc_html( $tab['label'] ) );
 
-			if ( true === key_exists( 'iconClasses', $tab ) ) {
+			if ( key_exists( 'iconClasses', $tab ) ) {
 				printf( '<i class="%s"></i>', esc_attr( $tab['iconClasses'] ) );
 			}
 

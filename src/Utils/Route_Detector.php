@@ -41,9 +41,9 @@ final class Route_Detector {
 
 	// includes any rest requests.
 	public function is_admin_route(): bool {
-		if ( false === key_exists( 'isAdmin', $this->cache ) ) {
+		if ( ! key_exists( 'isAdmin', $this->cache ) ) {
 			$request_uri            = Query_Arguments::get_string_for_non_action( 'REQUEST_URI', 'server' );
-			$this->cache['isAdmin'] = true === is_admin() ||
+			$this->cache['isAdmin'] = is_admin() ||
 										false !== strpos( $request_uri, '/wp-json/' );
 		}
 
@@ -61,7 +61,7 @@ final class Route_Detector {
 
 		$cache_key = $cpt_name . '-' . $screen;
 
-		if ( true === key_exists( $cache_key, $this->cache ) ) {
+		if ( key_exists( $cache_key, $this->cache ) ) {
 			return $this->cache[ $cache_key ];
 		}
 
@@ -93,13 +93,13 @@ final class Route_Detector {
 									'edit' === $action;
 				$is_my_edit_page = false;
 
-				if ( true === $is_edit_page ) {
+				if ( $is_edit_page ) {
 					$post_id         = Query_Arguments::get_int_for_non_action( 'post' );
 					$is_my_edit_page = (string) get_post_type( $post_id ) === $cpt_name;
 				}
 
-				$is_admin_cpt_related = true === $is_my_edit_page ||
-										true === $is_my_post_page;
+				$is_admin_cpt_related = $is_my_edit_page ||
+										$is_my_post_page;
 				break;
 			case self::CPT_ADD:
 				$is_admin_cpt_related = false !== strpos( $request_url, '/post-new.php' ) &&
@@ -107,8 +107,8 @@ final class Route_Detector {
 				break;
 		}
 
-		$this->cache[ $cache_key ] = true === $is_admin_cpt_related ||
-									true === $this->is_cpt_rest_route( $cpt_name );
+		$this->cache[ $cache_key ] = $is_admin_cpt_related ||
+									$this->is_cpt_rest_route( $cpt_name );
 
 		return $this->cache[ $cache_key ];
 	}

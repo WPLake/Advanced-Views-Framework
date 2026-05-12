@@ -26,14 +26,14 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Fields\Mb_Taxonomy_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use RWMB_Field;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
@@ -94,7 +94,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	): array {
 		$args = array();
 
-		if ( true === is_string( $source_id ) &&
+		if ( is_string( $source_id ) &&
 			false === is_numeric( $source_id ) &&
 			false === $source->is_block() ) {
 			if ( 0 === strpos( $source_id, 'term_' ) ) {
@@ -162,7 +162,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 				$this->get_field_key( $group_id, $field_id ) :
 				Field_Settings::create_field_key( $parent_choice_value, $field_id );
 
-			if ( true === $is_meta_format ) {
+			if ( $is_meta_format ) {
 				$value = new Field_Meta( $this->get_name(), $field_id );
 				$this->fill_field_meta( $value, $field );
 			} elseif ( false === $is_field_name_as_label ) {
@@ -270,14 +270,14 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		 * https://docs.metabox.io/fields/osm/#outputting-a-map-in-a-group
 		 * https://support.metabox.io/topic/bug-clonable-map-field-not-displaying-data/
 		 */
-		if ( true === in_array( $field_meta->get_type(), array( 'osm', 'map' ), true ) ) {
+		if ( in_array( $field_meta->get_type(), array( 'osm', 'map' ), true ) ) {
 			$render_map_callback = 'osm' === $field_meta->get_type() ?
 				array( 'RWMB_OSM_Field', 'render_map' ) :
 				array( 'RWMB_Map_Field', 'render_map' );
 
 			$field_request_args = $this->get_field_request_args( $field_settings, $field_meta, $source, $source_id );
 
-			return true === is_callable( $render_map_callback ) ?
+			return is_callable( $render_map_callback ) ?
 				call_user_func( $render_map_callback, $raw_value, $field_request_args ) :
 				$raw_value;
 		}
@@ -291,14 +291,14 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 	 * @return array<int|string,mixed>
 	 */
 	protected function format_group_value( $raw_value, Field_Settings $field_settings, Field_Meta_Interface $field_meta, Item_Settings $item_settings, Source $source ): array {
-		$raw_value = true === is_array( $raw_value ) ?
+		$raw_value = is_array( $raw_value ) ?
 			$raw_value :
 			array();
 
 		$formatted_value = array();
 
 		// repeater.
-		if ( true === $field_meta->is_repeater() ) {
+		if ( $field_meta->is_repeater() ) {
 			foreach ( $raw_value as $raw_row ) {
 				$formatted_row = array();
 				$raw_row       = arr( $raw_row );
@@ -526,7 +526,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 
 		$timestamp = (bool) ( $data['timestamp'] ?? false );
 
-		if ( true === $timestamp ) {
+		if ( $timestamp ) {
 			$field_meta->set_return_format( 'U' );
 		}
 
@@ -583,8 +583,8 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			'wysiwyg',
 		);
 
-		if ( true === $is_repeatable &&
-			false === in_array( $field_type, $field_types_without_self_repeatable, true ) ) {
+		if ( $is_repeatable &&
+			! in_array( $field_type, $field_types_without_self_repeatable, true ) ) {
 			if ( 'group' === $field_type ) {
 				$field_meta->set_is_group( false );
 				$field_meta->set_is_repeater( true );
@@ -617,10 +617,10 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		if ( null !== $local_data ) {
 			$value = $local_data[ $field_id ] ?? null;
 
-			if ( true === $is_formatted &&
-				true === function_exists( 'rwmb_get_field_settings' ) &&
-				true === class_exists( 'RWMB_Field' ) &&
-				true === is_callable( array( 'RWMB_Field', 'call' ) ) ) {
+			if ( $is_formatted &&
+				function_exists( 'rwmb_get_field_settings' ) &&
+				class_exists( 'RWMB_Field' ) &&
+				is_callable( array( 'RWMB_Field', 'call' ) ) ) {
 				$field = $this->get_field_info( $field_id );
 
 				$action = null !== $self_repeatable ?
@@ -639,7 +639,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		if ( false === $is_formatted ) {
 			if ( false === $source->is_block() ) {
 				if ( null === $self_repeatable ||
-					false === in_array( $self_repeatable->get_type(), array( 'osm', 'map' ), true ) ) {
+					! in_array( $self_repeatable->get_type(), array( 'osm', 'map' ), true ) ) {
 					$value = false !== function_exists( 'rwmb_get_value' ) ?
 						rwmb_get_value( $field_id, $args, $source_id ) :
 						null;
@@ -835,7 +835,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 
 		$post_id = wp_insert_post( $group_data, true );
 
-		if ( true === is_wp_error( $post_id ) ) {
+		if ( is_wp_error( $post_id ) ) {
 			$this->get_logger()->warning(
 				'failed to insert MetaBox group',
 				array(
@@ -862,7 +862,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 		}
 
 		foreach ( $this->get_export_meta_keys() as $meta_key ) {
-			if ( false === key_exists( $meta_key, $group_data ) ) {
+			if ( ! key_exists( $meta_key, $group_data ) ) {
 				continue;
 			}
 

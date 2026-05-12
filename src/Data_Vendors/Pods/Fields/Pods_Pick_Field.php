@@ -94,8 +94,8 @@ class Pods_Pick_Field extends Markup_Field {
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
 		$field_instance = $this->get_field_instance( $variable_field_data->get_field_meta() );
 
-		if ( true === $variable_field_data->get_field_meta()->is_multiple() ) {
-			if ( true === is_array( $variable_field_data->get_value() ) ) {
+		if ( $variable_field_data->get_field_meta()->is_multiple() ) {
+			if ( is_array( $variable_field_data->get_value() ) ) {
 				$variable_field_data->set_value(
 					array_map(
 						fn( $value ) => $this->get_instance_value( $field_instance, $value ),

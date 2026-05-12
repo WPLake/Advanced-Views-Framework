@@ -4,11 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use WP_Filesystem_Base;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
+use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -74,7 +74,7 @@ class Logger extends Hookable implements Hooks_Interface {
 		foreach ( $back_trace as $debug_info ) {
 			$back_trace_line = array();
 
-			if ( true === key_exists( 'class', $debug_info ) ) {
+			if ( key_exists( 'class', $debug_info ) ) {
 				$class = explode( '\\', $debug_info['class'] );
 				$class = $class[ count( $class ) - 1 ];
 
@@ -133,8 +133,8 @@ class Logger extends Hookable implements Hooks_Interface {
 
 		// 2. get back trace info (without this class's calls)
 
-		$back_trace_limit = true === defined( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) &&
-							true === is_numeric( constant( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) ) ?
+		$back_trace_limit = defined( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) &&
+							is_numeric( constant( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) ) ?
 			(int) constant( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) :
 			4;
 		$back_trace_info  = $this->get_back_trace( $back_trace_limit, 3 );
@@ -200,7 +200,7 @@ class Logger extends Hookable implements Hooks_Interface {
 			E_USER_DEPRECATED   => 'E_USER_DEPRECATED',
 		);
 
-		if ( true === isset( $levels[ $level ] ) ) {
+		if ( isset( $levels[ $level ] ) ) {
 			return $levels[ $level ];
 		} else {
 			return 'E_UNKNOWN';
@@ -262,7 +262,7 @@ class Logger extends Hookable implements Hooks_Interface {
 			return false;
 		}
 
-		$plugin_folder = true === $is_acf_views_lite ?
+		$plugin_folder = $is_acf_views_lite ?
 			'/acf-views/' :
 			'/acf-views-pro/';
 		// remove everything before the plugin folder to avoid potential disclosure during logs sharing.
@@ -316,7 +316,7 @@ class Logger extends Hookable implements Hooks_Interface {
 		$error_level = $last_error_info['type'];
 
 		// only fatal errors not handled by the 'set_error_handler'.
-		if ( false === in_array( $error_level, $fatal_php_errors, true ) ) {
+		if ( ! in_array( $error_level, $fatal_php_errors, true ) ) {
 			return;
 		}
 

@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
@@ -51,7 +51,7 @@ class Html {
 		bool $is_single,
 		bool $is_internal_usage_only = false
 	): void {
-		if ( true === $is_internal_usage_only ) {
+		if ( $is_internal_usage_only ) {
 			echo esc_html( __( '(internal use only)', 'acf-views' ) );
 
 			return;

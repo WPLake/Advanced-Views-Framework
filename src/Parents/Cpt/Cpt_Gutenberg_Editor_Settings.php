@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
-use WPCom_Markdown;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use WP_Post;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
+use WPCom_Markdown;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,13 +40,13 @@ class Cpt_Gutenberg_Editor_Settings extends Hookable implements Hooks_Interface 
 		// do not remove the 'post_content' field while inserting a new post,
 		// otherwise it'll lead to a fatal error in the WP playground.
 		if ( false === $is_update ||
-			false === key_exists( 'post_type', $data ) ||
-			false === in_array( $data['post_type'], array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true ) ) {
+			! key_exists( 'post_type', $data ) ||
+			! in_array( $data['post_type'], array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true ) ) {
 			return $data;
 		}
 
 		// avoid any attempts, even not empty (we use direct DB query, so it's safe).
-		if ( true === key_exists( 'post_content', $data ) ) {
+		if ( key_exists( 'post_content', $data ) ) {
 			unset( $data['post_content'] );
 		}
 

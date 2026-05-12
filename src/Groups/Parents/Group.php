@@ -59,8 +59,8 @@ abstract class Group extends AcfGroup {
 				// check exactly the field default initially, and only then origin.
 
 				// @phpstan-ignore-next-line
-				$origin_value = true === is_int( $this->{$field_name} ) &&
-								true === is_numeric( $origin_value ) ?
+				$origin_value = is_int( $this->{$field_name} ) &&
+								is_numeric( $origin_value ) ?
 					(int) $origin_value :
 					$origin_value;
 				// @phpstan-ignore-next-line

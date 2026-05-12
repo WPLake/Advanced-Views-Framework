@@ -13,7 +13,7 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_begin_expression();
 		$this->print_token_variable( $field_id );
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$this->print_token_items( array( $sub_field_id ) );
 		}
 
@@ -25,7 +25,7 @@ class Template_Generator extends Template_Tokenizer {
 
 		$item_keys = array();
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -35,7 +35,7 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_variable( $field_id );
 		$this->print_token_items( $item_keys );
 
-		if ( true === $is_raw_value ) {
+		if ( $is_raw_value ) {
 			$this->print_token_filter_raw();
 		}
 
@@ -48,7 +48,7 @@ class Template_Generator extends Template_Tokenizer {
 		$first_item_keys  = array();
 		$second_item_keys = array();
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$first_item_keys[]  = $sub_field_id;
 			$second_item_keys[] = $sub_field_id;
 		}
@@ -60,14 +60,14 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_variable( $field_id );
 		$this->print_token_items( $first_item_keys );
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'|default(' :
 			' ?: ';
 
 		$this->print_token_variable( $field_id );
 		$this->print_token_items( $second_item_keys );
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			')' :
 			'';
 
@@ -85,7 +85,7 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_begin_expression();
 		$this->print_token_variable( $field_id );
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$this->print_token_items( array( $sub_field_id ) );
 		}
 
@@ -99,7 +99,7 @@ class Template_Generator extends Template_Tokenizer {
 
 		$item_keys = array();
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -130,13 +130,13 @@ class Template_Generator extends Template_Tokenizer {
 		bool $is_elseif = false
 	): void {
 		$sub_field_id    = $this->extract_sub_field_id( $field_id );
-		$safe_comparison = true === in_array( $comparison, array( '<', '>', '==' ), true ) ?
+		$safe_comparison = in_array( $comparison, array( '<', '>', '==' ), true ) ?
 			$comparison :
 			'';
 
 		$item_keys = array();
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -148,14 +148,14 @@ class Template_Generator extends Template_Tokenizer {
 			$this->print_token_begin_elseif();
 		}
 
-		if ( '' !== $safe_comparison ) {
-			if ( true === is_string( $value ) ) {
+		if ( strlen( $safe_comparison ) > 0 ) {
+			if ( is_string( $value ) ) {
 				echo '"';
 			}
 
 			echo esc_html( (string) $value );
 
-			if ( true === is_string( $value ) ) {
+			if ( is_string( $value ) ) {
 				echo '"';
 			}
 
@@ -169,8 +169,8 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_variable( $field_id );
 		$this->print_token_items( $item_keys );
 
-		if ( true === $is_with_true_stub ) {
-			echo true === $this->is_twig_engine() ?
+		if ( $is_with_true_stub ) {
+			echo $this->is_twig_engine() ?
 				' or true' :
 				' || true';
 		}
@@ -215,13 +215,13 @@ class Template_Generator extends Template_Tokenizer {
 	}
 
 	public function print_else(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'{% else %}' :
 			'@else';
 	}
 
 	public function print_end_if(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'{% endif %}' :
 			'@endif';
 	}
@@ -236,7 +236,7 @@ class Template_Generator extends Template_Tokenizer {
 
 		$item_keys = array();
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -244,42 +244,42 @@ class Template_Generator extends Template_Tokenizer {
 
 		$this->print_token_begin_foreach();
 
-		if ( true === $is_range &&
-			false === $this->is_twig_engine() ) {
+		if ( $is_range &&
+			! $this->is_twig_engine() ) {
 			echo 'range(1, ';
 		}
 
 		$this->print_token_variable(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 			$loop_variable_name :
 			$field_id
 		);
 
-		if ( false === $this->is_twig_engine() ) {
+		if ( ! $this->is_twig_engine() ) {
 			$this->print_token_items( $item_keys );
 		}
 
-		if ( true === $is_range &&
-			false === $this->is_twig_engine() ) {
+		if ( $is_range &&
+			! $this->is_twig_engine() ) {
 			echo ')';
 		}
 
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			' in ' :
 			' as ';
 
-		if ( true === $is_range &&
-			true === $this->is_twig_engine() ) {
+		if ( $is_range &&
+			$this->is_twig_engine() ) {
 			echo '1..';
 		}
 
 		$this->print_token_variable(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				$field_id :
 				$loop_variable_name
 		);
 
-		if ( true === $this->is_twig_engine() ) {
+		if ( $this->is_twig_engine() ) {
 			$this->print_token_items( $item_keys );
 		}
 
@@ -287,20 +287,20 @@ class Template_Generator extends Template_Tokenizer {
 	}
 
 	public function print_if_of_not_first_loop_item(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'{% if true != loop.first %}' :
 			'@if (true != $loop->first)';
 	}
 
 	public function print_end_for(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			'{% endfor %}' :
 			'@endforeach';
 	}
 
 	public function print_comment( string $comment ): void {
 		printf(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 			'{# %s #}' :
 			'{{-- %s --}}',
 			esc_html( $comment )
@@ -316,7 +316,7 @@ class Template_Generator extends Template_Tokenizer {
 		string $second_value
 	): void {
 		printf(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				'{%% set %s = %s %s %s ? "%s" : "%s" %%}' :
 				'@php $%s = %s %s $%s ? "%s" : "%s" @endphp',
 			esc_html( $variable ),
@@ -336,14 +336,14 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_begin_expression( true );
 
 		$this->print_token_begin_function(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				'_include_inner_view' :
 				'avf_include_inner_view'
 		);
 
 		$this->print_token_variable( $field_id );
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -355,14 +355,14 @@ class Template_Generator extends Template_Tokenizer {
 
 		$this->print_token_variable( $data_field_id );
 
-		if ( '' !== $sub_data_field_id ) {
+		if ( strlen( $sub_data_field_id ) > 0 ) {
 			$this->print_token_items( array( $sub_data_field_id ) );
 		}
 
 		echo ', ';
 
 		printf(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 			'{ class:"%s" }' :
 			'["class" => "%s",]',
 			esc_html( $inner_view_class )
@@ -379,14 +379,14 @@ class Template_Generator extends Template_Tokenizer {
 		$this->print_token_begin_expression( true );
 
 		$this->print_token_begin_function(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				'_include_inner_view_for_flexible' :
 				'avf_include_inner_view_for_flexible'
 		);
 
 		$this->print_token_variable( $field_id );
 
-		if ( '' !== $sub_field_id ) {
+		if ( strlen( $sub_field_id ) > 0 ) {
 			$item_keys[] = $sub_field_id;
 		}
 
@@ -401,7 +401,7 @@ class Template_Generator extends Template_Tokenizer {
 		echo ', ';
 
 		printf(
-			true === $this->is_twig_engine() ?
+			$this->is_twig_engine() ?
 				'{ class:"%s" }' :
 				'["class" => "%s",]',
 			esc_html( $inner_view_class )
@@ -412,7 +412,7 @@ class Template_Generator extends Template_Tokenizer {
 	}
 
 	public function print_function_paginate_links(): void {
-		echo true === $this->is_twig_engine() ?
+		echo $this->is_twig_engine() ?
 			"{{ paginate_links({ 'prev_text': '<', 'next_text': '>', 'total': _card.pages_amount,}) }}" :
 			'{!! paginate_links({ "prev_text": "<", "next_text": ">", "total": $_card["pages_amount"],}) !!}';
 	}

@@ -26,15 +26,15 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Pods\Fields\Pods_Upload_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
-use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Pods_Migrate_Packages;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -111,7 +111,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 			'c'         => 'c',
 		);
 
-		return true === key_exists( $js_date_format, $date_formats ) ?
+		return key_exists( $js_date_format, $date_formats ) ?
 			$date_formats[ $js_date_format ] :
 			'';
 	}
@@ -130,7 +130,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 			'hh_mm_ss'   => 'h:i:s',
 		);
 
-		return true === key_exists( $js_time_format, $time_formats ) ?
+		return key_exists( $js_time_format, $time_formats ) ?
 			$time_formats[ $js_time_format ] :
 			'';
 	}
@@ -233,7 +233,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 
 		$related_objects = $pods_pick::$related_objects;
 
-		$this->pick_related_objects = true === is_array( $related_objects ) ?
+		$this->pick_related_objects = is_array( $related_objects ) ?
 			$related_objects :
 			array();
 
@@ -246,17 +246,17 @@ class Pods_Data_Vendor extends Data_Vendor {
 	protected function get_dynamic_choices( string $pick_object ): array {
 		$pick_related_objects = $this->get_pick_related_objects();
 
-		$related_object = true === key_exists( $pick_object, $pick_related_objects ) &&
-							true === is_array( $pick_related_objects[ $pick_object ] ) ?
+		$related_object = key_exists( $pick_object, $pick_related_objects ) &&
+							is_array( $pick_related_objects[ $pick_object ] ) ?
 			$pick_related_objects[ $pick_object ] :
 			array();
 
-		$options = true === key_exists( 'data_callback', $related_object ) &&
-					true === is_callable( $related_object['data_callback'] ) ?
+		$options = key_exists( 'data_callback', $related_object ) &&
+					is_callable( $related_object['data_callback'] ) ?
 			call_user_func( $related_object['data_callback'] ) :
 			array();
 
-		return true === is_array( $options ) ?
+		return is_array( $options ) ?
 			$options :
 			array();
 	}
@@ -271,7 +271,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 
 		if ( 'custom-simple' !== $pick_object ) {
 			// skip non-select fields (in Fields/Pods_Pick_Field.php they don't employ the Select field).
-			if ( true === in_array( $pick_object, array( 'user', 'post_type', 'taxonomy', 'media' ), true ) ) {
+			if ( in_array( $pick_object, array( 'user', 'post_type', 'taxonomy', 'media' ), true ) ) {
 				return array();
 			}
 
@@ -318,7 +318,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 			return null;
 		}
 
-		if ( true === is_string( $source_id ) ) {
+		if ( is_string( $source_id ) ) {
 			if ( false !== strpos( $source_id, 'user_' ) ) {
 				$source_id = str_replace( 'user_', '', $source_id );
 			} elseif ( false !== strpos( $source_id, 'term_' ) ) {
@@ -361,7 +361,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 			)
 		);
 
-		return true === is_object( $pod ) ?
+		return is_object( $pod ) ?
 			$pod :
 			null;
 	}
@@ -388,7 +388,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 			)
 		);
 
-		return true === is_object( $group ) ?
+		return is_object( $group ) ?
 			$group :
 			null;
 	}
@@ -533,7 +533,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 		$repeatable_label     = __( 'repeatable', 'acf-views' );
 		$pro_stub_field_types = $this->get_pro_stub_field_types();
 
-		$is_repeatable_not_supported = false === key_exists( 'group', $this->get_registered_field_types() );
+		$is_repeatable_not_supported = ! key_exists( 'group', $this->get_registered_field_types() );
 
 		foreach ( $this->get_groups() as $type => $groups ) {
 			foreach ( $groups as $group ) {
@@ -562,8 +562,8 @@ class Pods_Data_Vendor extends Data_Vendor {
 						array();
 					$field_type = $this->get_string_arg( 'type', $field_info );
 
-					if ( false === in_array( $field_type, $this->get_supported_field_types(), true ) ||
-						( array() !== $include_only_types && false === in_array(
+					if ( ! in_array( $field_type, $this->get_supported_field_types(), true ) ||
+						( array() !== $include_only_types && ! in_array(
 							$field_type,
 							$include_only_types,
 							true
@@ -576,7 +576,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 
 					$field_key = $this->get_field_key( $group_id, $field_id );
 
-					if ( true === $is_meta_format ) {
+					if ( $is_meta_format ) {
 						$value = new Field_Meta( $this->get_name(), $field_id );
 						$this->fill_field_meta( $value, $field_info );
 					} elseif ( false === $is_field_name_as_label ) {
@@ -587,8 +587,8 @@ class Pods_Data_Vendor extends Data_Vendor {
 						$label            = $this->get_string_arg( 'label', $field_info );
 						$value            = sprintf( '%s (%s%s)', $label, $repeatable_field, $field_type );
 
-						if ( true === in_array( $field_type, $pro_stub_field_types, true ) ||
-							( true === $is_repeatable && true === $is_repeatable_not_supported ) ) {
+						if ( in_array( $field_type, $pro_stub_field_types, true ) ||
+							( $is_repeatable && $is_repeatable_not_supported ) ) {
 							$value .= ' ' . $this->get_pro_only_label();
 						}
 					} else {
@@ -673,7 +673,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 
 		$is_repeatable = ( $this->get_bool_arg( 'repeatable', $data ) );
 
-		if ( true === $is_repeatable ) {
+		if ( $is_repeatable ) {
 			$field_meta->set_self_repeatable_meta( clone $field_meta );
 			$field_meta->set_type( 'group' );
 		}
@@ -705,11 +705,11 @@ class Pods_Data_Vendor extends Data_Vendor {
 
 		switch ( $field_meta->get_type() ) {
 			case 'oembed':
-				$value = true === is_string( $value ) &&
+				$value = is_string( $value ) &&
 						'' !== $value ?
 					wp_oembed_get( $value ) :
 					'';
-				$value = true === is_string( $value ) ?
+				$value = is_string( $value ) ?
 					$value :
 					'';
 				break;
@@ -769,11 +769,11 @@ class Pods_Data_Vendor extends Data_Vendor {
 		}
 
 		$pod_info   = $pod->get_args();
-		$pod_info   = true === is_array( $pod_info ) ?
+		$pod_info   = is_array( $pod_info ) ?
 			$pod_info :
 			array();
 		$group_info = $group->get_args();
-		$group_info = true === is_array( $group_info ) ?
+		$group_info = is_array( $group_info ) ?
 			$group_info :
 			array();
 
@@ -841,7 +841,7 @@ class Pods_Data_Vendor extends Data_Vendor {
 		}
 
 		return count( $pods_export_data ) > 0 &&
-				true === is_array( $pods_export_data[0] ) ?
+				is_array( $pods_export_data[0] ) ?
 			$pods_export_data[0] :
 			null;
 	}

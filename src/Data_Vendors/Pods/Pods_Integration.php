@@ -87,7 +87,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 		}
 
 		$pod_args = $pod->get_args();
-		$pod_args = true === is_array( $pod_args ) ?
+		$pod_args = is_array( $pod_args ) ?
 			$pod_args :
 			array();
 		$pod_name = $this->get_string_arg( 'name', $pod_args );
@@ -101,7 +101,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 			}
 
 			$field_args = $field->get_args();
-			$field_args = true === is_array( $field_args ) ?
+			$field_args = is_array( $field_args ) ?
 				$field_args :
 				array();
 
@@ -206,7 +206,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 				}
 
 				$args     = $pod->get_args();
-				$args     = true === is_array( $args ) ?
+				$args     = is_array( $args ) ?
 					$args :
 					array();
 				$pod_name = $this->get_string_arg( 'name', $args );
@@ -259,7 +259,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 			}
 
 			$group_info = $group->get_args();
-			$group_info = true === is_array( $group_info ) ?
+			$group_info = is_array( $group_info ) ?
 				$group_info :
 				array();
 

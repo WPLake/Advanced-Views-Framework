@@ -49,7 +49,7 @@ class Post_Selections_Settings_Storage extends Cpt_Settings_Storage {
 		bool $is_force_from_db = false,
 		bool $is_force_from_fs = false
 	): Post_Selection_Settings {
-		if ( true === key_exists( $unique_id, $this->items ) ) {
+		if ( key_exists( $unique_id, $this->items ) ) {
 			return $this->items[ $unique_id ];
 		}
 
@@ -58,7 +58,7 @@ class Post_Selections_Settings_Storage extends Cpt_Settings_Storage {
 		$this->load( $card_data, $unique_id, $is_force_from_db, $is_force_from_fs );
 
 		// only cache existing items.
-		if ( true === $card_data->isLoaded() ) {
+		if ( $card_data->isLoaded() ) {
 			$this->items[ $unique_id ] = $card_data;
 		}
 

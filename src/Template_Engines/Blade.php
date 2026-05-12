@@ -72,6 +72,6 @@ class Blade extends Template_Engine {
 
 	public function is_available(): bool {
 		// not loaded if PHP < 8.2.
-		return true === class_exists( Blade_Engine::class );
+		return class_exists( Blade_Engine::class );
 	}
 }

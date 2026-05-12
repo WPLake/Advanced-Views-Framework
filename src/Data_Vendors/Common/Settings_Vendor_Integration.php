@@ -85,7 +85,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	}
 
 	protected function get_block_id( Layout_Settings $layout_settings ): string {
-		return true === $layout_settings->is_gutenberg_block_with_digital_id ?
+		return $layout_settings->is_gutenberg_block_with_digital_id ?
 			sprintf( 'acf-views-block-%s', $layout_settings->getSource() ) :
 			sprintf( 'acf-view-%s', $layout_settings->get_unique_id( true ) );
 	}
@@ -157,7 +157,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 
 		$this->fill_field_id_and_type( $field, $field_id, $field_type );
 
-		if ( false === in_array( $field_type, $supported_field_types, true ) ) {
+		if ( ! in_array( $field_type, $supported_field_types, true ) ) {
 			return null;
 		}
 

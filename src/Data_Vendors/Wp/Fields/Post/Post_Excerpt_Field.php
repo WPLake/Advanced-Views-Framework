@@ -28,7 +28,7 @@ class Post_Excerpt_Field extends Markup_Field {
 
 			$text = strip_shortcodes( $text );
 			$text = excerpt_remove_blocks( $text );
-			$text = true === function_exists( 'excerpt_remove_footnotes' ) ?
+			$text = function_exists( 'excerpt_remove_footnotes' ) ?
 				excerpt_remove_footnotes( $text ) :
 			$text;
 

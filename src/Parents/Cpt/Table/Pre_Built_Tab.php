@@ -112,7 +112,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		string $unique_id
 	): ?Import_Result {
 		// avoid recursion (only if the user made the recursion setup).
-		if ( true === key_exists( $unique_id, $this->pulling_unique_ids ) ) {
+		if (  key_exists( $unique_id, $this->pulling_unique_ids ) ) {
 			return null;
 		}
 

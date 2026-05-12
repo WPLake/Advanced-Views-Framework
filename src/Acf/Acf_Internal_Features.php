@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Acf;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
@@ -59,7 +59,7 @@ class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 	public function maybe_include_features(): void {
 		// skip if 'ACF Pro' is available.
 
-		if ( true === $this->plugin->is_acf_plugin_available( true ) ) {
+		if ( $this->plugin->is_acf_plugin_available( true ) ) {
 			return;
 		}
 

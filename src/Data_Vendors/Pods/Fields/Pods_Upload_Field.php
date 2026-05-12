@@ -30,11 +30,11 @@ class Pods_Upload_Field extends Markup_Field {
 	}
 
 	protected function get_field_instance( Field_Meta_Interface $field_meta ): Markup_Field {
-		if ( false === in_array( $field_meta->get_return_format(), array( 'images', 'images-any' ), true ) ) {
+		if ( ! in_array( $field_meta->get_return_format(), array( 'images', 'images-any' ), true ) ) {
 			return $this->file_field;
 		}
 
-		return true === $field_meta->is_multiple() ?
+		return $field_meta->is_multiple() ?
 			$this->gallery_field :
 			$this->image_field;
 	}
@@ -45,8 +45,8 @@ class Pods_Upload_Field extends Markup_Field {
 	}
 
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
-		if ( true === $variable_field_data->get_field_meta()->is_multiple() ) {
-			if ( true === is_array( $variable_field_data->get_value() ) ) {
+		if ( $variable_field_data->get_field_meta()->is_multiple() ) {
+			if ( is_array( $variable_field_data->get_value() ) ) {
 				$variable_field_data->set_value(
 					array_map(
 						function ( $value ) {
@@ -67,7 +67,7 @@ class Pods_Upload_Field extends Markup_Field {
 			} else {
 				$variable_field_data->set_value( array() );
 			}
-		} elseif ( true === is_array( $variable_field_data->get_value() ) ) {
+		} elseif ( is_array( $variable_field_data->get_value() ) ) {
 			$id = $this->get_int_arg( 'ID', $variable_field_data->get_value() );
 			// in Pod Blocks 'id' is in lower case.
 			$variable_field_data->set_value(

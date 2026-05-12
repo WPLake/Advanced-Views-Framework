@@ -53,7 +53,7 @@ class User_Field extends List_Field {
 		string $item_id,
 		Markup_Field_Data $markup_field_data
 	): void {
-		$object_id_source = true === $markup_field_data->get_field_meta()->is_multiple() ?
+		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'user_item' :
 			$field_id;
 

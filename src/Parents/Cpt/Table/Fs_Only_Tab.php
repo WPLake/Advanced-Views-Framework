@@ -41,7 +41,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 
 		$is_active_tab = self::NAME === $this->get_cpt_table()->get_current_tab();
 
-		$items = true === $is_active_tab ?
+		$items = $is_active_tab ?
 			$this->cpt_settings_storage->get_fs_only_items(
 				$this->get_cpt_table()->get_current_search_value(),
 				$this->get_cpt_table()->get_current_page_number(),

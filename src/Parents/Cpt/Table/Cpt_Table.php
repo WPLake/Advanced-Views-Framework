@@ -126,7 +126,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		$current_tab_data = $this->get_current_tab_data();
 
 		if ( null !== $current_tab_data &&
-			true === is_callable( $current_tab_data->get_description_callback() ) ) {
+			is_callable( $current_tab_data->get_description_callback() ) ) {
 			echo '<p>';
 			call_user_func( $current_tab_data->get_description_callback() );
 			echo '</p>';
@@ -152,7 +152,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 		foreach ( $this->tabs as $tab ) {
 			$is_tab_active = $tab->get_name() === $this->get_current_tab();
 
-			$class_string = true === $is_tab_active ?
+			$class_string = $is_tab_active ?
 				' class="current"' :
 				'';
 
@@ -271,7 +271,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 	public function make_table_actions(): void {
 		$this->maybe_clone_item();
 
-		if ( true === $this->cpt_settings_storage->get_file_system()->is_active() ) {
+		if ( $this->cpt_settings_storage->get_file_system()->is_active() ) {
 			$this->cpt_settings_storage->delete_db_only_items();
 			$this->cpt_settings_storage->rewrite_links_md_for_all_items();
 		}
@@ -390,7 +390,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 						break;
 				}
 
-				if ( true === in_array( $column_name, $hidden, true ) ) {
+				if ( in_array( $column_name, $hidden, true ) ) {
 					$classes .= ' hidden';
 				}
 
@@ -572,7 +572,7 @@ abstract class Cpt_Table extends Hookable implements Hooks_Interface {
 			array( $this, 'get_columns' ),
 		);
 
-		if ( true === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_LIST ) ) {
+		if ( $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_LIST ) ) {
 			self::add_action( 'admin_init', array( $this, 'make_table_actions' ) );
 			self::add_action( 'admin_notices', array( $this, 'show_action_result_message' ) );
 			self::add_filter( 'admin_body_class', array( $this, 'add_acf_class_to_body' ) );

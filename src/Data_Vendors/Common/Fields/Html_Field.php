@@ -42,7 +42,7 @@ class Html_Field extends Markup_Field {
 		);
 
 		// by default use the formatted value, as we need html (e.g. for oembed) instead of the pure value.
-		$value = true === $this->is_formatted_value_in_use ?
+		$value = $this->is_formatted_value_in_use ?
 			$variable_field_data->get_formatted_value() :
 			$variable_field_data->get_value();
 
@@ -50,7 +50,7 @@ class Html_Field extends Markup_Field {
 				is_numeric( $value ) ?
 			(string) $value :
 			'';
-		$value = true === $this->is_with_replace_new_line_to_br ?
+		$value = $this->is_with_replace_new_line_to_br ?
 			str_replace( "\n", '<br/>', $value ) :
 			$value;
 

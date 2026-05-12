@@ -104,7 +104,7 @@ class File_System extends Action implements Hooks_Interface {
 			'admin_notices',
 			function (): void {
 				// it's going to be checked in both CPTs, but we need only one notice.
-				if ( true === self::$is_fs_not_writable_notice_shown ) {
+				if ( self::$is_fs_not_writable_notice_shown ) {
 					return;
 				}
 
@@ -150,8 +150,8 @@ class File_System extends Action implements Hooks_Interface {
 
 		$is_removed = $wp_filesystem->delete( $test_file );
 
-		return true === $is_writable &&
-				true === $is_removed;
+		return $is_writable &&
+				$is_removed;
 	}
 
 	public function get_fs_title( string $title ): string {
@@ -166,7 +166,7 @@ class File_System extends Action implements Hooks_Interface {
 			$this->read_item_folders();
 		}
 
-		if ( false === key_exists( $item_id, $this->item_folders ) ) {
+		if ( ! key_exists( $item_id, $this->item_folders ) ) {
 			return '';
 		}
 
@@ -263,7 +263,7 @@ class File_System extends Action implements Hooks_Interface {
 
 		$this->get_wp_filesystem()->rmdir( $item_folder_path, true );
 
-		if ( true === key_exists( $short_unique_id, $this->item_folders ) ) {
+		if ( key_exists( $short_unique_id, $this->item_folders ) ) {
 			unset( $this->item_folders[ $short_unique_id ] );
 		}
 
@@ -337,7 +337,7 @@ class File_System extends Action implements Hooks_Interface {
 		$target_templates_folder = $this->get_target_base_folder();
 		$wp_filesystem           = $this->get_wp_filesystem();
 
-		$this->base_folder = true === $wp_filesystem->is_dir( $target_templates_folder ) ?
+		$this->base_folder = $wp_filesystem->is_dir( $target_templates_folder ) ?
 			$target_templates_folder :
 			'';
 
@@ -348,8 +348,8 @@ class File_System extends Action implements Hooks_Interface {
 		// null if called from the SettingsPage.
 		if ( null !== $route_detector ) {
 			// check only for the list screens (for better performance).
-			if ( true === $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ||
-				true === $route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ) {
+			if ( $route_detector->is_cpt_admin_route( Hard_Layout_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ||
+				$route_detector->is_cpt_admin_route( Hard_Post_Selection_Cpt::cpt_name(), Route_Detector::CPT_LIST ) ) {
 				if ( false === $this->is_base_folder_writable() ) {
 					$this->show_folder_is_not_writable_warning();
 

@@ -117,8 +117,8 @@ class Acf_Data_Vendor extends Data_Vendor {
 
 			$type = $this->get_string_arg( 'type', $group_field );
 
-			if ( false === in_array( $type, $supported_field_types, true ) ||
-				( array() !== $include_only_types && false === in_array( $type, $include_only_types, true ) ) ) {
+			if ( ! in_array( $type, $supported_field_types, true ) ||
+				( array() !== $include_only_types && ! in_array( $type, $include_only_types, true ) ) ) {
 				continue;
 			}
 
@@ -131,7 +131,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 				if ( false === $is_field_name_as_label ) {
 					$value = string( $group_field, 'label' ) . ' (' . $type . ')';
 
-					if ( true === in_array( $type, $pro_stub_field_types, true ) ) {
+					if ( in_array( $type, $pro_stub_field_types, true ) ) {
 						$value .= ' ' . $this->get_pro_only_label();
 					}
 				} else {
@@ -366,8 +366,8 @@ class Acf_Data_Vendor extends Data_Vendor {
 		$field_meta->set_center_lat( $this->get_string_arg( 'center_lat', $data ) );
 		$field_meta->set_center_lng( $this->get_string_arg( 'center_lng', $data ) );
 
-		if ( true === key_exists( 'default_value', $data ) ) {
-			if ( true === is_array( $data['default_value'] ) ) {
+		if ( key_exists( 'default_value', $data ) ) {
+			if ( is_array( $data['default_value'] ) ) {
 				$field_meta->set_default_value( $data['default_value'] );
 			} else {
 				$field_meta->set_default_value( $this->get_string_arg( 'default_value', $data ) );
@@ -433,8 +433,8 @@ class Acf_Data_Vendor extends Data_Vendor {
 		} else {
 			$value = $local_data[ $field_id ] ?? null;
 
-			if ( true === $is_formatted &&
-				true === function_exists( 'acf_get_field' ) ) {
+			if ( $is_formatted &&
+				function_exists( 'acf_get_field' ) ) {
 				/**
 				 * There is 'acf_format_value()' function, but we can't use it
 				 * because it uses field value cache, and cache key is equal to post_id:field_id
@@ -511,7 +511,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 				$field_type = $this->get_string_arg( 'type', $group_field );
 
 				// ignore 'clone' if it isn't supported (Lite version).
-				if ( false === in_array( $field_type, $supported_field_types, true ) ) {
+				if ( ! in_array( $field_type, $supported_field_types, true ) ) {
 					continue;
 				}
 
@@ -529,7 +529,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 
 				$sub_fields = array_merge( $sub_fields, $layouts );
 
-				if ( false === in_array( $field_type, $field_types_with_sub_fields, true ) ||
+				if ( ! in_array( $field_type, $field_types_with_sub_fields, true ) ||
 					array() === $sub_fields ) {
 					continue;
 				}
@@ -637,7 +637,7 @@ class Acf_Data_Vendor extends Data_Vendor {
 		$group_key           = $this->get_string_arg( 'key', $group_data );
 		$existing_group_info = acf_get_field_group( $group_key );
 
-		if ( true === is_array( $existing_group_info ) ) {
+		if ( is_array( $existing_group_info ) ) {
 			$group_id         = $this->get_int_arg( 'ID', $existing_group_info );
 			$group_data['ID'] = $group_id;
 

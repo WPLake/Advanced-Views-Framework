@@ -66,9 +66,9 @@ class Settings {
 
 		foreach ( $git_repositories as $git_repository ) {
 			if ( false === is_array( $git_repository ) ||
-				false === key_exists( 'id', $git_repository ) ||
-				false === key_exists( 'accessToken', $git_repository ) ||
-				false === key_exists( 'name', $git_repository ) ) {
+				! key_exists( 'id', $git_repository ) ||
+				! key_exists( 'accessToken', $git_repository ) ||
+				! key_exists( 'name', $git_repository ) ) {
 				continue;
 			}
 
@@ -185,8 +185,8 @@ class Settings {
 	}
 
 	public function is_dev_mode(): bool {
-		return true === $this->is_dev_mode ||
-				true === $this->is_page_dev_mode();
+		return $this->is_dev_mode ||
+				$this->is_page_dev_mode();
 	}
 
 	public function is_page_dev_mode(): bool {
@@ -198,7 +198,7 @@ class Settings {
 	}
 
 	public function get_page_dev_mode_manage_link( bool $is_activate ): string {
-		if ( true === $is_activate ) {
+		if ( $is_activate ) {
 			return add_query_arg(
 				array(
 					self::QUERY_ARG_PAGE_DEV_MODE => '1',

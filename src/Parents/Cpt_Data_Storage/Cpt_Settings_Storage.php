@@ -172,7 +172,7 @@ abstract class Cpt_Settings_Storage extends Item_Management {
 	public function is_fs_only_item( string $unique_id ): bool {
 		$post_ids = $this->get_db_management()->get_post_ids();
 
-		return true === key_exists( $unique_id, $post_ids ) &&
+		return key_exists( $unique_id, $post_ids ) &&
 				0 === $post_ids[ $unique_id ];
 	}
 

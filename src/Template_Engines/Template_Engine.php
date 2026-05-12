@@ -95,7 +95,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 			$html = $this->render( $unique_id, $args );
 
 			if ( false !== strpos( $html, 'data-wp-interactive' ) &&
-				true === function_exists( 'wp_interactivity_process_directives' ) ) {
+				function_exists( 'wp_interactivity_process_directives' ) ) {
 				$html = wp_interactivity_process_directives( $html );
 			}
 
@@ -107,7 +107,7 @@ abstract class Template_Engine extends Action implements Template_Engine_Interfa
 			$error_message = $e->getMessage();
 
 			// the right line number is available only for unminified template (for validation during saving).
-			if ( true === $is_validation ) {
+			if ( $is_validation ) {
 				$error_message .= ' Line ' . $e->getLine();
 			} else {
 				// only real render error should be logged

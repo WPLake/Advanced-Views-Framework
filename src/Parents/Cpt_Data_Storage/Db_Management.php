@@ -149,7 +149,7 @@ class Db_Management extends Action {
 		$post_id                      = wp_insert_post( $args, true );
 		$this->is_renaming_suppressed = false;
 
-		if ( true === is_wp_error( $post_id ) ) {
+		if ( is_wp_error( $post_id ) ) {
 			$this->get_logger()->warning(
 				'failed to create a new post',
 				array(
@@ -163,7 +163,7 @@ class Db_Management extends Action {
 		}
 
 		// update cache (if present).
-		if ( true === $this->is_read_post_ids ) {
+		if ( $this->is_read_post_ids ) {
 			$this->post_ids[ $unique_id ] = $post_id;
 		}
 
@@ -188,7 +188,7 @@ class Db_Management extends Action {
 		$cpt_settings->setSource( $post_id );
 
 		// update the cache.
-		if ( true === $this->is_read_post_ids ) {
+		if ( $this->is_read_post_ids ) {
 			$this->post_ids[ $cpt_settings->get_unique_id() ] = $post_id;
 		}
 
@@ -259,7 +259,7 @@ class Db_Management extends Action {
 		// we always need to update the cache, even the IDs aren't read it
 		// otherwise it'll call read later, and the id will be missing (as the item missing in FS).
 
-		if ( true === $this->is_read_post_ids ) {
+		if ( $this->is_read_post_ids ) {
 			$this->read_post_ids();
 		}
 
@@ -280,8 +280,8 @@ class Db_Management extends Action {
 		);
 
 		// 2. update the cache (if present)
-		if ( true === $this->is_read_post_ids ) {
-			if ( true === key_exists( $unique_id, $this->post_ids ) ) {
+		if ( $this->is_read_post_ids ) {
+			if ( key_exists( $unique_id, $this->post_ids ) ) {
 				unset( $this->post_ids[ $unique_id ] );
 			}
 
@@ -304,8 +304,8 @@ class Db_Management extends Action {
 		// 1. update cache (if present)
 		// (it may be outdated, if the post was asked via ->get() before the wp untrash action)
 		// Note: it's important to do it before the FS restore, so ->get() call there will work properly
-		if ( true === $this->is_read_post_ids &&
-			true === key_exists( $unique_id, $this->trashed_post_ids ) ) {
+		if ( $this->is_read_post_ids &&
+			key_exists( $unique_id, $this->trashed_post_ids ) ) {
 			$post_id = $this->trashed_post_ids[ $unique_id ];
 
 			unset( $this->trashed_post_ids[ $unique_id ] );

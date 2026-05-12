@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
-if ( true === class_exists( 'acf_field_select' ) ) {
+if ( class_exists( 'acf_field_select' ) ) {
 	/**
 	 * Differences regarding the post_object field:
 	 *  a) use the post slug instead of the post id

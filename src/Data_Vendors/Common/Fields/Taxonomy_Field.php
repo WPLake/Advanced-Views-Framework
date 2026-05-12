@@ -59,7 +59,7 @@ class Taxonomy_Field extends List_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$object_id_source = true === $markup_field_data->get_field_meta()->is_multiple() ?
+		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'term_item' :
 			$field_id;
 

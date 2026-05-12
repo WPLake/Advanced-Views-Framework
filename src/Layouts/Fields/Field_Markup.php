@@ -39,8 +39,8 @@ class Field_Markup {
 	}
 
 	protected function get_markup_field_instance( string $vendor_name, string $field_type ): ?Markup_Field_Interface {
-		if ( true === key_exists( $vendor_name, $this->cache ) &&
-			true === key_exists( $field_type, $this->cache[ $vendor_name ] ) ) {
+		if ( key_exists( $vendor_name, $this->cache ) &&
+			key_exists( $field_type, $this->cache[ $vendor_name ] ) ) {
 			return $this->cache[ $vendor_name ][ $field_type ];
 		}
 
@@ -173,7 +173,7 @@ class Field_Markup {
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
 			$row_classes .= $field_name_class;
 
-			if ( true === $layout_settings->is_with_common_classes ) {
+			if ( $layout_settings->is_with_common_classes ) {
 				$row_classes .= ' ' . $layout_settings->get_bem_name() . '__' . $type;
 			}
 		}
@@ -200,7 +200,7 @@ class Field_Markup {
 	 */
 	protected function is_label_out_of_row( array $field_assets ): bool {
 		foreach ( $field_assets as $field_asset ) {
-			if ( true === $field_asset->is_label_out_of_row() ) {
+			if ( $field_asset->is_label_out_of_row() ) {
 				return true;
 			}
 		}
@@ -348,7 +348,7 @@ class Field_Markup {
 		$field_classes = '';
 
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
-			if ( true === $is_with_row_wrapper ) {
+			if ( $is_with_row_wrapper ) {
 				$field_classes .= $layout_settings->get_bem_name() . '__' . $field_settings->id . '-field';
 				$field_classes .= $layout_settings->is_with_common_classes ?
 					' ' . $layout_settings->get_bem_name() . '__field' :
@@ -426,7 +426,7 @@ class Field_Markup {
 
 		$is_with_wrapper = $this->is_with_field_wrapper( $field_assets, $layout_settings, $field_settings, $field_meta, 'field' );
 
-		if ( true === $is_with_wrapper &&
+		if ( $is_with_wrapper &&
 			false === $is_with_outer_wrappers ) {
 			echo "\r\n";
 		}
