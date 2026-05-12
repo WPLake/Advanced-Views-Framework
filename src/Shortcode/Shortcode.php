@@ -283,7 +283,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( true === $route_detector->is_admin_route() ) {
+		if ( $route_detector->is_admin_route() ) {
 			self::add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 		}
 

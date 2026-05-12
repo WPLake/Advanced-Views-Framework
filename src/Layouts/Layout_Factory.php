@@ -7,10 +7,10 @@ namespace Org\Wplake\Advanced_Views\Layouts;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
+use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
+use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,9 +18,9 @@ defined( 'ABSPATH' ) || exit;
 class Layout_Factory extends Instance_Factory {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Layout_Markup $layout_markup;
-	private Template_Engines $template_engines;
-	private Field_Markup $field_markup;
-	private Data_Vendors $data_vendors;
+	protected Template_Engines $template_engines;
+	protected Field_Markup $field_markup;
+	protected Data_Vendors $data_vendors;
 
 	public function __construct(
 		Front_Assets $front_assets,
@@ -39,30 +39,6 @@ class Layout_Factory extends Instance_Factory {
 		$this->data_vendors             = $data_vendors;
 	}
 
-	protected function get_view_markup(): Layout_Markup {
-		return $this->layout_markup;
-	}
-
-	protected function get_fields(): Field_Markup {
-		return $this->field_markup;
-	}
-
-	protected function get_data_vendors(): Data_Vendors {
-		return $this->data_vendors;
-	}
-
-	protected function get_template_engines(): Template_Engines {
-		return $this->template_engines;
-	}
-
-	protected function get_views_data_storage(): Layouts_Settings_Storage {
-		return $this->layouts_settings_storage;
-	}
-
-	protected function get_template_variables_for_validation( string $unique_id ): array {
-		return $this->make( new Source(), $unique_id, 0 )->get_template_variables_for_validation();
-	}
-
 	public function make(
 		Source $source,
 		string $unique_view_id,
@@ -74,17 +50,9 @@ class Layout_Factory extends Instance_Factory {
 
 		ob_start();
 		$this->layout_markup->print_markup( $layout_settings, $page_id );
-		$view_markup = (string) ob_get_clean();
+		$markup = (string) ob_get_clean();
 
-		return new Layout(
-			$this->data_vendors,
-			$this->template_engines,
-			$view_markup,
-			$layout_settings,
-			$source,
-			$this->field_markup,
-			$classes
-		);
+		return $this->create_layout_instance( $source, $layout_settings, $markup, $classes );
 	}
 
 	/**
@@ -117,7 +85,9 @@ class Layout_Factory extends Instance_Factory {
 	 * @return array<string,mixed>
 	 */
 	public function get_ajax_response( string $unique_id ): array {
-		return array();
+		$layout = $this->create_flat_layout_instance( $unique_id );
+
+		return $layout->get_ajax_response();
 	}
 
 	/**
@@ -125,6 +95,35 @@ class Layout_Factory extends Instance_Factory {
 	 */
 	// @phpstan-ignore-next-line
 	public function get_rest_api_response( string $unique_id, WP_REST_Request $wprest_request ): array {
-		return array();
+		$layout = $this->create_flat_layout_instance( $unique_id );
+
+		return $layout->get_rest_api_response( $wprest_request );
+	}
+
+	protected function create_flat_layout_instance( string $unique_id ): Layout {
+		$settings = $this->layouts_settings_storage->get( $unique_id );
+
+		return $this->create_layout_instance( new Source(), $settings, '', '' );
+	}
+
+	protected function create_layout_instance(
+		Source $source,
+		Layout_Settings $settings,
+		string $markup,
+		string $classes
+	): Layout {
+		return new Layout(
+			$this->data_vendors,
+			$this->template_engines,
+			$markup,
+			$settings,
+			$source,
+			$this->field_markup,
+			$classes
+		);
+	}
+
+	protected function get_template_variables_for_validation( string $unique_id ): array {
+		return $this->make( new Source(), $unique_id, 0 )->get_template_variables_for_validation();
 	}
 }
