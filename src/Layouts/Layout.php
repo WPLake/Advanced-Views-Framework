@@ -4,7 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts;
 
+defined( 'ABSPATH' ) || exit;
+
 use DateTime;
+use Error;
+use Org\Wplake\Advanced_Views\Bridge\Controllers\Layout\Layout_Template_Controller;
+use Org\Wplake\Advanced_Views\Bridge\Controllers\Request_Controller;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Woo_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
@@ -15,8 +20,6 @@ use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
-
-defined( 'ABSPATH' ) || exit;
 
 class Layout extends Instance {
 	private Layout_Settings $layout_settings;
@@ -51,6 +54,209 @@ class Layout extends Instance {
 		$this->field_markup    = $field_markup;
 		$this->field_values    = array();
 		$this->local_data      = null;
+	}
+
+	/**
+	 * @param int|string $object_id Can be 'options' or 'user_x'
+	 * @param array<string,mixed> $default_variables
+	 * @param array<string,mixed> $field_values
+	 * @param array<string,mixed> $custom_arguments
+	 * @param \Psr\Container\ContainerInterface|null $container
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected static function get_custom_template_variables(
+		string $php_code,
+		string $short_unique_view_id,
+		$object_id,
+		array $default_variables,
+		array $field_values,
+		array $custom_arguments = array(),
+		bool $is_for_validation = false,
+		$container = null
+	): array {
+		// declared variables for back compatibility.
+		// @phpcs:ignore
+		$_viewId = $short_unique_view_id;
+		// @phpcs:ignore
+		$_objectId = $object_id;
+		$_fields   = $field_values;
+
+		try {
+			// @phpcs:ignore
+			$template_controller = @eval( $php_code );
+		} catch ( Error $ex ) {
+			// return an empty array in case the code contains syntax errors.
+			return array();
+		}
+
+		return self::get_custom_controller_variables(
+			$template_controller,
+			$short_unique_view_id,
+			$object_id,
+			$default_variables,
+			$field_values,
+			$custom_arguments,
+			$is_for_validation,
+			$container
+		);
+	}
+
+	/**
+	 * @param mixed $template_controller
+	 * @param int|string $object_id Can be 'options' or 'user_x'
+	 * @param array<string,mixed> $default_variables
+	 * @param array<string,mixed> $field_values
+	 * @param array<string,mixed> $custom_arguments
+	 * @param \Psr\Container\ContainerInterface|null $container
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected static function get_custom_controller_variables(
+		$template_controller,
+		string $short_unique_view_id,
+		$object_id,
+		array $default_variables,
+		array $field_values,
+		array $custom_arguments,
+		bool $is_for_validation,
+		$container
+	): array {
+		if ( $template_controller instanceof Layout_Template_Controller ) {
+			$template_controller->set_object_id( $object_id );
+			$template_controller->set_instance_id( $short_unique_view_id );
+			$template_controller->set_default_variables( $default_variables );
+			$template_controller->set_custom_arguments( $custom_arguments );
+			$template_controller->set_container( $container );
+
+			return ! $is_for_validation ?
+				$template_controller->get_variables() :
+				$template_controller->get_variables_for_validation();
+		}
+
+		// array return is allowed for back compatibility.
+		if ( is_array( $template_controller ) ) {
+			/**
+			 * @var array<string,mixed> $template_controller
+			 */
+			return $template_controller;
+		}
+
+		return array();
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function get_ajax_response( string $php_code = '' ): array {
+		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
+
+		return parent::get_ajax_response( $php_code );
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function get_field_value(
+		Field_Settings $field_settings,
+		Field_Meta_Interface $field_meta,
+		?Item_Settings $item_settings = null,
+		bool $is_formatted = false
+	) {
+		return $this->data_vendors->get_field_value(
+			$field_settings,
+			$field_meta,
+			$this->source,
+			$item_settings,
+			$is_formatted,
+			$this->local_data
+		);
+	}
+
+	public function convert_string_to_date_time( Field_Meta_Interface $field_meta, string $value ): ?DateTime {
+		return $this->data_vendors->convert_string_to_date_time( $field_meta, $value );
+	}
+
+	public function get_source(): Source {
+		return $this->source;
+	}
+
+	/**
+	 * @param array<string,mixed> $custom_arguments
+	 */
+	public function insert_fields_and_print_html(
+		bool $is_minify_markup = true,
+		array $custom_arguments = array()
+	): bool {
+		$template = $this->get_template();
+
+		if ( true === $is_minify_markup ) {
+			$unnecessary_symbols = array(
+				"\n",
+				"\r",
+			);
+
+			// Blade requires at least some spacing between its tokens.
+			if ( true === in_array(
+				$this->layout_settings->template_engine,
+				array( Template_Engines::TWIG, '' ),
+				true
+			) ) {
+				$unnecessary_symbols[] = "\t";
+			}
+
+			// remove special symbols that used in the markup for a preview
+			// exactly here, before the fields are inserted, to avoid affecting them.
+			$template = str_replace( $unnecessary_symbols, '', $template );
+		}
+
+		$twig_variables = $this->get_template_variables( false, $custom_arguments );
+
+		ob_start();
+		$is_rendered = $this->render_template_and_print_html( $template, $twig_variables );
+		$html        = (string) ob_get_clean();
+
+		// shortcode support (necessary for the relationship field with the Field Layout option and others).
+		echo do_shortcode( $html );
+
+		return $is_rendered;
+	}
+
+	public function get_view_data(): Layout_Settings {
+		return $this->layout_settings;
+	}
+
+	public function get_markup_validation_error(): string {
+		$markup_validation_error = parent::get_markup_validation_error();
+		$custom_markup           = trim( $this->layout_settings->custom_markup );
+
+		if ( '' !== $markup_validation_error ||
+			'' === $custom_markup ) {
+			return $markup_validation_error;
+		}
+
+		$twig_variables_for_validation = $this->get_template_variables( true );
+		$canonical_array_field_names   = $this->get_array_field_names( $twig_variables_for_validation );
+		$present_array_fields          = $this->get_array_field_names_from_markup( $custom_markup );
+
+		$markup_validation_error .= $this->get_array_expectation_errors(
+			$canonical_array_field_names,
+			$present_array_fields
+		);
+		$markup_validation_error .= $this->get_missing_array_errors(
+			$canonical_array_field_names,
+			$present_array_fields,
+			$custom_markup
+		);
+
+		return $markup_validation_error;
+	}
+
+	/**
+	 * @param array<string|int,mixed>|null $local_data
+	 */
+	public function set_local_data( ?array $local_data ): void {
+		$this->local_data = $local_data;
 	}
 
 	/**
@@ -143,7 +349,12 @@ class Layout extends Instance {
 	 * @return array<string,mixed>
 	 */
 	protected function get_ajax_response_args( $controller ): array {
-		// nothing in the Lite version.
+		if ( $controller instanceof Request_Controller ) {
+			$controller->set_container( $this->get_container() );
+
+			return $controller->get_ajax_response();
+		}
+
 		return array();
 	}
 
@@ -154,8 +365,20 @@ class Layout extends Instance {
 	 */
 	// @phpstan-ignore-next-line
 	protected function get_rest_api_response_args( WP_REST_Request $wprest_request, $controller ): array {
-		// nothing in the Lite version.
+		if ( $controller instanceof Request_Controller ) {
+			$controller->set_container( $this->get_container() );
+
+			return $controller->get_rest_api_response( $wprest_request );
+		}
+
 		return array();
+	}
+
+	// @phpstan-ignore-next-line
+	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
+		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
+
+		return parent::get_rest_api_response( $wprest_request, $php_code );
 	}
 
 	/**
@@ -167,6 +390,42 @@ class Layout extends Instance {
 		bool $is_for_validation = false,
 		array $custom_arguments = array()
 	): array {
+		$template_variables = $this->get_default_template_variables( $is_for_validation );
+
+		$short_unique_view_id = $this->get_view_data()->get_unique_id( true );
+		$object_id            = ! $is_for_validation ?
+			$this->get_source()->get_id() :
+			'0';
+
+		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
+		// the static function is used to avoid any chance of changing the context (this).
+		$php_variables = self::get_custom_template_variables(
+			$php_code,
+			$short_unique_view_id,
+			$object_id,
+			$template_variables,
+			$this->get_field_values(),
+			$custom_arguments,
+			$is_for_validation,
+			$this->get_container()
+		);
+
+		$custom_variables = $this->apply_custom_variables_filter( $php_variables, $object_id, $is_for_validation );
+
+		foreach ( $custom_variables as $name => $value ) {
+			$name = str_replace( '-', '_', $name );
+			$name = str_replace( ' ', '_', $name );
+
+			$template_variables[ $name ] = $value;
+		}
+
+		return $template_variables;
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_default_template_variables( bool $is_for_validation = false ): array {
 		$object_id = ! $is_for_validation ?
 			strval( $this->source->get_id() ) :
 			'0';
@@ -228,6 +487,39 @@ class Layout extends Instance {
 		}
 
 		return $twig_variables;
+	}
+
+	/**
+	 * @param array<string,mixed> $php_variables
+	 * @param mixed $object_id
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected function apply_custom_variables_filter(
+		array $php_variables,
+		$object_id,
+		bool $is_for_validation
+	): array {
+		$short_unique_view_id = $this->get_view_data()->get_unique_id( true );
+
+		$custom_variables = apply_filters(
+			'acf_views/view/custom_variables',
+			$php_variables,
+			$short_unique_view_id,
+			$object_id,
+			$this->get_field_values(),
+			$is_for_validation
+		);
+		$custom_variables = apply_filters(
+			'acf_views/view/custom_variables/view_id=' . $short_unique_view_id,
+			$custom_variables,
+			$short_unique_view_id,
+			$object_id,
+			$this->get_field_values(),
+			$is_for_validation
+		);
+
+		return $custom_variables;
 	}
 
 	/**
@@ -384,110 +676,5 @@ class Layout extends Instance {
 	 */
 	protected function get_field_values(): array {
 		return $this->field_values;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function get_field_value(
-		Field_Settings $field_settings,
-		Field_Meta_Interface $field_meta,
-		?Item_Settings $item_settings = null,
-		bool $is_formatted = false
-	) {
-		return $this->data_vendors->get_field_value(
-			$field_settings,
-			$field_meta,
-			$this->source,
-			$item_settings,
-			$is_formatted,
-			$this->local_data
-		);
-	}
-
-	public function convert_string_to_date_time( Field_Meta_Interface $field_meta, string $value ): ?DateTime {
-		return $this->data_vendors->convert_string_to_date_time( $field_meta, $value );
-	}
-
-	public function get_source(): Source {
-		return $this->source;
-	}
-
-	/**
-	 * @param array<string,mixed> $custom_arguments
-	 */
-	public function insert_fields_and_print_html(
-		bool $is_minify_markup = true,
-		array $custom_arguments = array()
-	): bool {
-		$template = $this->get_template();
-
-		if ( true === $is_minify_markup ) {
-			$unnecessary_symbols = array(
-				"\n",
-				"\r",
-			);
-
-			// Blade requires at least some spacing between its tokens.
-			if ( true === in_array(
-				$this->layout_settings->template_engine,
-				array( Template_Engines::TWIG, '' ),
-				true
-			) ) {
-				$unnecessary_symbols[] = "\t";
-			}
-
-			// remove special symbols that used in the markup for a preview
-			// exactly here, before the fields are inserted, to avoid affecting them.
-			$template = str_replace( $unnecessary_symbols, '', $template );
-		}
-
-		$twig_variables = $this->get_template_variables( false, $custom_arguments );
-
-		ob_start();
-		$is_rendered = $this->render_template_and_print_html( $template, $twig_variables );
-		$html        = (string) ob_get_clean();
-
-		// shortcode support (necessary for the relationship field with the Field Layout option and others).
-		echo do_shortcode( $html );
-
-		return $is_rendered;
-	}
-
-	public function get_view_data(): Layout_Settings {
-		return $this->layout_settings;
-	}
-
-	public function get_markup_validation_error(): string {
-		$markup_validation_error = parent::get_markup_validation_error();
-		$custom_markup           = trim( $this->layout_settings->custom_markup );
-
-		if ( '' !== $markup_validation_error ||
-			'' === $custom_markup ) {
-			return $markup_validation_error;
-		}
-
-		$twig_variables_for_validation = $this->get_template_variables( true );
-		$canonical_array_field_names   = $this->get_array_field_names( $twig_variables_for_validation );
-		$present_array_fields          = $this->get_array_field_names_from_markup( $custom_markup );
-
-		$markup_validation_error .= $this->get_array_expectation_errors(
-			$canonical_array_field_names,
-			$present_array_fields
-		);
-		$markup_validation_error .= $this->get_missing_array_errors(
-			$canonical_array_field_names,
-			$present_array_fields,
-			$custom_markup
-		);
-
-		return $markup_validation_error;
-	}
-
-	/**
-	 * @param array<string|int,mixed>|null $local_data
-	 */
-	public function set_local_data( ?array $local_data ): void {
-		$this->local_data = $local_data;
 	}
 }
