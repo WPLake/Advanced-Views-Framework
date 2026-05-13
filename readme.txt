@@ -199,7 +199,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.8.7 (2025-05) =
-- Feature adoption: PHP Controller (before Custom Data snippet in Pro)
+- Feature adoption: PHP Controller (before Custom Data in Pro)
 - Feature adoption: Reusable Components Library
 - Bugfix: Layout with default Blade template repeats in Post Selection
 - UX: Layout & Selection settings - put "Template engine" below "Custom Template"
