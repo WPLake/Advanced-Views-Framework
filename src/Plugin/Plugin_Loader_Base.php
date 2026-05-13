@@ -34,6 +34,7 @@ use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
@@ -49,6 +50,8 @@ use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Cpt_Table_Tabs;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Meta_Box;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
@@ -68,6 +71,8 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Meta_Box;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Tabs;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
@@ -110,6 +115,8 @@ abstract class Plugin_Loader_Base {
 	protected Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
 	protected Layouts_Cpt $layouts_cpt;
 	protected Layouts_Cpt_Table $layouts_cpt_table;
+	protected Layouts_Git_Cpt_Table_Tabs $layouts_git_cpt_table_tabs;
+	protected Layouts_Git_Meta_Box $layouts_git_meta_box;
 	protected Fs_Only_Tab $layouts_fs_only_tab;
 	protected Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
 	protected Layouts_Pre_Built_Tab $layouts_pre_built_tab;
@@ -154,6 +161,9 @@ abstract class Plugin_Loader_Base {
 	protected Admin_Bar $admin_bar;
 	protected Upgrade_Notice $upgrade_notice;
 	protected Mount_Points $mount_points;
+	protected Git_Lab_Api $git_lab_api;
+	protected Post_Selection_Git_Tabs $post_selection_git_tabs;
+	protected Post_Selection_Git_Meta_Box $post_selection_git_meta_box;
 
 	/**
 	 * @var Hooks_Interface[]
@@ -274,6 +284,8 @@ abstract class Plugin_Loader_Base {
 				$this->layouts_cpt_save_actions,
 				$this->layout_shortcode,
 				$this->layouts_shortcode_block,
+				$this->layouts_git_meta_box,
+				$this->layouts_git_cpt_table_tabs,
 			)
 		);
 	}
@@ -292,6 +304,8 @@ abstract class Plugin_Loader_Base {
 				$this->post_selections_cpt_save_actions,
 				$this->post_selections_view_integration,
 				$this->post_selection_shortcode,
+				$this->post_selection_git_tabs,
+				$this->post_selection_git_meta_box,
 			)
 		);
 	}

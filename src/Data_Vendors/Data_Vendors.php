@@ -4,8 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors;
 
+defined( 'ABSPATH' ) || exit;
+
 use DateTime;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Acf\Acf_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Integration_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Data_Vendor_Interface;
@@ -17,24 +18,23 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Woo_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
-use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Parents\Action;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
-
-defined( 'ABSPATH' ) || exit;
 
 class Data_Vendors extends Action implements Hooks_Interface {
 	/**
@@ -61,16 +61,13 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		$this->field_meta_cache = array();
 	}
 
-	/**
-	 * @return Data_Vendor_Interface[]
-	 */
-	protected function get_vendors(): array {
-		return array(
-			new Wp_Data_Vendor( $this->get_logger() ),
-			new Woo_Data_Vendor( $this->get_logger() ),
-			new Acf_Data_Vendor( $this->get_logger() ),
-			new Meta_Box_Data_Vendor( $this->get_logger() ),
-			new Pods_Data_Vendor( $this->get_logger() ),
+	public function set_hooks( Route_Detector $route_detector ): void {
+		// 1. with the higher priority than the default one, to make sure all vendor codes are loaded.
+		// 2. still small, to be earlier than the rest of AVF code listening to this hook
+		self::add_action(
+			'plugins_loaded',
+			array( $this, 'load_available_vendors' ),
+			self::PLUGINS_LOADED_HOOK_PRIORITY
 		);
 	}
 
@@ -79,22 +76,6 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	 */
 	public function get_data_vendors(): array {
 		return $this->data_vendors;
-	}
-
-	protected function load_integration_instance(
-		Route_Detector $route_detector,
-		Data_Vendor_Integration_Interface $data_vendor_integration,
-		Layouts_Settings_Storage $layouts_settings_storage
-	): void {
-		// functions below only for the admin part.
-		if ( false === $route_detector->is_admin_route() ) {
-			return;
-		}
-
-		$data_vendor_integration->add_tab_to_meta_group();
-		$data_vendor_integration->add_column_to_list_table();
-		$data_vendor_integration->validate_related_views_on_group_change();
-		$data_vendor_integration->maybe_create_view_for_group();
 	}
 
 	/**
@@ -506,13 +487,174 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		return $related_groups_import_result;
 	}
 
-	public function set_hooks( Route_Detector $route_detector ): void {
-		// 1. with the higher priority than the default one, to make sure all vendor codes are loaded.
-		// 2. still small, to be earlier than the rest of AVF code listening to this hook
-		self::add_action(
-			'plugins_loaded',
-			array( $this, 'load_available_vendors' ),
-			self::PLUGINS_LOADED_HOOK_PRIORITY
+	/**
+	 * @return string[] uniqueIds
+	 */
+	public function get_related_view_unique_ids( Layout_Settings $layout_settings ): array {
+		$related_view_unique_ids      = array();
+		$fields_with_active_view_link = $layout_settings->get_fields_with_view_link();
+
+		foreach ( $fields_with_active_view_link as $field_data ) {
+			$field_meta = $field_data->get_field_meta();
+
+			if ( $this->is_field_with_active_view_link(
+				$field_data,
+				$field_meta->get_vendor_name(),
+				$field_meta->get_type()
+			) ) {
+				$related_view_unique_ids[] = $field_data->acf_view_id;
+			}
+		}
+
+		// remove duplicates.
+		$related_view_unique_ids = array_unique( $related_view_unique_ids );
+
+		return array_values( $related_view_unique_ids );
+	}
+
+	/**
+	 * @return array<string, string> fileName => content
+	 */
+	public function get_related_group_export_files( Layout_Settings $layout_settings ): array {
+		$related_groups            = array();
+		$related_group_export_data = array();
+
+		// 1. get all related group ids (not unique)
+		foreach ( $layout_settings->items as $item ) {
+			$group_id = $item->field->get_group_id();
+
+			$vendor_name = $item->field->get_vendor_name();
+
+			if ( ! key_exists( $vendor_name, $this->get_data_vendors() ) ) {
+				continue;
+			}
+
+			$related_groups[ $vendor_name ] ??= array();
+			$related_groups[ $vendor_name ][] = $group_id;
+		}
+
+		// 2. get export data for each related group
+		foreach ( $related_groups as $vendor_name => $group_ids ) {
+			if ( ! key_exists( $vendor_name, $this->get_data_vendors() ) ) {
+				continue;
+			}
+
+			$vendor = $this->get_data_vendors()[ $vendor_name ];
+			// remove duplicates.
+			$group_ids = array_unique( $group_ids );
+
+			foreach ( $group_ids as $group_id ) {
+				// feature can be not supported by the vendor (e.g. WP or Woo vendors).
+				$group_export_data = $vendor->get_group_export_data( $group_id );
+
+				if ( null === $group_export_data ) {
+					continue;
+				}
+
+				$related_group_export_data[ $vendor_name ] ??= array();
+				$related_group_export_data[ $vendor_name ][] = $group_export_data;
+			}
+		}
+
+		// 3. prepare export files
+		$related_group_export_files = array();
+
+		foreach ( $related_group_export_data as $vendor_name => $groups_export_data ) {
+			if ( ! key_exists( $vendor_name, $this->get_data_vendors() ) ) {
+				continue;
+			}
+
+			$vendor           = $this->get_data_vendors()[ $vendor_name ];
+			$export_meta_data = $vendor->get_export_meta_data( $groups_export_data );
+
+			$groups_export_content = wp_json_encode(
+				array(
+					'meta'   => $export_meta_data,
+					'groups' => $groups_export_data,
+				),
+				JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+			);
+
+			if ( false === $groups_export_content ) {
+				continue;
+			}
+
+			$file_name                                = $vendor_name . '.json';
+			$related_group_export_files[ $file_name ] = $groups_export_content;
+		}
+
+		return $related_group_export_files;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function get_export_file_names(): array {
+		$export_file_names = array();
+
+		foreach ( array_keys( $this->get_data_vendors() ) as $vendor_name ) {
+			$export_file_names[] = $vendor_name . '.json';
+		}
+
+		return $export_file_names;
+	}
+
+	/**
+	 * @return Data_Vendor_Interface[]
+	 */
+	protected function get_vendors(): array {
+		return array(
+			new Wp_Data_Vendor( $this->get_logger() ),
+			new Woo_Data_Vendor( $this->get_logger() ),
+			new Acf_Data_Vendor( $this->get_logger() ),
+			new Meta_Box_Data_Vendor( $this->get_logger() ),
+			new Pods_Data_Vendor( $this->get_logger() ),
 		);
+	}
+
+	protected function load_integration_instance(
+		Route_Detector $route_detector,
+		Data_Vendor_Integration_Interface $data_vendor_integration,
+		Layouts_Settings_Storage $layouts_settings_storage
+	): void {
+		// functions below only for the admin part.
+		if ( false === $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		$data_vendor_integration->add_tab_to_meta_group();
+		$data_vendor_integration->add_column_to_list_table();
+		$data_vendor_integration->validate_related_views_on_group_change();
+		$data_vendor_integration->maybe_create_view_for_group();
+	}
+
+	protected function is_field_with_active_view_link(
+		Field_Settings $field_settings,
+		string $vendor_name,
+		string $field_type
+	): bool {
+		// a) early return if field doesn't have the value in the field.
+		if ( ! $field_settings->has_external_layout() ) {
+			return false;
+		}
+
+		// b) check if the field has acfViewId in the conditional fields
+		// (as can leave from the previous field type, e.g. after clone).
+
+		if ( ! key_exists( $vendor_name, $this->get_data_vendors() ) ) {
+			return false;
+		}
+
+		$markup_instance = $this->get_data_vendors()[ $vendor_name ]->get_markup_field_instance( $field_type );
+
+		if ( null === $markup_instance ) {
+			return false;
+		}
+
+		$conditional_fields = $markup_instance->get_conditional_fields(
+			$field_settings->get_field_meta()
+		);
+
+		return in_array( Field_Settings::FIELD_ACF_VIEW_ID, $conditional_fields, true );
 	}
 }

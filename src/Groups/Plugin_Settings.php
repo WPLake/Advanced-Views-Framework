@@ -122,7 +122,6 @@ class Plugin_Settings extends Group {
 	 * @button_label Add Repository
 	 * @a-no-tab 1
 	 * @layout block
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public array $git_repositories;
 

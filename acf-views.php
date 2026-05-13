@@ -26,6 +26,7 @@ use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\{Git_Repository,
 	Item_Settings,
 	Layout_Settings,
@@ -44,6 +45,8 @@ use Org\Wplake\Advanced_Views\Groups_Integration\{Custom_Acf_Field_Types,
 use Org\Wplake\Advanced_Views\Layouts\{Cpt\Layouts_Cpt,
 	Cpt\Layouts_Cpt_Meta_Boxes,
 	Cpt\Layouts_Cpt_Save_Actions,
+	Cpt\Layouts_Git_Cpt_Table_Tabs,
+	Cpt\Layouts_Git_Meta_Box,
 	Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Cpt\Table\Layouts_Cpt_Table,
 	Cpt\Table\Layouts_Pre_Built_Tab,
@@ -71,6 +74,8 @@ use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
 	Post_Query,
 	Post_Selection_Factory,
 	Post_Selection_Markup};
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Meta_Box;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Tabs;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
@@ -157,6 +162,12 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->data_vendors,
 				$layouts_file_system,
 				$this->live_reloader_component
+			);
+			$this->git_lab_api             = new Git_Lab_Api(
+				$this->logger,
+				$this->options,
+				$this->layout_cpt,
+				$this->post_selection_cpt
 			);
 			$this->upgrade_notice          = new Upgrade_Notice( $this->plugin );
 			$this->cache_flusher           = new Cache_Flusher( $this->logger, $this->get_cache_cleaners() );
@@ -277,6 +288,25 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
 			$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
 
+			$this->layouts_git_cpt_table_tabs = new Layouts_Git_Cpt_Table_Tabs(
+				$this->layouts_cpt_table,
+				$this->settings,
+				$this->git_lab_api,
+				$this->group_creator->create( Layout_Settings::class ),
+				$this->layouts_settings_storage,
+				$this->version_migrator,
+				$this->data_vendors,
+				$this->logger
+			);
+			$this->layouts_git_meta_box       = new Layouts_Git_Meta_Box(
+				$this->layout_cpt->cpt_name(),
+				$this->settings,
+				$this->layouts_settings_storage,
+				$this->git_lab_api,
+				$this->data_vendors,
+				$this->plugin
+			);
+
 			parent::layouts();
 		}
 
@@ -365,6 +395,27 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->version_migrator,
 				$this->logger,
 				$this->layouts_pre_built_tab
+			);
+
+			$this->post_selection_git_tabs     = new Post_Selection_Git_Tabs(
+				$this->post_selections_cpt_table,
+				$this->settings,
+				$this->git_lab_api,
+				$this->group_creator->create( Post_Selection_Settings::class ),
+				$this->post_selections_settings_storage,
+				$this->version_migrator,
+				$this->layouts_git_cpt_table_tabs,
+				$this->data_vendors,
+				$this->logger
+			);
+			$this->post_selection_git_meta_box = new Post_Selection_Git_Meta_Box(
+				$this->post_selection_cpt->cpt_name(),
+				$this->settings,
+				$this->post_selections_settings_storage,
+				$this->git_lab_api,
+				$this->layouts_settings_storage,
+				$this->layouts_git_meta_box,
+				$this->plugin
 			);
 
 			$this->post_selections_cpt_assets_reducer           = new Cpt_Assets_Reducer(
