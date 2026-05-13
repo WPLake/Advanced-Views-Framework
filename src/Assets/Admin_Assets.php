@@ -312,6 +312,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'autocompleteFilters'      => $this->get_autocomplete_filters(),
 			'textareaItemsToRefresh'   => $textarea_items_to_refresh,
 			'refreshRoute'             => $refresh_route,
+			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
 			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
 			'mods'                     => array(
 				'_twig' => array(
