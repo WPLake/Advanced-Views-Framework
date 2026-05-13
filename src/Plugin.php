@@ -47,6 +47,10 @@ class Plugin extends Hookable implements Hooks_Interface {
 		$this->is_switching_versions = false;
 	}
 
+	public static function make_url_relative( string $url ): string {
+		return str_replace( get_site_url(), '', $url );
+	}
+
 	// static, as called also in AcfGroup.
 	public static function is_acf_pro_plugin_available(): bool {
 		return class_exists( 'acf_pro' );

@@ -201,7 +201,9 @@ You're welcome to open issues or PRs there.
 = 3.8.7 (2025-05) =
 - Feature adoption: PHP Controller (before Custom Data in Pro)
 - Feature adoption: Reusable Components Library
+- Feature adoption: Lightbox
 - Bugfix: Layout with default Blade template repeats in Post Selection
+- Bugfix: Layout - Lightbox - Simple type - duplicate popups if several instances of the same selector is on the same page
 - UX: Layout & Selection settings - put "Template engine" below "Custom Template"
 - UI: Layout - field dropdown font-size adjustment
 

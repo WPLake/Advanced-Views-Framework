@@ -97,9 +97,12 @@ class Light_Gallery_Front_Asset extends View_Front_Asset {
 
 		// font and image paths in CSS won't work, as CSS will be added right to the page,
 		// replacing with the related installation path avoids it.
-		$relative_assets_url = sprintf( 'url(%s', $this->get_asset_url( '', true ) );
+		$asset_url_base          = $this->get_asset_url( '' );
+		$relative_asset_url_base = Plugin::make_url_relative( $asset_url_base );
 
-		return str_replace( 'url(../', $relative_assets_url, $css_code );
+		$relative_assets_url = sprintf( 'url("%s', $relative_asset_url_base );
+
+		return str_replace( 'url("../', $relative_assets_url, $css_code );
 	}
 
 	protected function print_js_code( string $var_name, Field_Settings $field_settings, Layout_Settings $layout_settings ): void {

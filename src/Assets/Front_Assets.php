@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Assets;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Lightbox_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
@@ -73,6 +74,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 		return array(
 			new Acf_Views_Maps_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
 			new Light_Gallery_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
+			new Acf_Views_Lightbox_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
 		);
 	}
 

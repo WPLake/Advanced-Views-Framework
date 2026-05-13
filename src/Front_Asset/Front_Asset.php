@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Front_Asset;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -149,7 +149,7 @@ abstract class Front_Asset implements Front_Asset_Interface {
 		$wp_filesystem = $this->file_system->get_wp_filesystem();
 
 		foreach ( $this->css_handles as $css_handle => $is_active ) {
-			if ( false === $is_active ) {
+			if ( ! $is_active ) {
 				continue;
 			}
 
