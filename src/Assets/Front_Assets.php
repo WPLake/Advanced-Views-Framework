@@ -9,6 +9,7 @@ use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
+use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -71,6 +72,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	protected function get_assets(): array {
 		return array(
 			new Acf_Views_Maps_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
+			new Light_Gallery_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
 		);
 	}
 

@@ -96,7 +96,6 @@ class Field_Settings extends Group {
 	 * @choices {"none":"None","lightgallery_v2":"LightGallery v2 (47.1KB js, 9.2KB css)", "simple":"Simple (no settings, 5.2KB js)"}
 	 * @default_value none
 	 * @a-order 2
-	 * @a-pro The field must be not required or have default value!
 	 */
 	public string $lightbox_type;
 	/**
