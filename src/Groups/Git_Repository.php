@@ -14,7 +14,7 @@ class Git_Repository extends Group {
 
 	/**
 	 * @label Repository ID
-	 * @instructions To retrieve your GitLab repository ID, follow these steps: 1. Open your repository. 2. Look for the 'Project Information' block on the right-hand side. 3. Click on the three dots icon above the block. 4. Click on the "Copy project ID" item.
+	 * @instructions To retrieve your GitLab repository ID, follow these steps: 1. Open your repository. 2. Look for the 'Project Information' block on the right-hand side. 3. Click on the three dots icon above the block. 4. Click on the 'Copy project ID' item.
 	 */
 	public string $id;
 	/**
