@@ -4,6 +4,7 @@ declare (strict_types=1);
 namespace Org\Wplake\Advanced_Views\Vendors\WPLake\Typed;
 
 use DateTime;
+use Org\Wplake\Advanced_Views\Vendors\PHP_CodeSniffer\Reports\Source;
 use stdClass;
 use Throwable;
 /**
@@ -224,7 +225,8 @@ final class Typed
         return $value instanceof DateTime ? $value : null;
     }
     /**
-     * @param mixed $target
+     * @template Target
+     * @param Target $target
      * @param int|string|array<int,int|string> $keys
      * @param mixed $value
      */
@@ -271,7 +273,9 @@ final class Typed
         return \true;
     }
     /**
-     * @param mixed $source
+     * @template Source
+     *
+     * @param Source $source
      * @param int|string|array<int,int|string>|null $keys
      * @param mixed $default
      *
@@ -346,7 +350,9 @@ final class Typed
         return $value;
     }
     /**
-     * @param mixed $source
+     * @template Source
+     *
+     * @param Source $source
      * @param array<int,int|string> $keys
      * @param mixed $default
      *

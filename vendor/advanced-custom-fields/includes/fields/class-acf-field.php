@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field' ) ) :
 	class acf_field {
@@ -236,6 +245,39 @@ if ( ! class_exists( 'acf_field' ) ) :
 		}
 
 		/**
+		 * Returns the JSON schema for creating this field type.
+		 *
+		 * @since 6.8.0
+		 *
+		 * @return array JSON Schema definition for this field type, or an empty array if none exists.
+		 */
+		public function get_field_creation_schema(): array {
+			$schema = acf_get_field_json_schema( $this->name );
+
+			if ( empty( $schema ) ) {
+				$schema = array(
+					'type'       => 'object',
+					'properties' => array(
+						'label' => array(
+							'type'        => 'string',
+							'description' => 'The label for the field',
+							'minLength'   => 1,
+							'required'    => true,
+						),
+						'type'  => array(
+							'type'        => 'string',
+							'enum'        => array( $this->name ),
+							'description' => 'The field type',
+							'required'    => true,
+						),
+					),
+				);
+			}
+
+			return $schema;
+		}
+
+		/**
 		 * Return the schema array for the REST API.
 		 *
 		 * @param array $field
@@ -293,6 +335,20 @@ if ( ! class_exists( 'acf_field' ) ) :
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
 			return $value;
+		}
+
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * Override in field type classes to declare supported ranges.
+		 * Used to determine valid properties and output formats.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array();
 		}
 
 		/**

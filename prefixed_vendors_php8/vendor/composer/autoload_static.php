@@ -249,7 +249,6 @@ class ComposerStaticInit_org_wplake_advanced_views_optional_vendors
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\CachedWordInflector' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/CachedWordInflector.php',
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\GenericLanguageInflectorFactory' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/GenericLanguageInflectorFactory.php',
-        'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\Inflector' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/Inflector.php',
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\InflectorFactory' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/InflectorFactory.php',
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\Language' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/Language.php',
         'Org\\Wplake\\Advanced_Views\\Optional_Vendors\\Doctrine\\Inflector\\LanguageInflectorFactory' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector/LanguageInflectorFactory.php',

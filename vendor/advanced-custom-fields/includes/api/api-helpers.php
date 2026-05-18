@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * This function will return true for a non empty array
@@ -1287,8 +1296,19 @@ function acf_get_grouped_posts( $args ) {
 
 	// find array of post_type
 	$post_types          = acf_get_array( $args['post_type'] );
-	$post_types_labels   = acf_get_pretty_post_types( $post_types );
-	$is_single_post_type = ( count( $post_types ) == 1 );
+	$is_single_post_type = ( count( $post_types ) === 1 );
+
+	// WordPress 6.8+ sorts post_type arrays for cache key generation
+	// We need to use the same sorted order when processing results
+	if (
+		! $is_single_post_type &&
+		$args['posts_per_page'] !== -1 &&
+		version_compare( get_bloginfo( 'version' ), '6.8', '>=' )
+	) {
+		sort( $post_types );
+	}
+
+	$post_types_labels = acf_get_pretty_post_types( $post_types );
 
 	// attachment doesn't work if it is the only item in an array
 	if ( $is_single_post_type ) {
@@ -2754,6 +2774,61 @@ function acf_current_user_can_edit_post( int $post_id ): bool {
 	$user_can_edit = current_user_can( 'edit_post', $post_id );
 
 	return (bool) apply_filters( 'acf/current_user_can_edit_post', $user_can_edit, $post_id );
+}
+
+/**
+ * Checks if the current user can edit a given ACF context.
+ *
+ * Handles post, user, term, comment, woo_order, block, and option contexts returned by acf_decode_post_id().
+ *
+ * @since 6.7.2
+ *
+ * @param array  $post_id_info      The result of acf_decode_post_id(), containing 'type' and 'id'.
+ * @param string $options_page_slug Optional. The options page menu slug, used to look up the page's capability.
+ * @return boolean
+ */
+function acf_current_user_can_edit_in_context( array $post_id_info, string $options_page_slug = '' ): bool {
+	$type = $post_id_info['type'] ?? '';
+	$id   = $post_id_info['id'] ?? 0;
+
+	switch ( $type ) {
+		case 'post':
+			return acf_current_user_can_edit_post( (int) $id );
+
+		case 'user':
+			return current_user_can( 'edit_user', (int) $id );
+
+		case 'term':
+			return current_user_can( 'edit_term', (int) $id );
+
+		case 'comment':
+			return current_user_can( 'edit_comment', (int) $id );
+
+		case 'woo_order':
+			return current_user_can( 'edit_shop_orders' ); // phpcs:ignore
+
+		case 'block':
+			return current_user_can( 'edit_posts' );
+
+		case 'option':
+			if ( ! empty( $options_page_slug ) && function_exists( 'acf_get_options_page' ) ) {
+				$page = acf_get_options_page( $options_page_slug );
+
+				if ( ! empty( $page['capability'] ) && ! empty( $page['post_id'] ) ) {
+					// Ensure the page's post_id matches the requested post_id.
+					if ( acf_get_valid_post_id( $page['post_id'] ) !== $id ) {
+						return false;
+					}
+
+					return current_user_can( $page['capability'] );
+				}
+			}
+
+			return current_user_can( 'manage_options' );
+
+		default:
+			return (bool) apply_filters( 'acf/current_user_can_edit_in_context', false, $post_id_info );
+	}
 }
 
 /**
