@@ -10,7 +10,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
@@ -69,7 +68,7 @@ class Color_Picker_Field extends Markup_Field {
 		} else {
 			$red = string( $value, 'red' );
 			// value is just bool, as 'red' can be zero, but still be a value.
-			$args['value'] = bool( $red );
+			$args['value'] = (bool) $red;
 			$args['red']   = $red;
 			$args['green'] = string( $value, 'green' );
 			$args['blue']  = string( $value, 'blue' );

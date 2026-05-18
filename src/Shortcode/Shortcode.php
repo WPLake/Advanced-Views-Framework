@@ -68,9 +68,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 			if ( strlen( $argument_input ) > 0 ) {
 				return explode( ',', $argument_input );
 			}
-		}
-		// can be an array, if called from Bridge.
-		elseif ( is_array( $argument_input ) ) {
+		} elseif ( is_array( $argument_input ) ) { // can be an array, if called from Bridge.
 			/**
 			 * @var string[] $argument_input
 			 */
