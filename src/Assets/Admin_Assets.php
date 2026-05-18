@@ -26,6 +26,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -230,13 +231,14 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		// optionally: convert all non-English pieces in names to English:
 		// this function is part of the Intl extension, and can be missing in some environments.
-		if ( false === function_exists( 'transliterator_transliterate' ) ) {
+		if ( ! function_exists( 'transliterator_transliterate' ) ) {
 			return $field_choices;
 		}
 
 		foreach ( $field_choices as &$value ) {
 			// converts non-english strings, like 'як справи' to 'jak spravi'.
-			$value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
+			$transliterated = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
+			$value          = string( $transliterated );
 		}
 
 		return $field_choices;
@@ -256,7 +258,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $sub_field_choices as &$value ) {
 			// converts non-english strings, like 'як справи' to 'jak spravi'.
-			$value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
+			$transliterated_value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
+			$value                = string( $transliterated_value );
 		}
 
 		return $sub_field_choices;

@@ -17,6 +17,5 @@ interface Request_Controller extends Controller {
 	/**
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	public function get_rest_api_response( WP_REST_Request $request ): array;
 }

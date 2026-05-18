@@ -55,6 +55,5 @@ abstract class Instance_Factory {
 	/**
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	abstract public function get_rest_api_response( string $unique_id, WP_REST_Request $wprest_request ): array;
 }

@@ -63,7 +63,6 @@ class Post_Selection_Factory extends Instance_Factory {
 	/**
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	public function get_rest_api_response( string $unique_id, WP_REST_Request $wprest_request ): array {
 		$post_selection = $this->make( $this->get_cards_data_storage()->get( $unique_id ) );
 

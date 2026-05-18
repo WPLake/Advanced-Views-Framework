@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,8 +27,8 @@ class Post_Author_Field extends User_Field {
 			return null;
 		}
 
-		$author_id = get_post_field( 'post_author', $post );
-		$author    = '' !== $author_id ?
+		$author_id = string( get_post_field( 'post_author', $post ) );
+		$author    = strlen( $author_id ) > 0 ?
 			get_user_by( 'ID', $author_id ) :
 			null;
 

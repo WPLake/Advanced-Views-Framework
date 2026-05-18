@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Shortcode;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
@@ -16,9 +18,8 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
-
-defined( 'ABSPATH' ) || exit;
 
 abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
 	private Instance_Factory $instance_factory;
@@ -56,36 +57,39 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 	abstract protected function get_unique_id_prefix(): string;
 
 	/**
+	 * @param mixed $argument_input
+	 *
+	 * @return string[]
+	 */
+	protected static function get_roles( $argument_input ): array {
+		if ( is_string( $argument_input ) ) {
+			$argument_input = trim( $argument_input );
+
+			if ( strlen( $argument_input ) > 0 ) {
+				return explode( ',', $argument_input );
+			}
+		}
+		// can be an array, if called from Bridge.
+		elseif ( is_array( $argument_input ) ) {
+			/**
+			 * @var string[] $argument_input
+			 */
+			return $argument_input;
+		}
+
+		return array();
+	}
+
+	/**
 	 * @param string[] $user_roles
 	 * @param mixed[] $shortcode_args
 	 */
 	protected function is_shortcode_available_for_user( array $user_roles, array $shortcode_args ): bool {
-		$user_with_roles = $shortcode_args['user-with-roles'] ?? '';
+		$user_with_roles    = self::get_roles( any( $shortcode_args, 'user-with-roles' ) );
+		$user_without_roles = self::get_roles( any( $shortcode_args, 'user-without-roles' ) );
 
-		// can be an array, if called from Bridge.
-		if ( is_string( $user_with_roles ) ) {
-			$user_with_roles = trim( $user_with_roles );
-			$user_with_roles = '' !== $user_with_roles ?
-				explode( ',', $user_with_roles ) :
-				array();
-		} elseif ( false === is_array( $user_with_roles ) ) {
-			$user_with_roles = array();
-		}
-
-		$user_without_roles = $shortcode_args['user-without-roles'] ?? '';
-
-		// can be an array, if called from Bridge.
-		if ( is_string( $user_without_roles ) ) {
-			$user_without_roles = trim( $user_without_roles );
-			$user_without_roles = '' !== $user_without_roles ?
-				explode( ',', $user_without_roles ) :
-				array();
-		} elseif ( false === is_array( $user_without_roles ) ) {
-			$user_without_roles = array();
-		}
-
-		if ( array() === $user_with_roles &&
-			array() === $user_without_roles ) {
+		if ( 0 === count( $user_with_roles ) &&
+			0 === count( $user_without_roles ) ) {
 			return true;
 		}
 

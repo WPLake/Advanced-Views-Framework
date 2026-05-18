@@ -86,11 +86,6 @@ class Git_Lab_Api extends Git_Api {
 				break;
 			}
 
-			// just for phpstan.
-			if ( false === is_array( $data ) ) {
-				continue;
-			}
-
 			$items = array_merge( $items, $data );
 			++$page_number;
 		}

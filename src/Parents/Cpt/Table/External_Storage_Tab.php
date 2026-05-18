@@ -8,12 +8,13 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class External_Storage_Tab extends Cpt_Table_Tab {
 
@@ -46,10 +47,13 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 	 * @param array<string,string> $field_values
 	 */
 	protected function import_cpt_data( string $unique_id, array $field_values ): ?Import_Result {
-		$data_json = $field_values['data.json'] ?? '';
-		$data_json = json_decode( $data_json, true );
+		$data_json_string = $field_values['data.json'] ?? '';
+		/**
+		 * @var string[]|null $data_json
+		 */
+		$data_json = json_decode( $data_json_string, true );
 
-		if ( false === is_array( $data_json ) ||
+		if ( ! is_array( $data_json ) ||
 			array() === $data_json ) {
 			$this->logger->warning(
 				'Import CPT Data skipped: invalid data.json file',
@@ -68,13 +72,10 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 		// 1. get item, maybe it's already exists (then we'll override it)
 		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
-		$title = $data_json[ Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) ] ?? '';
-		$title = '' === $title ?
-			( $data_json[ Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE ) ] ?? '' ) :
+		$title = string( $data_json, Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TITLE ) );
+		$title = 0 === strlen( $title ) ?
+			string( $data_json, Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TITLE ) ) :
 			$title;
-		$title = is_string( $title ) ?
-			$title :
-			'';
 
 		// 2. insert if missing
 		$cpt_data = false === $cpt_data->isLoaded() ?

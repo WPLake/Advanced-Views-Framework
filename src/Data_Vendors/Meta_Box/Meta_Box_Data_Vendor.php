@@ -833,6 +833,7 @@ class Meta_Box_Data_Vendor extends Data_Vendor {
 			$group_data['ID'] = $existing_post->ID;
 		}
 
+		// @phpstan-ignore-next-line
 		$post_id = wp_insert_post( $group_data, true );
 
 		if ( is_wp_error( $post_id ) ) {

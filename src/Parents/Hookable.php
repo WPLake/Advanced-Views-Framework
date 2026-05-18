@@ -22,6 +22,7 @@ abstract class Hookable {
 	public static function add_shortcode( string $tag, callable $callback ): void {
 		$shortcode_callback = self::get_callback( $tag, $callback );
 
+		// @phpstan-ignore-next-line
 		add_shortcode( $tag, $shortcode_callback );
 	}
 

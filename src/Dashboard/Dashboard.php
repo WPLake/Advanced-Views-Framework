@@ -5,18 +5,18 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Screen;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
@@ -94,11 +94,17 @@ class Dashboard extends Hookable implements Hooks_Interface {
 		$acf_cards_list_url = $this->plugin->get_admin_url( '', Hard_Post_Selection_Cpt::cpt_name() );
 
 		$current_screen            = get_current_screen();
-		$is_edit_screen            = null !== $current_screen && 'post' === $current_screen->base && '' === $current_screen->action;
-		$is_add_screen             = null !== $current_screen && 'post' === $current_screen->base && 'add' === $current_screen->action;
+		$is_edit_screen            = $current_screen instanceof WP_Screen &&
+									'post' === $current_screen->base &&
+									'' === $current_screen->action;
+		$is_add_screen             = $current_screen instanceof WP_Screen &&
+									'post' === $current_screen->base &&
+									'add' === $current_screen->action;
 		$is_active_child           = ( $is_edit_screen || $is_add_screen );
-		$is_active_acf_views_child = $is_active_child && null !== $current_screen && Hard_Layout_Cpt::cpt_name() === $current_screen->post_type;
-		$is_active_acf_cards_child = $is_active_child && null !== $current_screen && Hard_Post_Selection_Cpt::cpt_name() === $current_screen->post_type;
+		$is_active_acf_views_child = $is_active_child &&
+									Hard_Layout_Cpt::cpt_name() === $current_screen->post_type;
+		$is_active_acf_cards_child = $is_active_child &&
+									Hard_Post_Selection_Cpt::cpt_name() === $current_screen->post_type;
 
 		foreach ( $tabs as &$tab ) {
 			$is_acf_views_list_page = $tab['url'] === $acf_views_list_url;

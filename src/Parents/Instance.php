@@ -50,7 +50,6 @@ abstract class Instance {
 	 *
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	abstract protected function get_rest_api_response_args( WP_REST_Request $wprest_request, $controller ): array;
 
 	protected function get_classes(): string {
@@ -115,7 +114,9 @@ abstract class Instance {
 		return $this->get_ajax_response_args( $this->eval_php_code( $php_code ) );
 	}
 
-	// @phpstan-ignore-next-line
+	/**
+	 * @return array<string,mixed>
+	 */
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
 		return $this->get_rest_api_response_args( $wprest_request, $this->eval_php_code( $php_code ) );
 	}

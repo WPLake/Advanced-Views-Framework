@@ -121,7 +121,10 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 		string $content,
 		bool $is_run_shortcode = true
 	): string {
-		$start_of_marker_index = '' !== $mount_point_settings->mount_point ?
+		$point_strlen = strlen( $mount_point_settings->mount_point );
+		$is_point_set = $point_strlen > 0;
+
+		$start_of_marker_index = $is_point_set ?
 			strpos( $content, $mount_point_settings->mount_point ) :
 			0;
 
@@ -130,11 +133,11 @@ class Mount_Points extends Hookable implements Hooks_Interface {
 			return $content;
 		}
 
-		$end_of_marker_index = '' !== $mount_point_settings->mount_point ?
-			$start_of_marker_index + strlen( $mount_point_settings->mount_point ) :
+		$end_of_marker_index = $is_point_set ?
+			$start_of_marker_index + $point_strlen :
 			strlen( $content );
-		$marker_length       = '' !== $mount_point_settings->mount_point ?
-			strlen( $mount_point_settings->mount_point ) :
+		$marker_length       = $is_point_set ?
+			$point_strlen :
 			strlen( $content );
 
 		$offset = 0;

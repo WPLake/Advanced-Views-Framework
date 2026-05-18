@@ -78,7 +78,6 @@ abstract class Controller_Base implements Request_Controller, Template_Controlle
 	/**
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	public function get_rest_api_response( WP_REST_Request $request ): array {
 		return array();
 	}

@@ -163,7 +163,6 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 	 * @return array<string,mixed>
 	 * @throws Exception
 	 */
-	// @phpstan-ignore-next-line
 	public function refresh_request( WP_REST_Request $wprest_request ): array {
 		$request_args = $wprest_request->get_json_params();
 		$card_id      = $this->get_int_arg( '_postId', $request_args );

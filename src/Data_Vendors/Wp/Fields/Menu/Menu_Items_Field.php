@@ -264,7 +264,6 @@ class Menu_Items_Field extends Markup_Field {
 		if ( $is_for_validation ) {
 			$child_args = $this->link_field->get_validation_template_variables( $variable_field_data );
 
-			// @phpstan-ignore-next-line
 			$args['children'][] = array_merge(
 				$child_args,
 				array(
@@ -286,7 +285,6 @@ class Menu_Items_Field extends Markup_Field {
 
 			$is_sub_active = $this->is_active_item( $child_menu_item );
 
-			// @phpstan-ignore-next-line
 			$args['children'][] = array_merge(
 				$child_args,
 				array(

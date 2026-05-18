@@ -450,7 +450,6 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 	 * @return array<string,mixed>
 	 * @throws Exception
 	 */
-	// @phpstan-ignore-next-line
 	public function get_live_reloader_data( WP_REST_Request $wprest_request ): array {
 		$request_args = $wprest_request->get_json_params();
 

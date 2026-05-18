@@ -6,23 +6,23 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post\Post_Fields;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Demo_Group;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 final class Demo_Import extends Hookable implements Hooks_Interface {
 
@@ -190,14 +190,12 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 				$group_json['location'][0][0]['value'] = $this->samsung_id;
 			}
 
-			if ( isset( $group_json['location'][1][0] ) &&
-				is_array( $group_json['location'][1] ) &&
+			if ( is_array( $group_json['location'][1] ) &&
 				is_array( $group_json['location'][1][0] ) ) {
 				$group_json['location'][1][0]['value'] = $this->nokia_id;
 			}
 
-			if ( isset( $group_json['location'][2][0] ) &&
-				is_array( $group_json['location'][2] ) &&
+			if ( is_array( $group_json['location'][2] ) &&
 				is_array( $group_json['location'][2][0] ) ) {
 				$group_json['location'][2][0]['value'] = $this->xiaomi_id;
 			}

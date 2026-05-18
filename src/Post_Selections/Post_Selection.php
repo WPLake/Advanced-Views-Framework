@@ -129,7 +129,6 @@ class Post_Selection extends Instance {
 		return parent::get_ajax_response( $php_code );
 	}
 
-	// @phpstan-ignore-next-line
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
 		$php_code = str_replace( '<?php', '', $this->get_card_data()->extra_query_arguments );
 
@@ -141,7 +140,6 @@ class Post_Selection extends Instance {
 	 *
 	 * @return array<string,mixed>
 	 */
-	// @phpstan-ignore-next-line
 	public function get_rest_api_response_args( WP_REST_Request $wprest_request, $controller ): array {
 		if ( $controller instanceof Request_Controller ) {
 			$controller->set_container( $this->get_container() );
