@@ -2,7 +2,7 @@
 Contributors: wplakeorg
 Tags: post grid, wp_query, meta fields, custom post types, taxonomy, shortcodes, elementor, divi, bricks, layout
 Requires at least: 5.5
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 3.8.7
 License: GPLv2 or later
@@ -198,7 +198,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.7 (2025-05-15) =
+= 3.8.7 (2025-05-20) =
 - Feature adoption: PHP Controller (before Custom Data in Pro)
 - Feature adoption: Reusable Components Library
 - Feature adoption: Lightbox
@@ -206,6 +206,7 @@ You're welcome to open issues or PRs there.
 - Bugfix: Layout - Lightbox - Simple type - duplicate popups if several instances of the same selector is on the same page
 - UX: Layout & Selection settings - put "Template engine" below "Custom Template"
 - UI: Layout - field dropdown font-size adjustment
+- Uphold: tested with WP 7.0
 
 = 3.8.6 (2025-04-03) =
 - Bugfix: Post Selection - sortby
