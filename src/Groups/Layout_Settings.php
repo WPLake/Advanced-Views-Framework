@@ -102,7 +102,7 @@ class Layout_Settings extends Cpt_Settings {
 	/**
 	 * @a-type textarea
 	 * @label PHP Controller
-	 * @instructions By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 * @instructions By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/display-content/php-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
 	 */
 	public string $php_variables;
 	/**
