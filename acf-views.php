@@ -50,6 +50,7 @@ use Org\Wplake\Advanced_Views\Layouts\{Cpt\Layouts_Cpt,
 	Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Cpt\Table\Layouts_Cpt_Table,
 	Cpt\Table\Layouts_Pre_Built_Tab,
+	Data_Storage\Layout_Fs_Fields,
 	Data_Storage\Layouts_Settings_Storage,
 	Fields\Field_Markup,
 	Layout_Factory,
@@ -59,7 +60,6 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
@@ -141,7 +141,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$this->layouts_settings_storage = new Layouts_Settings_Storage(
 				$this->logger,
 				$layouts_file_system,
-				new Fs_Fields(),
+				new Layout_Fs_Fields(),
 				new Db_Management( $this->logger, $layouts_file_system, $this->layout_cpt ),
 				$this->layout_settings
 			);
@@ -272,7 +272,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$layouts_settings_storage    = new Layouts_Settings_Storage(
 				$this->logger,
 				$file_system,
-				new Fs_Fields(),
+				new Layout_Fs_Fields(),
 				$db_management,
 				$this->layout_settings
 			);

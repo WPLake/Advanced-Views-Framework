@@ -2,15 +2,15 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Post_Selections\Data_Storage;
+namespace Org\Wplake\Advanced_Views\Layouts\Data_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
 
-class Post_Selection_Fs_Fields extends Fs_Fields {
+class Layout_Fs_Fields extends Fs_Fields {
 	/**
 	 * @return string[]
 	 */
@@ -18,8 +18,7 @@ class Post_Selection_Fs_Fields extends Fs_Fields {
 		return array_merge(
 			parent::get_template_fs_field_names_without_json(),
 			array(
-				'query_preview',
-				'extra_query_arguments',
+				'php_variables',
 			)
 		);
 	}
@@ -27,16 +26,13 @@ class Post_Selection_Fs_Fields extends Fs_Fields {
 	public function set_fs_field( Cpt_Settings $cpt_settings, string $field_file, string $field_value ): void {
 		parent::set_fs_field( $cpt_settings, $field_file, $field_value );
 
-		if ( ! ( $cpt_settings instanceof Post_Selection_Settings ) ) {
+		if ( ! ( $cpt_settings instanceof Layout_Settings ) ) {
 			return;
 		}
 
 		switch ( $field_file ) {
-			case 'query-preview.php':
-				$cpt_settings->query_preview = $field_value;
-				break;
 			case 'controller.php':
-				$cpt_settings->extra_query_arguments = $field_value;
+				$cpt_settings->php_variables = $field_value;
 				break;
 		}
 	}
@@ -48,32 +44,30 @@ class Post_Selection_Fs_Fields extends Fs_Fields {
 		return array_merge(
 			parent::get_fs_field_file_names( $is_without_auto_generated ),
 			array(
-				'query-preview.php',
 				'controller.php',
 			)
 		);
 	}
 
 	/**
-	 * @return array<string, string>
+	 * @return array<string,string>
 	 */
 	public function get_fs_field_values(
 		Cpt_Settings $cpt_settings,
 		bool $is_bulk_refresh = false,
 		bool $is_skip_auto_generated = false
 	): array {
-		$fs_field_values = parent::get_fs_field_values( $cpt_settings, $is_bulk_refresh, $is_skip_auto_generated );
+		$fs_fields = parent::get_fs_field_values( $cpt_settings, $is_bulk_refresh, $is_skip_auto_generated );
 
-		if ( $cpt_settings instanceof Post_Selection_Settings ) {
-			$fs_field_values = array_merge(
-				$fs_field_values,
+		if ( $cpt_settings instanceof Layout_Settings ) {
+			$fs_fields = array_merge(
+				$fs_fields,
 				array(
-					'query-preview.php' => $cpt_settings->query_preview,
-					'controller.php'    => $cpt_settings->extra_query_arguments,
+					'controller.php' => $cpt_settings->php_variables,
 				)
 			);
 		}
 
-		return $fs_field_values;
+		return $fs_fields;
 	}
 }

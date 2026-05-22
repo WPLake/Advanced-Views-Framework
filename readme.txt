@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.8.9 (2025-) =
+- Fix: PHPController compatibility with the FS storage option
+
 = 3.8.7 (2025-05-20) =
 - Feature adoption: PHP Controller (before Custom Data in Pro)
 - Feature adoption: Reusable Components Library
