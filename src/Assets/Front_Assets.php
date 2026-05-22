@@ -501,11 +501,11 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $post_selection_settings ) ) {
+				! $asset->is_target_selection( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$class = $asset->get_card_items_wrapper_class( $post_selection_settings );
+			$class = $asset->get_selection_items_wrapper_class( $post_selection_settings );
 
 			if ( '' === $class ) {
 				continue;
@@ -528,11 +528,11 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $post_selection_settings ) ) {
+				! $asset->is_target_selection( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$asset_outers = $asset->get_card_item_outers( $post_selection_settings );
+			$asset_outers = $asset->get_selection_item_outers( $post_selection_settings );
 
 			if ( array() === $asset_outers ) {
 				continue;
@@ -562,11 +562,11 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 
 		foreach ( $this->assets as $asset ) {
 			if ( ! ( $asset instanceof Common_Front_Asset ) ||
-				! $asset->is_target_card( $post_selection_settings ) ) {
+				! $asset->is_target_selection( $post_selection_settings ) ) {
 				continue;
 			}
 
-			$attrs = array_merge( $attrs, $asset->get_card_shortcode_attrs( $post_selection_settings ) );
+			$attrs = array_merge( $attrs, $asset->get_selection_shortcode_attrs( $post_selection_settings ) );
 		}
 
 		return $attrs;

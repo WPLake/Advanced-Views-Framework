@@ -6,10 +6,10 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Front_Asset;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 
@@ -28,7 +28,7 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 
 	abstract protected function print_common_css_code( string $field_selector, Cpt_Settings $cpt_settings ): void;
 
-	abstract public function is_target_card( Post_Selection_Settings $post_selection_settings ): bool;
+	abstract public function is_target_selection( Post_Selection_Settings $post_selection_settings ): bool;
 
 	protected function set_card_field_id( string $card_field_id ): void {
 		$this->card_field_id = $card_field_id;
@@ -36,7 +36,7 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 
 	protected function is_web_component_required_for_card( Post_Selection_Settings $post_selection_settings ): bool {
 		return $this->is_with_web_component() &&
-				$this->is_target_card( $post_selection_settings );
+				$this->is_target_selection( $post_selection_settings );
 	}
 
 	protected function print_js_code( string $var_name, Field_Settings $field_settings, Layout_Settings $layout_settings ): void {
@@ -51,21 +51,21 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 		$this->print_common_css_code( $field_selector, $layout_settings );
 	}
 
-	public function get_card_items_wrapper_class( Post_Selection_Settings $post_selection_settings ): string {
+	public function get_selection_items_wrapper_class( Post_Selection_Settings $post_selection_settings ): string {
 		return '';
 	}
 
 	/**
 	 * @return Html_Wrapper[]
 	 */
-	public function get_card_item_outers( Post_Selection_Settings $post_selection_settings ): array {
+	public function get_selection_item_outers( Post_Selection_Settings $post_selection_settings ): array {
 		return array();
 	}
 
 	/**
 	 * @return array<string,string>
 	 */
-	public function get_card_shortcode_attrs( Post_Selection_Settings $post_selection_settings ): array {
+	public function get_selection_shortcode_attrs( Post_Selection_Settings $post_selection_settings ): array {
 		return array();
 	}
 
@@ -88,7 +88,7 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 			return parent::generate_code( $cpt_settings );
 		}
 
-		if ( ! $this->is_target_card( $cpt_settings ) ) {
+		if ( ! $this->is_target_selection( $cpt_settings ) ) {
 			return $code;
 		}
 
