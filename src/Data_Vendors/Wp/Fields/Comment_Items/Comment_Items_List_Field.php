@@ -84,7 +84,7 @@ class Comment_Items_List_Field extends Markup_Field {
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'id', $field_id, 'layout_id' );
 		echo ' object-id="comment"';
 		$markup_field_data->get_template_generator()->print_array_item_attribute( 'comment-id', $item_id, 'comment_id' );
 		echo ']';
@@ -195,9 +195,12 @@ class Comment_Items_List_Field extends Markup_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		$args = array(
-			'value'   => array(),
-			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+			'value'     => array(),
+			'view_id'   => $layout_id,
+			'layout_id' => $layout_id,
 		);
 
 		$post = $this->get_post( $variable_field_data->get_value() );
@@ -230,11 +233,14 @@ class Comment_Items_List_Field extends Markup_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_validation_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		return array(
-			'value'   => array(
+			'value'     => array(
 				$this->get_item_twig_args( null, $variable_field_data->get_field_data(), true ),
 			),
-			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+			'view_id'   => $layout_id,
+			'layout_id' => $layout_id,
 		);
 	}
 

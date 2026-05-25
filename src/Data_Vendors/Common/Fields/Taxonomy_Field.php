@@ -64,7 +64,7 @@ class Taxonomy_Field extends List_Field {
 			$field_id;
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'id', $field_id, 'layout_id' );
 		echo ' object-id="term"';
 		$markup_field_data->get_template_generator()->print_array_item_attribute( 'term-id', $object_id_source, 'value' );
 		echo ']';
@@ -74,10 +74,13 @@ class Taxonomy_Field extends List_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		return array_merge(
 			parent::get_template_variables( $variable_field_data ),
 			array(
-				'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+				'view_id'   => $layout_id,
+				'layout_id' => $layout_id,
 			)
 		);
 	}
@@ -86,10 +89,13 @@ class Taxonomy_Field extends List_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_validation_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		return array_merge(
 			parent::get_validation_template_variables( $variable_field_data ),
 			array(
-				'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+				'view_id'   => $layout_id,
+				'layout_id' => $layout_id,
 			)
 		);
 	}

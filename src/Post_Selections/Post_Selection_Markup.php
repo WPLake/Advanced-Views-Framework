@@ -8,6 +8,7 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
@@ -39,7 +40,7 @@ class Post_Selection_Markup {
 		echo "\r\n\t";
 
 		// 1 < pages_amount
-		$template_generator->print_if_for_array_item( '_card', 'pages_amount', '<', 1 );
+		$template_generator->print_if_for_array_item( Hard_Post_Selection_Cpt::variable_name(), 'pages_amount', '<', 1 );
 
 		echo "\r\n";
 		echo "\t\t<div>\r\n";
@@ -129,7 +130,7 @@ class Post_Selection_Markup {
 		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
-		$template_generator->print_array_item_attribute( 'id', '_card', 'view_id' );
+		$template_generator->print_array_item_attribute( 'id', Hard_Post_Selection_Cpt::variable_name(), 'layout_id' );
 		$template_generator->print_field_attribute( 'object-id', 'post_id' );
 
 		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $post_selection_settings );
@@ -170,11 +171,11 @@ class Post_Selection_Markup {
 
 		if ( false === $is_load_more ) {
 			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
-			$template_generator->print_array_item( '_card', 'classes' );
+			$template_generator->print_array_item( Hard_Post_Selection_Cpt::variable_name(), 'classes' );
 			echo esc_html( $post_selection_settings->get_bem_name() );
 			if ( ! $post_selection_settings->has_unique_bem_name() ) {
 				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
-				$template_generator->print_array_item( '_card', 'id' );
+				$template_generator->print_array_item( Hard_Post_Selection_Cpt::variable_name(), 'id' );
 			}
 			echo '">';
 
@@ -185,14 +186,14 @@ class Post_Selection_Markup {
 
 			echo "\r\n\r\n";
 			echo esc_html( str_repeat( "\t", $tabs_number ) );
-			$template_generator->print_if_for_array_item( '_card', 'post_ids' );
+			$template_generator->print_if_for_array_item( Hard_Post_Selection_Cpt::variable_name(), 'post_ids' );
 			echo "\r\n";
 			$this->print_items_opening_wrapper( $post_selection_settings, $tabs_number );
 			$this->print_opening_item_outers( $item_outers, $tabs_number, $template_generator );
 		}
 
 		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-		$template_generator->print_for_of_array_item( '_card', 'post_ids', 'post_id' );
+		$template_generator->print_for_of_array_item( Hard_Post_Selection_Cpt::variable_name(), 'post_ids', 'post_id' );
 		echo "\r\n";
 		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
 		$this->print_shortcode( $post_selection_settings );
@@ -216,7 +217,7 @@ class Post_Selection_Markup {
 					'<div class="%s">',
 					esc_html( $no_posts_message_class )
 				);
-				$template_generator->print_array_item( '_card', 'no_posts_found_message' );
+				$template_generator->print_array_item( Hard_Post_Selection_Cpt::variable_name(), 'no_posts_found_message' );
 				echo '</div>';
 				echo "\r\n";
 			}

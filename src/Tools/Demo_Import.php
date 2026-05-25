@@ -23,7 +23,6 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use WP_CLI\Fetchers\Post;
 
 final class Demo_Import extends Hookable implements Hooks_Interface {
 
@@ -424,7 +423,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 				'<!-- wp:heading --><h2>%s</h2><!-- /wp:heading -->',
 				__( '"Phone" View to show fields of this page', 'acf-views' )
 			);
-			$post_content .= '<!-- wp:shortcode -->[acf_views view-id="' . $this->layout_settings->get_unique_id(
+			$post_content .= '<!-- wp:shortcode -->[avf-layout id="' . $this->layout_settings->get_unique_id(
 				true
 			) . '"]<!-- /wp:shortcode -->';
 
@@ -445,7 +444,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 			'<!-- wp:heading --><h2>%s</h2><!-- /wp:heading -->',
 			__( "'Phone' View with the object-id argument to show Samsung Phone's fields", 'acf-views' )
 		);
-		$post_content .= '<!-- wp:shortcode -->[acf_views view-id="' . $this->layout_settings->get_unique_id(
+		$post_content .= '<!-- wp:shortcode -->[avf-layout id="' . $this->layout_settings->get_unique_id(
 			true
 		) . '" object-id="' . $this->samsung_id . '"]<!-- /wp:shortcode -->';
 		wp_update_post(

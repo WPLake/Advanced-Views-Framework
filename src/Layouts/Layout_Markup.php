@@ -9,6 +9,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
@@ -99,18 +100,18 @@ class Layout_Markup {
 
 		printf( '<%s class="', esc_html( $tag_name ) );
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
-			$template_generator->print_array_item( '_view', 'classes' );
+			$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'classes' );
 			echo esc_html( $bem_name );
 
 			// not necessary if the bemName is defined.
 			if ( ! $layout_settings->has_unique_bem_name() ) {
 				printf( ' %s--id--', esc_html( $bem_name ) );
-				$template_generator->print_array_item( '_view', 'id' );
+				$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'id' );
 			}
 
 			printf( ' %s--object-id--', esc_html( $bem_name ) );
 
-			$template_generator->print_array_item( '_view', 'object_id' );
+			$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'object_id' );
 		}
 		echo '">';
 

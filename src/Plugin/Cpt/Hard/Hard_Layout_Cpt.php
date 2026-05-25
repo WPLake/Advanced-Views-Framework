@@ -18,4 +18,8 @@ final class Hard_Layout_Cpt {
 	public static function cpt_name(): string {
 		return self::NAME;
 	}
+
+	public static function variable_name(): string {
+		return '_layout';
+	}
 }

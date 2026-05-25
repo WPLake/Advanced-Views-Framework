@@ -33,7 +33,7 @@ class Menu_Items_Field extends Markup_Field {
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'view-id', $field_id, 'view_id' );
+		$markup_field_data->get_template_generator()->print_array_item_attribute( 'id', $field_id, 'layout_id' );
 		$markup_field_data->get_template_generator()->print_array_item_attribute( 'object-id', $item_id, 'value' );
 		echo ']';
 	}
@@ -308,9 +308,12 @@ class Menu_Items_Field extends Markup_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		$args = array(
-			'value'   => array(),
-			'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+			'value'     => array(),
+			'view_id'   => $layout_id,
+			'layout_id' => $layout_id,
 		);
 
 		$menu = $this->get_term( $variable_field_data->get_value(), 'nav_menu' );

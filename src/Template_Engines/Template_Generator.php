@@ -347,7 +347,7 @@ class Template_Generator extends Template_Tokenizer {
 			$item_keys[] = $sub_field_id;
 		}
 
-		$item_keys[] = 'view_id';
+		$item_keys[] = 'layout_id';
 
 		$this->print_token_items( $item_keys );
 

@@ -22,4 +22,8 @@ final class Hard_Post_Selection_Cpt {
 	public static function markup_name(): string {
 		return 'avf-selection';
 	}
+
+	public static function variable_name(): string {
+		return '_selection';
+	}
 }

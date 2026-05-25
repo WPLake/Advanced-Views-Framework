@@ -62,7 +62,7 @@ class Post_Object_Field extends List_Field {
 			$field_id;
 
 		printf(
-			'[%s view-id="{{ %s.view_id }}" object-id="{{ %s.value }}"]',
+			'[%s id="{{ %s.layout_id }}" object-id="{{ %s.value }}"]',
 			esc_html( Hard_Layout_Cpt::cpt_name() ),
 			esc_html( $field_id ),
 			esc_html( $object_id_source )
@@ -73,10 +73,13 @@ class Post_Object_Field extends List_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		return array_merge(
 			parent::get_template_variables( $variable_field_data ),
 			array(
-				'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+				'view_id'   => $layout_id,
+				'layout_id' => $layout_id,
 			)
 		);
 	}
@@ -85,10 +88,13 @@ class Post_Object_Field extends List_Field {
 	 * @return array<string, mixed>
 	 */
 	public function get_validation_template_variables( Variable_Field_Data $variable_field_data ): array {
+		$layout_id = $variable_field_data->get_field_data()->get_short_unique_acf_view_id();
+
 		return array_merge(
 			parent::get_validation_template_variables( $variable_field_data ),
 			array(
-				'view_id' => $variable_field_data->get_field_data()->get_short_unique_acf_view_id(),
+				'view_id'   => $layout_id,
+				'layout_id' => $layout_id,
 			)
 		);
 	}
