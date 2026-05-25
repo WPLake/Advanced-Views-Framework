@@ -114,6 +114,8 @@ abstract class Cpt_Settings extends Group {
 	 */
 	abstract public function get_multilingual_strings(): array;
 
+	abstract public function get_bem_name(): string;
+
 	protected function resolved_css_code( string $css_code, string $mode, string $alias ): string {
 		if ( self::CODE_MODE_DISPLAY === $mode ) {
 			$markup_id = $this->get_markup_id();

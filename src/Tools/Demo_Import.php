@@ -351,7 +351,7 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$card_data->post_in         = array( $this->samsung_id, $this->xiaomi_id, $this->nokia_id );
 
 		$card_data->css_code = sprintf( "#%s__items {\n display:flex;\n}\n\n", Post_Selection_Settings::MAGIC_CSS_SELECTOR ) .
-								sprintf( "#%s .acf-view {\n flex-basis:33%;\n flex-shrink:0;\n padding:10px 20px;\n}\n\n", Post_Selection_Settings::MAGIC_CSS_SELECTOR );
+								sprintf( "#%s .acf-view {\n flex-basis:33%%;\n flex-shrink:0;\n padding:10px 20px;\n}\n\n", Post_Selection_Settings::MAGIC_CSS_SELECTOR );
 
 		// it'll also save the data above.
 		$this->post_selections_cpt_save_actions->perform_save_actions( $card_data->get_post_id() );
