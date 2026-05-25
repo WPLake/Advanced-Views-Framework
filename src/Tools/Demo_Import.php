@@ -321,12 +321,12 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 		$website_item->field->id         = 'website';
 		$view->items[]                   = $website_item;
 
-		// the checkbox is necessary to use #view__row.
+		// the checkbox is necessary to use #layout__row.
 		$view->is_with_common_classes = true;
-		$view->css_code               = "#view {\n padding: 30px;\n color: #444444;\n}\n\n" .
-										"#view__row {\n display:flex;\n margin:10px;\n}\n\n" .
-										"#view a {\n color:#008BB7;\n}\n\n" .
-										"#view__label {\n width: 100px;\n font-weight: bold;\n padding-right: 10px;\n}\n\n";
+		$view->css_code               = sprintf( "#%s {\n padding: 30px;\n color: #444444;\n}\n\n", Layout_Settings::MAGIC_CSS_SELECTOR ) .
+												sprintf( "#%s__row {\n display:flex;\n margin:10px;\n}\n\n", Layout_Settings::MAGIC_CSS_SELECTOR ) .
+														sprintf( "#%s a {\n color:#008BB7;\n}\n\n", Layout_Settings::MAGIC_CSS_SELECTOR ) .
+																sprintf( "#%s__label {\n width: 100px;\n font-weight: bold;\n padding-right: 10px;\n}\n\n", Layout_Settings::MAGIC_CSS_SELECTOR );
 
 		// it'll also save the data above.
 		$this->layouts_cpt_save_actions->perform_save_actions( $view->get_post_id() );

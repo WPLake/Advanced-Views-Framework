@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Post_Selections;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
@@ -172,7 +172,7 @@ class Post_Selection_Markup {
 			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
 			$template_generator->print_array_item( '_card', 'classes' );
 			echo esc_html( $post_selection_settings->get_bem_name() );
-			if ( 'acf-card' === $post_selection_settings->get_bem_name() ) {
+			if ( ! $post_selection_settings->has_unique_bem_name() ) {
 				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
 				$template_generator->print_array_item( '_card', 'id' );
 			}

@@ -64,7 +64,11 @@ abstract class View_Front_Asset extends Front_Asset implements View_Front_Asset_
 
 		if ( $is_with_magic_selector ) {
 			$bem_prefix    = '.' . $layout_settings->get_bem_name() . '__';
-			$item_selector = '#view__' . substr( $item_selector, strlen( $bem_prefix ) );
+			$item_selector = sprintf(
+				'#%s__%s',
+				Layout_Settings::MAGIC_CSS_SELECTOR,
+				substr( $item_selector, strlen( $bem_prefix ) )
+			);
 		}
 
 		return $item_selector;

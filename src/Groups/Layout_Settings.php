@@ -33,6 +33,7 @@ class Layout_Settings extends Cpt_Settings {
 	// keep the WP format 'image/jpg' to use WP_Query without issues.
 	const POST_VALUE_IS_HAS_GUTENBERG = 'block/block';
 	const UNIQUE_ID_PREFIX            = 'view_';
+	const MAGIC_CSS_SELECTOR          = 'layout';
 
 	/**
 	 * @a-type tab
@@ -136,7 +137,7 @@ class Layout_Settings extends Cpt_Settings {
 	/**
 	 * @a-type textarea
 	 * @label CSS Code
-	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#view' will be replaced with '.acf-view--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-view__' (or '.bem-name__'). <br><br> We recommend using #view { #this__first-field { //... }, #this__second-field { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#view__', which will be replaced with '.acf-view--id--X .acf-view__' (or '.bem-name .bem-name__').
+	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option.
 	 */
 	public string $css_code;
 	/**
@@ -230,6 +231,19 @@ class Layout_Settings extends Cpt_Settings {
 	 */
 	public bool $is_has_gutenberg_block;
 
+	/**
+	 * @return array<string|int,mixed>
+	 * @throws Exception
+	 */
+	public static function getGroupInfo(): array {
+		return array_merge(
+			parent::getGroupInfo(),
+			array(
+				'title' => __( 'View settings', 'acf-views' ),
+			)
+		);
+	}
+
 	// @phpcs:ignore
 	protected static function getFieldInfo( string $fieldName ): ?FieldInfoInterface {
 		// @phpcs:ignore
@@ -300,79 +314,6 @@ return new class extends Layout_Controller_Base {
 	}
 
 	/**
-	 * @return array<string|int,mixed>
-	 * @throws Exception
-	 */
-	public static function getGroupInfo(): array {
-		return array_merge(
-			parent::getGroupInfo(),
-			array(
-				'title' => __( 'View settings', 'acf-views' ),
-			)
-		);
-	}
-
-	/**
-	 * @return array<string,string[]>
-	 */
-	protected function get_multilingual_strings_from_fields(): array {
-		$labels = array();
-
-		foreach ( $this->items as $item ) {
-			if ( '' !== $item->field->label ) {
-				$labels[] = $item->field->label;
-			}
-			if ( '' !== $item->field->link_label ) {
-				$labels[] = $item->field->link_label;
-			}
-			if ( '' !== $item->field->map_marker_icon_title ) {
-				$labels[] = $item->field->map_marker_icon_title;
-			}
-		}
-
-		return array() !== $labels ?
-			array(
-				Plugin::get_theme_text_domain() => array_unique( $labels ),
-			) :
-			array();
-	}
-
-	/**
-	 * @param array<string,string[]> $ml_strings
-	 *
-	 * @return array<string,string[]>
-	 */
-	protected function get_multilingual_strings_from_sub_fields( array $ml_strings ): array {
-		$theme_text_domain                = Plugin::get_theme_text_domain();
-		$ml_strings[ $theme_text_domain ] = $ml_strings[ $theme_text_domain ] ?? array();
-
-		foreach ( $this->items as $item ) {
-			foreach ( $item->repeater_fields as $repeater_field ) {
-				if ( '' !== $repeater_field->label ) {
-					$ml_strings[ $theme_text_domain ][] = $repeater_field->label;
-				}
-
-				if ( '' !== $repeater_field->link_label ) {
-					$ml_strings[ $theme_text_domain ][] = $repeater_field->link_label;
-				}
-
-				if ( '' !== $repeater_field->map_marker_icon_title ) {
-					$ml_strings[ $theme_text_domain ][] = $repeater_field->map_marker_icon_title;
-				}
-			}
-		}
-
-		$ml_strings[ $theme_text_domain ] = array_unique( $ml_strings[ $theme_text_domain ] );
-
-		// do not keep empty.
-		if ( array() === $ml_strings[ $theme_text_domain ] ) {
-			unset( $ml_strings[ $theme_text_domain ] );
-		}
-
-		return $ml_strings;
-	}
-
-	/**
 	 * @return string[]
 	 */
 	public function get_used_meta_group_ids(): array {
@@ -402,56 +343,21 @@ return new class extends Layout_Controller_Base {
 	}
 
 	public function get_css_code( string $mode ): string {
+		$aliases  = array( 'view', self::MAGIC_CSS_SELECTOR );
 		$css_code = $this->css_code;
 
-		if ( self::CODE_MODE_DISPLAY === $mode ) {
-			$markup_id = $this->get_markup_id();
-
-			if ( false === $this->is_with_shadow_dom() ) {
-				// do not use getBemName(), because it'll always return something.
-				$selector = '' !== $this->bem_name ?
-					'.' . $this->bem_name :
-					'.acf-view--id--' . $markup_id;
-			} else {
-				// previous doesn't work in the case of the shadow root, as top element is out of the shadow root.
-				$selector = ':host';
-			}
-
-			// magic shortcuts.
-			$css_code = str_replace(
-				'#view__',
-				sprintf( '%s .%s__', $selector, $this->get_bem_name() ),
-				$css_code
-			);
-
-			$css_code = str_replace(
-				'#view',
-				sprintf( '%s', $selector ),
-				$css_code
-			);
-
-			// covers #this__, #this--, and just #this { ... }.
-			$css_code = str_replace(
-				'#this',
-				// do not use $selector here, as we never need ':host' here.
-				sprintf( '.%s', $this->get_bem_name() ),
-				$css_code
-			);
-
-			// for back compatibility.
-			$css_code = str_replace(
-				'#__',
-				// do not use $selector here, as we never need ':host' here.
-				sprintf( '.%s__', $this->get_bem_name() ),
-				$css_code
-			);
-
-			$css_code = trim( $css_code );
-		} elseif ( self::CODE_MODE_PREVIEW === $mode ) {
-			$css_code = str_replace( '#view__', sprintf( '#view .%s__', $this->get_bem_name() ), $css_code );
+		foreach ( $aliases as $alias ) {
+			$css_code = $this->resolved_css_code( $css_code, $mode, $alias );
 		}
 
 		return $css_code;
+	}
+
+	public function has_unique_bem_name(): bool {
+		$bem_name = trim( $this->bem_name );
+
+		return strlen( $bem_name ) > 0 &&
+				! in_array( $bem_name, array( 'acf-view', Hard_Layout_Cpt::cpt_name() ), true );
 	}
 
 	/**
@@ -499,7 +405,6 @@ return new class extends Layout_Controller_Base {
 			$bem_name :
 			Hard_Layout_Cpt::cpt_name();
 	}
-
 	public function get_item_class( string $suffix, Field_Settings $field_data ): string {
 		if ( self::CLASS_GENERATION_NONE === $this->classes_generation ) {
 			return '';
@@ -517,7 +422,7 @@ return new class extends Layout_Controller_Base {
 	}
 
 	public function get_tag_name( string $prefix = '' ): string {
-		return parent::get_tag_name( 'acf-view' );
+		return parent::get_tag_name( $this->get_bem_name() );
 	}
 
 	public function get_item_selector(
@@ -599,5 +504,65 @@ return new class extends Layout_Controller_Base {
 
 	public function is_for_internal_usage_only(): bool {
 		return '' !== $this->parent_field;
+	}
+
+	/**
+	 * @return array<string,string[]>
+	 */
+	protected function get_multilingual_strings_from_fields(): array {
+		$labels = array();
+
+		foreach ( $this->items as $item ) {
+			if ( '' !== $item->field->label ) {
+				$labels[] = $item->field->label;
+			}
+			if ( '' !== $item->field->link_label ) {
+				$labels[] = $item->field->link_label;
+			}
+			if ( '' !== $item->field->map_marker_icon_title ) {
+				$labels[] = $item->field->map_marker_icon_title;
+			}
+		}
+
+		return array() !== $labels ?
+			array(
+				Plugin::get_theme_text_domain() => array_unique( $labels ),
+			) :
+			array();
+	}
+
+	/**
+	 * @param array<string,string[]> $ml_strings
+	 *
+	 * @return array<string,string[]>
+	 */
+	protected function get_multilingual_strings_from_sub_fields( array $ml_strings ): array {
+		$theme_text_domain                = Plugin::get_theme_text_domain();
+		$ml_strings[ $theme_text_domain ] = $ml_strings[ $theme_text_domain ] ?? array();
+
+		foreach ( $this->items as $item ) {
+			foreach ( $item->repeater_fields as $repeater_field ) {
+				if ( '' !== $repeater_field->label ) {
+					$ml_strings[ $theme_text_domain ][] = $repeater_field->label;
+				}
+
+				if ( '' !== $repeater_field->link_label ) {
+					$ml_strings[ $theme_text_domain ][] = $repeater_field->link_label;
+				}
+
+				if ( '' !== $repeater_field->map_marker_icon_title ) {
+					$ml_strings[ $theme_text_domain ][] = $repeater_field->map_marker_icon_title;
+				}
+			}
+		}
+
+		$ml_strings[ $theme_text_domain ] = array_unique( $ml_strings[ $theme_text_domain ] );
+
+		// do not keep empty.
+		if ( array() === $ml_strings[ $theme_text_domain ] ) {
+			unset( $ml_strings[ $theme_text_domain ] );
+		}
+
+		return $ml_strings;
 	}
 }

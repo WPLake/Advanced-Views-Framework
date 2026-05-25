@@ -33,6 +33,10 @@ final class Migration_Field_Values extends Migration_Base {
 	}
 
 	public function migrate(): void {
+		$this->cpt_settings_storage->add_on_loaded_callback( fn() => $this->migrate_field_values() );
+	}
+
+	protected function migrate_field_values(): void {
 		foreach ( $this->cpt_settings_storage->get_all() as $cpt_settings ) {
 			$is_migrated = ( $this->migrate_field_values )( $cpt_settings );
 

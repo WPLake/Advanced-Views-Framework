@@ -490,88 +490,25 @@ return new class extends Selection_Controller_Base {
 		);
 	}
 
-	/**
-	 * @return string[]
-	 */
-	protected function get_used_meta_group_ids(): array {
-		return array( $this->acf_view_id );
-	}
+	public function has_unique_bem_name(): bool {
+		$bem_name = trim( $this->bem_name );
 
-	/**
-	 * @return array<string,string[]>
-	 */
-	protected function get_multilingual_strings_from_labels(): array {
-		$labels = array();
-
-		if ( '' !== $this->no_posts_found_message ) {
-			$labels[] = $this->no_posts_found_message;
-		}
-
-		if ( '' !== $this->load_more_button_label ) {
-			$labels[] = $this->load_more_button_label;
-		}
-
-		return array() !== $labels ?
-			array(
-				Plugin::get_theme_text_domain() => $labels,
-			) :
-			array();
+		return strlen( $bem_name ) > 0 &&
+				! in_array( $bem_name, array( 'acf-card', Hard_Post_Selection_Cpt::cpt_name() ), true );
 	}
 
 	public function get_css_code( string $mode ): string {
+		$aliases  = array( 'card', 'selection' );
 		$css_code = $this->css_code;
 
-		if ( self::CODE_MODE_DISPLAY === $mode ) {
-			$markup_id = $this->get_markup_id();
-
-			if ( false === $this->is_with_shadow_dom() ) {
-				// do not use getBemName(), because it'll always return something.
-				$selector = '' !== $this->bem_name ?
-					'.' . $this->bem_name :
-					'.acf-card--id--' . $markup_id;
-			} else {
-				// previous doesn't work in the case of the shadow root, as top element is out of the shadow root.
-
-				$selector = ':host';
-			}
-
-			// magic shortcuts.
-			$css_code = str_replace(
-				'#card__',
-				sprintf( '%s .%s__', $selector, $this->get_bem_name() ),
-				$css_code
-			);
-
-			$css_code = str_replace(
-				'#card',
-				sprintf( '%s', $selector ),
-				$css_code
-			);
-
-			// covers #this__, #this--, and just #this { ... }.
-			$css_code = str_replace(
-				'#this',
-				// do not use $selector here, as we never need ':host' here.
-				sprintf( '.%s', $this->get_bem_name() ),
-				$css_code
-			);
-
-			// for back compatibility.
-			$css_code = str_replace(
-				'#__',
-				// do not use $selector here, as we never need ':host' here.
-				sprintf( '.%s__', $this->get_bem_name() ),
-				$css_code
-			);
-		} elseif ( self::CODE_MODE_PREVIEW === $mode ) {
-			$css_code = str_replace( '#card__', sprintf( '#card .%s__', $this->get_bem_name() ), $css_code );
+		foreach ( $aliases as $alias ) {
+			$css_code = $this->resolved_css_code( $css_code, $mode, $alias );
 		}
 
 		// back the right way, as before it was hack for CodeMirror.
 		$css_code = str_replace( '"1fr"', '1fr', $css_code );
-		$css_code = trim( $css_code );
 
-		return $css_code;
+		return trim( $css_code );
 	}
 
 	/**
@@ -630,6 +567,34 @@ return new class extends Selection_Controller_Base {
 	}
 
 	public function get_tag_name( string $prefix = '' ): string {
-		return parent::get_tag_name( 'acf-card' );
+		return parent::get_tag_name( $this->get_bem_name() );
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function get_used_meta_group_ids(): array {
+		return array( $this->acf_view_id );
+	}
+
+	/**
+	 * @return array<string,string[]>
+	 */
+	protected function get_multilingual_strings_from_labels(): array {
+		$labels = array();
+
+		if ( '' !== $this->no_posts_found_message ) {
+			$labels[] = $this->no_posts_found_message;
+		}
+
+		if ( '' !== $this->load_more_button_label ) {
+			$labels[] = $this->load_more_button_label;
+		}
+
+		return array() !== $labels ?
+			array(
+				Plugin::get_theme_text_domain() => $labels,
+			) :
+			array();
 	}
 }

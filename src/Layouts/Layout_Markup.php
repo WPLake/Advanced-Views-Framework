@@ -103,7 +103,7 @@ class Layout_Markup {
 			echo esc_html( $bem_name );
 
 			// not necessary if the bemName is defined.
-			if ( 'acf-view' === $bem_name ) {
+			if ( ! $layout_settings->has_unique_bem_name() ) {
 				printf( ' %s--id--', esc_html( $bem_name ) );
 				$template_generator->print_array_item( '_view', 'id' );
 			}

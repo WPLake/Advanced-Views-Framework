@@ -28,6 +28,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2\Migration_2_4_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_9;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
@@ -398,6 +399,11 @@ abstract class Plugin_Loader_Base {
 					$this->post_selections_settings_storage,
 					$this->layout_cpt,
 					$this->post_selection_cpt
+				),
+				new Migration_3_8_9(
+					$this->logger,
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage,
 				),
 			)
 		);
