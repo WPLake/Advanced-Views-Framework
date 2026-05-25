@@ -600,15 +600,15 @@ return new class extends Selection_Controller_Base {
 	public function get_bem_name(): string {
 		$bem_name = trim( $this->bem_name );
 
-		if ( '' === $bem_name ) {
-			return 'acf-card';
+		if ( 0 === strlen( $bem_name ) ) {
+			return Hard_Post_Selection_Cpt::cpt_name();
 		}
 
 		$bem_name = preg_replace( '/[^a-z0-9\-_]/', '', $bem_name );
 
 		return null !== $bem_name ?
 			$bem_name :
-			'acf-card';
+			Hard_Post_Selection_Cpt::cpt_name();
 	}
 
 	public function get_no_posts_found_message_translation(): string {

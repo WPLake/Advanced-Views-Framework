@@ -200,6 +200,7 @@ You're welcome to open issues or PRs there.
 
 = 3.8.9 (2025-) =
 - Fix: PHPController compatibility with the FS storage option
+- Enhance: names
 
 = 3.8.7 (2025-05-20) =
 - Feature adoption: PHP Controller (before Custom Data in Pro)

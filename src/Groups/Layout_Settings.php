@@ -489,15 +489,15 @@ return new class extends Layout_Controller_Base {
 	public function get_bem_name(): string {
 		$bem_name = trim( $this->bem_name );
 
-		if ( '' === $bem_name ) {
-			return 'acf-view';
+		if ( 0 === strlen( $bem_name ) ) {
+			return Hard_Layout_Cpt::cpt_name();
 		}
 
 		$bem_name = preg_replace( '/[^a-z0-9\-_]/', '', $bem_name );
 
 		return null !== $bem_name ?
 			$bem_name :
-			'acf-view';
+			Hard_Layout_Cpt::cpt_name();
 	}
 
 	public function get_item_class( string $suffix, Field_Settings $field_data ): string {

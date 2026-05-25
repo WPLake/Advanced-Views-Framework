@@ -293,18 +293,11 @@ abstract class Cpt_Settings extends Group {
 	}
 
 	public function get_tag_name( string $prefix = '' ): string {
-		if ( false === $this->is_web_component() ) {
-			return 'section';
+		if ( $this->is_web_component() ) {
+			return $this->get_web_component_tag_name( $prefix );
 		}
 
-		$bem_name = '' !== $this->bem_name ?
-			str_replace( '_', '-', $this->bem_name ) :
-			'';
-
-		// WebComponents require at least one dash in the name.
-		return ( '' !== $bem_name && false !== strpos( $bem_name, '-' ) ) ?
-			$bem_name :
-			sprintf( '%s-%s', $prefix, $this->get_unique_id( true ) );
+		return 'section';
 	}
 
 	public function is_wp_interactivity_in_use(): bool {
@@ -332,5 +325,18 @@ abstract class Cpt_Settings extends Group {
 		}
 
 		return $this->hashes;
+	}
+
+	protected function get_web_component_tag_name( string $prefix ): string {
+		$is_custom_bem_name = strlen( $this->bem_name ) > 0;
+
+		$bem_name = $is_custom_bem_name ?
+			str_replace( '_', '-', $this->bem_name ) :
+			'';
+
+		// WebComponents require at least one dash in the name.
+		return ( $is_custom_bem_name && false !== strpos( $bem_name, '-' ) ) ?
+			$bem_name :
+			sprintf( '%s-%s', $prefix, $this->get_unique_id( true ) );
 	}
 }
