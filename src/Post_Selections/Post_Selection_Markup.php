@@ -310,7 +310,7 @@ class Post_Selection_Markup {
 				printf( "\n@media screen and (min-width:%spx) {", esc_html( (string) $screen ) );
 			}
 
-			echo "\n#card .acf-card__items {\n";
+			printf( "\n#%s #this__items {\n", Post_Selection_Settings::MAGIC_CSS_SELECTOR );
 			// @phpcs:ignore WordPress.Security.EscapeOutput
 			echo join( "\n", $safe_rule );
 			echo "\n}\n";

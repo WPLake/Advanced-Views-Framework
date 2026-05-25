@@ -41,6 +41,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	const PAGINATION_TYPE_INFINITY         = 'infinity_scroll';
 	const PAGINATION_TYPE_PAGE_NUMBERS     = 'page_numbers';
 	const UNIQUE_ID_PREFIX                 = 'card_';
+	const MAGIC_CSS_SELECTOR               = 'selection';
 
 	const ITEMS_SOURCE_CONTEXT_POSTS = 'context_posts';
 
@@ -262,8 +263,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	/**
 	 * @a-type textarea
 	 * @label CSS Code
-	 * @instructions Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the Layout fields here, each Layout has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__').
-	 * /
+	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option.
 	 */
 	public string $css_code;
 	/**
@@ -498,7 +498,7 @@ return new class extends Selection_Controller_Base {
 	}
 
 	public function get_css_code( string $mode ): string {
-		$aliases  = array( 'card', 'selection' );
+		$aliases  = array( 'card', self::MAGIC_CSS_SELECTOR );
 		$css_code = $this->css_code;
 
 		foreach ( $aliases as $alias ) {
@@ -538,14 +538,14 @@ return new class extends Selection_Controller_Base {
 		$bem_name = trim( $this->bem_name );
 
 		if ( 0 === strlen( $bem_name ) ) {
-			return Hard_Post_Selection_Cpt::cpt_name();
+			return Hard_Post_Selection_Cpt::markup_name();
 		}
 
 		$bem_name = preg_replace( '/[^a-z0-9\-_]/', '', $bem_name );
 
-		return null !== $bem_name ?
+		return is_string( $bem_name ) ?
 			$bem_name :
-			Hard_Post_Selection_Cpt::cpt_name();
+			Hard_Post_Selection_Cpt::markup_name();
 	}
 
 	public function get_no_posts_found_message_translation(): string {

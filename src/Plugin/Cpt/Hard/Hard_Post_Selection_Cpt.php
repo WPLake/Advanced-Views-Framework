@@ -18,4 +18,8 @@ final class Hard_Post_Selection_Cpt {
 	public static function cpt_name(): string {
 		return self::NAME;
 	}
+
+	public static function markup_name(): string {
+		return 'avf-selection';
+	}
 }

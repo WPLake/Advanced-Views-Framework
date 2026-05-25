@@ -93,7 +93,10 @@ abstract class Common_Front_Asset extends View_Front_Asset {
 		}
 
 		ob_start();
-		$this->print_common_css_code( '#card', $cpt_settings );
+		$this->print_common_css_code(
+			sprintf( '#%s', Post_Selection_Settings::MAGIC_CSS_SELECTOR ),
+			$cpt_settings
+		);
 		$css_code = (string) ob_get_clean();
 
 		ob_start();
