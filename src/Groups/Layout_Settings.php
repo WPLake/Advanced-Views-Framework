@@ -403,7 +403,7 @@ return new class extends Layout_Controller_Base {
 
 		return null !== $bem_name ?
 			$bem_name :
-			Hard_Layout_Cpt::cpt_name();
+			Hard_Layout_Cpt::markup_name();
 	}
 	public function get_item_class( string $suffix, Field_Settings $field_data ): string {
 		if ( self::CLASS_GENERATION_NONE === $this->classes_generation ) {
