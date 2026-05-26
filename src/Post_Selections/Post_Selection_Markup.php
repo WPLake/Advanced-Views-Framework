@@ -311,7 +311,7 @@ class Post_Selection_Markup {
 				printf( "\n@media screen and (min-width:%spx) {", esc_html( (string) $screen ) );
 			}
 
-			printf( "\n#%s #this__items {\n", Post_Selection_Settings::MAGIC_CSS_SELECTOR );
+			printf( "\n#%s #this__items {\n", esc_html( Post_Selection_Settings::MAGIC_CSS_SELECTOR ) );
 			// @phpcs:ignore WordPress.Security.EscapeOutput
 			echo join( "\n", $safe_rule );
 			echo "\n}\n";

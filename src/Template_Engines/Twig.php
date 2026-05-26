@@ -129,12 +129,12 @@ class Twig extends Template_Engine {
 		foreach ( $custom_functions as $custom_function ) {
 			$custom_function = arr( $custom_function );
 
-			$function_name     = string($custom_function,0);
+			$function_name     = string( $custom_function, 0 );
 			$function_callback = key_exists( 1, $custom_function ) &&
 								is_callable( $custom_function[1] ) ?
 				$custom_function[1] :
 				null;
-			$function_args     = arr($custom_function,2);
+			$function_args     = arr( $custom_function, 2 );
 
 			if ( '' === $function_name ||
 				null === $function_callback ) {
