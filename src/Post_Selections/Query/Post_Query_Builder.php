@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 
 interface Post_Query_Builder {
 	/**
-	 * @return array<string, mixed>
+	 * @return mixed[]
 	 */
 	public function build_post_query( Post_Selection_Settings $selection_settings ): array;
 }

@@ -22,6 +22,7 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Layout extends Instance {
 	private Layout_Settings $layout_settings;
@@ -506,7 +507,7 @@ class Layout extends Instance {
 	 * @param array<string,mixed> $php_variables
 	 * @param mixed $object_id
 	 *
-	 * @return array<string,mixed>
+	 * @return mixed[]
 	 */
 	protected function apply_custom_variables_filter(
 		array $php_variables,
@@ -538,7 +539,7 @@ class Layout extends Instance {
 			$is_for_validation
 		);
 
-		return $custom_variables;
+		return arr( $custom_variables );
 	}
 
 	/**

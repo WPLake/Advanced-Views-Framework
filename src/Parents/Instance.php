@@ -95,13 +95,20 @@ abstract class Instance {
 	 * @return \Psr\Container\ContainerInterface|null
 	 */
 	protected function get_container() {
-		return Plugin::apply_filters(
+		$container = Plugin::apply_filters(
 			array(
 				'advanced_views/container',
 				'acf_views/container',
 			),
 			null
 		);
+
+		if ( is_object( $container ) &&
+			is_a( $container, '\Psr\Container\ContainerInterface' ) ) {
+			return $container;
+		}
+
+		return null;
 	}
 
 	protected function print_template_engine_is_not_loaded_message(): void {

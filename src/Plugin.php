@@ -84,7 +84,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 	/**
 	 * @param string|string[] $hook_names
 	 * @param mixed $value
-	 * @param ...$args
+	 * @param mixed[] $args
 	 *
 	 * @return mixed
 	 */
@@ -94,6 +94,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 			array( $hook_names );
 
 		foreach ( $hook_names as $hook_name ) {
+			// @phpstan-ignore-next-line
 			$value = apply_filters( $hook_name, $value, ...$args );
 		}
 

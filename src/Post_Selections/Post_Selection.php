@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 class Post_Selection extends Instance {
 	private Post_Selection_Settings $settings;
@@ -287,6 +288,7 @@ class Post_Selection extends Instance {
 		$custom_variables = arr( $custom_variables );
 
 		foreach ( $custom_variables as $name => $value ) {
+			$name = string( $name );
 			$name = str_replace( '-', '_', $name );
 			$name = str_replace( ' ', '_', $name );
 

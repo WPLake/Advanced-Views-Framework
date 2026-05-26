@@ -58,7 +58,7 @@ class Field_Markup {
 	/**
 	 * @param array<string,mixed> $field_data
 	 *
-	 * @return array<string,mixed>
+	 * @return array<string|int,mixed>
 	 */
 	protected function apply_field_data_filter(
 		array $field_data,
@@ -621,7 +621,7 @@ class Field_Markup {
 	 * @param mixed $field_value
 	 * @param mixed $formatted_value In repeater, formatted value must be passed directly
 	 *
-	 * @return array<string,mixed>
+	 * @return mixed[]
 	 */
 	public function get_field_twig_args(
 		Layout_Settings $layout_settings,

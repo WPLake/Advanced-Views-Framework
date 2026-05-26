@@ -12,6 +12,8 @@ use Org\Wplake\Advanced_Views\Vendors\Twig\Loader\FilesystemLoader;
 use Org\Wplake\Advanced_Views\Vendors\Twig\TwigFilter;
 use Org\Wplake\Advanced_Views\Vendors\Twig\TwigFunction;
 use WP_Filesystem_Base;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,7 +49,7 @@ class Twig extends Template_Engine {
 	}
 
 	/**
-	 * @return array<int, array<int,mixed>>
+	 * @return mixed[]
 	 */
 	protected function get_custom_functions(): array {
 		return array(
@@ -97,7 +99,7 @@ class Twig extends Template_Engine {
 	}
 
 	/**
-	 * @return array<int, array<int,mixed>>
+	 * @return mixed[]
 	 */
 	protected function get_custom_filters(): array {
 		return array();
@@ -125,18 +127,14 @@ class Twig extends Template_Engine {
 		$custom_filters   = $this->get_custom_filters();
 
 		foreach ( $custom_functions as $custom_function ) {
-			$function_name     = key_exists( 0, $custom_function ) &&
-								is_string( $custom_function[0] ) ?
-				$custom_function[0] :
-				'';
+			$custom_function = arr( $custom_function );
+
+			$function_name     = string($custom_function,0);
 			$function_callback = key_exists( 1, $custom_function ) &&
 								is_callable( $custom_function[1] ) ?
 				$custom_function[1] :
 				null;
-			$function_args     = key_exists( 2, $custom_function ) &&
-								is_array( $custom_function[2] ) ?
-				$custom_function[2] :
-				array();
+			$function_args     = arr($custom_function,2);
 
 			if ( '' === $function_name ||
 				null === $function_callback ) {
@@ -151,18 +149,14 @@ class Twig extends Template_Engine {
 		}
 
 		foreach ( $custom_filters as $custom_filter ) {
-			$filter_name     = key_exists( 0, $custom_filter ) &&
-								is_string( $custom_filter[0] ) ?
-				$custom_filter[0] :
-				'';
+			$custom_filter = arr( $custom_filter );
+
+			$filter_name     = string( $custom_filter, 0 );
 			$filter_callback = key_exists( 1, $custom_filter ) &&
 								is_callable( $custom_filter[1] ) ?
 				$custom_filter[1] :
 				null;
-			$filter_args     = key_exists( 2, $custom_filter ) &&
-								is_array( $custom_filter[2] ) ?
-				$custom_filter[2] :
-				array();
+			$filter_args     = arr( $custom_filter, 2 );
 
 			if ( '' === $filter_name ||
 				null === $filter_callback ) {
