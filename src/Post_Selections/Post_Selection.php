@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Bridge\Controllers\Request_Controller;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
@@ -267,16 +268,23 @@ class Post_Selection extends Instance {
 			$this->get_container()
 		);
 
-		$custom_variables = (array) apply_filters(
-			'acf_views/card/custom_variables',
+		$custom_variables = Plugin::apply_filters(
+			array(
+				'advanced_views/post_selection/custom_variables',
+				'acf_views/card/custom_variables',
+			),
 			$custom_variables,
 			$short_unique_card_id
 		);
-		$custom_variables = (array) apply_filters(
-			'acf_views/card/custom_variables/card_id=' . $short_unique_card_id,
+		$custom_variables = Plugin::apply_filters(
+			array(
+				sprintf( 'advanced_views/post_selection/custom_variables/selection_id=%s', $short_unique_card_id ),
+				sprintf( 'acf_views/card/custom_variables/card_id=%s', $short_unique_card_id ),
+			),
 			$custom_variables,
 			$short_unique_card_id
 		);
+		$custom_variables = arr( $custom_variables );
 
 		foreach ( $custom_variables as $name => $value ) {
 			$name = str_replace( '-', '_', $name );

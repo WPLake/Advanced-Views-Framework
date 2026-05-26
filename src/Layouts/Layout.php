@@ -18,6 +18,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use WP_REST_Request;
@@ -514,16 +515,22 @@ class Layout extends Instance {
 	): array {
 		$short_unique_view_id = $this->get_view_data()->get_unique_id( true );
 
-		$custom_variables = apply_filters(
-			'acf_views/view/custom_variables',
+		$custom_variables = Plugin::apply_filters(
+			array(
+				'advanced_views/layout/custom_variables',
+				'acf_views/view/custom_variables',
+			),
 			$php_variables,
 			$short_unique_view_id,
 			$object_id,
 			$this->get_field_values(),
 			$is_for_validation
 		);
-		$custom_variables = apply_filters(
-			'acf_views/view/custom_variables/view_id=' . $short_unique_view_id,
+		$custom_variables = Plugin::apply_filters(
+			array(
+				sprintf( 'advanced_views/layout/custom_variables/layout_id=%s', $short_unique_view_id ),
+				sprintf( 'acf_views/view/custom_variables/view_id=%s', $short_unique_view_id ),
+			),
 			$custom_variables,
 			$short_unique_view_id,
 			$object_id,

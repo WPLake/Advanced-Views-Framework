@@ -14,11 +14,13 @@ use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Layouts\Layout;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
-use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Source;
-use Org\Wplake\Advanced_Views\Layouts\Layout;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -53,45 +55,6 @@ class Field_Markup {
 		return $this->cache[ $vendor_name ][ $field_type ];
 	}
 
-	protected function apply_field_markup_filter(
-		string $field_markup,
-		Field_Meta_Interface $field_meta,
-		string $short_unique_view_id
-	): string {
-		$field_markup = (string) apply_filters(
-			'acf_views/view/field_markup',
-			$field_markup,
-			$field_meta,
-			$short_unique_view_id
-		);
-		$field_markup = (string) apply_filters(
-			'acf_views/view/field_markup/name=' . $field_meta->get_name(),
-			$field_markup,
-			$field_meta,
-			$short_unique_view_id
-		);
-
-		if ( ! in_array(
-			$field_meta->get_vendor_name(),
-			array( Wp_Data_Vendor::NAME, Woo_Data_Vendor::NAME ),
-			true
-		) ) {
-			$field_markup = (string) apply_filters(
-				'acf_views/view/field_markup/type=' . $field_meta->get_type(),
-				$field_markup,
-				$field_meta,
-				$short_unique_view_id
-			);
-		}
-
-		return (string) apply_filters(
-			'acf_views/view/field_markup/view_id=' . $short_unique_view_id,
-			$field_markup,
-			$field_meta,
-			$short_unique_view_id
-		);
-	}
-
 	/**
 	 * @param array<string,mixed> $field_data
 	 *
@@ -102,8 +65,11 @@ class Field_Markup {
 		Field_Meta_Interface $field_meta,
 		string $short_unique_view_id
 	): array {
-		$field_data = (array) apply_filters(
-			'acf_views/view/field_data',
+		$field_data = Plugin::apply_filters(
+			array(
+				'advanced_views/layout/field_data',
+				'acf_views/view/field_data',
+			),
 			$field_data,
 			$field_meta,
 			$short_unique_view_id
@@ -114,27 +80,38 @@ class Field_Markup {
 			array( Wp_Data_Vendor::NAME, Woo_Data_Vendor::NAME ),
 			true
 		) ) {
-			$field_data = (array) apply_filters(
-				'acf_views/view/field_data/type=' . $field_meta->get_type(),
+			$field_data = Plugin::apply_filters(
+				array(
+					sprintf( 'advanced_views/layout/field_data/type=%s', $field_meta->get_type() ),
+					sprintf( 'acf_views/view/field_data/type=%s', $field_meta->get_type() ),
+				),
 				$field_data,
 				$field_meta,
 				$short_unique_view_id
 			);
 		}
 
-		$field_data = (array) apply_filters(
-			'acf_views/view/field_data/name=' . $field_meta->get_name(),
+		$field_data = Plugin::apply_filters(
+			array(
+				sprintf( 'advanced_views/layout/field_data/name=%s', $field_meta->get_name() ),
+				sprintf( 'acf_views/view/field_data/name=%s', $field_meta->get_name() ),
+			),
 			$field_data,
 			$field_meta,
 			$short_unique_view_id
 		);
 
-		return (array) apply_filters(
-			'acf_views/view/field_data/view_id=' . $short_unique_view_id,
+		$field_data = Plugin::apply_filters(
+			array(
+				sprintf( 'advanced_views/layout/field_data/layout_id=%s', $short_unique_view_id ),
+				sprintf( 'acf_views/view/field_data/view_id=%s', $short_unique_view_id ),
+			),
 			$field_data,
 			$field_meta,
 			$short_unique_view_id
 		);
+
+		return arr( $field_data );
 	}
 
 	/**
