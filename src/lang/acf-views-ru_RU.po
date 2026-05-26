@@ -15,8 +15,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: acf-views.php
-#: src/Plugin.php:205
-#: src/Plugin.php:333
+#: src/Plugin.php:230
+#: src/Plugin.php:358
 msgid "Advanced Views Lite"
 msgstr "Advanced Views Lite"
 
@@ -25,46 +25,44 @@ msgstr "Advanced Views Lite"
 msgid "WPLake"
 msgstr "WPLake"
 
-#: src/Assets/Admin_Assets.php:332
-#: src/Assets/Admin_Assets.php:372
+#: src/Assets/Admin_Assets.php:341
+#: src/Assets/Admin_Assets.php:381
 #: src/Groups/translations.php:124
-#: src/Groups/translations.php:383
+#: src/Groups/translations.php:381
 msgid "Default Template"
 msgstr "Шаблон по умолчанию"
 
-#: src/Assets/Admin_Assets.php:340
-#: src/Assets/Admin_Assets.php:380
+#: src/Assets/Admin_Assets.php:349
+#: src/Assets/Admin_Assets.php:389
 #: src/Groups/translations.php:125
-#: src/Groups/translations.php:384
+#: src/Groups/translations.php:382
 msgid "Custom Template"
 msgstr "Пользовательский шаблон"
 
-#: src/Assets/Admin_Assets.php:348
-#: src/Assets/Admin_Assets.php:388
-#: src/Groups/translations.php:132
+#: src/Assets/Admin_Assets.php:357
+#: src/Assets/Admin_Assets.php:397
+#: src/Groups/translations.php:133
 #: src/Groups/translations.php:388
 msgid "CSS Code"
 msgstr "Код CSS"
 
-#: src/Assets/Admin_Assets.php:356
-#: src/Assets/Admin_Assets.php:396
-#: src/Groups/translations.php:133
+#: src/Assets/Admin_Assets.php:365
+#: src/Assets/Admin_Assets.php:405
+#: src/Groups/translations.php:134
 #: src/Groups/translations.php:389
 msgid "JS Code"
 msgstr "Код JS"
 
-#: src/Assets/Admin_Assets.php:364
-#: src/Groups/translations.php:130
-#: src/Groups/translations.php:381
+#: src/Assets/Admin_Assets.php:373
 msgid "Custom Data"
 msgstr "Пользовательские данные"
 
-#: src/Assets/Admin_Assets.php:404
-#: src/Groups/translations.php:380
+#: src/Assets/Admin_Assets.php:413
+#: src/Groups/translations.php:379
 msgid "Query Preview"
 msgstr "Предпросмотр запроса"
 
-#: src/Assets/Admin_Assets.php:412
+#: src/Assets/Admin_Assets.php:421
 msgid "Custom data"
 msgstr "Пользовательские данные"
 
@@ -115,7 +113,7 @@ msgstr "Карта отправлена."
 msgid "Card draft updated."
 msgstr "Черновик карты обновлен."
 
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:246
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:245
 #: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:133
 #: src/Post_Selections/Cpt/Post_Selections_Cpt_Meta_Boxes.php:77
 #: src/Post_Selections/Cpt/Table/Post_Selections_Cpt_Table.php:114
@@ -123,7 +121,7 @@ msgid "Shortcode"
 msgstr "Шорткод"
 
 #: src/Data_Vendors/Wp/Wp_Data_Vendor.php:143
-#: src/Groups/translations.php:135
+#: src/Groups/translations.php:136
 #: src/Groups/translations.php:371
 #: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:132
 #: src/Post_Selections/Cpt/Table/Post_Selections_Cpt_Table.php:113
@@ -135,30 +133,30 @@ msgstr "Описание"
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: src/Dashboard/Dashboard.php:217
+#: src/Dashboard/Dashboard.php:223
 #: src/Dashboard/Settings_Page.php:134
 #: src/Dashboard/Settings_Page.php:135
-#: src/Groups/Plugin_Settings.php:150
+#: src/Groups/Plugin_Settings.php:149
 msgid "Settings"
 msgstr "Настройки"
 
-#: src/Dashboard/Dashboard.php:224
+#: src/Dashboard/Dashboard.php:230
 #: src/Groups/Tools_Settings.php:179
 #: src/Tools/Tools.php:258
 #: src/Tools/Tools.php:259
 msgid "Tools"
 msgstr "Инструменты"
 
-#: src/Dashboard/Dashboard.php:240
+#: src/Dashboard/Dashboard.php:246
 msgid "Demo Import"
 msgstr "Демо импорт"
 
 #: src/Dashboard/Dashboard.php:59
-#: src/Dashboard/Dashboard.php:247
+#: src/Dashboard/Dashboard.php:253
 msgid "Docs"
 msgstr "Документация"
 
-#: src/Dashboard/Dashboard.php:256
+#: src/Dashboard/Dashboard.php:262
 msgid "Support"
 msgstr "Поддержка"
 
@@ -214,47 +212,47 @@ msgstr "Плагин ACF недоступен"
 msgid "Advanced Views \"Phone\" Demo Group"
 msgstr "Группа демо \"Телефон\" Advanced Views"
 
-#: src/Tools/Demo_Import.php:220
+#: src/Tools/Demo_Import.php:218
 msgid "Failed to import an ACF group"
 msgstr "Не удалось импортировать группу ACF"
 
-#: src/Tools/Demo_Import.php:243
+#: src/Tools/Demo_Import.php:241
 msgid "It's a demo View to display fields from the 'Phone' demo ACF Field Group."
 msgstr "Это демонстрационный вид для отображения полей из демонстрационной группы полей ACF 'Телефон'."
 
-#: src/Tools/Demo_Import.php:272
+#: src/Tools/Demo_Import.php:270
 msgid "Brand:"
 msgstr "Бренд:"
 
-#: src/Tools/Demo_Import.php:288
+#: src/Tools/Demo_Import.php:286
 msgid "Model:"
 msgstr "Модель:"
 
-#: src/Tools/Demo_Import.php:304
+#: src/Tools/Demo_Import.php:302
 msgid "Price:"
 msgstr "Цена:"
 
-#: src/Tools/Demo_Import.php:320
+#: src/Tools/Demo_Import.php:318
 msgid "Website:"
 msgstr "Веб-сайт:"
 
-#: src/Tools/Demo_Import.php:321
+#: src/Tools/Demo_Import.php:319
 msgid "Visit"
 msgstr "Посетить"
 
-#: src/Tools/Demo_Import.php:346
+#: src/Tools/Demo_Import.php:344
 msgid "It's a demo Card for 'Phones'"
 msgstr "Это демо-карта для 'Телефонов'"
 
-#: src/Tools/Demo_Import.php:426
+#: src/Tools/Demo_Import.php:424
 msgid "\"Phone\" View to show fields of this page"
 msgstr "\"Телефон\" Вид для отображения полей этой страницы"
 
-#: src/Tools/Demo_Import.php:447
+#: src/Tools/Demo_Import.php:445
 msgid "'Phone' View with the object-id argument to show Samsung Phone's fields"
 msgstr "Вид 'Телефон' с аргументом object-id для отображения полей телефона Samsung"
 
-#: src/Tools/Demo_Import.php:466
+#: src/Tools/Demo_Import.php:464
 msgid "\"Phones\" Card to show the phones"
 msgstr "\"Телефоны\" Карта для отображения телефонов"
 
@@ -308,7 +306,7 @@ msgid "Advanced Views"
 msgstr "Advanced Views"
 
 #: src/Data_Vendors/Common/Settings_Vendor_Integration.php:193
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:231
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:230
 msgid "Add new"
 msgstr "Добавить новое"
 
@@ -325,9 +323,9 @@ msgstr "Виды, связанные с этой группой, содержа�
 msgid "This field is available in the Pro version only"
 msgstr "Это поле доступно только в версии Pro"
 
-#: src/Data_Vendors/Data_Vendors.php:105
-#: src/Data_Vendors/Data_Vendors.php:130
-#: src/Data_Vendors/Data_Vendors.php:164
+#: src/Data_Vendors/Data_Vendors.php:86
+#: src/Data_Vendors/Data_Vendors.php:111
+#: src/Data_Vendors/Data_Vendors.php:145
 #: src/Groups_Integration/Tax_Field_Settings_Integration.php:26
 #: src/Groups_Integration/Tax_Field_Settings_Integration.php:43
 #: src/Groups_Integration/Tax_Field_Settings_Integration.php:93
@@ -530,7 +528,7 @@ msgstr "Меню (WordPress)"
 msgid "Menu item (WordPress)"
 msgstr "Пункт меню (WordPress)"
 
-#: src/Groups/Post_Selection_Settings.php:489
+#: src/Groups/Post_Selection_Settings.php:488
 msgid "Card settings"
 msgstr "Настройки карты"
 
@@ -592,26 +590,26 @@ msgid "Ignore Sticky Posts"
 msgstr "Игнорировать прикрепленные посты"
 
 #: src/Groups/translations.php:123
-#: src/Groups/translations.php:382
+#: src/Groups/translations.php:380
 msgid "Template"
 msgstr "Шаблон"
 
-#: src/Groups/translations.php:126
+#: src/Groups/translations.php:128
 #: src/Groups/translations.php:385
 msgid "BEM Unique Name"
 msgstr "Уникальное имя BEM"
 
-#: src/Groups/translations.php:127
+#: src/Groups/translations.php:129
 #: src/Groups/translations.php:386
 msgid "CSS classes"
 msgstr "CSS классы"
 
-#: src/Groups/translations.php:131
+#: src/Groups/translations.php:132
 #: src/Groups/translations.php:387
 msgid "CSS & JS"
 msgstr "CSS и JS"
 
-#: src/Plugin/Plugin_Loader_Base.php:429
+#: src/Plugin/Plugin_Loader_Base.php:452
 msgid "Layout"
 msgstr "Макет"
 
@@ -620,16 +618,16 @@ msgstr "Макет"
 msgid "Enable Slider"
 msgstr "Включить слайдер"
 
-#: src/Groups/translations.php:394
+#: src/Groups/translations.php:396
 msgid "Meta Filters"
 msgstr "Мета-фильтры"
 
-#: src/Groups/translations.php:395
+#: src/Groups/translations.php:394
 msgid "Taxonomy Filters"
 msgstr "Фильтры таксономии"
 
 #: src/Groups/translations.php:225
-#: src/Groups/translations.php:396
+#: src/Groups/translations.php:395
 #: src/Groups/translations.php:523
 msgid "Rules"
 msgstr "Правила"
@@ -666,10 +664,6 @@ msgstr "Выберите целевую группу"
 #: src/Groups/translations.php:205
 msgid "Select a target field"
 msgstr "Выберите целевое поле"
-
-#: src/Groups/translations.php:429
-msgid "Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-card')."
-msgstr "Определите уникальное <a target='_blank' href='https://getbem.com/introduction/'>имя BEM</a> для элемента, который будет использоваться в разметке, или оставьте пустым, чтобы использовать значение по умолчанию ('acf-card')."
 
 #: src/Groups/translations.php:54
 msgid "Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab"
@@ -732,8 +726,8 @@ msgstr "По убыванию"
 #: src/Groups/translations.php:193
 #: src/Groups/translations.php:328
 #: src/Groups/translations.php:330
+#: src/Groups/translations.php:472
 #: src/Groups/translations.php:474
-#: src/Groups/translations.php:476
 #: src/Groups/translations.php:477
 msgid "None"
 msgstr "Нет"
@@ -1038,14 +1032,6 @@ msgstr "Токен доступа"
 msgid "Repository Name"
 msgstr "Название репозитория"
 
-#: src/Groups/translations.php:97
-msgid "To retrieve your GitLab repository ID, follow these steps: 1. Open your repository. 2. Look for the 'Project Information' block on the right-hand side. 3. Click on the gear icon (project settings). 4. On the new page, copy the project ID field value."
-msgstr "Чтобы получить ИД вашего репозитория GitLab, выполните следующие шаги: 1. Откройте ваш репозиторий. 2. Найдите блок 'Информация о проекте' с правой стороны. 3. Нажмите на иконку шестеренки (настройки проекта). 4. На новой странице скопируйте значение поля ИД проекта."
-
-#: src/Groups/translations.php:98
-msgid "To retrieve your GitLab access token, follow these steps: 1. Open your GitLab profile. 2. Click on the 'Access Tokens' tab. 3. Create a new token with the 'api' scope. 4. Copy the token value. (You can also use Group and Project tokens if you've a paid GitLab account)"
-msgstr "Чтобы получить ваш токен доступа GitLab, выполните следующие шаги: 1. Откройте ваш профиль GitLab. 2. Нажмите на вкладку 'Токены доступа'. 3. Создайте новый токен с областью 'api'. 4. Скопируйте значение токена. (Вы также можете использовать токены группы и проекта, если у вас есть платный аккаунт GitLab)"
-
 #: src/Groups/translations.php:99
 msgid "Assign a name to your repository, which will appear as a new tab in the list table."
 msgstr "Назначьте имя вашему репозиторию, которое появится как новая вкладка в таблице списка."
@@ -1313,6 +1299,8 @@ msgid "Export"
 msgstr "Экспорт"
 
 #: src/Groups/translations.php:565
+#: src/Parents/Cpt/Git_Tabs.php:450
+#: src/Parents/Cpt/Git_Tabs.php:474
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:177
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:221
 msgid "Import"
@@ -1326,19 +1314,19 @@ msgstr "Выберите файл для импорта"
 msgid "Parent field"
 msgstr "Родительское поле"
 
-#: src/Groups/translations.php:128
+#: src/Groups/translations.php:130
 msgid "Add classification classes to the markup"
 msgstr "Добавить классы классификации в разметку"
 
-#: src/Groups/translations.php:129
+#: src/Groups/translations.php:131
 msgid "Do not skip unused wrappers"
 msgstr "Не пропускать неиспользуемые обертки"
 
-#: src/Groups/translations.php:134
+#: src/Groups/translations.php:135
 msgid "Options"
 msgstr "Опции"
 
-#: src/Groups/translations.php:136
+#: src/Groups/translations.php:137
 msgid "Register Gutenberg Block"
 msgstr "Зарегистрировать блок Gutenberg"
 
@@ -1358,15 +1346,11 @@ msgstr "Объект предварительного просмотра"
 msgid "With Gutenberg Block (ACF)"
 msgstr "С блоком Gutenberg (ACF)"
 
-#: src/Groups/translations.php:155
-msgid "Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-view')."
-msgstr "Определите уникальное <a target='_blank' href='https://getbem.com/introduction/'>BEM имя</a> для элемента, который будет использоваться в разметке, или оставьте пустым, чтобы использовать значение по умолчанию ('acf-view')."
-
-#: src/Groups/translations.php:157
+#: src/Groups/translations.php:159
 msgid "By default, the field name is added as a prefix to all inner classes. For example, the image within the 'avatar' field will have the '__avatar-image' class. <br> Enabling this setting adds the generic class as well, such as '__image'. This feature can be useful if you want to apply styles based on field types."
 msgstr "По умолчанию имя поля добавляется как префикс ко всем внутренним классам. Например, изображение в поле 'avatar' будет иметь класс '__avatar-image'. <br> Включение этой настройки также добавляет общий класс, такой как '__image'. Эта функция может быть полезна, если вы хотите применять стили на основе типов полей."
 
-#: src/Groups/translations.php:158
+#: src/Groups/translations.php:160
 msgid "By default, empty wrappers in the markup are skipped to optimize the output. For example, the '__row' wrapper will be skipped if there is no field label. <br> Enable this feature if you need all the wrappers in the output."
 msgstr "По умолчанию пустые обертки в разметке пропускаются для оптимизации вывода. Например, обертка '__row' будет пропущена, если нет метки поля. <br> Включите эту функцию, если вам нужны все обертки в выводе."
 
@@ -1378,23 +1362,23 @@ msgstr "По умолчанию, если все выбранные поля п�
 msgid "Note: For backward compatibility purposes only."
 msgstr "Примечание: Только для целей обратной совместимости."
 
-#: src/Groups/translations.php:180
+#: src/Groups/translations.php:182
 msgid "Off"
 msgstr "Выкл"
 
-#: src/Groups/translations.php:181
+#: src/Groups/translations.php:183
 msgid "ACF Block"
 msgstr "Блок ACF"
 
-#: src/Groups/translations.php:182
+#: src/Groups/translations.php:184
 msgid "Meta Box Block"
 msgstr "Блок Meta Box"
 
-#: src/Groups/translations.php:183
+#: src/Groups/translations.php:185
 msgid "Pods Block"
 msgstr "Блок Pods"
 
-#: src/Groups/Layout_Settings.php:311
+#: src/Groups/Layout_Settings.php:242
 msgid "View settings"
 msgstr "Настройки вида"
 
@@ -1478,7 +1462,7 @@ msgstr "Копировать в буфер обмена"
 
 #: src/Parents/Cpt/Table/Fs_Only_Tab.php:80
 #: src/Parents/Cpt/Table/Pre_Built_Tab.php:98
-#: src/Plugin.php:171
+#: src/Plugin.php:196
 msgid "Read more"
 msgstr "Читать далее"
 
@@ -1543,7 +1527,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "Массовая проверка - используется для проверки поля Пользовательского шаблона всех существующих элементов и отображения элементов, которые не прошли проверку."
 
 #: src/Parents/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Shortcode/Shortcode.php:214
+#: src/Shortcode/Shortcode.php:226
 msgid "Edit"
 msgstr "Редактировать"
 
@@ -1551,10 +1535,6 @@ msgstr "Редактировать"
 #: src/Parents/Cpt/Table/Cpt_Table.php:312
 msgid "Clone"
 msgstr "Клонировать"
-
-#: src/Parents/Cpt/Table/Cpt_Table.php:121
-msgid "Item success cloned."
-msgstr "Элемент успешно клонирован."
 
 #: src/Parents/Cpt/Table/Cpt_Table.php:195
 msgid "Search for name."
@@ -1607,25 +1587,25 @@ msgstr "Проверьте и исправьте права доступа к ф
 msgid "Note: Do not disable the FS storage feature before fixing it, otherwise your data will be lost."
 msgstr "Примечание: Не отключайте функцию хранения FS до ее исправления, иначе ваши данные будут потеряны."
 
-#: src/Dashboard/Dashboard.php:232
+#: src/Dashboard/Dashboard.php:238
 #: src/html/postbox/upgrade.php:23
-#: src/Plugin.php:113
+#: src/Plugin.php:138
 msgid "Upgrade to Pro"
 msgstr "Обновить до Pro"
 
-#: src/Plugin.php:156
+#: src/Plugin.php:181
 msgid "Compatibility issue detected! \"Advanced Views\" plugin requires \"PHPDoc\" comments in code."
 msgstr "Обнаружена проблема совместимости! Плагин \"Advanced Views\" требует комментарии \"PHPDoc\" в коде."
 
-#: src/Plugin.php:160
+#: src/Plugin.php:185
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "Пожалуйста, измените опцию \"opcache.save_comments\" в вашем файле php.ini на значение по умолчанию \"1\" на вашем хостинге."
 
-#: src/Plugin.php:328
+#: src/Plugin.php:353
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite' и 'Advanced Views Pro' не должны быть активны одновременно. Мы автоматически деактивировали"
 
-#: src/Plugin.php:334
+#: src/Plugin.php:359
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -1670,22 +1650,22 @@ msgstr "Вид отправлен."
 msgid "View draft updated."
 msgstr "Черновик вида обновлен."
 
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:91
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:90
 msgid "No assigned ACF Groups."
 msgstr "Не назначены группы ACF."
 
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:282
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:281
 msgid "Assigned Groups"
 msgstr "Назначенные группы"
 
 #. translators: 1: field name, 2: line number.
-#: src/Layouts/Layout.php:307
+#: src/Layouts/Layout.php:619
 #, php-format
 msgid "The \"%1$s\" field is incorrectly expected to be an array. Line %2$d"
 msgstr "Поле \"%1$s\" неверно ожидается быть массивом. Строка %2$d"
 
 #. translators: 1: field name, 2: line number.
-#: src/Layouts/Layout.php:373
+#: src/Layouts/Layout.php:685
 #, php-format
 msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
 msgstr "Поле \"%1$s\" неверно ожидается быть строкой. Строка %2$d"
@@ -1716,20 +1696,18 @@ msgstr "Что-то пошло не так. Импортировано %1$d из
 msgid "Success! There were %1$d %2$s and %3$d %4$s exported."
 msgstr "Успех! Было экспортировано %1$d %2$s и %3$d %4$s."
 
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:189
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:190
 msgid "Success!"
 msgstr "Успех!"
 
-#. translators: x Views successfully imported: .
-#. translators: x Cards successfully imported: .
-#. translators: x Groups successfully imported: .
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:199
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:236
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:277
+#. translators: x items successfully imported.
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:200
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:237
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:278
 msgid "successfully imported:"
 msgstr "успешно импортировано:"
 
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:275
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:276
 msgid "group"
 msgid_plural "groups"
 msgstr[0] "группа"
@@ -1791,6 +1769,7 @@ msgstr "Смотрите, как ограничить видимость по р
 
 #: src/html/postbox/shortcodes.php:62
 #: src/html/postbox/shortcodes.php:81
+#: src/Parents/Cpt/Git_Tabs.php:111
 msgid "here"
 msgstr "здесь"
 
@@ -1806,24 +1785,20 @@ msgstr "Удалить данные и деактивировать"
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Удалить все данные плагина (нельзя отменить)"
 
-#: src/Shortcode/Post_Selection_Shortcode.php:115
-msgid "Card id is wrong"
-msgstr "Неверный идентификатор карты"
-
 #: src/Groups/translations.php:139
 #: src/Groups/translations.php:294
-#: src/Groups/translations.php:378
+#: src/Groups/translations.php:377
 msgid "Classes generation"
 msgstr "Генерация классов"
 
 #: src/Groups/translations.php:166
-#: src/Groups/translations.php:423
+#: src/Groups/translations.php:422
 msgid "Controls classes generation in the Default Template."
 msgstr "Управляет генерацией классов в шаблоне по умолчанию."
 
 #: src/Groups/translations.php:192
 #: src/Groups/translations.php:329
-#: src/Groups/translations.php:475
+#: src/Groups/translations.php:473
 msgid "BEM style"
 msgstr "Стиль BEM"
 
@@ -1835,18 +1810,10 @@ msgstr "По умолчанию"
 msgid "Web components type"
 msgstr "Тип веб-компонентов"
 
-#: src/Shortcode/Layout_Shortcode.php:248
-msgid "View id is wrong"
-msgstr "Неверный идентификатор представления"
-
 #: src/Groups/translations.php:138
-#: src/Groups/translations.php:377
+#: src/Groups/translations.php:376
 msgid "Web Component Type"
 msgstr "Тип веб-компонента"
-
-#: src/Groups/translations.php:159
-msgid "Using the Custom View Data PHP snippet you can add custom variables to the template and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
-msgstr "Используя пользовательский сниппет данных представления PHP, вы можете добавлять пользовательские переменные в шаблон и определять обработчик ajax. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-data-pro'>Подробнее</a> <br> Нажмите Ctrl (Cmd) + Alt + L, чтобы отформатировать код. Нажмите Ctrl + F для поиска (или замены)."
 
 #: src/Groups/translations.php:400
 msgid "'Load More' button label"
@@ -1897,7 +1864,7 @@ msgid "If unchecked then sticky posts will be at the top of results. <a target='
 msgstr "Если не отмечено, закрепленные записи будут вверху результатов. <a target='_blank' href='https://wordpress.org/support/article/sticky-posts/'>Узнать больше о закрепленных записях</a>."
 
 #: src/Groups/translations.php:168
-#: src/Groups/translations.php:424
+#: src/Groups/translations.php:423
 msgid "Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs."
 msgstr "Примечание: Только для целей обратной совместимости. Включите этот параметр, если у вас есть внешние CSS селекторы, которые зависят от устаревших цифровых идентификаторов."
 
@@ -1929,11 +1896,11 @@ msgstr "Шаблон Sass (для хранения в файловой сист�
 msgid "TypeScript Template (for File System Storage)"
 msgstr "Шаблон TypeScript (для хранения в файловой системе)"
 
-#: src/Groups/translations.php:156
+#: src/Groups/translations.php:158
 msgid "Add a class name without a dot (e.g. “class-name”) or multiple classes with single space as a delimiter (e.g. “class-name1 class-name2”). <br> These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>."
 msgstr "Добавьте имя класса без точки (например, “class-name”) или несколько классов, разделенных пробелом (например, “class-name1 class-name2”). <br> Эти классы добавляются к оборачивающему HTML-элементу. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Узнать больше о CSS классах</a>."
 
-#: src/Groups/translations.php:163
+#: src/Groups/translations.php:164
 msgid "If a block vendor is selected then a separate Gutenberg block for this View will be available. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Read more</a>."
 msgstr "Если выбран поставщик блоков, то отдельный блок Gutenberg для этого View будет доступен. <a target='_blank' href='https://docs.advanced-views.com/display-content/custom-gutenberg-blocks-pro'>Узнать больше</a>."
 
@@ -1965,7 +1932,7 @@ msgstr "Запрос постов (WP_Query)"
 msgid "Page context (archive pages)"
 msgstr "Контекст страницы (архивные страницы)"
 
-#: src/Groups/translations.php:162
+#: src/Groups/translations.php:163
 msgid "Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list."
 msgstr "Добавьте краткое описание для ваших Views. <br> Примечание: Это описание видно только в списке Advanced Views администратора."
 
@@ -1973,28 +1940,28 @@ msgstr "Добавьте краткое описание для ваших Views
 msgid "Loading the Editor is taking longer than expected."
 msgstr ""
 
-#: src/Post_Selections/Post_Selection_Markup.php:255
+#: src/Post_Selections/Post_Selection_Markup.php:256
 msgid "Manually edit these rules by disabling Layout Rules, otherwise these rules are updated every time you press the Update button"
 msgstr ""
 
-#: src/Groups/translations.php:137
-#: src/Groups/translations.php:376
+#: src/Groups/translations.php:126
+#: src/Groups/translations.php:383
 msgid "Template Engine"
 msgstr ""
 
-#: src/Groups/translations.php:428
+#: src/Groups/translations.php:426
 msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work."
 msgstr ""
 
-#: src/Groups/translations.php:184
+#: src/Groups/translations.php:180
 #: src/Groups/translations.php:321
-#: src/Groups/translations.php:467
+#: src/Groups/translations.php:475
 msgid "Twig"
 msgstr ""
 
-#: src/Groups/translations.php:185
+#: src/Groups/translations.php:181
 #: src/Groups/translations.php:322
-#: src/Groups/translations.php:468
+#: src/Groups/translations.php:476
 msgid "Blade (requires PHP >= 8.2.0)"
 msgstr ""
 
@@ -2006,12 +1973,12 @@ msgstr ""
 msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br>Note: WordPress shortcodes inside the template are only supported in the Pro version. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
-#: src/Groups/translations.php:164
+#: src/Groups/translations.php:155
 msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this View."
 msgstr ""
 
 #. translators: %s is the template engine name.
-#: src/Parents/Instance.php:104
+#: src/Parents/Instance.php:117
 #, php-format
 msgid "%s template engine is not available (PHP >= 8.2.0 is required)."
 msgstr ""
@@ -2052,19 +2019,19 @@ msgstr ""
 
 #: src/Groups/translations.php:186
 #: src/Groups/translations.php:323
-#: src/Groups/translations.php:469
+#: src/Groups/translations.php:467
 msgid "Classic (no CSS isolation)"
 msgstr ""
 
 #: src/Groups/translations.php:187
 #: src/Groups/translations.php:324
-#: src/Groups/translations.php:470
+#: src/Groups/translations.php:468
 msgid "Declarative Shadow DOM (CSS isolated"
 msgstr ""
 
 #: src/Groups/translations.php:189
 #: src/Groups/translations.php:326
-#: src/Groups/translations.php:472
+#: src/Groups/translations.php:470
 msgid "JS Shadow DOM (CSS isolated"
 msgstr ""
 
@@ -2116,7 +2083,7 @@ msgstr ""
 msgid "Choose a Term field whose value should be used in the query."
 msgstr ""
 
-#: src/Groups/translations.php:161
+#: src/Groups/translations.php:162
 msgid "Add Custom Javascript code to your View. <br><br> By default, the View is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#id-4.1-web-components'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
@@ -2144,11 +2111,6 @@ msgstr ""
 msgid "Choose a Parent group when setting up Nested repeater or Flexible layout."
 msgstr ""
 
-#. Description of the plugin
-#: acf-views.php
-msgid "Effortlessly display WordPress posts, custom fields, and WooCommerce data."
-msgstr ""
-
 #: src/Parents/Cpt/Cpt.php:71
 msgid "to improve Advanced Views."
 msgstr ""
@@ -2157,10 +2119,6 @@ msgstr ""
 #: src/Parents/Cpt/Cpt_Assets_Reducer.php:238
 #, php-format
 msgid "If you still see this message after an extended period, please visit the %1$s Settings %2$s and disable the screen performance optimization."
-msgstr ""
-
-#: src/Groups/translations.php:160
-msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#view' will be replaced with '.acf-view--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-view__' (or '.bem-name__'). <br><br> We recommend using #view { #this__first-field { //... }, #this__second-field { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#view__', which will be replaced with '.acf-view--id--X .acf-view__' (or '.bem-name .bem-name__')."
 msgstr ""
 
 #: src/Data_Vendors/Woo/Fields/Woo_Featured_Field.php:22
@@ -2199,7 +2157,7 @@ msgstr ""
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
-#: src/Shortcode/Shortcode.php:119
+#: src/Shortcode/Shortcode.php:120
 msgid "AVF shortcode render error:"
 msgstr ""
 
@@ -2215,30 +2173,21 @@ msgstr ""
 msgid "Unlock with Pro"
 msgstr ""
 
-#: src/Plugin.php:112
+#: src/Plugin.php:137
 msgid "Unlock Pro"
 msgstr ""
 
-#. translators: %s: the name of the CPT.
+#. translators: %s is the plural name of the CPT.
 #: src/Data_Vendors/Common/Settings_Vendor_Integration.php:240
 #, php-format
 msgid "Assigned to %s:"
 msgstr ""
 
-#. translators: %s: the name of the CPT.
 #. translators: %s is the plural name of the CPT.
 #: src/Data_Vendors/Common/Settings_Vendor_Integration.php:242
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:190
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:189
 #, php-format
 msgid "Not assigned to any %s."
-msgstr ""
-
-#: src/Groups/translations.php:25
-msgid "Field Layout"
-msgstr ""
-
-#: src/Groups/translations.php:51
-msgid "If filled then data within this field will be displayed using the selected Layout. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>"
 msgstr ""
 
 #: src/Groups/translations.php:150
@@ -2250,7 +2199,7 @@ msgid "If you're making an internal Layout for the <a target='_blank' href='http
 msgstr ""
 
 #: src/Groups/translations.php:165
-#: src/Groups/translations.php:422
+#: src/Groups/translations.php:421
 msgid "By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/templates/css-and-js#web-components-for-js-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/templates/wordpress-interactivity-api'>WP Interactivity API</a>."
 msgstr ""
 
@@ -2264,10 +2213,6 @@ msgstr ""
 
 #: src/Groups/translations.php:289
 msgid "Optimize Layout and Post Selection admin screen performance"
-msgstr ""
-
-#: src/Groups/translations.php:303
-msgid "Enable to store Layout and Post Selection data inside the theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a>"
 msgstr ""
 
 #: src/Groups/translations.php:308
@@ -2298,7 +2243,7 @@ msgstr ""
 msgid "Item Layout"
 msgstr ""
 
-#: src/Groups/translations.php:379
+#: src/Groups/translations.php:378
 msgid "Use the Post ID as the Post Selection ID in the markup"
 msgstr ""
 
@@ -2314,12 +2259,8 @@ msgstr ""
 msgid "Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list."
 msgstr ""
 
-#: src/Groups/translations.php:421
+#: src/Groups/translations.php:427
 msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Post Selection."
-msgstr ""
-
-#: src/Groups/translations.php:426
-msgid "Using the Custom Post Selection Data PHP snippet you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the ajax handler. <a target='_blank' href='https://docs.advanced-views.com/query-content/custom-data-pro'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
 msgstr ""
 
 #: src/Groups/translations.php:432
@@ -2379,27 +2320,14 @@ msgstr ""
 msgid "Add a %s and select target fields or import a pre-built component."
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt.php:32
-#, php-format
-msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the %s</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/view-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
-msgstr ""
-
 #. translators: %s is the plural name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:132
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:131
 #, php-format
 msgid "No assigned %s."
 msgstr ""
 
-#. translators: %s is the plural name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:298
-#, php-format
-msgid "Assigned %s"
-msgstr ""
-
-#. translators: %s is the plural name of the CPT.
 #. translators: %s - singular name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:317
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:316
 #: src/Layouts/Cpt/Table/Layouts_Cpt_Table.php:137
 #, php-format
 msgid "Assigned to %s"
@@ -2463,22 +2391,22 @@ msgstr ""
 msgid "Search for name, description, labels or id."
 msgstr ""
 
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:195
-#: src/Parents/Cpt/Table/External_Storage_Tab.php:233
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:196
+#: src/Parents/Cpt/Table/External_Storage_Tab.php:234
 msgid "Item"
 msgid_plural "Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Plugin/Plugin_Loader_Base.php:433
+#: src/Plugin/Plugin_Loader_Base.php:456
 msgid "Layouts"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:453
+#: src/Plugin/Plugin_Loader_Base.php:476
 msgid "Post Selection"
 msgstr ""
 
-#: src/Plugin/Plugin_Loader_Base.php:457
+#: src/Plugin/Plugin_Loader_Base.php:480
 msgid "Post Selections"
 msgstr ""
 
@@ -2488,9 +2416,8 @@ msgstr ""
 msgid "No related %s."
 msgstr ""
 
-#. translators: %s is the singular name of the CPT.
 #. translators: %s - singular name of the CPT.
-#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:253
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:252
 #: src/Post_Selections/Cpt/Post_Selections_Cpt_Meta_Boxes.php:84
 #, php-format
 msgid "Your %s shortcode is available after publishing."
@@ -2638,11 +2565,6 @@ msgstr ""
 msgid "Add a %s to display a set of posts or import a ready-made component."
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:45
-msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach it</a> where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/card-shortcode\">via shortcode</a>)."
-msgstr ""
-
 #: src/Post_Selections/Cpt/Post_Selections_Cpt.php:49
 msgid "The assigned Layout determines which fields are displayed."
 msgstr ""
@@ -2679,16 +2601,12 @@ msgstr ""
 msgid "Responsive Rules"
 msgstr ""
 
-#: src/Groups/translations.php:425
+#: src/Groups/translations.php:424
 msgid "For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query."
 msgstr ""
 
-#: src/Groups/translations.php:427
+#: src/Groups/translations.php:425
 msgid "Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup."
-msgstr ""
-
-#: src/Groups/translations.php:431
-msgid "Define your CSS style rules. <br> This will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Don't style the Layout fields here, each Layout has its own CSS field for this goal. <br><br> Magic shortcuts are available (and will use the BEM Unique Name if defined) : <br><br> '#card' will be replaced with '.acf-card--id--X' (or '.bem-name'). <br> '#this__' will be replaced with '.acf-card__' (or '.bem-name__'). <br><br> We recommend using #card { #this__items { //... }, #this__heading { //... } } format, which is possible thanks to the <a target='_blank' href='https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting'>built-in CSS nesting</a>. <br><br> Alternatively, you can use '#card__', will be replaced with '.acf-card--id--X .acf-card__' (or '.bem-name .bem-name__')."
 msgstr ""
 
 #: src/Groups/translations.php:434
@@ -2771,4 +2689,152 @@ msgstr ""
 
 #: src/Tools/Tools.php:339
 msgid "You entered the invalid version number"
+msgstr ""
+
+#. Description of the plugin
+#: acf-views.php
+msgid "Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder."
+msgstr ""
+
+#: src/Groups/translations.php:25
+msgid "Object Layout"
+msgstr ""
+
+#: src/Groups/translations.php:51
+msgid "By default, an Object field is rendered in the Layout template as an HTML link to the selected object. <br><br> To display fields from within the selected object, assign a separate Layout with the target object fields. <br><br> Example: To display an excerpt from a Post Object, create a separate Layout with the Post Excerpt field and assign it here. <a target='_blank' href='https://docs.advanced-views.com/display-acf-fields/relational-group/relationship#display-fields-from-related-post-pro-feature'>Read more</a>"
+msgstr ""
+
+#: src/Groups/translations.php:97
+msgid "To retrieve your GitLab repository ID, follow these steps: 1. Open your repository. 2. Look for the 'Project Information' block on the right-hand side. 3. Click on the three dots icon above the block. 4. Click on the 'Copy project ID' item."
+msgstr ""
+
+#: src/Groups/translations.php:98
+msgid "To retrieve your GitLab access token, follow these steps: 1. Open your GitLab profile. 2. In the left menu, click on the 'Access -> Personal Access Tokens' tab. 3. Create a new token with the 'api' scope. 4. Copy the token value. (You can also use Group and Project tokens if you've a paid GitLab account)"
+msgstr ""
+
+#: src/Groups/translations.php:127
+#: src/Groups/translations.php:384
+msgid "PHP Controller"
+msgstr ""
+
+#: src/Groups/translations.php:156
+msgid "By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/display-content/php-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr ""
+
+#: src/Groups/translations.php:157
+msgid "Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-layout')."
+msgstr ""
+
+#: src/Groups/translations.php:161
+msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option."
+msgstr ""
+
+#: src/Groups/translations.php:303
+msgid "Enable to store Layout and Post Selection data inside the child theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a> <br> Important: you should use a <a target='_blank' href='https://developer.wordpress.org/themes/advanced-topics/child-themes/'>child theme</a>, otherwise automatic theme updates will erase the data."
+msgstr ""
+
+#: src/Groups/translations.php:428
+msgid "By customizing the PHP Controller instance, you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/query-content/php-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr ""
+
+#: src/Groups/translations.php:429
+msgid "Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection')."
+msgstr ""
+
+#: src/Groups/translations.php:431
+msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Layouts/Cpt/Layouts_Cpt.php:32
+#, php-format
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the %s</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/layout-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
+msgstr ""
+
+#. translators: %s is the plural name of the CPT.
+#: src/Layouts/Cpt/Layouts_Cpt_Meta_Boxes.php:297
+#, php-format
+msgid "Object %s"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:60
+msgid "Save the item"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:65
+msgid "to your library"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:78
+msgid "Select repository"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:96
+msgid "Include related Meta groups"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:106
+msgid "Note: all changes must be already saved."
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:116
+msgid "Push to the repository"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:203
+msgid "GitLab repositories"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:207
+msgid "GitLab repository actions are available after publishing."
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:241
+#: src/Parents/Cpt/Git_Meta_Box.php:250
+msgid "Error!"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:264
+msgid "Pushed!"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Meta_Box.php:266
+msgid "Failed!"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Tabs.php:82
+msgid "By saving items in your GitLab repository, you can create your own library and reuse them on other websites."
+msgstr ""
+
+#: src/Parents/Cpt/Git_Tabs.php:93
+msgid "If you have made any external changes to this repository, please click"
+msgstr ""
+
+#: src/Parents/Cpt/Git_Tabs.php:113
+msgid "to clear the cache."
+msgstr ""
+
+#: src/Parents/Cpt/Git_Tabs.php:432
+msgid "Cache successfully cleared."
+msgstr ""
+
+#: src/Parents/Cpt/Git_Tabs.php:467
+msgid "gitlab"
+msgstr ""
+
+#: src/Parents/Cpt/Table/Cpt_Table.php:121
+msgid "Item successfully cloned."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Post_Selections/Cpt/Post_Selections_Cpt.php:45
+msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach it</a> where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode\">via shortcode</a>)."
+msgstr ""
+
+#: src/Shortcode/Layout_Shortcode.php:254
+msgid "Layout id is wrong"
+msgstr ""
+
+#: src/Shortcode/Post_Selection_Shortcode.php:132
+msgid "Post Selection ID is wrong"
 msgstr ""

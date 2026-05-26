@@ -4,22 +4,22 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Layouts\Source;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
@@ -236,9 +236,9 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			$related_views;
 
 		$label = array() !== $related_views ?
-			// translators: %s: the name of the CPT.
+			// translators: %s is the plural name of the CPT.
 			__( 'Assigned to %s:', 'acf-views' ) . ' ' :
-			// translators: %s: the name of the CPT.
+			// translators: %s is the plural name of the CPT.
 			__( 'Not assigned to any %s.', 'acf-views' );
 		$label = sprintf( $label, $this->plugin_cpt->labels()->plural_name() );
 

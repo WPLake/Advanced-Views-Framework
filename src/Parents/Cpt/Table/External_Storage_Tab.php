@@ -196,7 +196,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 				_n( 'Item', 'Items', $views_count, 'acf-views' )
 			);
 			echo ' ';
-			// translators: x Views successfully imported: .
+			// translators: x items successfully imported.
 			esc_html_e( 'successfully imported:', 'acf-views' );
 			echo '</p>';
 			echo '<p>';
@@ -233,7 +233,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 			echo '<p>';
 			echo esc_html( (string) $cards_count ) . ' ' . esc_html( _n( 'Item', 'Items', $cards_count, 'acf-views' ) );
 			echo ' ';
-			// translators: x Cards successfully imported: .
+			// translators: x items successfully imported.
 			esc_html_e( 'successfully imported:', 'acf-views' );
 			echo '</p>';
 			echo '<p>';
@@ -274,7 +274,7 @@ abstract class External_Storage_Tab extends Cpt_Table_Tab {
 				esc_html( (string) $group_links_count ),
 				esc_html( ucfirst( $vendor_name ) ),
 				esc_html( _n( 'group', 'groups', $group_links_count, 'acf-views' ) ),
-				// translators: x Groups successfully imported: .
+				// translators: x items successfully imported.
 				esc_html__( 'successfully imported:', 'acf-views' )
 			);
 

@@ -248,7 +248,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 					'publish' !== $post->post_status ) {
 					echo esc_html(
 						sprintf(
-							// translators: %s is the singular name of the CPT.
+							// translators: %s - singular name of the CPT.
 							__( 'Your %s shortcode is available after publishing.', 'acf-views' ),
 							$this->public_cpt->labels()->singular_name()
 						)
@@ -312,7 +312,7 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_related_cards',
 			sprintf(
-			// translators: %s is the plural name of the CPT.
+			// translators: %s - singular name of the CPT.
 				__( 'Assigned to %s', 'acf-views' ),
 				$this->plugin_cpt->labels()->plural_name()
 			),
