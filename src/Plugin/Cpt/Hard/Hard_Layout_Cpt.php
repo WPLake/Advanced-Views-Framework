@@ -19,6 +19,10 @@ final class Hard_Layout_Cpt {
 		return self::NAME;
 	}
 
+	public static function markup_name(): string {
+		return self::cpt_name();
+	}
+
 	public static function variable_name(): string {
 		return '_layout';
 	}

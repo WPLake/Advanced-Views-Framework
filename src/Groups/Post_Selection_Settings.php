@@ -246,7 +246,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public string $extra_query_arguments;
 	/**
 	 * @label BEM Unique Name
-	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-card').
+	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').
 	 */
 	public string $bem_name;
 	/**
@@ -567,7 +567,7 @@ return new class extends Selection_Controller_Base {
 	}
 
 	public function get_tag_name( string $prefix = '' ): string {
-		return parent::get_tag_name( $this->get_bem_name() );
+		return parent::get_tag_name( Hard_Post_Selection_Cpt::markup_name() );
 	}
 
 	/**

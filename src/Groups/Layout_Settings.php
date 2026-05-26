@@ -108,7 +108,7 @@ class Layout_Settings extends Cpt_Settings {
 	public string $php_variables;
 	/**
 	 * @label BEM Unique Name
-	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('acf-view').
+	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-layout').
 	 */
 	public string $bem_name;
 	/**
@@ -422,7 +422,7 @@ return new class extends Layout_Controller_Base {
 	}
 
 	public function get_tag_name( string $prefix = '' ): string {
-		return parent::get_tag_name( $this->get_bem_name() );
+		return parent::get_tag_name( Hard_Layout_Cpt::markup_name() );
 	}
 
 	public function get_item_selector(
