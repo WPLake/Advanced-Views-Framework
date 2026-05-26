@@ -198,11 +198,13 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.8.9 (2025-) =
+= 3.8.9 (2026-05-26) =
 - Fix: PHPController compatibility with the FS storage option
+- Fix: Readme changelog - wrong year
 - Uphold: get rid of deprecated names in template; code fields and hook names
+- Uphold: ES translations
 
-= 3.8.7 (2025-05-20) =
+= 3.8.7 (2026-05-20) =
 - Feature adoption: PHP Controller (before Custom Data in Pro)
 - Feature adoption: Reusable Components Library
 - Feature adoption: Lightbox
@@ -212,20 +214,20 @@ You're welcome to open issues or PRs there.
 - UI: Layout - field dropdown font-size adjustment
 - Uphold: tested with WP 7.0
 
-= 3.8.6 (2025-04-03) =
+= 3.8.6 (2026-04-03) =
 - Bugfix: Post Selection - sortby
 
-= 3.8.5 (2025-03-27) =
+= 3.8.5 (2026-03-27) =
 - Feature adoption: Layout & Post selection - Mount Points (before Pro-only)
 - Feature adoption: Layout - in-template shortcode support
 - Feature adoption: Post Selection - Taxonomy filters
 - Bugfix: minor UI and message bugfixes
 - Readme update
 
-= 3.8.4 (2025-03-10) =
+= 3.8.4 (2026-03-10) =
 - Enhance: $_GET support for custom Ajax requests
 
-= 3.8.3 (2025-02-27) =
+= 3.8.3 (2026-02-27) =
 - Feature adoption: Custom field layout for object fields (before Pro-only)
 - Support: tested with the latest WordPress 6.9
 - Enhance: "Layout not found" error message is hidden for guests
