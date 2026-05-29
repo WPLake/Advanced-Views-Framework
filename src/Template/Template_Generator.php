@@ -8,16 +8,42 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Tokens\Condition_Tokens;
 use Org\Wplake\Advanced_Views\Template\Tokens\Function_Tokens;
+use Org\Wplake\Advanced_Views\Template\Tokens\T_Echo;
+use Org\Wplake\Advanced_Views\Template\Tokens\T_Var;
 use Org\Wplake\Advanced_Views\Template\Tokens\Variable_Tokens;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Template_Generator {
-	protected Condition_Tokens $condition;
+	protected Token_Generator $generator;
 	protected Function_Tokens $function;
 	protected Variable_Tokens $variable;
 
 	public function field( string $field_id ): void {
 		$sub_field_id = $this->extract_sub_field_id( $field_id );
+
+		// fixme is it the best way?
+		$var  = $this->generator->var(
+			function ( T_Var $var ) use ( $field_id, $sub_field_id ) {
+				$var->name = $field_id;
+
+				if ( strlen( $sub_field_id ) > 0 ) {
+					$var->sub_item_path = array( $sub_field_id );
+				}
+			}
+		);
+		$echo = $this->generator->echo(
+			function ( T_Echo $echo ) use ( $var ) {
+				$echo->subject = $var;
+			}
+		);
+		$echo();
+
+		$variable = new T_Var();
+
+		$echo = new T_Echo();
+
+		$echo->subject = $some->render( $variable );
+		$some->render( $echo );
 
 		$this->variable->expression_open();
 		$this->variable->variable( $field_id );
