@@ -33,6 +33,10 @@ final class Twig_Condition_Tokens implements Condition_Tokens {
 		echo ' or ';
 	}
 
+	public function condition_or_true(): void {
+		echo ' or true';
+	}
+
 	public function condition_and(): void {
 		echo ' and ';
 	}

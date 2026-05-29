@@ -66,19 +66,16 @@ abstract class Template_Generator {
 		$second_item_keys[] = $second_item_key;
 
 		$this->variable->expression_open();
+
 		$this->variable->variable( $field_id );
 		$this->variable->inner_item( $first_item_keys );
 
-		echo $this->is_twig_engine() ?
-			'|default(' :
-			' ?: ';
+		$this->variable->default_value_open();
 
 		$this->variable->variable( $field_id );
 		$this->variable->inner_item( $second_item_keys );
 
-		echo $this->is_twig_engine() ?
-			')' :
-			'';
+		$this->variable->default_value_close();
 
 		$this->variable->expression_close();
 	}
@@ -179,9 +176,7 @@ abstract class Template_Generator {
 		$this->variable->inner_item( $item_keys );
 
 		if ( $is_with_true_stub ) {
-			echo $this->is_twig_engine() ?
-				' or true' :
-				' || true';
+			$this->condition->condition_or_true();
 		}
 
 		$this->condition->endif();
@@ -290,12 +285,11 @@ abstract class Template_Generator {
 	}
 
 	public function comment( string $comment ): void {
-		printf(
-			$this->is_twig_engine() ?
-				'{# %s #}' :
-				'{{-- %s --}}',
-			esc_html( $comment )
-		);
+		$this->function->comment_open();
+
+		echo esc_html( $comment );
+
+		$this->function->comment_close();
 	}
 
 	public function conditional_variable_string(
@@ -326,7 +320,7 @@ abstract class Template_Generator {
 
 		$this->variable->expression_open( true );
 
-		$this->begin_function(
+		$this->function->function_open(
 			$this->is_twig_engine() ?
 				'_include_inner_view' :
 				'avf_include_inner_view'
@@ -359,7 +353,7 @@ abstract class Template_Generator {
 			esc_html( $inner_view_class )
 		);
 
-		$this->end_function();
+		$this->function->function_close();
 		$this->variable->expression_close( true );
 	}
 
@@ -369,7 +363,7 @@ abstract class Template_Generator {
 
 		$this->variable->expression_open( true );
 
-		$this->begin_function(
+		$this->function->function_open(
 			$this->is_twig_engine() ?
 				'_include_inner_view_for_flexible' :
 				'avf_include_inner_view_for_flexible'
@@ -398,7 +392,7 @@ abstract class Template_Generator {
 			esc_html( $inner_view_class )
 		);
 
-		$this->end_function();
+		$this->function->function_close();
 		$this->variable->expression_close( true );
 	}
 

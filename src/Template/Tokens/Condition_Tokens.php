@@ -19,5 +19,7 @@ interface Condition_Tokens {
 
 	public function condition_or(): void;
 
+	public function condition_or_true(): void;
+
 	public function condition_and(): void;
 }

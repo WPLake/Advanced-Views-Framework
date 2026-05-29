@@ -17,4 +17,8 @@ interface Variable_Tokens {
 	 * @param string[] $item_keys
 	 */
 	public function inner_item( array $item_keys ): void;
+
+	public function default_value_open(): void;
+
+	public function default_value_close(): void;
 }

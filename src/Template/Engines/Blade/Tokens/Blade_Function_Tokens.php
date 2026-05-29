@@ -35,4 +35,12 @@ final class Blade_Function_Tokens implements Function_Tokens {
 	public function filter_raw(): void {
 		// Not needed for Blade.
 	}
+
+	public function comment_open(): void {
+		echo '{{-- ';
+	}
+
+	public function comment_close(): void {
+		echo ' --}}';
+	}
 }

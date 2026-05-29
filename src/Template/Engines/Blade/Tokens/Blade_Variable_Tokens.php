@@ -36,4 +36,12 @@ final class Blade_Variable_Tokens implements Variable_Tokens {
 			);
 		}
 	}
+
+	public function default_value_open(): void {
+		echo ' ?: ';
+	}
+
+	public function default_value_close(): void {
+		// nothing in Blade.
+	}
 }

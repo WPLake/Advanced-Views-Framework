@@ -29,4 +29,12 @@ final class Twig_Variable_Tokens implements Variable_Tokens {
 			);
 		}
 	}
+
+	public function default_value_open(): void {
+		echo '|default(';
+	}
+
+	public function default_value_close(): void {
+		echo ')';
+	}
 }

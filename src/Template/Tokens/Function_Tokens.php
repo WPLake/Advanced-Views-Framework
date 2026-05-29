@@ -18,4 +18,8 @@ interface Function_Tokens {
 	public function endforeach(): void;
 
 	public function filter_raw(): void;
+
+	public function comment_open(): void;
+
+	public function comment_close(): void;
 }

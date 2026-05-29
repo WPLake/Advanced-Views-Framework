@@ -33,6 +33,10 @@ final class Blade_Condition_Tokens implements Condition_Tokens {
 		echo ' || ';
 	}
 
+	public function condition_or_true(): void {
+		echo ' || true';
+	}
+
 	public function condition_and(): void {
 		echo ' && ';
 	}
