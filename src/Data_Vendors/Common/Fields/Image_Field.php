@@ -26,7 +26,7 @@ class Image_Field extends Markup_Field {
 		}
 
 		foreach ( $inner_attributes as $name => $variable_info ) {
-			$markup_field_data->get_template_generator()->print_array_item_attribute(
+			$markup_field_data->get_token_generator()->print_array_item_attribute(
 				$name,
 				$variable_info['field_id'],
 				$variable_info['item_key']
@@ -57,7 +57,7 @@ class Image_Field extends Markup_Field {
 		);
 
 		foreach ( $attributes_map as $attribute_name => $item_key ) {
-			$markup_field_data->get_template_generator()->print_array_item_attribute( $attribute_name, $field_id, $item_key );
+			$markup_field_data->get_token_generator()->print_array_item_attribute( $attribute_name, $field_id, $item_key );
 		}
 
 		$this->print_inner_attributes( $field_id, $markup_field_data );

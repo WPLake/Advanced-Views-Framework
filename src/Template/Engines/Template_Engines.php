@@ -2,40 +2,58 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template_Engines;
+namespace Org\Wplake\Advanced_Views\Template\Engines;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
-
-defined( 'ABSPATH' ) || exit;
 
 class Template_Engines extends Action implements Hooks_Interface {
 	const TWIG  = 'twig';
 	const BLADE = 'blade';
 
+	/**
+	 * @var array<string, Token_Generator>
+	 */
+	private array $generators;
+	private Token_Generator $default_generator;
 	private string $uploads_folder;
 	/**
-	 * @var array<string, Template_Engine_Interface|null>
+	 * @var array<string, Template_Renderer|null>
 	 */
 	private array $template_engines;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin $plugin;
 	private Settings $settings;
 	/**
-	 * @var array<string, Template_Generator>
+	 * @var array<string, Template_Generator_OLD>
 	 */
 	private array $template_generators;
 
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
+
+		$twig_generator          = new Twig_Generator();
+		$this->generators        = array(
+			self::TWIG  => $twig_generator,
+			self::BLADE => new Blade_Generator(),
+		);
+		$this->default_generator = $twig_generator;
 
 		$this->uploads_folder      = $uploads_folder;
 		$this->plugin              = $plugin;
@@ -82,12 +100,12 @@ class Template_Engines extends Action implements Hooks_Interface {
 		return $this->settings;
 	}
 
-	protected function make_template_engine( string $name ): ?Template_Engine_Interface {
+	protected function make_renderer( string $name ): ?Template_Renderer {
 		$instance = null;
 
 		switch ( $name ) {
 			case self::TWIG:
-				$instance = new Twig(
+				$instance = new Twig_Renderer(
 					$this->uploads_folder,
 					$this->get_logger(),
 					$this->settings,
@@ -95,7 +113,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 				);
 				break;
 			case self::BLADE:
-				$instance = new Blade(
+				$instance = new Blade_Renderer(
 					$this->uploads_folder,
 					$this->get_logger(),
 					$this->settings,
@@ -200,24 +218,24 @@ class Template_Engines extends Action implements Hooks_Interface {
 		$wp_filesystem->rmdir( $templates_dir, true );
 	}
 
-	public function get_template_engine( string $name ): ?Template_Engine_Interface {
+	public function get_template_engine( string $name ): ?Template_Renderer {
 		if ( ! key_exists( $name, $this->template_engines ) ) {
-			$this->template_engines[ $name ] = $this->make_template_engine( $name );
+			$this->template_engines[ $name ] = $this->make_renderer( $name );
 		}
 
 		return $this->template_engines[ $name ];
 	}
 
-	public function get_template_generator( string $template_engine ): Template_Generator {
-		if ( ! key_exists( $template_engine, $this->template_generators ) ) {
-			$this->template_generators[ $template_engine ] = new Template_Generator( $template_engine );
+	public function get_token_generator( string $template_engine ): Token_Generator {
+		if ( key_exists( $template_engine, $this->template_generators ) ) {
+			return $this->template_generators[ $template_engine ];
 		}
 
-		return $this->template_generators[ $template_engine ];
+		return $this->default_generator;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( false === $route_detector->is_admin_route() ) {
+		if ( ! $route_detector->is_admin_route() ) {
 			return;
 		}
 

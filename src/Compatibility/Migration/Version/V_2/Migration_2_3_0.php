@@ -5,9 +5,10 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 
 final class Migration_2_3_0 extends Version_Migration_Base {
 	private Template_Engines $template_engines;

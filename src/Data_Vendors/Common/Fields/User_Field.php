@@ -58,13 +58,13 @@ class User_Field extends List_Field {
 			$field_id;
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute(
+		$markup_field_data->get_token_generator()->print_array_item_attribute(
 			'id',
 			$field_id,
 			'layout_id'
 		);
 		echo ' object-id="user"';
-		$markup_field_data->get_template_generator()->print_array_item_attribute(
+		$markup_field_data->get_token_generator()->print_array_item_attribute(
 			'user-id',
 			$object_id_source,
 			'value'

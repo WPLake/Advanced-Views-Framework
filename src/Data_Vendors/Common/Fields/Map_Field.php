@@ -33,8 +33,8 @@ class Map_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'data-lat', $item_id, 'lat' );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'data-lng', $item_id, 'lng' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'data-lat', $item_id, 'lat' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'data-lng', $item_id, 'lng' );
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Map_Field extends Markup_Field {
 
 	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
-			$markup_field_data->get_template_generator()->print_array_item( $field_id, 'map', true );
+			$markup_field_data->get_token_generator()->print_array_item( $field_id, 'map', true );
 
 			return;
 		}
@@ -211,19 +211,19 @@ class Map_Field extends Markup_Field {
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$markup_field_data->get_template_generator()->print_array_item_attribute( $attribute, $field_id, $key );
+			$markup_field_data->get_token_generator()->print_array_item_attribute( $attribute, $field_id, $key );
 		}
 		echo '>';
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 
 		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
 			false === $markup_field_data->get_field_meta()->is_multiple() ) {
-			$markup_field_data->get_template_generator()->print_if_for_array_item( $field_id, 'value' );
+			$markup_field_data->get_token_generator()->print_if_for_array_item( $field_id, 'value' );
 			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 		}
 
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			$markup_field_data->get_template_generator()->print_for_of_array_item( $field_id, 'value', 'marker' );
+			$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'marker' );
 			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 		}
 
@@ -238,13 +238,13 @@ class Map_Field extends Markup_Field {
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n";
 			echo esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_field_data->get_template_generator()->print_end_for();
+			$markup_field_data->get_token_generator()->print_end_for();
 		}
 
 		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
 			false === $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_field_data->get_template_generator()->print_end_if();
+			$markup_field_data->get_token_generator()->print_end_if();
 		}
 
 		echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
@@ -257,7 +257,7 @@ class Map_Field extends Markup_Field {
 				$this->print_acf_markup( $field_id, $markup_field_data );
 				break;
 			case Meta_Box_Data_Vendor::NAME:
-				$markup_field_data->get_template_generator()->print_array_item( $field_id, 'value', true );
+				$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value', true );
 				break;
 		}
 	}

@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
 

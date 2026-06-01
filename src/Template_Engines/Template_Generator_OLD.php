@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
 
-class Template_Generator extends Template_Tokenizer {
+class Template_Generator_OLD extends Template_Tokenizer {
 	public function print_field( string $field_id ): void {
 		$sub_field_id = $this->extract_sub_field_id( $field_id );
 

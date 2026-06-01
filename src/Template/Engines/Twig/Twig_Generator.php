@@ -6,15 +6,42 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Condition_Tokens;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Function_Tokens;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Variable_Tokens;
-use Org\Wplake\Advanced_Views\Template\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Assign;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Comment;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_IF;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Assign;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Comment;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Echo;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_IF;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Loop;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Var;
 
-final class Twig_Generator extends Template_Generator {
-	public function __construct() {
-		$this->condition = new Twig_Condition_Tokens();
-		$this->function  = new Twig_Function_Tokens();
-		$this->variable  = new Twig_Variable_Tokens();
+final class Twig_Generator implements Token_Generator {
+	public function comment(): T_Comment {
+		return new Twig_Comment();
+	}
+
+	public function echo(): T_Echo {
+		return new Twig_Echo();
+	}
+
+	public function var(): T_Var {
+		return new Twig_Var();
+	}
+
+	public function if(): T_IF {
+		return new Twig_IF();
+	}
+
+	public function loop(): T_Loop {
+		return new Twig_Loop();
+	}
+
+	public function assign(): T_Assign {
+		return new Twig_Assign();
 	}
 }

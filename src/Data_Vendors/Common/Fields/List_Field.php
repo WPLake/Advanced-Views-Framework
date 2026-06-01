@@ -55,7 +55,7 @@ abstract class List_Field extends Markup_Field {
 			echo "\r\n";
 			$markup_field_data->print_tabs();
 
-			$markup_field_data->get_template_generator()->print_for_of_array_item( $field_id, 'value', static::LOOP_ITEM_NAME );
+			$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', static::LOOP_ITEM_NAME );
 
 			echo "\r\n";
 			$markup_field_data->increment_and_print_tabs();
@@ -64,7 +64,7 @@ abstract class List_Field extends Markup_Field {
 				echo "\r\n";
 				$markup_field_data->print_tabs();
 
-				$markup_field_data->get_template_generator()->print_if_of_not_first_loop_item();
+				$markup_field_data->get_token_generator()->print_if_of_not_first_loop_item();
 
 				echo "\r\n";
 				$markup_field_data->increment_and_print_tabs();
@@ -83,7 +83,7 @@ abstract class List_Field extends Markup_Field {
 				echo "\r\n";
 				$markup_field_data->increment_and_print_tabs();
 
-				$markup_field_data->get_template_generator()->print_array_item( $field_id, 'options_delimiter' );
+				$markup_field_data->get_token_generator()->print_array_item( $field_id, 'options_delimiter' );
 
 				echo "\r\n";
 				$markup_field_data->decrement_and_print_tabs();
@@ -93,7 +93,7 @@ abstract class List_Field extends Markup_Field {
 				echo "\r\n";
 				$markup_field_data->decrement_and_print_tabs();
 
-				$markup_field_data->get_template_generator()->print_end_if();
+				$markup_field_data->get_token_generator()->print_end_if();
 
 				echo "\r\n\r\n";
 
@@ -110,7 +110,7 @@ abstract class List_Field extends Markup_Field {
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
 			echo "\r\n";
 			$markup_field_data->decrement_and_print_tabs();
-			$markup_field_data->get_template_generator()->print_end_for();
+			$markup_field_data->get_token_generator()->print_end_for();
 			echo "\r\n";
 		}
 	}

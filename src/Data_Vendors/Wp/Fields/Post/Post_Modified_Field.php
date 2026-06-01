@@ -18,7 +18,7 @@ class Post_Modified_Field extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$markup_field_data->get_template_generator()->print_array_item( $field_id, 'value' );
+		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value' );
 	}
 
 	/**

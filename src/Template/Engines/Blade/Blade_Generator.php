@@ -6,66 +6,42 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Token_Generator;
-use Org\Wplake\Advanced_Views\Template\Tokens\T_Comment;
-use Org\Wplake\Advanced_Views\Template\Tokens\T_Echo;
-use Org\Wplake\Advanced_Views\Template\Tokens\T_Var;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Assign;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Comment;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Echo;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_IF;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Loop;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Var;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Assign;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Comment;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Echo;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_IF;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Loop;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Var;
 
 final class Blade_Generator implements Token_Generator {
-	public function comment( callable $setup ): callable {
-		$comment = new T_Comment();
-
-		$setup( $comment );
-
-		return fn() => printf(
-			'{{-- %s --}}',
-			esc_html( $comment->content )
-		);
+	public function comment(): T_Comment {
+		return new Blade_Comment();
 	}
 
-	public function echo( callable $setup ): callable {
-		$echo = new T_Echo();
-
-		$setup( $echo );
-
-		$open  = $echo->is_raw ?
-			'{!!' :
-			'{{';
-		$close = $echo->is_raw ?
-			'!!}' :
-			'}}';
-
-		return implode(
-			' ',
-			array( $open, ( $echo->subject )(), $close )
-		);
+	public function echo(): T_Echo {
+		return new Blade_Echo();
 	}
 
-	public function if( callable $setup ): callable {
-		// TODO: Implement if() method.
+	public function var(): T_Var {
+		return new Blade_Var();
 	}
 
-	public function loop( callable $setup ): callable {
-		// TODO: Implement loop() method.
+	public function if(): T_IF {
+		return new Blade_IF();
 	}
 
-	public function var( callable $setup ): callable {
-		$var = new T_Var();
+	public function loop(): T_Loop {
+		return new Blade_Loop();
+	}
 
-		$setup( $var );
-
-		$printed = sprintf(
-			'$%s',
-			esc_html( $var->name ),
-		);
-
-		foreach ( $var->sub_item_path as $sub_path ) {
-			$printed .= sprintf(
-				'["%s"]',
-				esc_html( $sub_path ),
-			);
-		}
-
-		return $printed;
+	public function assign(): T_Assign {
+		return new Blade_Assign();
 	}
 }

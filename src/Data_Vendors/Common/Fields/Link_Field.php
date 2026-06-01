@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		echo '<a';
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'target', $field_id, 'target' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'target', $field_id, 'target' );
 		printf(
 			' class="%s"',
 			esc_html(
@@ -28,13 +28,13 @@ class Link_Field extends Markup_Field {
 				)
 			)
 		);
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'href', $field_id, 'value' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'href', $field_id, 'value' );
 		echo '>';
 
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_filled_array_item( $field_id, 'linkLabel', 'title' );
+		$markup_field_data->get_token_generator()->print_filled_array_item( $field_id, 'linkLabel', 'title' );
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();

@@ -2,17 +2,18 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template_Engines;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Blade;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Optional_Vendors\Jenssegers\Blade\Blade as Blade_Engine;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Renderer_Base;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
 
-class Blade extends Template_Engine {
+class Blade_Renderer extends Template_Renderer_Base {
 	// @phpstan-ignore-next-line
 	private ?Blade_Engine $blade_engine;
 

@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template_Engines;
+namespace Org\Wplake\Advanced_Views\Template\Engines;
 
 defined( 'ABSPATH' ) || exit;
 
-interface Template_Engine_Interface {
+interface Template_Renderer {
 	/**
 	 * @param array<string,mixed> $args
 	 */

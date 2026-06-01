@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,7 +43,7 @@ class Layout_Markup {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
+		$template_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
 
 		$field_id   = $item_settings->field->get_template_field_id();
 		$field_type = $field_meta->get_type();
@@ -93,7 +93,7 @@ class Layout_Markup {
 	}
 
 	protected function generate_markup( Layout_Settings $layout_settings ): void {
-		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
+		$template_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
 
 		$bem_name = $layout_settings->get_bem_name();
 		$tag_name = $layout_settings->get_tag_name();

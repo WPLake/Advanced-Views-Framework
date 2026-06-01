@@ -18,8 +18,8 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -205,8 +205,15 @@ class Field_Markup {
 		printf( '<p class="%s">', esc_html( $label_class ) );
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$tabs_number ) );
 
-		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
-		$template_generator->print_array_item( $field_id, 'label' );
+		$token_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+
+		$var = $token_generator->var()
+								->set_name( $field_id )
+								->add_item_path( 'label' );
+
+		$token_generator->echo()
+						->set_content( $var )
+						->print();
 
 		echo "\r\n" . esc_html( str_repeat( "\t", --$tabs_number ) );
 		echo '</p>';
@@ -259,7 +266,7 @@ class Field_Markup {
 	protected function print_opening_field_outers(
 		array $field_outers,
 		int &$tabs_number,
-		Template_Generator $template_generator
+		Template_Generator_OLD $template_generator
 	): void {
 		foreach ( $field_outers as $outer ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", $tabs_number ) );
@@ -408,15 +415,15 @@ class Field_Markup {
 			echo "\r\n";
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $layout_settings->template_engine );
-		$markup_field_data  = new Markup_Field_Data(
+		$token_generator   = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		$markup_field_data = new Markup_Field_Data(
 			$layout_settings,
 			$item_settings,
 			$field_settings,
 			$field_meta,
 			$this,
 			$markup_field_instance,
-			$template_generator
+			$token_generator
 		);
 
 		$markup_field_data->set_field_assets( $field_assets );
@@ -465,7 +472,7 @@ class Field_Markup {
 			$this->data_vendors->get_field_front_assets( $field_settings->get_vendor_name(), $field_settings )
 		);
 		$is_label_out_of_row = $this->is_label_out_of_row( $field_assets );
-		$template_generator  = $this->template_engines->get_template_generator( $layout_settings->template_engine );
+		$template_generator  = $this->template_engines->get_token_generator( $layout_settings->template_engine );
 
 		$row_tag = '';
 

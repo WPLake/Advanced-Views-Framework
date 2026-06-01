@@ -1,7 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template_Engines;
+namespace Org\Wplake\Advanced_Views\Template\Engines;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_Filesystem_Base;
 
-abstract class Template_Engine extends Action implements Template_Engine_Interface {
+abstract class Template_Renderer_Base extends Action implements Template_Renderer {
 	private string $templates_folder;
 	private Settings $settings;
 	private WP_Filesystem_Base $wp_filesystem_base;

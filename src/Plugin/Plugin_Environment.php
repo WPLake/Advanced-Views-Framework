@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 
 final class Plugin_Environment {
 	private Template_Engines $template_engines;

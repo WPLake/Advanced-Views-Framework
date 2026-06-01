@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,7 +35,7 @@ class Post_Selection_Markup {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
+		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
 
 		echo "\r\n\t";
 
@@ -88,7 +88,7 @@ class Post_Selection_Markup {
 	protected function print_opening_item_outers(
 		array $item_outers,
 		int &$tabs_number,
-		Template_Generator $template_generator
+		Template_Generator_OLD $template_generator
 	): void {
 		foreach ( $item_outers as $outer ) {
 			echo esc_html( str_repeat( "\t", ++$tabs_number ) );
@@ -127,7 +127,7 @@ class Post_Selection_Markup {
 	}
 
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
-		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
+		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
 		$template_generator->print_array_item_attribute( 'id', Hard_Post_Selection_Cpt::variable_name(), 'layout_id' );
@@ -160,7 +160,7 @@ class Post_Selection_Markup {
 			}
 		}
 
-		$template_generator = $this->template_engines->get_template_generator( $post_selection_settings->template_engine );
+		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
 
 		ob_start();
 

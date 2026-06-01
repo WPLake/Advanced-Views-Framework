@@ -2,11 +2,12 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template_Engines;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines\Template_Renderer_Base;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Environment;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Loader\FilesystemLoader;
 use Org\Wplake\Advanced_Views\Vendors\Twig\TwigFilter;
@@ -17,7 +18,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-class Twig extends Template_Engine {
+class Twig_Renderer extends Template_Renderer_Base {
 	// @phpstan-ignore-next-line
 	private ?FilesystemLoader $filesystem_loader;
 	// @phpstan-ignore-next-line

@@ -44,7 +44,7 @@ class Comment_Items_List_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_array_item( $item_id, 'author_name' );
+		$markup_field_data->get_token_generator()->print_array_item( $item_id, 'author_name' );
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
@@ -68,7 +68,7 @@ class Comment_Items_List_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_array_item( 'comment_item', 'content', true );
+		$markup_field_data->get_token_generator()->print_array_item( 'comment_item', 'content', true );
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
@@ -84,9 +84,9 @@ class Comment_Items_List_Field extends Markup_Field {
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'id', $field_id, 'layout_id' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'id', $field_id, 'layout_id' );
 		echo ' object-id="comment"';
-		$markup_field_data->get_template_generator()->print_array_item_attribute( 'comment-id', $item_id, 'comment_id' );
+		$markup_field_data->get_token_generator()->print_array_item_attribute( 'comment-id', $item_id, 'comment_id' );
 		echo ']';
 	}
 

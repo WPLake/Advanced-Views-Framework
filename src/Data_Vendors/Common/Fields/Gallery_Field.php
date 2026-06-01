@@ -33,7 +33,7 @@ class Gallery_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->print_tabs();
 
-		$markup_field_data->get_template_generator()->print_for_of_array_item( $field_id, 'value', 'image_item' );
+		$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'image_item' );
 
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
@@ -43,7 +43,7 @@ class Gallery_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_end_for();
+		$markup_field_data->get_token_generator()->print_end_for();
 
 		echo "\r\n";
 	}

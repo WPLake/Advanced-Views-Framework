@@ -8,10 +8,10 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Image_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ class Icon_Picker_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$markup_field_data->get_template_generator()->print_if_for_array_item( $field_id, 'type', '==', 'dashicons' );
+		$markup_field_data->get_token_generator()->print_if_for_array_item( $field_id, 'type', '==', 'dashicons' );
 
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
@@ -39,13 +39,13 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_template_generator()->print_array_item( $field_id, 'value' );
+		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value' );
 		echo '"></i>';
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_if_for_array_item(
+		$markup_field_data->get_token_generator()->print_if_for_array_item(
 			$field_id,
 			'type',
 			'==',
@@ -62,7 +62,7 @@ class Icon_Picker_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_else();
+		$markup_field_data->get_token_generator()->print_else();
 
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
@@ -76,13 +76,13 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_template_generator()->print_array_item( $field_id, 'value' );
+		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value' );
 		echo '" loading="lazy" alt="icon">';
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_end_if();
+		$markup_field_data->get_token_generator()->print_end_if();
 	}
 
 	/**

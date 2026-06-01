@@ -32,7 +32,7 @@ class Select_Field extends List_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_template_generator()->print_array_item( $twig_name, 'title' );
+		$markup_field_data->get_token_generator()->print_array_item( $twig_name, 'title' );
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
