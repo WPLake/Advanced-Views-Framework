@@ -11,11 +11,13 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 defined( 'ABSPATH' ) || exit;
 
 class Image_Field extends Markup_Field {
 	protected function print_inner_attributes( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_generator  = $markup_field_data->get_token_generator();
 		$inner_attributes = array();
 
 		foreach ( $markup_field_data->get_field_assets() as $field_asset ) {
@@ -26,16 +28,17 @@ class Image_Field extends Markup_Field {
 		}
 
 		foreach ( $inner_attributes as $name => $variable_info ) {
-			$markup_field_data->get_token_generator()->print_array_item_attribute(
-				$name,
-				$variable_info['field_id'],
-				$variable_info['item_key']
-			);
+			$var = $token_generator->var()
+									->set_name( $variable_info['field_id'] )
+									->add_item_path( $variable_info['item_key'] );
+
+			Template_Generator::attribute( $name, $var );
 		}
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$attributes_map = array(
+		$token_generator = $markup_field_data->get_token_generator();
+		$attributes_map  = array(
 			'src'      => 'value',
 			'width'    => 'width',
 			'height'   => 'height',
@@ -57,7 +60,11 @@ class Image_Field extends Markup_Field {
 		);
 
 		foreach ( $attributes_map as $attribute_name => $item_key ) {
-			$markup_field_data->get_token_generator()->print_array_item_attribute( $attribute_name, $field_id, $item_key );
+			$var = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( $item_key );
+
+			Template_Generator::attribute( $attribute_name, $var );
 		}
 
 		$this->print_inner_attributes( $field_id, $markup_field_data );

@@ -11,7 +11,8 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -88,7 +89,7 @@ class Post_Selection_Markup {
 	protected function print_opening_item_outers(
 		array $item_outers,
 		int &$tabs_number,
-		Template_Generator_OLD $template_generator
+		Token_Generator $token_generator
 	): void {
 		foreach ( $item_outers as $outer ) {
 			echo esc_html( str_repeat( "\t", ++$tabs_number ) );
@@ -99,11 +100,11 @@ class Post_Selection_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$template_generator->print_array_item_attribute(
-					$attr,
-					$variable_info['field_id'],
-					$variable_info['item_key']
-				);
+				$var = $token_generator->var()
+											->set_name( $variable_info['field_id'] )
+											->add_item_path( $variable_info['item_key'] );
+
+				Template_Generator::attribute( $attr, $var );
 			}
 
 			echo '>';
@@ -127,11 +128,17 @@ class Post_Selection_Markup {
 	}
 
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
-		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
+		$token_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
+
+		$id_var      = $token_generator->var()
+										->set_name( Hard_Post_Selection_Cpt::variable_name() )
+										->add_item_path( 'layout_id' );
+		$post_id_var = $token_generator->var()->set_name( 'post_id' );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
-		$template_generator->print_array_item_attribute( 'id', Hard_Post_Selection_Cpt::variable_name(), 'layout_id' );
-		$template_generator->print_field_attribute( 'object-id', 'post_id' );
+
+		Template_Generator::attribute( 'id', $id_var );
+		Template_Generator::attribute( 'object-id', $post_id_var );
 
 		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $post_selection_settings );
 

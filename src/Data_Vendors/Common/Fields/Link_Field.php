@@ -9,6 +9,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -17,8 +18,19 @@ defined( 'ABSPATH' ) || exit;
 
 class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_generator = $markup_field_data->get_token_generator();
+
+		$target_var = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( 'target' );
+		$href_var   = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( 'value' );
+
 		echo '<a';
-		$markup_field_data->get_token_generator()->print_array_item_attribute( 'target', $field_id, 'target' );
+
+		Template_Generator::attribute( 'target', $target_var );
+
 		printf(
 			' class="%s"',
 			esc_html(
@@ -28,7 +40,9 @@ class Link_Field extends Markup_Field {
 				)
 			)
 		);
-		$markup_field_data->get_token_generator()->print_array_item_attribute( 'href', $field_id, 'value' );
+
+		Template_Generator::attribute( 'href', $href_var );
+
 		echo '>';
 
 		echo "\r\n";

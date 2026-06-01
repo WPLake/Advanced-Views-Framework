@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
@@ -53,22 +54,26 @@ class User_Field extends List_Field {
 		string $item_id,
 		Markup_Field_Data $markup_field_data
 	): void {
+		$token_generator  = $markup_field_data->get_token_generator();
 		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'user_item' :
 			$field_id;
 
+		$id_var      = $token_generator->var()
+										->set_name( $field_id )
+										->add_item_path( 'layout_id' );
+		$user_id_var = $token_generator->var()
+										->set_name( $object_id_source )
+										->add_item_path( 'value' );
+
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
-		$markup_field_data->get_token_generator()->print_array_item_attribute(
-			'id',
-			$field_id,
-			'layout_id'
-		);
+
+		Template_Generator::attribute( 'id', $id_var );
+
 		echo ' object-id="user"';
-		$markup_field_data->get_token_generator()->print_array_item_attribute(
-			'user-id',
-			$object_id_source,
-			'value'
-		);
+
+		Template_Generator::attribute( 'user-id', $user_id_var );
+
 		echo ']';
 	}
 

@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -23,6 +24,8 @@ class Map_Field extends Markup_Field {
 		string $item_id,
 		Markup_Field_Data $markup_field_data
 	): void {
+		$token_generator = $markup_field_data->get_token_generator();
+
 		printf(
 			'class="%s"',
 			esc_html(
@@ -33,8 +36,16 @@ class Map_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_token_generator()->print_array_item_attribute( 'data-lat', $item_id, 'lat' );
-		$markup_field_data->get_token_generator()->print_array_item_attribute( 'data-lng', $item_id, 'lng' );
+
+		$lat_var = $token_generator->var()
+									->set_name( $item_id )
+									->add_item_path( 'lat' );
+		$lng_var = $token_generator->var()
+									->set_name( $item_id )
+									->add_item_path( 'lng' );
+
+		Template_Generator::attribute( 'data-lat', $lat_var );
+		Template_Generator::attribute( 'data-lng', $lng_var );
 	}
 
 	/**
@@ -197,6 +208,7 @@ class Map_Field extends Markup_Field {
 			return;
 		}
 
+		$token_generator     = $markup_field_data->get_token_generator();
 		$current_tabs_number = $markup_field_data->get_tabs_number();
 		$attributes_map      = array(
 			'data-zoom'       => 'zoom',
@@ -211,7 +223,11 @@ class Map_Field extends Markup_Field {
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$markup_field_data->get_token_generator()->print_array_item_attribute( $attribute, $field_id, $key );
+			$var = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( $key );
+
+			Template_Generator::attribute( $attribute, $var );
 		}
 		echo '>';
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );

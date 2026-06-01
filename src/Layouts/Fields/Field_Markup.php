@@ -19,7 +19,8 @@ use Org\Wplake\Advanced_Views\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -266,7 +267,7 @@ class Field_Markup {
 	protected function print_opening_field_outers(
 		array $field_outers,
 		int &$tabs_number,
-		Template_Generator_OLD $template_generator
+		Token_Generator $token_generator
 	): void {
 		foreach ( $field_outers as $outer ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", $tabs_number ) );
@@ -278,11 +279,11 @@ class Field_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$template_generator->print_array_item_attribute(
-					$attr,
-					$variable_info['field_id'],
-					$variable_info['item_key']
-				);
+				$var = $token_generator->var()
+											->set_name( $variable_info['field_id'] )
+											->add_item_path( $variable_info['item_key'] );
+
+				Template_Generator::attribute( $attr, $var );
 			}
 
 			echo '>';

@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +19,7 @@ class Post_Attachment_Video extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$template_generator = $markup_field_data->get_token_generator();
+		$token_generator = $markup_field_data->get_token_generator();
 
 		printf(
 			'<video class="%s" controls>',
@@ -31,10 +32,21 @@ class Post_Attachment_Video extends Markup_Field {
 		);
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
+
+		$src_var  = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( 'value' );
+		$type_var = $token_generator->var()
+									->set_name( $field_id )
+									->add_item_path( 'mime_type' );
+
 		echo '<source';
-		$template_generator->print_array_item_attribute( 'src', $field_id, 'value' );
-		$template_generator->print_array_item_attribute( 'type', $field_id, 'mime_type' );
+
+		Template_Generator::attribute( 'src', $src_var );
+		Template_Generator::attribute( 'type', $type_var );
+
 		echo '>';
+
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
 		echo '</video>';
