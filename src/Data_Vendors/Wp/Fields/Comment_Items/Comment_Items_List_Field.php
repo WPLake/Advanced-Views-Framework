@@ -45,7 +45,8 @@ class Comment_Items_List_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_token_generator()->var()->set_name( $item_id )->add_item_path( 'author_name' )->print();
+		$var = $markup_field_data->get_token_generator()->var()->set_name( $item_id )->add_item_path( 'author_name' );
+		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();
@@ -69,7 +70,14 @@ class Comment_Items_List_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_token_generator()->print_array_item( 'comment_item', 'content', true );
+		$var = $markup_field_data->get_token_generator()->var()
+								->set_name( 'comment_item' )
+								->add_item_path( 'content' );
+
+		$markup_field_data->get_token_generator()->to_echo()
+		->set_content( $var )
+		->set_is_raw( true )
+		->print();
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();

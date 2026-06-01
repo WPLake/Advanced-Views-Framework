@@ -25,7 +25,7 @@ final class Twig_Generator implements Token_Generator {
 		return new Twig_Comment();
 	}
 
-	public function echo(): T_Echo {
+	public function to_echo(): T_Echo {
 		return new Twig_Echo();
 	}
 

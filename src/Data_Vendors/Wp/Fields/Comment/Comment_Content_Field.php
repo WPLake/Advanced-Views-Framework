@@ -18,7 +18,16 @@ class Comment_Content_Field extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value', true );
+		$token_generator = $markup_field_data->get_token_generator();
+
+		$var = $token_generator->var()
+												->set_name( $field_id )
+												->add_item_path( 'value' );
+
+		$token_generator->to_echo()
+						->set_content( $var )
+						->set_is_raw( true )
+						->print();
 	}
 
 	/**

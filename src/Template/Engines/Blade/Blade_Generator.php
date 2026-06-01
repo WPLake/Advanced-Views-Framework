@@ -25,7 +25,7 @@ final class Blade_Generator implements Token_Generator {
 		return new Blade_Comment();
 	}
 
-	public function echo(): T_Echo {
+	public function to_echo(): T_Echo {
 		return new Blade_Echo();
 	}
 

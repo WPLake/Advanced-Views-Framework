@@ -178,12 +178,14 @@ class Post_Selection_Markup {
 
 		if ( false === $is_load_more ) {
 			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
-			$template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'classes' )->print();
+			$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'classes' );
+			$template_generator->to_echo()->set_content( $var )->print();
 
 			echo esc_html( $post_selection_settings->get_bem_name() );
 			if ( ! $post_selection_settings->has_unique_bem_name() ) {
 				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
-				$template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'id' )->print();
+				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'id' );
+				$template_generator->to_echo()->set_content( $var )->print();
 
 			}
 			echo '">';
@@ -226,7 +228,8 @@ class Post_Selection_Markup {
 					'<div class="%s">',
 					esc_html( $no_posts_message_class )
 				);
-				$template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'no_posts_found_message' )->print();
+				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'no_posts_found_message' );
+				$template_generator->to_echo()->set_content( $var )->print();
 
 				echo '</div>';
 				echo "\r\n";

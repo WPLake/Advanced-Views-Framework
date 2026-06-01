@@ -226,7 +226,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		return $this->template_engines[ $name ];
 	}
 
-	public function get_token_generator( string $template_engine ): Token_Generator {
+	public function c( string $template_engine ): Token_Generator {
 		if ( key_exists( $template_engine, $this->template_generators ) ) {
 			return $this->template_generators[ $template_engine ];
 		}

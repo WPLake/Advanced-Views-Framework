@@ -100,20 +100,23 @@ class Layout_Markup {
 
 		printf( '<%s class="', esc_html( $tag_name ) );
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
-			$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'classes' )->print();
+			$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'classes' );
+			$template_generator->to_echo()->set_content( $var )->print();
 
 			echo esc_html( $bem_name );
 
 			// not necessary if the bemName is defined.
 			if ( ! $layout_settings->has_unique_bem_name() ) {
 				printf( ' %s--id--', esc_html( $bem_name ) );
-				$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'id' )->print();
+				$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'id' );
+				$template_generator->to_echo()->set_content( $var )->print();
 
 			}
 
 			printf( ' %s--object-id--', esc_html( $bem_name ) );
 
-			$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'object_id' )->print();
+			$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'object_id' );
+			$template_generator->to_echo()->set_content( $var )->print();
 
 		}
 		echo '">';

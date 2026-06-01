@@ -203,7 +203,14 @@ class Map_Field extends Markup_Field {
 
 	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
-			$markup_field_data->get_token_generator()->print_array_item( $field_id, 'map', true );
+			$var = $markup_field_data->get_token_generator()->var()
+									->set_name( $field_id )
+									->add_item_path( 'map' );
+
+			$markup_field_data->get_token_generator()->to_echo()
+			->set_content( $var )
+			->set_is_raw( true )
+			->print();
 
 			return;
 		}
@@ -273,7 +280,15 @@ class Map_Field extends Markup_Field {
 				$this->print_acf_markup( $field_id, $markup_field_data );
 				break;
 			case Meta_Box_Data_Vendor::NAME:
-				$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value', true );
+				$var = $markup_field_data->get_token_generator()->var()
+										->set_name( $field_id )
+										->add_item_path( 'value' );
+
+				$markup_field_data->get_token_generator()->to_echo()
+				->set_content( $var )
+				->set_is_raw( true )
+				->print();
+
 				break;
 		}
 	}

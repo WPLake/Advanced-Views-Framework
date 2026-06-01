@@ -16,7 +16,7 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Var;
 interface Token_Generator {
 	public function comment(): T_Comment;
 
-	public function echo(): T_Echo;
+	public function to_echo(): T_Echo;
 
 	public function var(): T_Var;
 
