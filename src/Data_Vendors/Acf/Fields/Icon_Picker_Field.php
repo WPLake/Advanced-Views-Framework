@@ -39,7 +39,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value' );
+		$markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'value' )->print();
+
 		echo '"></i>';
 
 		echo "\r\n";
@@ -76,7 +77,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$markup_field_data->get_token_generator()->print_array_item( $field_id, 'value' );
+		$markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'value' )->print();
+
 		echo '" loading="lazy" alt="icon">';
 
 		echo "\r\n";

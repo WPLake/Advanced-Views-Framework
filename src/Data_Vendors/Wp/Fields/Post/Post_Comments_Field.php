@@ -43,7 +43,7 @@ class Post_Comments_Field extends Markup_Field {
 		echo "\r\n";
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_token_generator()->print_array_item( $item_id, 'author_name' );
+		$markup_field_data->get_token_generator()->var()->set_name( $item_id )->add_item_path( 'author_name' )->print();
 
 		echo "\r\n";
 		$markup_field_data->decrement_and_print_tabs();

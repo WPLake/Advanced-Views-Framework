@@ -100,18 +100,21 @@ class Layout_Markup {
 
 		printf( '<%s class="', esc_html( $tag_name ) );
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
-			$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'classes' );
+			$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'classes' )->print();
+
 			echo esc_html( $bem_name );
 
 			// not necessary if the bemName is defined.
 			if ( ! $layout_settings->has_unique_bem_name() ) {
 				printf( ' %s--id--', esc_html( $bem_name ) );
-				$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'id' );
+				$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'id' )->print();
+
 			}
 
 			printf( ' %s--object-id--', esc_html( $bem_name ) );
 
-			$template_generator->print_array_item( Hard_Layout_Cpt::variable_name(), 'object_id' );
+			$template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'object_id' )->print();
+
 		}
 		echo '">';
 

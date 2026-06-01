@@ -83,7 +83,7 @@ abstract class List_Field extends Markup_Field {
 				echo "\r\n";
 				$markup_field_data->increment_and_print_tabs();
 
-				$markup_field_data->get_token_generator()->print_array_item( $field_id, 'options_delimiter' );
+				$markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'options_delimiter' )->print();
 
 				echo "\r\n";
 				$markup_field_data->decrement_and_print_tabs();
