@@ -53,7 +53,7 @@ abstract class List_Field extends Markup_Field {
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			$this->print_item_loop($field_id, $markup_field_data);
+			$this->print_item_loop( $field_id, $markup_field_data );
 
 			return;
 		}
