@@ -5,19 +5,39 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Literal_Token extends Abstract_Token implements Template_Token {
-	public string $value = '';
+class Literal_Token implements Template_Token {
+	/**
+	 * @var string|numeric
+	 */
+	public $value;
 
-	public function set_value( string $value ): self {
+	/**
+	 *  @var string|numeric $value
+	 */
+	public function __construct( $value ) {
+		$this->value = $value;
+	}
+
+	/**
+	 * @param string|numeric $value
+	 */
+	public function set_value( $value ): self {
 		$this->value = $value;
 
 		return $this;
 	}
 
 	public function print(): void {
-		printf( "'%s'", esc_html( $this->value ) );
+		$string_value = string( $this->value );
+
+		if ( is_string( $this->value ) ) {
+			printf( "'%s'", esc_html( $string_value ) );
+		} else {
+			echo esc_html( $string_value );
+		}
 	}
 }

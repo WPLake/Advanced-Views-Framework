@@ -55,7 +55,7 @@ abstract class List_Field extends Markup_Field {
 			Template_Generator::new_line();
 			$markup_field_data->print_tabs();
 
-			$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', static::LOOP_ITEM_NAME );
+			$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', static::LOOP_ITEM_NAME );
 
 			Template_Generator::new_line();
 			$markup_field_data->increment_and_print_tabs();
@@ -64,7 +64,7 @@ abstract class List_Field extends Markup_Field {
 				Template_Generator::new_line();
 				$markup_field_data->print_tabs();
 
-				$markup_field_data->get_token_generator()->print_if_of_not_first_loop_item();
+				$markup_field_data->get_token_factory()->print_if_of_not_first_loop_item();
 
 				Template_Generator::new_line();
 				$markup_field_data->increment_and_print_tabs();
@@ -83,8 +83,8 @@ abstract class List_Field extends Markup_Field {
 				Template_Generator::new_line();
 				$markup_field_data->increment_and_print_tabs();
 
-				$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'options_delimiter' );
-				$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
+				$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'options_delimiter' );
+				$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
 
 				Template_Generator::new_line();
 				$markup_field_data->decrement_and_print_tabs();
@@ -94,7 +94,7 @@ abstract class List_Field extends Markup_Field {
 				Template_Generator::new_line();
 				$markup_field_data->decrement_and_print_tabs();
 
-				$markup_field_data->get_token_generator()->print_end_if();
+				$markup_field_data->get_token_factory()->print_end_if();
 
 				echo "\r\n\r\n";
 
@@ -111,7 +111,7 @@ abstract class List_Field extends Markup_Field {
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
 			Template_Generator::new_line();
 			$markup_field_data->decrement_and_print_tabs();
-			$markup_field_data->get_token_generator()->print_end_for();
+			$markup_field_data->get_token_factory()->print_end_for();
 			Template_Generator::new_line();
 		}
 	}

@@ -13,24 +13,25 @@ use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
-final class Twig_Generator implements Token_Generator {
-	public function comment(): Comment_Token {
-		return new Twig_Comment();
+final class Twig_Generator extends Token_Factory_Base {
+	public function comment(string $content): Comment_Token {
+		return new Twig_Comment($content);
 	}
 
-	public function to_echo(): Echo_Token {
-		return new Twig_Echo();
+	public function to_echo(Template_Token $content): Echo_Token {
+		return new Twig_Echo($content);
 	}
 
-	public function variable(): Variable_Token {
-		return new Twig_Var();
+	public function variable(string $name): Variable_Token {
+		return new Twig_Var($name);
 	}
 
 	public function if(): IF_Token {

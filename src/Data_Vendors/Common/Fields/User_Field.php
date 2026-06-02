@@ -54,7 +54,7 @@ class User_Field extends List_Field {
 		string $item_id,
 		Markup_Field_Data $markup_field_data
 	): void {
-		$token_generator  = $markup_field_data->get_token_generator();
+		$token_generator  = $markup_field_data->get_token_factory();
 		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'user_item' :
 			$field_id;

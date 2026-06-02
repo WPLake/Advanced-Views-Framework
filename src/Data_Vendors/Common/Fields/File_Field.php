@@ -27,7 +27,7 @@ class File_Field extends List_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator  = $markup_field_data->get_token_generator();
+		$token_generator  = $markup_field_data->get_token_factory();
 		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'item' :
 			$field_id;

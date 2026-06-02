@@ -14,9 +14,7 @@ final class Blade_Echo extends Echo_Token {
 			'{!! ' :
 			'{{ ';
 
-		if ( $this->content ) {
-			$this->content->print();
-		}
+		$this->content->print();
 
 		echo $this->is_raw ?
 			' !!}' :

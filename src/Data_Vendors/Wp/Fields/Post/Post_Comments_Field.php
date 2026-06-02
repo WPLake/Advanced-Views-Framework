@@ -43,8 +43,8 @@ class Post_Comments_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
-		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
+		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
 
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
@@ -68,11 +68,11 @@ class Post_Comments_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->variable()
+		$var = $markup_field_data->get_token_factory()->variable()
 								->set_name( 'comment_item' )
 								->add_item_path( 'content' );
 
-		$markup_field_data->get_token_generator()->to_echo()
+		$markup_field_data->get_token_factory()->to_echo()
 		->set_content( $var )
 		->set_is_raw( true )
 		->print();
@@ -166,7 +166,7 @@ class Post_Comments_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
-		$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'comment_item' );
+		$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', 'comment_item' );
 
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
@@ -176,7 +176,7 @@ class Post_Comments_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
-		$markup_field_data->get_token_generator()->print_end_for();
+		$markup_field_data->get_token_factory()->print_end_for();
 	}
 
 	/**

@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Image_Field extends Markup_Field {
 	protected function print_inner_attributes( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator  = $markup_field_data->get_token_generator();
+		$token_generator  = $markup_field_data->get_token_factory();
 		$inner_attributes = array();
 
 		foreach ( $markup_field_data->get_field_assets() as $field_asset ) {
@@ -37,7 +37,7 @@ class Image_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_generator();
+		$token_generator = $markup_field_data->get_token_factory();
 		$attributes_map  = array(
 			'src'      => 'value',
 			'width'    => 'width',

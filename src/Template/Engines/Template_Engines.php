@@ -17,7 +17,7 @@ use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Generator;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Generator;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
@@ -28,10 +28,10 @@ class Template_Engines extends Action implements Hooks_Interface {
 	const BLADE = 'blade';
 
 	/**
-	 * @var array<string, Token_Generator>
+	 * @var array<string, Token_Factory>
 	 */
 	private array $generators;
-	private Token_Generator $default_generator;
+	private Token_Factory $default_generator;
 	private string $uploads_folder;
 	/**
 	 * @var array<string, Template_Renderer|null>
@@ -226,7 +226,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		return $this->template_engines[ $name ];
 	}
 
-	public function c( string $template_engine ): Token_Generator {
+	public function c( string $template_engine ): Token_Factory {
 		if ( key_exists( $template_engine, $this->template_generators ) ) {
 			return $this->template_generators[ $template_engine ];
 		}

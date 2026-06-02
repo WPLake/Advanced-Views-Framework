@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -89,7 +89,7 @@ class Post_Selection_Markup {
 	protected function print_opening_item_outers(
 		array $item_outers,
 		int &$tabs_number,
-		Token_Generator $token_generator
+		Token_Factory $token_generator
 	): void {
 		foreach ( $item_outers as $outer ) {
 			echo esc_html( str_repeat( "\t", ++$tabs_number ) );

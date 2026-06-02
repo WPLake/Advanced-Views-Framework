@@ -11,10 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 defined( 'ABSPATH' ) || exit;
@@ -29,31 +26,27 @@ class Icon_Picker_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_generator();
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$type_var = $token_generator->variable()
-									->set_name( $field_id )
+		$type_var = $token_factory->variable( $field_id )
 									->add_item_path( 'type' );
 
-		$dashicons_condition = Comparison_Token::create()
+		$dashicons_condition = $token_factory->comparison()
 									->set_left( $type_var )
 			// fixme
 									->set_operator( '==' )
-									->set_right( 'dashicons' );
-		$dashicons_body = Html_Token::create()
-										->set_printer( fn() => $this->print_icon_markup( $field_id, $markup_field_data ) );
+									->set_right( $token_factory->literal( 'dashicons' ) );
+		$dashicons_body = $token_factory->html( fn() => $this->print_icon_markup( $field_id, $markup_field_data ) );
 
-		$media_library_condition = Comparison_Token::create()
+		$media_library_condition = $token_factory->comparison()
 			->set_left( $type_var )
 			->set_operator( '==' )
-			->set_right( 'media_library' );
-		$media_library_body      = Html_Token::create()
-							->set_printer( fn() => $this->print_icon_image_markup( $field_id, $markup_field_data ) );
+			->set_right( $token_factory->literal( 'media_library' ) );
+		$media_library_body      = $token_factory->html( fn() => $this->print_icon_image_markup( $field_id, $markup_field_data ) );
 
-		$custom_image_body = Html_Token::create()
-			->set_printer( fn() => $this->print_custom_image_markup( $field_id, $markup_field_data ) );
+		$custom_image_body = $token_factory->html( fn() => $this->print_custom_image_markup( $field_id, $markup_field_data ) );
 
-		$if = $token_generator->if();
+		$if = $token_factory->if();
 
 		$if->new_if_branch()
 			->set_condition( $dashicons_condition )
@@ -82,8 +75,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'value' );
+		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
 
 		echo '"></i>';
 
@@ -114,8 +107,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'value' );
+		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
 
 		echo '" loading="lazy" alt="icon">';
 

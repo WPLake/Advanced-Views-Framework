@@ -45,8 +45,8 @@ class Comment_Items_List_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
-		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
+		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
 
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
@@ -70,11 +70,11 @@ class Comment_Items_List_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->variable()
+		$var = $markup_field_data->get_token_factory()->variable()
 								->set_name( 'comment_item' )
 								->add_item_path( 'content' );
 
-		$markup_field_data->get_token_generator()->to_echo()
+		$markup_field_data->get_token_factory()->to_echo()
 		->set_content( $var )
 		->set_is_raw( true )
 		->print();
@@ -92,7 +92,7 @@ class Comment_Items_List_Field extends Markup_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_generator();
+		$token_generator = $markup_field_data->get_token_factory();
 
 		$id_var         = $token_generator->variable()
 										->set_name( $field_id )

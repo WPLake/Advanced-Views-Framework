@@ -13,7 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ class Markup_Field_Data extends Template_Field_Data {
 	private int $tabs_number;
 	private bool $is_with_field_wrapper;
 	private bool $is_with_row_wrapper;
-	private Token_Generator $token_generator;
+	private Token_Factory $token_factory;
 
 	public function __construct(
 		Layout_Settings $layout_settings,
@@ -34,7 +34,7 @@ class Markup_Field_Data extends Template_Field_Data {
 		Field_Meta_Interface $field_meta,
 		Field_Markup $field_markup,
 		Markup_Field_Interface $markup_field,
-		Token_Generator $token_generator
+		Token_Factory $token_factory
 	) {
 		parent::__construct(
 			$layout_settings,
@@ -49,7 +49,7 @@ class Markup_Field_Data extends Template_Field_Data {
 		$this->tabs_number           = 0;
 		$this->is_with_field_wrapper = false;
 		$this->is_with_row_wrapper   = false;
-		$this->token_generator       = $token_generator;
+		$this->token_factory         = $token_factory;
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Markup_Field_Data extends Template_Field_Data {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $this->token_generator->variable()
+				$var = $this->token_factory->variable()
 											->set_name( $variable_info['field_id'] )
 											->add_item_path( $variable_info['item_key'] );
 
@@ -213,7 +213,7 @@ class Markup_Field_Data extends Template_Field_Data {
 		echo esc_html( str_repeat( "\t", $this->decrement_and_get_tabs_number() ) );
 	}
 
-	public function get_token_generator(): Token_Generator {
-		return $this->token_generator;
+	public function get_token_factory(): Token_Factory {
+		return $this->token_factory;
 	}
 }

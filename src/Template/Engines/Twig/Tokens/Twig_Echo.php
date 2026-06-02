@@ -12,9 +12,7 @@ final class Twig_Echo extends Echo_Token {
 	public function print(): void {
 		echo '{{ ';
 
-		if ( $this->content ) {
-			$this->content->print();
-		}
+		$this->content->print();
 
 		if ( $this->is_raw ) {
 			echo '|raw';

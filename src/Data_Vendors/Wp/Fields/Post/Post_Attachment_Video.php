@@ -19,7 +19,7 @@ class Post_Attachment_Video extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_generator();
+		$token_generator = $markup_field_data->get_token_factory();
 
 		printf(
 			'<video class="%s" controls>',

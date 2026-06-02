@@ -4,19 +4,23 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
 
 abstract class Variable_Token implements Template_Token {
 	const ITEM_PATH_SEPARATOR = '.';
 
-	protected string $name = '';
+	protected string $name;
 	/**
 	 * @var string[]
 	 */
 	protected array $item_path = array();
+
+	public function __construct(string $name) {
+		$this->name=$name;
+	}
 
 	public function set_name( string $name ): self {
 		$item_path = $this->extract_item_path( $name );

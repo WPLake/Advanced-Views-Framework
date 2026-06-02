@@ -9,8 +9,14 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
 abstract class Echo_Token implements Template_Token {
-	protected ?Template_Token $content = null;
-	protected bool $is_raw             = false;
+	protected Template_Token $content;
+	protected bool $is_raw;
+
+	public function __construct( Template_Token $content ) {
+		$this->content = $content;
+
+		$this->is_raw = false;
+	}
 
 	public function set_content( Template_Token $content ): self {
 		$this->content = $content;

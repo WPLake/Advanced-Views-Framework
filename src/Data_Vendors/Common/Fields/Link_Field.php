@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_generator();
+		$token_generator = $markup_field_data->get_token_factory();
 
 		$target_var = $token_generator->variable()
 									->set_name( $field_id )
@@ -48,7 +48,7 @@ class Link_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_token_generator()->print_filled_array_item( $field_id, 'linkLabel', 'title' );
+		$markup_field_data->get_token_factory()->print_filled_array_item( $field_id, 'linkLabel', 'title' );
 
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();

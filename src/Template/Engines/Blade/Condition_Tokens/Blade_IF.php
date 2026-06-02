@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Condition_Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
@@ -27,7 +27,7 @@ final class Blade_IF extends IF_Token {
 		$this->print_branch_token( 'endif' );
 	}
 
-	protected function print_branch( string $type, IF_Branch_Token $branch ) {
+	protected function print_branch( string $type, IF_Branch $branch ) {
 		$this->print_branch_token( $type );
 
 		if ( $branch->condition ) {

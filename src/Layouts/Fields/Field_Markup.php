@@ -20,7 +20,7 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -267,7 +267,7 @@ class Field_Markup {
 	protected function print_opening_field_outers(
 		array $field_outers,
 		int &$tabs_number,
-		Token_Generator $token_generator
+		Token_Factory $token_generator
 	): void {
 		foreach ( $field_outers as $outer ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", $tabs_number ) );

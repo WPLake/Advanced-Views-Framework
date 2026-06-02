@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
@@ -28,7 +28,7 @@ final class Twig_IF extends IF_Token {
 		$this->print_branch_close_tag();
 	}
 
-	protected function print_branch( string $type, IF_Branch_Token $branch ) {
+	protected function print_branch( string $type, IF_Branch $branch ) {
 		$this->print_branch_open_tag( $type );
 
 		if ( $branch->condition ) {
