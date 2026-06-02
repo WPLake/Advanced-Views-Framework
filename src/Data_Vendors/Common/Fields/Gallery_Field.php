@@ -31,20 +31,32 @@ class Gallery_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$source_var = $token_factory->variable( $field_id )
+									->add_item_path( 'value' );
+		$item_var   = $token_factory->variable( 'image_item' );
+		$loop_body  = $token_factory->html(
+			function () use ( $markup_field_data, $field_id, $item_var ) {
+				Template_Generator::new_line();
+				$markup_field_data->increment_and_print_tabs();
+
+				$this->print_item( $field_id, $item_var->get_name(), $markup_field_data );
+
+				Template_Generator::new_line();
+				$markup_field_data->decrement_and_print_tabs();
+			}
+		);
+
+		$loop = $token_factory->loop()
+						->set_source_var( $source_var )
+						->set_item_var( $item_var )
+						->set_body( $loop_body );
+
 		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
-		$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', 'image_item' );
-
-		Template_Generator::new_line();
-		$markup_field_data->increment_and_print_tabs();
-
-		$this->print_item( $field_id, 'image_item', $markup_field_data );
-
-		Template_Generator::new_line();
-		$markup_field_data->decrement_and_print_tabs();
-
-		$markup_field_data->get_token_factory()->print_end_for();
+		$loop->print();
 
 		Template_Generator::new_line();
 	}

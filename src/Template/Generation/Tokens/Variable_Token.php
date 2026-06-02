@@ -17,6 +17,7 @@ abstract class Variable_Token implements Template_Token {
 	 * @var string[]
 	 */
 	protected array $item_path = array();
+	protected bool $is_object  = false;
 
 	public function __construct( string $name ) {
 		$this->name = $name;
@@ -34,6 +35,10 @@ abstract class Variable_Token implements Template_Token {
 		return $this;
 	}
 
+	public function get_name(): string {
+		return $this->name;
+	}
+
 	public function add_item_path( string $item_path ): self {
 		$this->item_path[] = $item_path;
 
@@ -45,6 +50,12 @@ abstract class Variable_Token implements Template_Token {
 	 */
 	public function set_item_path( array $item_path ): self {
 		$this->item_path = array_merge( $this->item_path, $item_path );
+
+		return $this;
+	}
+
+	public function set_is_object( bool $is_object ): self {
+		$this->is_object = $is_object;
 
 		return $this;
 	}

@@ -27,12 +27,14 @@ interface Token_Factory {
 
 	public function loop(): Loop_Token;
 
+	public function loop_is_first(): Variable_Token;
+
 	public function assignment(): Assignment_Token;
 
 	public function html( callable $printer ): Html_Token;
 
 	/**
-	 * @var string|numeric $value
+	 * @var string|numeric|bool $value
 	 */
 	public function literal( $value ): Literal_Token;
 

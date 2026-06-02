@@ -25,7 +25,7 @@ abstract class Loop_Token implements Template_Token {
 		return $this;
 	}
 
-	protected function set_body( Template_Token $body ): self {
+	public function set_body( Template_Token $body ): self {
 		$this->body = $body;
 
 		return $this;

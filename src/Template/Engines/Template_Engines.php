@@ -43,18 +43,18 @@ class Template_Engines extends Action implements Hooks_Interface {
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
 
-		$twig_tokens              = new Twig_Tokens();
+		$twig_tokens                 = new Twig_Tokens();
 		$this->token_factories       = array(
 			self::TWIG  => $twig_tokens,
 			self::BLADE => new Blade_Tokens(),
 		);
 		$this->default_token_factory = $twig_tokens;
 
-		$this->uploads_folder      = $uploads_folder;
-		$this->plugin              = $plugin;
-		$this->settings            = $settings;
-		$this->template_engines    = array();
-		$this->wp_filesystem_base  = null;
+		$this->uploads_folder     = $uploads_folder;
+		$this->plugin             = $plugin;
+		$this->settings           = $settings;
+		$this->template_engines   = array();
+		$this->wp_filesystem_base = null;
 	}
 
 	protected function is_templates_dir_writable(): bool {

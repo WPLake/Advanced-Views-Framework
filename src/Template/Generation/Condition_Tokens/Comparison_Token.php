@@ -9,6 +9,11 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
 class Comparison_Token implements Template_Token {
+	const COMPARISON_GREATER = ' > ';
+	const COMPARISON_LESS    = ' < ';
+	const COMPARISON_EQUAL   = ' == ';
+	const COMPARISON_EMPTY   = ' ?: ';
+
 	protected ?Template_Token $left  = null;
 	protected ?Template_Token $right = null;
 	protected string $operator       = '';
@@ -26,20 +31,26 @@ class Comparison_Token implements Template_Token {
 	}
 
 	public function set_comparison_greater(): self {
-		$this->operator = '>';
+		$this->operator = static::COMPARISON_GREATER;
 
 		return $this;
 	}
 
 
 	public function set_comparison_less(): self {
-		$this->operator = '<';
+		$this->operator = static::COMPARISON_LESS;
 
 		return $this;
 	}
 
 	public function set_comparison_equal(): self {
-		$this->operator = '==';
+		$this->operator = static::COMPARISON_EQUAL;
+
+		return $this;
+	}
+
+	public function set_comparison_empty(): self {
+		$this->operator = static::COMPARISON_EMPTY;
 
 		return $this;
 	}
@@ -50,7 +61,7 @@ class Comparison_Token implements Template_Token {
 		}
 
 		if ( strlen( $this->operator ) > 0 ) {
-			printf( ' %s ', esc_html( $this->operator ) );
+			echo esc_html( $this->operator );
 		}
 
 		if ( $this->right ) {

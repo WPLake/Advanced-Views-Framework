@@ -16,10 +16,25 @@ final class Blade_Var extends Variable_Token {
 		);
 
 		foreach ( $this->item_path as $item_key ) {
-			printf(
-				'["%s"]',
-				esc_html( $item_key ),
-			);
+			if ( $this->is_object ) {
+				$this->print_object_key( $item_key );
+			} else {
+				$this->print_array_key( $item_key );
+			}
 		}
+	}
+
+	protected function print_array_key( string $key ): void {
+		printf(
+			'["%s"]',
+			esc_html( $key ),
+		);
+	}
+
+	protected function print_object_key( string $key ): void {
+		printf(
+			'->%s',
+			esc_html( $key ),
+		);
 	}
 }

@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
@@ -14,16 +16,18 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
-defined( 'ABSPATH' ) || exit;
-
 class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_factory();
 
-		$target_var = $token_generator->variable( $field_id )
+		$target_var     = $token_generator->variable( $field_id )
 										->add_item_path( 'target' );
-		$href_var   = $token_generator->variable( $field_id )
+		$href_var       = $token_generator->variable( $field_id )
 										->add_item_path( 'value' );
+		$link_label_var = $token_generator->variable( $field_id )
+											->add_item_path( 'linkLabel' );
+		$title_var      = $token_generator->variable( $field_id )
+									->add_item_path( 'title' );
 
 		echo '<a';
 
@@ -46,7 +50,13 @@ class Link_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$markup_field_data->get_token_factory()->print_filled_array_item( $field_id, 'linkLabel', 'title' );
+		$comparison = $token_generator->comparison()
+			->set_left_operand( $link_label_var )
+			->set_comparison_empty()
+			->set_right_operand( $title_var );
+
+		$token_generator->to_echo( $comparison )
+						->print();
 
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();

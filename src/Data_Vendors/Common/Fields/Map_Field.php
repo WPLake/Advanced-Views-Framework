@@ -211,7 +211,7 @@ class Map_Field extends Markup_Field {
 			return;
 		}
 
-		$token_generator     = $markup_field_data->get_token_factory();
+		$token_factory     = $markup_field_data->get_token_factory();
 		$current_tabs_number = $markup_field_data->get_tabs_number();
 		$attributes_map      = array(
 			'data-zoom'       => 'zoom',
@@ -226,7 +226,7 @@ class Map_Field extends Markup_Field {
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$var = $token_generator->variable( $field_id )
+			$var = $token_factory->variable( $field_id )
 									->add_item_path( $key );
 
 			Template_Generator::attribute( $attribute, $var );

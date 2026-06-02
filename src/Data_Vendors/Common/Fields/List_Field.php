@@ -4,13 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 abstract class List_Field extends Markup_Field {
 	const LOOP_ITEM_NAME = 'item';
@@ -52,68 +53,109 @@ abstract class List_Field extends Markup_Field {
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
+			$this->print_item_loop($field_id, $markup_field_data);
+
+			return;
+		}
+
+		$this->print_inner_item( $field_id, $markup_field_data );
+	}
+
+	protected function print_item_loop( string $field_id, Markup_Field_Data $markup_field_data ): void {
+
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$source_var = $token_factory->variable( $field_id )
+										->add_item_path( 'value' );
+		$item_var   = $token_factory->variable( static::LOOP_ITEM_NAME );
+		$loop_body  = $token_factory->html( fn() => $this->print_loop_body( $field_id, $markup_field_data ) );
+
+		Template_Generator::new_line();
+		$markup_field_data->print_tabs();
+
+		$token_factory->loop()
+						->set_source_var( $source_var )
+						->set_item_var( $item_var )
+						->set_body( $loop_body )
+						->print();
+
+		Template_Generator::new_line();
+	}
+
+	protected function print_loop_body( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_factory    = $markup_field_data->get_token_factory();
+		$is_delimiter_set = strlen( $markup_field_data->get_field_data()->options_delimiter ) > 0;
+
+		Template_Generator::new_line();
+		$markup_field_data->increment_and_print_tabs();
+
+		if ( $is_delimiter_set ) {
+			$if = $token_factory->if();
+
+			$secondary_element_comparison = $token_factory->comparison()
+				->set_left_operand( $token_factory->literal( false ) )
+				->set_comparison_equal()
+				->set_right_operand( $token_factory->loop_is_first() );
+
+			$if->new_if_branch()
+				->set_condition( $secondary_element_comparison )
+				->set_body( $token_factory->html( fn() => $this->print_item_delimiter( $field_id, $markup_field_data ) ) );
+
 			Template_Generator::new_line();
 			$markup_field_data->print_tabs();
 
-			$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', static::LOOP_ITEM_NAME );
+			$if->print();
 
-			Template_Generator::new_line();
-			$markup_field_data->increment_and_print_tabs();
-
-			if ( '' !== $markup_field_data->get_field_data()->options_delimiter ) {
-				Template_Generator::new_line();
-				$markup_field_data->print_tabs();
-
-				$markup_field_data->get_token_factory()->print_if_of_not_first_loop_item();
-
-				Template_Generator::new_line();
-				$markup_field_data->increment_and_print_tabs();
-
-				printf(
-					'<span class="%s">',
-					esc_html(
-						$this->get_item_class(
-							'delimiter',
-							$markup_field_data->get_view_data(),
-							$markup_field_data->get_field_data()
-						)
-					)
-				);
-
-				Template_Generator::new_line();
-				$markup_field_data->increment_and_print_tabs();
-
-				$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'options_delimiter' );
-				$markup_field_data->get_token_factory()->to_echo( $var )->print();
-
-				Template_Generator::new_line();
-				$markup_field_data->decrement_and_print_tabs();
-
-				echo '</span>';
-
-				Template_Generator::new_line();
-				$markup_field_data->decrement_and_print_tabs();
-
-				$markup_field_data->get_token_factory()->print_end_if();
-
-				echo "\r\n\r\n";
-
-				$markup_field_data->print_tabs();
-			}
+			echo "\r\n\r\n";
+			$markup_field_data->print_tabs();
 		}
 
+		$this->print_inner_item( $field_id, $markup_field_data );
+
+		Template_Generator::new_line();
+		$markup_field_data->decrement_and_print_tabs();
+	}
+
+	protected function print_item_delimiter( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_factory = $markup_field_data->get_token_factory();
+
+		Template_Generator::new_line();
+		$markup_field_data->increment_and_print_tabs();
+
+		printf(
+			'<span class="%s">',
+			esc_html(
+				$this->get_item_class(
+					'delimiter',
+					$markup_field_data->get_view_data(),
+					$markup_field_data->get_field_data()
+				)
+			)
+		);
+
+		Template_Generator::new_line();
+		$markup_field_data->increment_and_print_tabs();
+
+		$delimiter_var = $token_factory->variable( $field_id )
+										->add_item_path( 'options_delimiter' );
+		$token_factory->to_echo( $delimiter_var )
+						->print();
+
+		Template_Generator::new_line();
+		$markup_field_data->decrement_and_print_tabs();
+
+		echo '</span>';
+
+		Template_Generator::new_line();
+		$markup_field_data->decrement_and_print_tabs();
+	}
+
+	protected function print_inner_item( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$item_id = $markup_field_data->get_field_meta()->is_multiple() ?
 			static::LOOP_ITEM_NAME :
 			$field_id;
 
 		$this->print_item( $field_id, $item_id, $markup_field_data );
-
-		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			Template_Generator::new_line();
-			$markup_field_data->decrement_and_print_tabs();
-			$markup_field_data->get_token_factory()->print_end_for();
-			Template_Generator::new_line();
-		}
 	}
 
 	/**

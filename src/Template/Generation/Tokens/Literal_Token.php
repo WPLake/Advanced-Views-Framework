@@ -11,19 +11,19 @@ defined( 'ABSPATH' ) || exit;
 
 class Literal_Token implements Template_Token {
 	/**
-	 * @var string|numeric
+	 * @var string|numeric|bool
 	 */
 	public $value;
 
 	/**
-	 *  @var string|numeric $value
+	 *  @var string|numeric|bool $value
 	 */
 	public function __construct( $value ) {
 		$this->value = $value;
 	}
 
 	/**
-	 * @param string|numeric $value
+	 * @param string|numeric|bool $value
 	 */
 	public function set_value( $value ): self {
 		$this->value = $value;
@@ -32,12 +32,22 @@ class Literal_Token implements Template_Token {
 	}
 
 	public function print(): void {
-		$string_value = string( $this->value );
+		$string_value = $this->stringify_value();
 
 		if ( is_string( $this->value ) ) {
 			printf( "'%s'", esc_html( $string_value ) );
 		} else {
 			echo esc_html( $string_value );
 		}
+	}
+
+	protected function stringify_value(): string {
+		if ( is_bool( $this->value ) ) {
+			return $this->value ?
+				'true' :
+				'false';
+		}
+
+		return string( $this->value );
 	}
 }
