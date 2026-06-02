@@ -334,7 +334,7 @@ class Post_Selection extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		$template_engine = $this->get_template_engines()->get_template_engine( $this->settings->template_engine );
+		$template_engine = $this->get_template_engines()->get_template_renderer( $this->settings->template_engine );
 
 		ob_start();
 

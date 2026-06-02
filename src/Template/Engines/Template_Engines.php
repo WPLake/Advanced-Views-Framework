@@ -18,7 +18,6 @@ use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Tokens;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Tokens;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
@@ -40,27 +39,22 @@ class Template_Engines extends Action implements Hooks_Interface {
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin $plugin;
 	private Settings $settings;
-	/**
-	 * @var array<string, Template_Generator_OLD>
-	 */
-	private array $template_generators;
 
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
 
-		$twig_generator          = new Twig_Tokens();
-		$this->token_factories        = array(
-			self::TWIG  => $twig_generator,
+		$twig_tokens              = new Twig_Tokens();
+		$this->token_factories       = array(
+			self::TWIG  => $twig_tokens,
 			self::BLADE => new Blade_Tokens(),
 		);
-		$this->default_token_factory = $twig_generator;
+		$this->default_token_factory = $twig_tokens;
 
 		$this->uploads_folder      = $uploads_folder;
 		$this->plugin              = $plugin;
 		$this->settings            = $settings;
 		$this->template_engines    = array();
 		$this->wp_filesystem_base  = null;
-		$this->template_generators = array();
 	}
 
 	protected function is_templates_dir_writable(): bool {
@@ -218,7 +212,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		$wp_filesystem->rmdir( $templates_dir, true );
 	}
 
-	public function get_template_engine( string $name ): ?Template_Renderer {
+	public function get_template_renderer( string $name ): ?Template_Renderer {
 		if ( ! key_exists( $name, $this->template_engines ) ) {
 			$this->template_engines[ $name ] = $this->make_renderer( $name );
 		}
@@ -226,9 +220,9 @@ class Template_Engines extends Action implements Hooks_Interface {
 		return $this->template_engines[ $name ];
 	}
 
-	public function c( string $template_engine ): Token_Factory {
-		if ( key_exists( $template_engine, $this->template_generators ) ) {
-			return $this->template_generators[ $template_engine ];
+	public function resolve_token_factory( string $template_engine ): Token_Factory {
+		if ( key_exists( $template_engine, $this->token_factories ) ) {
+			return $this->token_factories[ $template_engine ];
 		}
 
 		return $this->default_token_factory;

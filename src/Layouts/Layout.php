@@ -330,7 +330,7 @@ class Layout extends Instance {
 			}
 		}
 
-		$template_engine = $this->get_template_engines()->get_template_engine( $this->layout_settings->template_engine );
+		$template_engine = $this->get_template_engines()->get_template_renderer( $this->layout_settings->template_engine );
 
 		if ( null !== $template_engine ) {
 			$template_engine->print(
