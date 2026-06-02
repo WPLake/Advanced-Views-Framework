@@ -18,7 +18,7 @@ class Term_Description_Field extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$var = $markup_field_data->get_token_generator()->var()
+		$var = $markup_field_data->get_token_generator()->variable()
 								->set_name( $field_id )
 								->add_item_path( 'value' );
 

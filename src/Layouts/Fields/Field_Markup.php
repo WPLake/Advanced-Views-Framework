@@ -279,7 +279,7 @@ class Field_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $token_generator->var()
+				$var = $token_generator->variable()
 											->set_name( $variable_info['field_id'] )
 											->add_item_path( $variable_info['item_key'] );
 

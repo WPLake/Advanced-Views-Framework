@@ -8,11 +8,11 @@ use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class T_Assign implements Template_Token {
-	protected ?T_Var $var = null;
-	protected ?Template_Token $value=null;
+abstract class Assignment_Token implements Template_Token {
+	protected ?Variable_Token $var   = null;
+	protected ?Template_Token $value = null;
 
-	public function set_var( T_Var $var ): self {
+	public function set_var( Variable_Token $var ): self {
 		$this->var = $var;
 
 		return $this;

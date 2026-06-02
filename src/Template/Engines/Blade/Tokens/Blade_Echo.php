@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Echo;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 
-final class Blade_Echo extends T_Echo {
+final class Blade_Echo extends Echo_Token {
 	public function print(): void {
 		echo $this->is_raw ?
 			'{!! ' :

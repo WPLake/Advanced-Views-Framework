@@ -37,10 +37,10 @@ class Map_Field extends Markup_Field {
 			),
 		);
 
-		$lat_var = $token_generator->var()
+		$lat_var = $token_generator->variable()
 									->set_name( $item_id )
 									->add_item_path( 'lat' );
-		$lng_var = $token_generator->var()
+		$lng_var = $token_generator->variable()
 									->set_name( $item_id )
 									->add_item_path( 'lng' );
 
@@ -203,7 +203,7 @@ class Map_Field extends Markup_Field {
 
 	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
-			$var = $markup_field_data->get_token_generator()->var()
+			$var = $markup_field_data->get_token_generator()->variable()
 									->set_name( $field_id )
 									->add_item_path( 'map' );
 
@@ -230,7 +230,7 @@ class Map_Field extends Markup_Field {
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$var = $token_generator->var()
+			$var = $token_generator->variable()
 									->set_name( $field_id )
 									->add_item_path( $key );
 
@@ -259,7 +259,7 @@ class Map_Field extends Markup_Field {
 		echo '></div>';
 
 		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			echo "\r\n";
+			Template_Generator::new_line();
 			echo esc_html( str_repeat( "\t", --$current_tabs_number ) );
 			$markup_field_data->get_token_generator()->print_end_for();
 		}
@@ -280,7 +280,7 @@ class Map_Field extends Markup_Field {
 				$this->print_acf_markup( $field_id, $markup_field_data );
 				break;
 			case Meta_Box_Data_Vendor::NAME:
-				$var = $markup_field_data->get_token_generator()->var()
+				$var = $markup_field_data->get_token_generator()->variable()
 										->set_name( $field_id )
 										->add_item_path( 'value' );
 

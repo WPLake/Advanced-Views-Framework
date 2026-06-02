@@ -28,10 +28,10 @@ class Post_Thumbnail_Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_generator();
 
-		$target_var = $token_generator->var()
+		$target_var = $token_generator->variable()
 									->set_name( $field_id )
 									->add_item_path( 'target' );
-		$href_var   = $token_generator->var()
+		$href_var   = $token_generator->variable()
 									->set_name( $field_id )
 									->add_item_path( 'href' );
 
@@ -50,13 +50,13 @@ class Post_Thumbnail_Link_Field extends Markup_Field {
 
 		echo '>';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$markup_field_data->set_is_with_field_wrapper( true );
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</a>';

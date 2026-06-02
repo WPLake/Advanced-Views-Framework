@@ -6,23 +6,23 @@ namespace Org\Wplake\Advanced_Views\Template\Generation;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Assign;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Comment;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Echo;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_IF;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Loop;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Var;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
 interface Token_Generator {
-	public function comment(): T_Comment;
+	public function comment(): Comment_Token;
 
-	public function to_echo(): T_Echo;
+	public function to_echo(): Echo_Token;
 
-	public function var(): T_Var;
+	public function variable(): Variable_Token;
 
-	public function if(): T_IF;
+	public function if(): IF_Token;
 
-	public function loop(): T_Loop;
+	public function loop(): Loop_Token;
 
-	public function assign(): T_Assign;
+	public function assignment(): Assignment_Token;
 }

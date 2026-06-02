@@ -30,22 +30,22 @@ class Gallery_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
 		$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'image_item' );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->print_item( $field_id, 'image_item', $markup_field_data );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		$markup_field_data->get_token_generator()->print_end_for();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	/**

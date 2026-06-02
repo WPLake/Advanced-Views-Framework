@@ -11,6 +11,10 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 defined( 'ABSPATH' ) || exit;
@@ -25,9 +29,48 @@ class Icon_Picker_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$markup_field_data->get_token_generator()->print_if_for_array_item( $field_id, 'type', '==', 'dashicons' );
+		$token_generator = $markup_field_data->get_token_generator();
 
-		echo "\r\n";
+		$type_var = $token_generator->variable()
+									->set_name( $field_id )
+									->add_item_path( 'type' );
+
+		$dashicons_condition = Comparison_Token::create()
+									->set_left( $type_var )
+			// fixme
+									->set_operator( '==' )
+									->set_right( 'dashicons' );
+		$dashicons_body = Html_Token::create()
+										->set_printer( fn() => $this->print_icon_markup( $field_id, $markup_field_data ) );
+
+		$media_library_condition = Comparison_Token::create()
+			->set_left( $type_var )
+			->set_operator( '==' )
+			->set_right( 'media_library' );
+		$media_library_body      = Html_Token::create()
+							->set_printer( fn() => $this->print_icon_image_markup( $field_id, $markup_field_data ) );
+
+		$custom_image_body = Html_Token::create()
+			->set_printer( fn() => $this->print_custom_image_markup( $field_id, $markup_field_data ) );
+
+		$if = $token_generator->if();
+
+		$if->new_if_branch()
+			->set_condition( $dashicons_condition )
+			->set_body( $dashicons_body );
+
+		$if->new_elseif_branch()
+			->set_condition( $media_library_condition )
+			->set_body( $media_library_body );
+
+		$if->new_else_branch()
+			->set_body( $custom_image_body );
+
+		$if->print();
+	}
+
+	protected function print_icon_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -39,34 +82,27 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'value' );
+		$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'value' );
 		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
 		echo '"></i>';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
+	}
 
-		$markup_field_data->get_token_generator()->print_if_for_array_item(
-			$field_id,
-			'type',
-			'==',
-			'media_library',
-			false,
-			true
-		);
-
-		echo "\r\n";
+	protected function print_icon_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
+	}
 
-		$markup_field_data->get_token_generator()->print_else();
-
-		echo "\r\n";
+	protected function print_custom_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -78,15 +114,13 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'value' );
+		$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'value' );
 		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
 		echo '" loading="lazy" alt="icon">';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
-
-		$markup_field_data->get_token_generator()->print_end_if();
 	}
 
 	/**

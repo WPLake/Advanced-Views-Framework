@@ -17,7 +17,7 @@ class True_False_Field extends Markup_Field {
 		$safe_classes = esc_html( $this->get_item_class( 'true-false--state--:', $markup_field_data->get_view_data(), $markup_field_data->get_field_data() ) );
 
 		ob_start();
-		$var = $markup_field_data->get_token_generator()->var()->set_name( $field_id )->add_item_path( 'state' );
+		$var = $markup_field_data->get_token_generator()->variable()->set_name( $field_id )->add_item_path( 'state' );
 		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
 		$code = (string) ob_get_clean();

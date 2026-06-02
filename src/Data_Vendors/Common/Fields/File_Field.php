@@ -32,10 +32,10 @@ class File_Field extends List_Field {
 			'item' :
 			$field_id;
 
-		$id_var        = $token_generator->var()
+		$id_var        = $token_generator->variable()
 										->set_name( $field_id )
 										->add_item_path( 'layout_id' );
-		$object_id_var = $token_generator->var()
+		$object_id_var = $token_generator->variable()
 										->set_name( $object_id_source )
 										->add_item_path( 'value' );
 

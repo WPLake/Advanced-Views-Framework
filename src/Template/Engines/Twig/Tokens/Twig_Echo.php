@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Echo;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 
-final class Twig_Echo extends T_Echo {
+final class Twig_Echo extends Echo_Token {
 	public function print(): void {
 		echo '{{ ';
 

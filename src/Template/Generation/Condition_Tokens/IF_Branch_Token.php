@@ -2,13 +2,14 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Abstract_Token;
 
-final class T_IF_Branch {
+final class IF_Branch_Token extends Abstract_Token {
 	public ?Template_Token $condition = null;
 	public ?Template_Token $body      = null;
 

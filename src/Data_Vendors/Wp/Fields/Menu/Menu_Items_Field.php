@@ -35,10 +35,10 @@ class Menu_Items_Field extends Markup_Field {
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_generator();
 
-		$id_var        = $token_generator->var()
+		$id_var        = $token_generator->variable()
 								->set_name( $field_id )
 			->add_item_path( 'layout_id' );
-		$object_id_var = $token_generator->var()
+		$object_id_var = $token_generator->variable()
 										->set_name( $item_id )
 			->add_item_path( 'value' );
 
@@ -51,12 +51,12 @@ class Menu_Items_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
 		$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'menu_item' );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -102,7 +102,7 @@ class Menu_Items_Field extends Markup_Field {
 
 		$markup_field_data->get_token_generator()->print_if_for_array_item( 'menu_item', 'children' );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -121,7 +121,7 @@ class Menu_Items_Field extends Markup_Field {
 
 		$markup_field_data->get_token_generator()->print_for_of_array_item( 'menu_item', 'children', 'sub_menu_item' );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -146,17 +146,17 @@ class Menu_Items_Field extends Markup_Field {
 		$markup_field_data->get_token_generator()->print_end_if();
 		echo '">';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->print_item_markup( $field_id, 'sub_menu_item', $markup_field_data );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</li>';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		$markup_field_data->get_token_generator()->print_end_for();
@@ -166,7 +166,7 @@ class Menu_Items_Field extends Markup_Field {
 
 		echo '</ul>';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		$markup_field_data->get_token_generator()->print_end_if();
@@ -176,11 +176,11 @@ class Menu_Items_Field extends Markup_Field {
 
 		echo '</li>';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		$markup_field_data->get_token_generator()->print_end_for();
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	protected function is_active_item( WP_Post $wp_post ): bool {

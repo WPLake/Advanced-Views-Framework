@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
-abstract class T_Echo implements Template_Token {
+abstract class Echo_Token implements Template_Token {
 	protected ?Template_Token $content = null;
 	protected bool $is_raw             = false;
 

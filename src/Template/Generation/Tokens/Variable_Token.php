@@ -9,7 +9,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class T_Var implements Template_Token {
+abstract class Variable_Token implements Template_Token {
 	const ITEM_PATH_SEPARATOR = '.';
 
 	protected string $name = '';

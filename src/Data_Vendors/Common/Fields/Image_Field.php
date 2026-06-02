@@ -28,7 +28,7 @@ class Image_Field extends Markup_Field {
 		}
 
 		foreach ( $inner_attributes as $name => $variable_info ) {
-			$var = $token_generator->var()
+			$var = $token_generator->variable()
 									->set_name( $variable_info['field_id'] )
 									->add_item_path( $variable_info['item_key'] );
 
@@ -60,7 +60,7 @@ class Image_Field extends Markup_Field {
 		);
 
 		foreach ( $attributes_map as $attribute_name => $item_key ) {
-			$var = $token_generator->var()
+			$var = $token_generator->variable()
 									->set_name( $field_id )
 									->add_item_path( $item_key );
 

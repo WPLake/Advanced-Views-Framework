@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Var;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
-final class Blade_Var extends T_Var {
+final class Blade_Var extends Variable_Token {
 	public function print(): void {
 		printf(
 			'$%s',

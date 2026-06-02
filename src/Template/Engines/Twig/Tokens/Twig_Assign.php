@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Assign;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 
-final class Twig_Assign extends T_Assign {
+final class Twig_Assign extends Assignment_Token {
 	public function print(): void {
 		echo '{% set ';
 

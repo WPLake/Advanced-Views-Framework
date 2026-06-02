@@ -26,7 +26,7 @@ class Post_Comments_Field extends Markup_Field {
 				$this->get_field_class( 'comment', $markup_field_data )
 			),
 		);
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		// comment author name.
@@ -40,19 +40,19 @@ class Post_Comments_Field extends Markup_Field {
 			)
 		);
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->var()->set_name( $item_id )->add_item_path( 'author_name' );
+		$var = $markup_field_data->get_token_generator()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
 		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// comment author email.
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
 		printf(
@@ -65,10 +65,10 @@ class Post_Comments_Field extends Markup_Field {
 			)
 		);
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->var()
+		$var = $markup_field_data->get_token_generator()->variable()
 								->set_name( 'comment_item' )
 								->add_item_path( 'content' );
 
@@ -77,13 +77,13 @@ class Post_Comments_Field extends Markup_Field {
 		->set_is_raw( true )
 		->print();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// closing 'comment' div.
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
@@ -163,17 +163,17 @@ class Post_Comments_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
 		$markup_field_data->get_token_generator()->print_for_of_array_item( $field_id, 'value', 'comment_item' );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->print_item_markup( $field_id, 'comment_item', $markup_field_data );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		$markup_field_data->get_token_generator()->print_end_for();

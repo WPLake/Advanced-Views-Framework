@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Assign;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 
-final class Blade_Assign extends T_Assign {
+final class Blade_Assign extends Assignment_Token {
 	public function print(): void {
 		echo '@php';
 

@@ -28,7 +28,7 @@ class Comment_Items_List_Field extends Markup_Field {
 				$this->get_field_class( 'comment', $markup_field_data )
 			),
 		);
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		// comment author name.
@@ -42,19 +42,19 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->var()->set_name( $item_id )->add_item_path( 'author_name' );
+		$var = $markup_field_data->get_token_generator()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
 		$markup_field_data->get_token_generator()->to_echo()->set_content( $var )->print();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// comment author email.
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
 		printf(
@@ -67,10 +67,10 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_generator()->var()
+		$var = $markup_field_data->get_token_generator()->variable()
 								->set_name( 'comment_item' )
 								->add_item_path( 'content' );
 
@@ -79,13 +79,13 @@ class Comment_Items_List_Field extends Markup_Field {
 		->set_is_raw( true )
 		->print();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// closing 'comment' div.
-		echo "\r\n";
+		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
@@ -94,10 +94,10 @@ class Comment_Items_List_Field extends Markup_Field {
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_generator();
 
-		$id_var         = $token_generator->var()
+		$id_var         = $token_generator->variable()
 										->set_name( $field_id )
 										->add_item_path( 'layout_id' );
-		$comment_id_var = $token_generator->var()
+		$comment_id_var = $token_generator->variable()
 										->set_name( $item_id )
 										->add_item_path( 'comment_id' );
 

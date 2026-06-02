@@ -65,10 +65,10 @@ class Taxonomy_Field extends List_Field {
 			'term_item' :
 			$field_id;
 
-		$id_var      = $token_generator->var()
+		$id_var      = $token_generator->variable()
 										->set_name( $field_id )
 										->add_item_path( 'layout_id' );
-		$term_id_var = $token_generator->var()
+		$term_id_var = $token_generator->variable()
 										->set_name( $object_id_source )
 										->add_item_path( 'value' );
 

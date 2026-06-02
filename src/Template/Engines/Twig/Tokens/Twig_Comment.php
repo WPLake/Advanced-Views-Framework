@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\T_Comment;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 
-final class Twig_Comment extends T_Comment {
+final class Twig_Comment extends Comment_Token {
 	public function print(): void {
 		printf(
 			'{# %s #}',
