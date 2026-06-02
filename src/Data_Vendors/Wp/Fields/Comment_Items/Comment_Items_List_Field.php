@@ -45,8 +45,8 @@ class Comment_Items_List_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_factory()->variable()->set_name( $item_id )->add_item_path( 'author_name' );
-		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable( $item_id )->add_item_path( 'author_name' );
+		$markup_field_data->get_token_factory()->to_echo( $var )->print();
 
 		Template_Generator::new_line();
 		$markup_field_data->decrement_and_print_tabs();
@@ -70,13 +70,11 @@ class Comment_Items_List_Field extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_factory()->variable()
-								->set_name( 'comment_item' )
+		$var = $markup_field_data->get_token_factory()->variable( 'comment_item' )
 								->add_item_path( 'content' );
 
-		$markup_field_data->get_token_factory()->to_echo()
-		->set_content( $var )
-		->set_is_raw( true )
+		$markup_field_data->get_token_factory()->to_echo( $var )
+							->set_is_raw( true )
 		->print();
 
 		Template_Generator::new_line();
@@ -94,12 +92,10 @@ class Comment_Items_List_Field extends Markup_Field {
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_factory();
 
-		$id_var         = $token_generator->variable()
-										->set_name( $field_id )
-										->add_item_path( 'layout_id' );
-		$comment_id_var = $token_generator->variable()
-										->set_name( $item_id )
-										->add_item_path( 'comment_id' );
+		$id_var         = $token_generator->variable( $field_id )
+											->add_item_path( 'layout_id' );
+		$comment_id_var = $token_generator->variable( $item_id )
+											->add_item_path( 'comment_id' );
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
 

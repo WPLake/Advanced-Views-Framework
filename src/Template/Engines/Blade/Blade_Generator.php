@@ -22,16 +22,16 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
 final class Blade_Generator extends Token_Factory_Base {
-	public function comment(string $content): Comment_Token {
-		return new Blade_Comment($content);
+	public function comment( string $content ): Comment_Token {
+		return new Blade_Comment( $content );
 	}
 
-	public function to_echo(Template_Token $content): Echo_Token {
-		return new Blade_Echo($content);
+	public function to_echo( Template_Token $content ): Echo_Token {
+		return new Blade_Echo( $content );
 	}
 
-	public function variable(string $name): Variable_Token {
-		return new Blade_Var($name);
+	public function variable( string $name ): Variable_Token {
+		return new Blade_Var( $name );
 	}
 
 	public function if(): IF_Token {

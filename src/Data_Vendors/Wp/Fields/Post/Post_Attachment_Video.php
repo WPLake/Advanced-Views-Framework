@@ -33,11 +33,9 @@ class Post_Attachment_Video extends Markup_Field {
 		Template_Generator::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$src_var  = $token_generator->variable()
-									->set_name( $field_id )
+		$src_var  = $token_generator->variable( $field_id )
 									->add_item_path( 'value' );
-		$type_var = $token_generator->variable()
-									->set_name( $field_id )
+		$type_var = $token_generator->variable( $field_id )
 									->add_item_path( 'mime_type' );
 
 		echo '<source';

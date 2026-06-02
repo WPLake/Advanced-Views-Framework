@@ -100,9 +100,8 @@ class Post_Selection_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $token_generator->variable()
-											->set_name( $variable_info['field_id'] )
-											->add_item_path( $variable_info['item_key'] );
+				$var = $token_generator->variable( $variable_info['field_id'] )
+										->add_item_path( $variable_info['item_key'] );
 
 				Template_Generator::attribute( $attr, $var );
 			}
@@ -179,13 +178,13 @@ class Post_Selection_Markup {
 		if ( false === $is_load_more ) {
 			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
 			$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'classes' );
-			$template_generator->to_echo()->set_content( $var )->print();
+			$template_generator->to_echo( $var )->print();
 
 			echo esc_html( $post_selection_settings->get_bem_name() );
 			if ( ! $post_selection_settings->has_unique_bem_name() ) {
 				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
 				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'id' );
-				$template_generator->to_echo()->set_content( $var )->print();
+				$template_generator->to_echo( $var )->print();
 
 			}
 			echo '">';
@@ -229,7 +228,7 @@ class Post_Selection_Markup {
 					esc_html( $no_posts_message_class )
 				);
 				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'no_posts_found_message' );
-				$template_generator->to_echo()->set_content( $var )->print();
+				$template_generator->to_echo( $var )->print();
 
 				echo '</div>';
 				echo "\r\n";

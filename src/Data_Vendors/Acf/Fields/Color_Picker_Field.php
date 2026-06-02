@@ -16,9 +16,11 @@ defined( 'ABSPATH' ) || exit;
 
 class Color_Picker_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+		$token_factory = $markup_field_data->get_token_factory();
+
 		if ( 'string' === $markup_field_data->get_field_meta()->get_return_format() ) {
-			$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'value' );
-			$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
+			$var = $token_factory->variable( $field_id )->add_item_path( 'value' );
+			$token_factory->to_echo( $var )->print();
 
 			return;
 		}
@@ -33,8 +35,8 @@ class Color_Picker_Field extends Markup_Field {
 				echo ';';
 			}
 
-			$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( $parts[ $i ] );
-			$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
+			$var = $token_factory->variable( $field_id )->add_item_path( $parts[ $i ] );
+			$token_factory->to_echo( $var )->print();
 		}
 
 		echo ')';

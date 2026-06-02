@@ -279,9 +279,8 @@ class Field_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $token_generator->variable()
-											->set_name( $variable_info['field_id'] )
-											->add_item_path( $variable_info['item_key'] );
+				$var = $token_generator->variable( $variable_info['field_id'] )
+										->add_item_path( $variable_info['item_key'] );
 
 				Template_Generator::attribute( $attr, $var );
 			}

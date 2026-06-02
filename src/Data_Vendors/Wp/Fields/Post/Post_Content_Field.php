@@ -18,13 +18,11 @@ class Post_Content_Field extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$var = $markup_field_data->get_token_factory()->variable()
-								->set_name( $field_id )
+		$var = $markup_field_data->get_token_factory()->variable( $field_id )
 								->add_item_path( 'value' );
 
-		$markup_field_data->get_token_factory()->to_echo()
-		->set_content( $var )
-		->set_is_raw( true )
+		$markup_field_data->get_token_factory()->to_echo( $var )
+							->set_is_raw( true )
 		->print();
 	}
 

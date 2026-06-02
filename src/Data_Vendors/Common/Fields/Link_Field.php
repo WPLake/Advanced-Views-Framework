@@ -20,12 +20,10 @@ class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_factory();
 
-		$target_var = $token_generator->variable()
-									->set_name( $field_id )
-									->add_item_path( 'target' );
-		$href_var   = $token_generator->variable()
-									->set_name( $field_id )
-									->add_item_path( 'value' );
+		$target_var = $token_generator->variable( $field_id )
+										->add_item_path( 'target' );
+		$href_var   = $token_generator->variable( $field_id )
+										->add_item_path( 'value' );
 
 		echo '<a';
 

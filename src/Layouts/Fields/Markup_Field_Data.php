@@ -111,8 +111,7 @@ class Markup_Field_Data extends Template_Field_Data {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $this->token_factory->variable()
-											->set_name( $variable_info['field_id'] )
+				$var = $this->token_factory->variable( $variable_info['field_id'] )
 											->add_item_path( $variable_info['item_key'] );
 
 				Template_Generator::attribute( $attr, $var );

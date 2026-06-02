@@ -35,12 +35,10 @@ class Menu_Items_Field extends Markup_Field {
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_generator = $markup_field_data->get_token_factory();
 
-		$id_var        = $token_generator->variable()
-								->set_name( $field_id )
-			->add_item_path( 'layout_id' );
-		$object_id_var = $token_generator->variable()
-										->set_name( $item_id )
-			->add_item_path( 'value' );
+		$id_var        = $token_generator->variable( $field_id )
+										->add_item_path( 'layout_id' );
+		$object_id_var = $token_generator->variable( $item_id )
+										->add_item_path( 'value' );
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
 

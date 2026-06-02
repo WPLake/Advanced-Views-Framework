@@ -32,16 +32,15 @@ class Icon_Picker_Field extends Markup_Field {
 									->add_item_path( 'type' );
 
 		$dashicons_condition = $token_factory->comparison()
-									->set_left( $type_var )
-			// fixme
-									->set_operator( '==' )
-									->set_right( $token_factory->literal( 'dashicons' ) );
-		$dashicons_body = $token_factory->html( fn() => $this->print_icon_markup( $field_id, $markup_field_data ) );
+									->set_left_operand( $type_var )
+									->set_comparison_equal()
+									->set_right_operand( $token_factory->literal( 'dashicons' ) );
+		$dashicons_body      = $token_factory->html( fn() => $this->print_icon_markup( $field_id, $markup_field_data ) );
 
 		$media_library_condition = $token_factory->comparison()
-			->set_left( $type_var )
-			->set_operator( '==' )
-			->set_right( $token_factory->literal( 'media_library' ) );
+			->set_left_operand( $type_var )
+			->set_comparison_equal()
+			->set_right_operand( $token_factory->literal( 'media_library' ) );
 		$media_library_body      = $token_factory->html( fn() => $this->print_icon_image_markup( $field_id, $markup_field_data ) );
 
 		$custom_image_body = $token_factory->html( fn() => $this->print_custom_image_markup( $field_id, $markup_field_data ) );
@@ -75,8 +74,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'value' );
+		$markup_field_data->get_token_factory()->to_echo( $var )->print();
 
 		echo '"></i>';
 
@@ -107,8 +106,8 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_factory()->variable()->set_name( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_factory()->to_echo()->set_content( $var )->print();
+		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'value' );
+		$markup_field_data->get_token_factory()->to_echo( $var )->print();
 
 		echo '" loading="lazy" alt="icon">';
 

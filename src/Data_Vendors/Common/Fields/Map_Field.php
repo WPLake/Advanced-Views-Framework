@@ -37,11 +37,9 @@ class Map_Field extends Markup_Field {
 			),
 		);
 
-		$lat_var = $token_generator->variable()
-									->set_name( $item_id )
+		$lat_var = $token_generator->variable( $item_id )
 									->add_item_path( 'lat' );
-		$lng_var = $token_generator->variable()
-									->set_name( $item_id )
+		$lng_var = $token_generator->variable( $item_id )
 									->add_item_path( 'lng' );
 
 		Template_Generator::attribute( 'data-lat', $lat_var );
@@ -203,13 +201,11 @@ class Map_Field extends Markup_Field {
 
 	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
-			$var = $markup_field_data->get_token_factory()->variable()
-									->set_name( $field_id )
+			$var = $markup_field_data->get_token_factory()->variable( $field_id )
 									->add_item_path( 'map' );
 
-			$markup_field_data->get_token_factory()->to_echo()
-			->set_content( $var )
-			->set_is_raw( true )
+			$markup_field_data->get_token_factory()->to_echo( $var )
+								->set_is_raw( true )
 			->print();
 
 			return;
@@ -230,8 +226,7 @@ class Map_Field extends Markup_Field {
 			),
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
-			$var = $token_generator->variable()
-									->set_name( $field_id )
+			$var = $token_generator->variable( $field_id )
 									->add_item_path( $key );
 
 			Template_Generator::attribute( $attribute, $var );
@@ -280,13 +275,11 @@ class Map_Field extends Markup_Field {
 				$this->print_acf_markup( $field_id, $markup_field_data );
 				break;
 			case Meta_Box_Data_Vendor::NAME:
-				$var = $markup_field_data->get_token_factory()->variable()
-										->set_name( $field_id )
+				$var = $markup_field_data->get_token_factory()->variable( $field_id )
 										->add_item_path( 'value' );
 
-				$markup_field_data->get_token_factory()->to_echo()
-				->set_content( $var )
-				->set_is_raw( true )
+				$markup_field_data->get_token_factory()->to_echo( $var )
+									->set_is_raw( true )
 				->print();
 
 				break;

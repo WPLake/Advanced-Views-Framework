@@ -18,8 +18,8 @@ abstract class Variable_Token implements Template_Token {
 	 */
 	protected array $item_path = array();
 
-	public function __construct(string $name) {
-		$this->name=$name;
+	public function __construct( string $name ) {
+		$this->name = $name;
 	}
 
 	public function set_name( string $name ): self {

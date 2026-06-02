@@ -21,7 +21,7 @@ interface Token_Factory {
 
 	public function to_echo( Template_Token $content ): Echo_Token;
 
-	public function variable(string $name): Variable_Token;
+	public function variable( string $name ): Variable_Token;
 
 	public function if(): IF_Token;
 
