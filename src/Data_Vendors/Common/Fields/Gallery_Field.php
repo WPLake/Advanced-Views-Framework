@@ -13,6 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 defined( 'ABSPATH' ) || exit;
 

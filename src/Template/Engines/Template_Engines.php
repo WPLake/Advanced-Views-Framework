@@ -13,10 +13,10 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Generator;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Generator;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Tokens;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Tokens;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template_Engines\Template_Generator_OLD;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -30,8 +30,8 @@ class Template_Engines extends Action implements Hooks_Interface {
 	/**
 	 * @var array<string, Token_Factory>
 	 */
-	private array $generators;
-	private Token_Factory $default_generator;
+	private array $token_factories;
+	private Token_Factory $default_token_factory;
 	private string $uploads_folder;
 	/**
 	 * @var array<string, Template_Renderer|null>
@@ -48,12 +48,12 @@ class Template_Engines extends Action implements Hooks_Interface {
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
 
-		$twig_generator          = new Twig_Generator();
-		$this->generators        = array(
+		$twig_generator          = new Twig_Tokens();
+		$this->token_factories        = array(
 			self::TWIG  => $twig_generator,
-			self::BLADE => new Blade_Generator(),
+			self::BLADE => new Blade_Tokens(),
 		);
-		$this->default_generator = $twig_generator;
+		$this->default_token_factory = $twig_generator;
 
 		$this->uploads_folder      = $uploads_folder;
 		$this->plugin              = $plugin;
@@ -231,7 +231,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 			return $this->template_generators[ $template_engine ];
 		}
 
-		return $this->default_generator;
+		return $this->default_token_factory;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
