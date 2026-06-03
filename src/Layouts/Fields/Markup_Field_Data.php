@@ -201,15 +201,15 @@ class Markup_Field_Data extends Template_Field_Data {
 	}
 
 	public function print_tabs(): void {
-		echo esc_html( str_repeat( "\t", $this->get_tabs_number() ) );
+		Template_Generator::tabs( $this->get_tabs_number() );
 	}
 
 	public function increment_and_print_tabs(): void {
-		echo esc_html( str_repeat( "\t", $this->increment_and_get_tabs_number() ) );
+		Template_Generator::tabs( $this->increment_and_get_tabs_number() );
 	}
 
 	public function decrement_and_print_tabs(): void {
-		echo esc_html( str_repeat( "\t", $this->decrement_and_get_tabs_number() ) );
+		Template_Generator::tabs( $this->decrement_and_get_tabs_number() );
 	}
 
 	public function get_token_factory(): Token_Factory {

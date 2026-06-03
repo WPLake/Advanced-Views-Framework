@@ -200,18 +200,21 @@ class Map_Field extends Markup_Field {
 	}
 
 	protected function print_acf_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		if ( 'open_street_map' === $markup_field_data->get_field_meta()->get_type() ) {
-			$var = $markup_field_data->get_token_factory()->variable( $field_id )
-									->add_item_path( 'map' );
+		$token_factory = $markup_field_data->get_token_factory();
+		$field_meta    = $markup_field_data->get_field_meta();
+		$field_data    = $markup_field_data->get_field_data();
 
-			$markup_field_data->get_token_factory()->to_echo( $var )
-								->set_is_raw( true )
-			->print();
+		if ( 'open_street_map' === $field_meta->get_type() ) {
+			$var = $token_factory->variable( $field_id )
+								->add_item_path( 'map' );
+
+			$token_factory->to_echo( $var )
+							->set_is_raw( true )
+							->print();
 
 			return;
 		}
 
-		$token_factory       = $markup_field_data->get_token_factory();
 		$current_tabs_number = $markup_field_data->get_tabs_number();
 		$attributes_map      = array(
 			'data-zoom'       => 'zoom',
@@ -227,46 +230,80 @@ class Map_Field extends Markup_Field {
 		);
 		foreach ( $attributes_map as $attribute => $key ) {
 			$var = $token_factory->variable( $field_id )
-									->add_item_path( $key );
+								->add_item_path( $key );
 
 			Template_Generator::attribute( $attribute, $var );
 		}
 		echo '>';
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 
-		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
-			false === $markup_field_data->get_field_meta()->is_multiple() ) {
-			$markup_field_data->get_token_factory()->print_if_for_array_item( $field_id, 'value' );
-			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
-		}
-
-		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', 'marker' );
-			echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
-		}
-
-		$item_id = false === $markup_field_data->get_field_meta()->is_multiple() ?
-			$field_id :
-			'marker';
-
-		echo '<div ';
-		$this->print_map_marker_attributes( $field_id, $item_id, $markup_field_data );
-		echo '></div>';
-
-		if ( $markup_field_data->get_field_meta()->is_multiple() ) {
-			Template_Generator::new_line();
-			echo esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_field_data->get_token_factory()->print_end_for();
-		}
-
-		if ( $markup_field_data->get_field_data()->is_visible_when_empty &&
-			false === $markup_field_data->get_field_meta()->is_multiple() ) {
-			echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
-			$markup_field_data->get_token_factory()->print_end_if();
+		if ( $field_meta->is_multiple() ) {
+			$this->print_item_loop( $field_id, $markup_field_data, $current_tabs_number );
+		} elseif ( $field_data->is_visible_when_empty ) {
+			$this->print_conditional_item( $field_id, $field_id, $markup_field_data );
+		} else {
+			$this->print_inner_item( $field_id, $field_id, $markup_field_data );
 		}
 
 		echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
 		echo '</div>';
+	}
+
+	protected function print_item_loop( string $field_id, Markup_Field_Data $markup_field_data, $current_tabs_number ): void {
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$source_var = $token_factory->variable( $field_id )
+										->add_item_path( 'value' );
+		$item_var   = $token_factory->variable( 'marker' );
+
+		$loop_body = $token_factory->html(
+			function () use ( $field_id, $item_var, $markup_field_data, $current_tabs_number ) {
+				Template_Generator::new_line();
+				$markup_field_data->increment_and_print_tabs();
+
+				$this->print_inner_item( $field_id, $item_var->get_name(), $markup_field_data );
+
+				Template_Generator::new_line();
+				$markup_field_data->decrement_and_print_tabs();
+			}
+		);
+
+		$token_factory->loop()
+						->set_source_var( $source_var )
+						->set_item_var( $item_var )
+						->set_body( $loop_body )
+						->print();
+	}
+
+	protected function print_conditional_item( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ) {
+		$token_factory = $markup_field_data->get_token_factory();
+		$value_var     = $token_factory->variable( $field_id )
+										->add_item_path( 'value' );
+
+		$if_body = $token_factory->html(
+			function () use ( $field_id, $item_id, $markup_field_data ) {
+				$this->print_inner_item( $field_id, $item_id, $markup_field_data );
+				Template_Generator::new_line();
+				$markup_field_data->decrement_and_print_tabs();
+			}
+		);
+
+		$if = $token_factory->if();
+
+		$if->new_if_branch()
+			->set_condition( $value_var )
+			->set_body( $if_body );
+
+		Template_Generator::new_line();
+		$markup_field_data->increment_and_print_tabs();
+
+		$if->print();
+	}
+
+	protected function print_inner_item( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
+		echo '<div ';
+		$this->print_map_marker_attributes( $field_id, $item_id, $markup_field_data );
+		echo '></div>';
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
@@ -280,7 +317,7 @@ class Map_Field extends Markup_Field {
 
 				$markup_field_data->get_token_factory()->to_echo( $var )
 									->set_is_raw( true )
-				->print();
+									->print();
 
 				break;
 		}

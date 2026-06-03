@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Template_Generator {
 	protected const NEW_LINE = "\r\n";
+	protected const TAB      = "\t";
 
 	public static function new_line(): void {
 		echo esc_html( self::NEW_LINE );
@@ -19,5 +20,11 @@ abstract class Template_Generator {
 		$value->print();
 
 		echo '"';
+	}
+
+	public static function tabs( int $count ): void {
+		$tabs = str_repeat( self::TAB, $count );
+
+		echo esc_html( $tabs );
 	}
 }
