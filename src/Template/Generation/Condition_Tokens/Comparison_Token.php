@@ -13,6 +13,7 @@ class Comparison_Token implements Template_Token {
 	const COMPARISON_LESS    = ' < ';
 	const COMPARISON_EQUAL   = ' == ';
 	const COMPARISON_EMPTY   = ' ?: ';
+	const COMPARISON_OR      = ' || ';
 
 	protected ?Template_Token $left  = null;
 	protected ?Template_Token $right = null;
@@ -51,6 +52,12 @@ class Comparison_Token implements Template_Token {
 
 	public function set_comparison_empty(): self {
 		$this->operator = static::COMPARISON_EMPTY;
+
+		return $this;
+	}
+
+	public function set_comparison_or(): self {
+		$this->operator = static::COMPARISON_OR;
 
 		return $this;
 	}

@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 final class Twig_IF extends IF_Token {
 	public function print(): void {
@@ -36,8 +35,6 @@ final class Twig_IF extends IF_Token {
 		}
 
 		$this->print_branch_close_tag();
-
-		Template_Generator::new_line();
 
 		if ( $branch->body ) {
 			$branch->body->print();

@@ -18,8 +18,12 @@ class Woo_Length_Field extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_factory()->to_echo( $var )->print();
+		$var = $markup_field_data->get_token_factory()
+								->variable( $field_id )
+								->add_item_path( 'value' );
+		$markup_field_data->get_token_factory()
+							->to_echo( $var )
+							->print();
 	}
 
 	/**

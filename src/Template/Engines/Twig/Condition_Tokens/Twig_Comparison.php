@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class Twig_Comparison extends Comparison_Token {
 	public const COMPARISON_EMPTY = '|default(';
+	public const COMPARISON_OR    = ' or ';
 
 	public function print(): void {
 		parent::print();

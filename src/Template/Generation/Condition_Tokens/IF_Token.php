@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
 abstract class IF_Token implements Template_Token {

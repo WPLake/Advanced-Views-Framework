@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
@@ -12,8 +14,6 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-
-defined( 'ABSPATH' ) || exit;
 
 class Post_Attachment_Video extends Markup_Field {
 	use Custom_Field;

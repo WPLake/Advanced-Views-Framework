@@ -14,11 +14,20 @@ defined( 'ABSPATH' ) || exit;
 
 class True_False_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$safe_classes = esc_html( $this->get_item_class( 'true-false--state--:', $markup_field_data->get_view_data(), $markup_field_data->get_field_data() ) );
+		$token_factory = $markup_field_data->get_token_factory();
+		$safe_classes  = esc_html(
+			$this->get_item_class(
+				'true-false--state--:',
+				$markup_field_data->get_view_data(),
+				$markup_field_data->get_field_data()
+			)
+		);
 
 		ob_start();
-		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'state' );
-		$markup_field_data->get_token_factory()->to_echo( $var )->print();
+		$var = $token_factory->variable( $field_id )
+							->add_item_path( 'state' );
+		$token_factory->to_echo( $var )
+			->print();
 
 		$code = (string) ob_get_clean();
 
