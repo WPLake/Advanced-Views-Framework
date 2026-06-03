@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 class Comparison_Token implements Template_Token {
 	const COMPARISON_GREATER = ' > ';
 	const COMPARISON_LESS    = ' < ';
+	const COMPARISON_MORE    = ' > ';
 	const COMPARISON_EQUAL   = ' == ';
 	const COMPARISON_EMPTY   = ' ?: ';
 	const COMPARISON_OR      = ' || ';
@@ -44,6 +45,12 @@ class Comparison_Token implements Template_Token {
 		return $this;
 	}
 
+	public function set_comparison_more(): self {
+		$this->operator = static::COMPARISON_MORE;
+
+		return $this;
+	}
+
 	public function set_comparison_equal(): self {
 		$this->operator = static::COMPARISON_EQUAL;
 
@@ -63,7 +70,7 @@ class Comparison_Token implements Template_Token {
 	}
 
 	public function print(): void {
-		if ( $this->left ) {
+		if ( $this->left instanceof Template_Token ) {
 			$this->left->print();
 		}
 
@@ -71,7 +78,7 @@ class Comparison_Token implements Template_Token {
 			echo esc_html( $this->operator );
 		}
 
-		if ( $this->right ) {
+		if ( $this->right instanceof Template_Token ) {
 			$this->right->print();
 		}
 	}

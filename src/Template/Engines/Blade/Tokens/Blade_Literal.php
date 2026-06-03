@@ -21,9 +21,9 @@ final class Blade_Literal extends Literal_Token {
 				echo ', ';
 			}
 
-			$this->print_literal( $key );
+			$this->print_literally( $key );
 			echo ' => ';
-			$this->print_literal( $item );
+			$this->print_literally( $item );
 		}
 
 		echo ']';

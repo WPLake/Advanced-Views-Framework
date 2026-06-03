@@ -8,10 +8,11 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 
 final class Blade_IF extends IF_Token {
 	public function print(): void {
-		if ( $this->if_branch ) {
+		if ( $this->if_branch instanceof IF_Branch ) {
 			$this->print_branch( 'if', $this->if_branch );
 		}
 
@@ -19,7 +20,7 @@ final class Blade_IF extends IF_Token {
 			$this->print_branch( 'elseif', $elseif_branch );
 		}
 
-		if ( $this->else_branch ) {
+		if ( $this->else_branch instanceof IF_Branch ) {
 			$this->print_branch( 'else', $this->else_branch );
 		}
 
@@ -29,13 +30,13 @@ final class Blade_IF extends IF_Token {
 	protected function print_branch( string $type, IF_Branch $branch ) {
 		$this->print_branch_token( $type );
 
-		if ( $branch->condition ) {
+		if ( $branch->condition instanceof Template_Token ) {
 			echo ' (';
 			$branch->condition->print();
 			echo ')';
 		}
 
-		if ( $branch->body ) {
+		if ( $branch->body instanceof Template_Token ) {
 			$branch->body->print();
 		}
 	}

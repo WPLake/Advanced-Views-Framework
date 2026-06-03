@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
@@ -13,8 +15,6 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-
-defined( 'ABSPATH' ) || exit;
 
 class Post_Selection_Markup {
 	private Front_Assets $front_assets;
@@ -36,22 +36,43 @@ class Post_Selection_Markup {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
+		$token_factory = $this->template_engines->resolve_token_factory( $post_selection_settings->template_engine );
+
+		$pages_var  = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+			->add_item_path( 'pages_amount' );
+		$comparison = $token_factory->comparison()
+			->set_left_operand( $pages_var )
+			->set_comparison_more()
+			->set_right_operand( $token_factory->literal( 1 ) );
+		$body       = $token_factory->html(
+			function () use ( $token_factory ) {
+				$pages_var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+					->add_item_path( 'pages_amount' );
+
+				echo "\r\n";
+				echo "\t\t<div>\r\n";
+				echo "\t\t\t";
+				$token_factory->functions()
+								->paginate_links(
+									array(
+										'total' => $pages_var,
+									)
+								);
+				echo "\n";
+				echo "\t\t" . '</div>' . "\r\n";
+				echo "\t";
+			}
+		);
+
+		$if = $token_factory->if();
+
+		$if->new_if_branch()
+			->set_condition( $comparison )
+			->set_body( $body );
 
 		echo "\r\n\t";
 
-		// 1 < pages_amount
-		$template_generator->print_if_for_array_item( Hard_Post_Selection_Cpt::variable_name(), 'pages_amount', '<', 1 );
-
-		echo "\r\n";
-		echo "\t\t<div>\r\n";
-		echo "\t\t\t";
-		$template_generator->print_function_paginate_links();
-		echo "\n";
-		echo "\t\t" . '</div>' . "\r\n";
-		echo "\t";
-
-		$template_generator->print_end_if();
+		$if->print();
 
 		echo "\r\n";
 	}
@@ -127,12 +148,11 @@ class Post_Selection_Markup {
 	}
 
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
-		$token_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
+		$resolve_token_factory = $this->template_engines->resolve_token_factory( $post_selection_settings->template_engine );
 
-		$id_var      = $token_generator->var()
-										->set_name( Hard_Post_Selection_Cpt::variable_name() )
+		$id_var      = $resolve_token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 										->add_item_path( 'layout_id' );
-		$post_id_var = $token_generator->var()->set_name( 'post_id' );
+		$post_id_var = $resolve_token_factory->variable( 'post_id' );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
 

@@ -25,8 +25,6 @@ class Html_Token implements Template_Token {
 	}
 
 	public function print(): void {
-		if ( $this->printer ) {
-			( $this->printer )();
-		}
+		( $this->printer )();
 	}
 }

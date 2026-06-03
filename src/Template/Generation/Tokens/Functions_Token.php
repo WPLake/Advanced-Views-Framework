@@ -33,6 +33,39 @@ abstract class Functions_Token {
 
 		$this->token_factory
 			->to_echo( $function )
+			->set_is_raw( true )
+			->print();
+	}
+
+	/**
+	 * @param mixed[] $settings
+	 */
+	public function paginate_links( array $settings ): void {
+		$settings = array_merge(
+			array(
+				'prev_text' => '<',
+				'next_text' => '>',
+			),
+			$settings
+		);
+
+		$settings_literal = $this->token_factory->literal(
+			array(
+				$settings,
+			)
+		);
+
+		// it's a built-in WordPress function.
+		$function = $this->token_factory->function( 'paginate_links' )
+										->set_arguments(
+											array(
+												$settings_literal,
+											)
+										);
+
+		$this->token_factory
+			->to_echo( $function )
+			->set_is_raw( true )
 			->print();
 	}
 

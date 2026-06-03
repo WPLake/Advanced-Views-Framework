@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 /**
- * @phpstan-type Literal_Value string|numeric|bool|mixed[]
+ * @phpstan-type Literal_Value string|numeric|bool|Template_Token|mixed[]
  */
 abstract class Literal_Token implements Template_Token {
 	/**
@@ -35,13 +35,13 @@ abstract class Literal_Token implements Template_Token {
 	}
 
 	public function print(): void {
-		$this->print_literal( $this->value );
+		$this->print_literally( $this->value );
 	}
 
 	/**
-	 * @param Literal_Value $value
+	 * @param mixed $value
 	 */
-	protected function print_literal( $value ): void {
+	protected function print_literally( $value ): void {
 		if ( is_string( $value ) ) {
 			printf( "'%s'", esc_html( $value ) );
 		} else {
@@ -50,7 +50,7 @@ abstract class Literal_Token implements Template_Token {
 	}
 
 	/**
-	 * @param Literal_Value $value
+	 * @param mixed $value
 	 */
 	protected function print_as_string( $value ): void {
 		if ( is_bool( $value ) ) {
@@ -59,6 +59,9 @@ abstract class Literal_Token implements Template_Token {
 				'false';
 		} elseif ( is_array( $value ) ) {
 			$this->print_array( $value );
+		} elseif ( $value instanceof Literal_Token ) {
+			// e.g. Variable_Token.
+			$value->print();
 		} else {
 			echo esc_html(
 				string( $value )
