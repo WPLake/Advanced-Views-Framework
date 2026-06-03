@@ -11,6 +11,8 @@ use Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens\Twig_IF;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Assign;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Comment;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Functions;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Literal;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
@@ -20,6 +22,8 @@ use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
@@ -50,5 +54,13 @@ final class Twig_Tokens extends Token_Factory_Base {
 
 	public function comparison(): Comparison_Token {
 		return new Twig_Comparison();
+	}
+
+	public function literal( $value ): Literal_Token {
+		return new Twig_Literal( $value );
+	}
+
+	public function functions(): Functions_Token {
+		return new Twig_Functions( $this );
 	}
 }

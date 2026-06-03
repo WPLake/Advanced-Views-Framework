@@ -11,11 +11,16 @@ use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Function_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
+/**
+ * @phpstan-import-type Literal_Value from Literal_Token
+ */
 interface Token_Factory {
 	public function comment( string $content ): Comment_Token;
 
@@ -34,9 +39,13 @@ interface Token_Factory {
 	public function html( callable $printer ): Html_Token;
 
 	/**
-	 * @var string|numeric|bool $value
+	 * @var Literal_Value $value
 	 */
 	public function literal( $value ): Literal_Token;
 
 	public function comparison(): Comparison_Token;
+
+	public function function( string $name ): Function_Token;
+
+	public function functions(): Functions_Token;
 }
