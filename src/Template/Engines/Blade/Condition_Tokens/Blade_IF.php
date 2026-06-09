@@ -27,7 +27,7 @@ final class Blade_IF extends IF_Token {
 		$this->print_branch_token( 'endif' );
 	}
 
-	protected function print_branch( string $type, IF_Branch $branch ) {
+	protected function print_branch( string $type, IF_Branch $branch ): void {
 		$this->print_branch_token( $type );
 
 		if ( $branch->condition instanceof Template_Token ) {
@@ -41,7 +41,7 @@ final class Blade_IF extends IF_Token {
 		}
 	}
 
-	protected function print_branch_token( string $type ) {
+	protected function print_branch_token( string $type ): void {
 		printf( '@%s', esc_html( $type ) );
 	}
 }

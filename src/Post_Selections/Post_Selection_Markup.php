@@ -39,17 +39,17 @@ class Post_Selection_Markup {
 		$token_factory = $this->template_engines->resolve_token_factory( $post_selection_settings->template_engine );
 
 		$pages_var  = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
-			->add_item_path( 'pages_amount' );
+									->add_item_path( 'pages_amount' );
 		$comparison = $token_factory->comparison()
-			->set_left_operand( $pages_var )
-			->set_comparison_more()
-			->set_right_operand( $token_factory->literal( 1 ) );
+									->set_left_operand( $pages_var )
+									->set_comparison_more()
+									->set_right_operand( $token_factory->literal( 1 ) );
 		$body       = $token_factory->html(
 			function () use ( $token_factory ) {
 				$pages_var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
-					->add_item_path( 'pages_amount' );
+											->add_item_path( 'pages_amount' );
 
-				echo "\r\n";
+				Template_Generator::new_line();
 				echo "\t\t<div>\r\n";
 				echo "\t\t\t";
 				$token_factory->functions()
@@ -74,7 +74,7 @@ class Post_Selection_Markup {
 
 		$if->print();
 
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	protected function print_items_opening_wrapper(
@@ -101,7 +101,7 @@ class Post_Selection_Markup {
 
 		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
 		printf( '<div class="%s">', esc_html( $classes ) );
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	/**
@@ -128,12 +128,14 @@ class Post_Selection_Markup {
 			}
 
 			echo '>';
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 	}
 
-	protected function print_items_closing_wrapper( Post_Selection_Settings $post_selection_settings, int &$tabs_number ): void {
+	protected function print_items_closing_wrapper( int $tabs_number ): int {
 		echo esc_html( str_repeat( "\t", --$tabs_number ) ) . '</div>' . "\r\n";
+
+		return $tabs_number;
 	}
 
 	/**
@@ -143,7 +145,7 @@ class Post_Selection_Markup {
 		foreach ( $item_outers as $outer ) {
 			echo esc_html( str_repeat( "\t", --$tabs_number ) );
 			printf( '</%s>', esc_html( $outer->tag ) );
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 	}
 
@@ -151,7 +153,7 @@ class Post_Selection_Markup {
 		$resolve_token_factory = $this->template_engines->resolve_token_factory( $post_selection_settings->template_engine );
 
 		$id_var      = $resolve_token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
-										->add_item_path( 'layout_id' );
+											->add_item_path( 'layout_id' );
 		$post_id_var = $resolve_token_factory->variable( 'post_id' );
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
@@ -166,7 +168,7 @@ class Post_Selection_Markup {
 		}
 
 		echo ']';
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	public function print_markup(
@@ -174,99 +176,29 @@ class Post_Selection_Markup {
 		bool $is_load_more = false,
 		bool $is_ignore_custom_markup = false
 	): void {
-		if ( false === $is_ignore_custom_markup &&
-			'' !== $post_selection_settings->custom_markup &&
-			false === $is_load_more ) {
+		if ( ! $is_ignore_custom_markup &&
+			strlen( $post_selection_settings->custom_markup ) > 0 &&
+			! $is_load_more ) {
 			$custom_markup = trim( $post_selection_settings->custom_markup );
 
-			if ( '' !== $custom_markup ) {
+			if ( strlen( $custom_markup ) > 0 ) {
 				// @phpcs:ignore WordPress.Security.EscapeOutput
 				echo $custom_markup;
+
 				return;
 			}
 		}
 
-		$template_generator = $this->template_engines->get_token_generator( $post_selection_settings->template_engine );
+		$token_factory = $this->template_engines->resolve_token_factory( $post_selection_settings->template_engine );
+
+		$tabs_number = 1;
 
 		ob_start();
 
-		$tabs_number = 1;
-		$item_outers = false === $is_load_more ?
-			$this->front_assets->get_card_item_outers( $post_selection_settings ) :
-			array();
-
-		if ( false === $is_load_more ) {
-			printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
-			$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'classes' );
-			$template_generator->to_echo( $var )->print();
-
-			echo esc_html( $post_selection_settings->get_bem_name() );
-			if ( ! $post_selection_settings->has_unique_bem_name() ) {
-				echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
-				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'id' );
-				$template_generator->to_echo( $var )->print();
-
-			}
-			echo '">';
-
-			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
-				echo "\r\n";
-				echo '<template shadowrootmode="open">';
-			}
-
-			echo "\r\n\r\n";
-			echo esc_html( str_repeat( "\t", $tabs_number ) );
-			$template_generator->print_if_for_array_item( Hard_Post_Selection_Cpt::variable_name(), 'post_ids' );
-			echo "\r\n";
-			$this->print_items_opening_wrapper( $post_selection_settings, $tabs_number );
-			$this->print_opening_item_outers( $item_outers, $tabs_number, $template_generator );
-		}
-
-		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-		$template_generator->print_for_of_array_item( Hard_Post_Selection_Cpt::variable_name(), 'post_ids', 'post_id' );
-		echo "\r\n";
-		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-		$this->print_shortcode( $post_selection_settings );
-		echo esc_html( str_repeat( "\t", --$tabs_number ) );
-		$template_generator->print_end_for();
-		echo "\r\n";
-
-		if ( false === $is_load_more ) {
-			$this->print_closing_item_outers( $item_outers, $tabs_number );
-			$this->print_items_closing_wrapper( $post_selection_settings, $tabs_number );
-
-			if ( '' !== $post_selection_settings->no_posts_found_message ) {
-				echo esc_html( str_repeat( "\t", --$tabs_number ) );
-				$template_generator->print_else();
-				echo "\r\n";
-				echo esc_html( str_repeat( "\t", ++$tabs_number ) );
-				$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
-					sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
-					'';
-				printf(
-					'<div class="%s">',
-					esc_html( $no_posts_message_class )
-				);
-				$var = $template_generator->var()->set_name( Hard_Post_Selection_Cpt::variable_name() )->add_item_path( 'no_posts_found_message' );
-				$template_generator->to_echo( $var )->print();
-
-				echo '</div>';
-				echo "\r\n";
-			}
-
-			// endif in any case.
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
-			$template_generator->print_end_if();
-			echo "\r\n";
-
-			$this->print_extra_markup( $post_selection_settings );
-
-			if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
-				echo "\r\n";
-				echo '</template>';
-			}
-
-			echo "\r\n" . sprintf( '</%s>', esc_html( $post_selection_settings->get_tag_name() ) ) . "\r\n";
+		if ( $is_load_more ) {
+			$this->print_loop( $token_factory, $post_selection_settings, $tabs_number );
+		} else {
+			$this->print_full_markup( $token_factory, $post_selection_settings, $tabs_number );
 		}
 
 		$markup = (string) ob_get_clean();
@@ -354,5 +286,162 @@ class Post_Selection_Markup {
 		}
 
 		echo "\n/*END LAYOUT_RULES*/";
+	}
+
+	protected function print_full_markup( Token_Factory $token_factory, Post_Selection_Settings $post_selection_settings, int $tabs_number ): void {
+		$post_ids_var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+										->add_item_path( 'post_ids' );
+
+		$body           = $token_factory->html(
+			function () use ( $post_selection_settings, $token_factory, &$tabs_number ) {
+				$tabs_number = $this->print_items_markup( $token_factory, $post_selection_settings, $tabs_number );
+			}
+		);
+		$no_posts_found = $token_factory->html(
+			function () use ( $token_factory, $post_selection_settings, &$tabs_number ) {
+				$tabs_number = $this->print_not_found_markup( $token_factory, $post_selection_settings, $tabs_number );
+			}
+		);
+
+		$if = $token_factory->if();
+
+		$if->new_if_branch()
+			->set_condition( $post_ids_var )
+			->set_body( $body );
+
+		if ( strlen( $post_selection_settings->no_posts_found_message ) > 0 ) {
+			$if->new_else_branch()
+				->set_body( $no_posts_found );
+		}
+
+		$tabs_number = $this->print_opening_tag( $token_factory, $post_selection_settings, $tabs_number );
+		$if->print();
+		$this->print_closing_tag( $post_selection_settings );
+	}
+
+	protected function print_items_markup(
+		Token_Factory $token_factory,
+		Post_Selection_Settings $post_selection_settings,
+		int $tabs_number
+	): int {
+		$item_outers = $this->front_assets->get_card_item_outers( $post_selection_settings );
+
+		Template_Generator::new_line();
+		$this->print_items_opening_wrapper( $post_selection_settings, $tabs_number );
+		$this->print_opening_item_outers( $item_outers, $tabs_number, $token_factory );
+
+		$tabs_number = $this->print_loop( $token_factory, $post_selection_settings, $tabs_number );
+
+		$this->print_closing_item_outers( $item_outers, $tabs_number );
+		$tabs_number = $this->print_items_closing_wrapper( $tabs_number );
+
+		if ( strlen( $post_selection_settings->no_posts_found_message ) > 0 ) {
+			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+		}
+
+		// endif in any case.
+		echo esc_html( str_repeat( "\t", --$tabs_number ) );
+
+		return $tabs_number;
+	}
+
+	protected function print_loop(
+		Token_Factory $token_factory,
+		Post_Selection_Settings $post_selection_settings,
+		int $tabs_number
+	): int {
+		$post_ids_var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+										->add_item_path( 'post_ids' );
+
+		$post_id_var = $token_factory->variable( 'post_id' );
+
+		$loop_body = $token_factory->html(
+			function () use ( $tabs_number, $post_selection_settings ) {
+				Template_Generator::new_line();
+				echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+				$this->print_shortcode( $post_selection_settings );
+				echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			}
+		);
+
+		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+
+		$token_factory->loop()
+						->set_source_var( $post_ids_var )
+						->set_item_var( $post_id_var )
+						->set_body( $loop_body )
+						->print();
+
+		Template_Generator::new_line();
+
+		return $tabs_number;
+	}
+
+	protected function print_opening_tag(
+		Token_Factory $token_factory,
+		Post_Selection_Settings $post_selection_settings,
+		int $tabs_number
+	): int {
+		printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
+		$var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+							->add_item_path( 'classes' );
+		$token_factory->to_echo( $var )->print();
+
+		echo esc_html( $post_selection_settings->get_bem_name() );
+		if ( ! $post_selection_settings->has_unique_bem_name() ) {
+			echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
+			$var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+								->add_item_path( 'id' );
+			$token_factory->to_echo( $var )->print();
+
+		}
+		echo '">';
+
+		if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
+			Template_Generator::new_line();
+			echo '<template shadowrootmode="open">';
+		}
+
+		echo "\r\n\r\n";
+		echo esc_html( str_repeat( "\t", $tabs_number ) );
+
+		return $tabs_number;
+	}
+
+	protected function print_closing_tag( Post_Selection_Settings $post_selection_settings ): void {
+		Template_Generator::new_line();
+
+		$this->print_extra_markup( $post_selection_settings );
+
+		if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
+			Template_Generator::new_line();
+			echo '</template>';
+		}
+
+		echo "\r\n" . sprintf( '</%s>', esc_html( $post_selection_settings->get_tag_name() ) ) . "\r\n";
+	}
+
+	protected function print_not_found_markup(
+		Token_Factory $token_factory,
+		Post_Selection_Settings $post_selection_settings,
+		int $tabs_number
+	): int {
+		Template_Generator::new_line();
+		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+		$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
+			sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
+			'';
+		printf(
+			'<div class="%s">',
+			esc_html( $no_posts_message_class )
+		);
+		$var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
+							->add_item_path( 'no_posts_found_message' );
+		$token_factory->to_echo( $var )->print();
+
+		echo '</div>';
+		Template_Generator::new_line();
+
+		return $tabs_number;
 	}
 }

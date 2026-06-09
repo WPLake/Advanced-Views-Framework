@@ -39,7 +39,7 @@ interface Token_Factory {
 	public function html( callable $printer ): Html_Token;
 
 	/**
-	 * @var Literal_Value $value
+	 * @param Literal_Value $value
 	 */
 	public function literal( $value ): Literal_Token;
 

@@ -238,7 +238,7 @@ class Map_Field extends Markup_Field {
 		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
 
 		if ( $field_meta->is_multiple() ) {
-			$this->print_item_loop( $field_id, $markup_field_data, $current_tabs_number );
+			$this->print_item_loop( $field_id, $markup_field_data );
 		} elseif ( $field_data->is_visible_when_empty ) {
 			$this->print_conditional_item( $field_id, $field_id, $markup_field_data );
 		} else {
@@ -249,7 +249,7 @@ class Map_Field extends Markup_Field {
 		echo '</div>';
 	}
 
-	protected function print_item_loop( string $field_id, Markup_Field_Data $markup_field_data, $current_tabs_number ): void {
+	protected function print_item_loop( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
 		$source_var = $token_factory->variable( $field_id )
@@ -257,7 +257,7 @@ class Map_Field extends Markup_Field {
 		$item_var   = $token_factory->variable( 'marker' );
 
 		$loop_body = $token_factory->html(
-			function () use ( $field_id, $item_var, $markup_field_data, $current_tabs_number ) {
+			function () use ( $field_id, $item_var, $markup_field_data ) {
 				Template_Generator::new_line();
 				$markup_field_data->increment_and_print_tabs();
 
@@ -275,7 +275,7 @@ class Map_Field extends Markup_Field {
 						->print();
 	}
 
-	protected function print_conditional_item( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ) {
+	protected function print_conditional_item( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 		$value_var     = $token_factory->variable( $field_id )
 										->add_item_path( 'value' );

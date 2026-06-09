@@ -19,7 +19,7 @@ abstract class Literal_Token implements Template_Token {
 	public $value;
 
 	/**
-	 * @var Literal_Value $value
+	 * @param Literal_Value $value
 	 */
 	public function __construct( $value ) {
 		$this->value = $value;
