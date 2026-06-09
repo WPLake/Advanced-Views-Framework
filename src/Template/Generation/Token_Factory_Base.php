@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Template\Generation;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Conditional_Value_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Function_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
@@ -28,5 +29,9 @@ abstract class Token_Factory_Base implements Token_Factory {
 
 	public function function( string $name ): Function_Token {
 		return new Function_Token( $name );
+	}
+
+	public function conditional_value(): Conditional_Value_Token {
+		return new Conditional_Value_Token();
 	}
 }

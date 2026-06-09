@@ -412,7 +412,7 @@ if ( ! class_exists( 'ACF_Admin_Tool_Export' ) ) :
 				$count = 0;
 				foreach ( $posts as $post ) {
 					if ( $count !== 0 ) {
-						echo "\r\n";
+						Template_Generator::new_line();
 					}
 
 					echo "\t" . acf_export_internal_post_type_as_php( $post, $post_type ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_textarea() used earlier.

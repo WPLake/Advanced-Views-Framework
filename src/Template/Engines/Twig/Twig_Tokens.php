@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Functions;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Literal;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Range;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
@@ -25,6 +26,7 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Range_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
 
 final class Twig_Tokens extends Token_Factory_Base {
@@ -62,5 +64,9 @@ final class Twig_Tokens extends Token_Factory_Base {
 
 	public function functions(): Functions_Token {
 		return new Twig_Functions( $this );
+	}
+
+	public function range(): Range_Token {
+		return new Twig_Range();
 	}
 }

@@ -119,7 +119,7 @@ class Markup_Field_Data extends Template_Field_Data {
 
 			echo '>';
 
-			echo "\r\n";
+			Template_Generator::new_line();
 
 			++$this->tabs_number;
 
@@ -144,7 +144,7 @@ class Markup_Field_Data extends Template_Field_Data {
 		foreach ( $item_outers as $outer ) {
 			if ( 0 !== $counter ||
 				false === $is_without_first_item_new_line ) {
-				echo "\r\n";
+				Template_Generator::new_line();
 			}
 
 			Template_Generator::tabs( --$this->tabs_number );

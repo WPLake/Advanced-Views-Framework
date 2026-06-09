@@ -133,11 +133,11 @@ class Layout_Markup {
 		}
 		echo '">';
 
-		echo "\r\n";
+		Template_Generator::new_line();
 
 		if ( Layout_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '<template shadowrootmode="open">';
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 
 		foreach ( $layout_settings->items as $item ) {
@@ -150,12 +150,12 @@ class Layout_Markup {
 
 		if ( Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '</template>';
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 
 		printf( '</%s>', esc_html( $tag_name ) );
 
-		echo "\r\n";
+		Template_Generator::new_line();
 	}
 
 	protected function print_safe_markup( Layout_Settings $layout_settings, bool $is_cache_disabled ): void {
