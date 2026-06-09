@@ -162,20 +162,33 @@ class Post_Comments_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
+
+		$token_factory = $markup_field_data->get_token_factory();
+		$value_var     = $token_factory->variable( $field_id )
+			->add_item_path( 'value' );
+		$comment_var   = $token_factory->variable( 'comment_item' );
+
+		$markup = $token_factory->html(
+			function () use ( $markup_field_data, $field_id, $comment_var ) {
+				Template_Generator::new_line();
+				$markup_field_data->increment_and_print_tabs();
+
+				$this->print_item_markup( $field_id, $comment_var->get_name(), $markup_field_data );
+
+				Template_Generator::new_line();
+				$markup_field_data->decrement_and_print_tabs();
+			}
+		);
+
+		$loop = $token_factory->loop()
+			->set_source_var( $value_var )
+			->set_item_var( $comment_var )
+			->set_body( $markup );
+
 		Template_Generator::new_line();
 		$markup_field_data->print_tabs();
 
-		$markup_field_data->get_token_factory()->print_for_of_array_item( $field_id, 'value', 'comment_item' );
-
-		Template_Generator::new_line();
-		$markup_field_data->increment_and_print_tabs();
-
-		$this->print_item_markup( $field_id, 'comment_item', $markup_field_data );
-
-		Template_Generator::new_line();
-		$markup_field_data->decrement_and_print_tabs();
-
-		$markup_field_data->get_token_factory()->print_end_for();
+		$loop->print();
 	}
 
 	/**

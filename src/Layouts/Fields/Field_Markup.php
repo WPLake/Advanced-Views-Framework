@@ -164,7 +164,7 @@ class Field_Markup {
 			$row_classes .= $row_class;
 		}
 
-		echo esc_html( str_repeat( "\t", $tab_number ) );
+		Template_Generator::tabs( $tab_number );
 		printf( '<%s class="%s">', esc_html( $tag ), esc_html( $row_classes ) );
 		echo "\r\n";
 
@@ -202,23 +202,27 @@ class Field_Markup {
 				'';
 		}
 
-		echo esc_html( str_repeat( "\t", $tabs_number ) );
+		Template_Generator::tabs( $tabs_number );
+
 		printf( '<p class="%s">', esc_html( $label_class ) );
-		echo "\r\n" . esc_html( str_repeat( "\t", ++$tabs_number ) );
 
-		$token_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		Template_Generator::new_line();
+		Template_Generator::tabs( ++$tabs_number );
 
-		$var = $token_generator->var()
-								->set_name( $field_id )
+		$token_generator = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+
+		$var = $token_generator->variable( $field_id )
 								->add_item_path( 'label' );
 
-		$token_generator->echo()
-						->set_content( $var )
+		$token_generator->to_echo( $var )
 						->print();
 
-		echo "\r\n" . esc_html( str_repeat( "\t", --$tabs_number ) );
+		Template_Generator::new_line();
+		Template_Generator::tabs( --$tabs_number );
+
 		echo '</p>';
-		echo "\r\n";
+
+		Template_Generator::new_line();
 	}
 
 	/**
@@ -363,7 +367,7 @@ class Field_Markup {
 			$field_classes .= $attr_class;
 		}
 
-		echo esc_html( str_repeat( "\t", $tabs_number ) );
+		Template_Generator::tabs( $tabs_number );
 
 		printf(
 			'<%s class="%s"',
@@ -415,7 +419,7 @@ class Field_Markup {
 			echo "\r\n";
 		}
 
-		$token_generator   = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		$token_factory     = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
 		$markup_field_data = new Markup_Field_Data(
 			$layout_settings,
 			$item_settings,
@@ -423,7 +427,7 @@ class Field_Markup {
 			$field_meta,
 			$this,
 			$markup_field_instance,
-			$token_generator
+			$token_factory
 		);
 
 		$markup_field_data->set_field_assets( $field_assets );
@@ -431,7 +435,7 @@ class Field_Markup {
 		$markup_field_data->set_is_with_field_wrapper( $is_with_wrapper );
 		$markup_field_data->set_is_with_row_wrapper( $this->is_with_row_wrapper( $layout_settings, $field_settings, $field_meta ) );
 
-		echo esc_html( str_repeat( "\t", $tabs_number ) );
+		Template_Generator::tabs( $tabs_number );
 
 		$markup_field_instance->print_markup( $field_id, $markup_field_data );
 
@@ -446,7 +450,7 @@ class Field_Markup {
 	 */
 	protected function print_closing_field_outers( array $field_outers, int &$tabs_number ): void {
 		foreach ( $field_outers as $outer ) {
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			Template_Generator::tabs( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 			echo "\r\n";
 		}
@@ -472,7 +476,7 @@ class Field_Markup {
 			$this->data_vendors->get_field_front_assets( $field_settings->get_vendor_name(), $field_settings )
 		);
 		$is_label_out_of_row = $this->is_label_out_of_row( $field_assets );
-		$template_generator  = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		$token_factory       = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
 
 		$row_tag = '';
 
@@ -544,7 +548,7 @@ class Field_Markup {
 
 		$is_with_outer_wrappers = array() !== $field_outers;
 
-		$this->print_opening_field_outers( $field_outers, $tabs_number, $template_generator );
+		$this->print_opening_field_outers( $field_outers, $tabs_number, $token_factory );
 
 		if ( '' === $custom_field_markup ) {
 			$this->print_field_markup(
@@ -565,15 +569,16 @@ class Field_Markup {
 		$this->print_closing_field_outers( $field_outers, $tabs_number );
 
 		if ( $is_with_field_wrapper ) {
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			Template_Generator::tabs( --$tabs_number );
 			printf( '</%s>', esc_html( $field_tag ) );
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 
 		if ( $is_with_row_wrapper ) {
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabs( --$tabs_number );
 			printf( '</%s>', esc_html( $row_tag ) );
-			echo "\r\n";
+			Template_Generator::new_line();
 		}
 
 		return $tabs_number;

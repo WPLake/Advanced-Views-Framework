@@ -99,7 +99,7 @@ class Post_Selection_Markup {
 				' ' . $external;
 		}
 
-		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+		Template_Generator::tabs( ++$tabs_number );
 		printf( '<div class="%s">', esc_html( $classes ) );
 		Template_Generator::new_line();
 	}
@@ -113,7 +113,7 @@ class Post_Selection_Markup {
 		Token_Factory $token_generator
 	): void {
 		foreach ( $item_outers as $outer ) {
-			echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+			Template_Generator::tabs( ++$tabs_number );
 			printf( '<%s', esc_html( $outer->tag ) );
 
 			foreach ( $outer->attrs as $attr => $value ) {
@@ -143,7 +143,7 @@ class Post_Selection_Markup {
 	 */
 	protected function print_closing_item_outers( array $item_outers, int &$tabs_number ): void {
 		foreach ( $item_outers as $outer ) {
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			Template_Generator::tabs( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 			Template_Generator::new_line();
 		}
@@ -336,11 +336,11 @@ class Post_Selection_Markup {
 		$tabs_number = $this->print_items_closing_wrapper( $tabs_number );
 
 		if ( strlen( $post_selection_settings->no_posts_found_message ) > 0 ) {
-			echo esc_html( str_repeat( "\t", --$tabs_number ) );
+			Template_Generator::tabs( --$tabs_number );
 		}
 
 		// endif in any case.
-		echo esc_html( str_repeat( "\t", --$tabs_number ) );
+		Template_Generator::tabs( --$tabs_number );
 
 		return $tabs_number;
 	}
@@ -358,13 +358,13 @@ class Post_Selection_Markup {
 		$loop_body = $token_factory->html(
 			function () use ( $tabs_number, $post_selection_settings ) {
 				Template_Generator::new_line();
-				echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+				Template_Generator::tabs( ++$tabs_number );
 				$this->print_shortcode( $post_selection_settings );
-				echo esc_html( str_repeat( "\t", --$tabs_number ) );
+				Template_Generator::tabs( --$tabs_number );
 			}
 		);
 
-		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+		Template_Generator::tabs( ++$tabs_number );
 
 		$token_factory->loop()
 						->set_source_var( $post_ids_var )
@@ -403,7 +403,7 @@ class Post_Selection_Markup {
 		}
 
 		echo "\r\n\r\n";
-		echo esc_html( str_repeat( "\t", $tabs_number ) );
+		Template_Generator::tabs( $tabs_number );
 
 		return $tabs_number;
 	}
@@ -427,7 +427,7 @@ class Post_Selection_Markup {
 		int $tabs_number
 	): int {
 		Template_Generator::new_line();
-		echo esc_html( str_repeat( "\t", ++$tabs_number ) );
+		Template_Generator::tabs( ++$tabs_number );
 		$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
 			sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
 			'';

@@ -125,7 +125,7 @@ class Markup_Field_Data extends Template_Field_Data {
 
 			if ( false === $is_without_last_item_tabs ||
 				$counter !== $last_item_number ) {
-				echo esc_html( str_repeat( "\t", $this->tabs_number ) );
+				Template_Generator::tabs( $this->tabs_number );
 			}
 
 			++$counter;
@@ -147,7 +147,7 @@ class Markup_Field_Data extends Template_Field_Data {
 				echo "\r\n";
 			}
 
-			echo esc_html( str_repeat( "\t", --$this->tabs_number ) );
+			Template_Generator::tabs( --$this->tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 
 			++$counter;

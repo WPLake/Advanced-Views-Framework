@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,7 +44,7 @@ class Layout_Markup {
 			return;
 		}
 
-		$template_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		$token_factory = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
 
 		$field_id   = $item_settings->field->get_template_field_id();
 		$field_type = $field_meta->get_type();
@@ -53,70 +54,81 @@ class Layout_Markup {
 								$item_settings->field->get_vendor_name(),
 								$field_type
 							);
-		$row_tabs_number             = 2;
 
-		$row_type = 'row';
+		$markup = $token_factory->html(
+			function () use ( $field_meta, $layout_settings, $item_settings, $field_id, $field_type ) {
+				$row_tabs_number = 2;
 
-		if ( $this->data_vendors->is_field_type_with_sub_fields(
-			$field_meta->get_vendor_name(),
-			$field_meta->get_type()
-		) ) {
-			$row_type = $field_type;
-		}
+				$row_type = 'row';
+
+				if ( $this->data_vendors->is_field_type_with_sub_fields(
+					$field_meta->get_vendor_name(),
+					$field_meta->get_type()
+				) ) {
+					$row_type = $field_type;
+				}
+
+				Template_Generator::new_line();
+
+				$this->field_markup->print_row_markup(
+					$row_type,
+					'',
+					$layout_settings,
+					$item_settings,
+					$item_settings->field,
+					$field_meta,
+					$row_tabs_number,
+					$field_id
+				);
+
+				echo "\t";
+			}
+		);
+
+		$value_var = $token_factory->variable( $field_id )
+									->add_item_path( 'value' );
+		$condition = $is_condition_with_true_stub ?
+			$token_factory->literal( true ) :
+			$value_var;
+
+		$if = $token_factory->if();
+		$if->new_if_branch()
+			->set_condition( $condition )
+			->set_body( $markup );
 
 		echo "\r\n\t";
-		$template_generator->print_if_for_array_item(
-			$field_id,
-			'value',
-			'',
-			'',
-			$is_condition_with_true_stub
-		);
-		echo "\r\n";
-
-		$this->field_markup->print_row_markup(
-			$row_type,
-			'',
-			$layout_settings,
-			$item_settings,
-			$item_settings->field,
-			$field_meta,
-			$row_tabs_number,
-			$field_id
-		);
-
-		echo "\t";
-
-		$template_generator->print_end_if();
-
+		$if->print();
 		echo "\r\n\r\n";
 	}
 
 	protected function generate_markup( Layout_Settings $layout_settings ): void {
-		$template_generator = $this->template_engines->get_token_generator( $layout_settings->template_engine );
+		$token_factory = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
 
 		$bem_name = $layout_settings->get_bem_name();
 		$tag_name = $layout_settings->get_tag_name();
 
 		printf( '<%s class="', esc_html( $tag_name ) );
 		if ( Layout_Settings::CLASS_GENERATION_NONE !== $layout_settings->classes_generation ) {
-			$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'classes' );
-			$template_generator->to_echo( $var )->print();
+			$var = $token_factory->variable( Hard_Layout_Cpt::variable_name() )
+								->add_item_path( 'classes' );
+			$token_factory->to_echo( $var )->print();
 
 			echo esc_html( $bem_name );
 
 			// not necessary if the bemName is defined.
 			if ( ! $layout_settings->has_unique_bem_name() ) {
 				printf( ' %s--id--', esc_html( $bem_name ) );
-				$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'id' );
-				$template_generator->to_echo( $var )->print();
+				$var = $token_factory->variable( Hard_Layout_Cpt::variable_name() )
+											->add_item_path( 'id' );
+				$token_factory->to_echo( $var )->print();
 
 			}
 
 			printf( ' %s--object-id--', esc_html( $bem_name ) );
 
-			$var = $template_generator->var()->set_name( Hard_Layout_Cpt::variable_name() )->add_item_path( 'object_id' );
-			$template_generator->to_echo( $var )->print();
+			$var = $token_factory->variable( Hard_Layout_Cpt::variable_name() )
+								->add_item_path( 'object_id' );
+			$token_factory->to_echo( $var )->print();
 
 		}
 		echo '">';
