@@ -10,8 +10,10 @@ abstract class Template_Generator {
 	protected const NEW_LINE = "\r\n";
 	protected const TAB      = "\t";
 
-	public static function new_line(): void {
-		echo esc_html( self::NEW_LINE );
+	public static function new_line( int $count = 1 ): void {
+		for ( $i = 0; $i < $count; $i++ ) {
+			echo esc_html( self::NEW_LINE );
+		}
 	}
 
 	public static function attribute( string $name, Template_Token $value ): void {
