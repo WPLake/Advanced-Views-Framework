@@ -8,12 +8,12 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 
 final class Migration_2_3_0 extends Version_Migration_Base {
-	private Template_Engines $template_engines;
+	private Template_Renderer_Storage $template_engines;
 
-	public function __construct( Logger $logger, Template_Engines $template_engines ) {
+	public function __construct( Logger $logger, Template_Renderer_Storage $template_engines ) {
 		parent::__construct( $logger );
 
 		$this->template_engines = $template_engines;

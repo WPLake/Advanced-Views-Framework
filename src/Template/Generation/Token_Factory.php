@@ -6,19 +6,20 @@ namespace Org\Wplake\Advanced_Views\Template\Generation;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Conditional_Value_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Conditional_Value_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Function_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Range_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Assignment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 /**
  * @phpstan-import-type Literal_Value from Literal_Token

@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens\Twig_Comparison;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens\Twig_IF;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens\Twig_Comparison;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens\Twig_IF;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Assign;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Comment;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
@@ -16,18 +16,18 @@ use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Literal;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Range;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Range_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Assignment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 final class Twig_Tokens extends Token_Factory_Base {
 	public function comment( string $content ): Comment_Token {

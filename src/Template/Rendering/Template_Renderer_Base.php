@@ -1,7 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines;
+namespace Org\Wplake\Advanced_Views\Template\Rendering;
 
 defined( 'ABSPATH' ) || exit;
 

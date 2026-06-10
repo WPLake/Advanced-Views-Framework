@@ -18,9 +18,9 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -32,9 +32,9 @@ class Field_Markup {
 	 * @var array<string,array<string,Markup_Field_Interface|null>>
 	 */
 	private array $cache;
-	private Template_Engines $template_engines;
+	private Template_Renderer_Storage $template_engines;
 
-	public function __construct( Data_Vendors $data_vendors, Front_Assets $front_assets, Template_Engines $template_engines ) {
+	public function __construct( Data_Vendors $data_vendors, Front_Assets $front_assets, Template_Renderer_Storage $template_engines ) {
 		$this->data_vendors     = $data_vendors;
 		$this->front_assets     = $front_assets;
 		$this->template_engines = $template_engines;

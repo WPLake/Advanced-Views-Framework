@@ -6,11 +6,11 @@ namespace Org\Wplake\Advanced_Views\Template\Generation;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Conditional_Value_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Conditional_Value_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Function_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 abstract class Token_Factory_Base implements Token_Factory {
 	public function html( callable $printer ): Html_Token {

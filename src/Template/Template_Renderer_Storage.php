@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines;
+namespace Org\Wplake\Advanced_Views\Template;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,23 +14,13 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Tokens;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Tokens;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 
-class Template_Engines extends Action implements Hooks_Interface {
-	const TWIG  = 'twig';
-	const BLADE = 'blade';
-
-	/**
-	 * @var array<string, Token_Factory>
-	 */
-	private array $token_factories;
-	private Token_Factory $default_token_factory;
+class Template_Renderer_Storage extends Action implements Hooks_Interface {
 	private string $uploads_folder;
 	/**
 	 * @var array<string, Template_Renderer|null>
@@ -42,13 +32,6 @@ class Template_Engines extends Action implements Hooks_Interface {
 
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
-
-		$twig_tokens                 = new Twig_Tokens();
-		$this->token_factories       = array(
-			self::TWIG  => $twig_tokens,
-			self::BLADE => new Blade_Tokens(),
-		);
-		$this->default_token_factory = $twig_tokens;
 
 		$this->uploads_folder     = $uploads_folder;
 		$this->plugin             = $plugin;
@@ -98,7 +81,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 		$instance = null;
 
 		switch ( $name ) {
-			case self::TWIG:
+			case Token_Factory_Storage::TWIG:
 				$instance = new Twig_Renderer(
 					$this->uploads_folder,
 					$this->get_logger(),
@@ -106,7 +89,7 @@ class Template_Engines extends Action implements Hooks_Interface {
 					$this->get_wp_filesystem()
 				);
 				break;
-			case self::BLADE:
+			case Token_Factory_Storage::BLADE:
 				$instance = new Blade_Renderer(
 					$this->uploads_folder,
 					$this->get_logger(),
@@ -218,14 +201,6 @@ class Template_Engines extends Action implements Hooks_Interface {
 		}
 
 		return $this->template_engines[ $name ];
-	}
-
-	public function resolve_token_factory( string $template_engine ): Token_Factory {
-		if ( key_exists( $template_engine, $this->token_factories ) ) {
-			return $this->token_factories[ $template_engine ];
-		}
-
-		return $this->default_token_factory;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {

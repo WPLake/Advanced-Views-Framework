@@ -86,7 +86,7 @@ use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
 use Org\Wplake\Advanced_Views\Utils\Profiler;
@@ -103,7 +103,7 @@ abstract class Plugin_Loader_Base {
 	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
 	protected Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
 	protected Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
-	protected Template_Engines $template_engines;
+	protected Template_Renderer_Storage $template_engines;
 	protected Public_Cpt $layout_cpt;
 	protected Public_Cpt $post_selection_cpt;
 	protected Data_Vendors $data_vendors;

@@ -4,8 +4,6 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-
 defined( 'ABSPATH' ) || exit;
 
 abstract class Comment_Token implements Template_Token {

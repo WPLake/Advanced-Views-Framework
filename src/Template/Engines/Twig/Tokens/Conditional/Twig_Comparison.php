@@ -2,9 +2,9 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\Comparison_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_Token;
 
 defined( 'ABSPATH' ) || exit;
 

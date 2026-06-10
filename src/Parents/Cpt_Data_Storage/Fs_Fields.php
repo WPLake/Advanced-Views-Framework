@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -131,7 +131,7 @@ class Fs_Fields {
 			'data.json' => $this->get_data_json( $cpt_settings ),
 		);
 
-		$template_extension = Template_Engines::TWIG === $cpt_settings->template_engine ?
+		$template_extension = Token_Factory_Storage::TWIG === $cpt_settings->template_engine ?
 			'twig' :
 			'blade.php';
 
@@ -174,22 +174,22 @@ class Fs_Fields {
 	public function set_fs_field( Cpt_Settings $cpt_settings, string $field_file, string $field_value ): void {
 		switch ( $field_file ) {
 			case 'default.twig':
-				if ( Template_Engines::TWIG === $cpt_settings->template_engine ) {
+				if ( Token_Factory_Storage::TWIG === $cpt_settings->template_engine ) {
 					$cpt_settings->markup = $field_value;
 				}
 				break;
 			case 'default.blade.php':
-				if ( Template_Engines::BLADE === $cpt_settings->template_engine ) {
+				if ( Token_Factory_Storage::BLADE === $cpt_settings->template_engine ) {
 					$cpt_settings->markup = $field_value;
 				}
 				break;
 			case 'custom.twig':
-				if ( Template_Engines::TWIG === $cpt_settings->template_engine ) {
+				if ( Token_Factory_Storage::TWIG === $cpt_settings->template_engine ) {
 					$cpt_settings->custom_markup = $field_value;
 				}
 				break;
 			case 'custom.blade.php':
-				if ( Template_Engines::BLADE === $cpt_settings->template_engine ) {
+				if ( Token_Factory_Storage::BLADE === $cpt_settings->template_engine ) {
 					$cpt_settings->custom_markup = $field_value;
 				}
 				break;

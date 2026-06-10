@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 final class Twig_Var extends Variable_Token {
 	public function print(): void {

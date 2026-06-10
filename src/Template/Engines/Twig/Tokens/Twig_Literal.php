@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
 
 final class Twig_Literal extends Literal_Token {
 	protected function print_array( array $value ): void {

@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,9 +24,9 @@ class Layout_Markup {
 	private array $markups_safe;
 	private Field_Markup $field_markup;
 	private Data_Vendors $data_vendors;
-	private Template_Engines $template_engines;
+	private Template_Renderer_Storage $template_engines;
 
-	public function __construct( Field_Markup $field_markup, Data_Vendors $data_vendors, Template_Engines $template_engines ) {
+	public function __construct( Field_Markup $field_markup, Data_Vendors $data_vendors, Template_Renderer_Storage $template_engines ) {
 		$this->field_markup     = $field_markup;
 		$this->data_vendors     = $data_vendors;
 		$this->template_engines = $template_engines;

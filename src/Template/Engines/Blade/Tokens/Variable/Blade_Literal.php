@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
 
 final class Blade_Literal extends Literal_Token {
 

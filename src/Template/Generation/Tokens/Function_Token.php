@@ -6,8 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-
 class Function_Token implements Template_Token {
 	protected string $name;
 	/**

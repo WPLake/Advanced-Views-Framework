@@ -6,8 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-
 abstract class Echo_Token implements Template_Token {
 	protected Template_Token $content;
 	protected bool $is_raw;

@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Variable_Token implements Template_Token {

@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 /**
@@ -14,19 +14,19 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
  */
 abstract class Literal_Token implements Template_Token {
 	/**
-	 * @var Literal_Value
+	 * @var Template_Token
 	 */
 	public $value;
 
 	/**
-	 * @param Literal_Value $value
+	 * @param Template_Token $value
 	 */
 	public function __construct( $value ) {
 		$this->value = $value;
 	}
 
 	/**
-	 * @param Literal_Value $value
+	 * @param Template_Token $value
 	 */
 	public function set_value( $value ): self {
 		$this->value = $value;

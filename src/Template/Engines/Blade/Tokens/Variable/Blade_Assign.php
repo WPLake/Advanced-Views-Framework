@@ -2,12 +2,12 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Assignment_Token;
 
 final class Blade_Assign extends Assignment_Token {
 	public function print(): void {

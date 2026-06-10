@@ -80,7 +80,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Bui
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
@@ -147,7 +147,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			);
 
 			$this->plugin           = new Plugin( __FILE__, $this->options, $this->settings );
-			$this->template_engines = new Template_Engines(
+			$this->template_engines = new Template_Renderer_Storage(
 				$uploads_folder,
 				$this->logger,
 				$this->plugin,

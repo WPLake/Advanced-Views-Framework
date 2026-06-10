@@ -2,9 +2,9 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 
 defined( 'ABSPATH' ) || exit;
 

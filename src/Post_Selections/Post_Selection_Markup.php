@@ -12,22 +12,22 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 
 class Post_Selection_Markup {
 	private Front_Assets $front_assets;
-	private Template_Engines $template_engines;
+	private Template_Renderer_Storage $template_engines;
 	private Public_Cpt $public_cpt;
 
-	public function __construct( Front_Assets $front_assets, Template_Engines $template_engines, Public_Cpt $public_cpt ) {
+	public function __construct( Front_Assets $front_assets, Template_Renderer_Storage $template_engines, Public_Cpt $public_cpt ) {
 		$this->front_assets     = $front_assets;
 		$this->template_engines = $template_engines;
 		$this->public_cpt       = $public_cpt;
 	}
 
-	protected function get_template_engines(): Template_Engines {
+	protected function get_template_engines(): Template_Renderer_Storage {
 		return $this->template_engines;
 	}
 

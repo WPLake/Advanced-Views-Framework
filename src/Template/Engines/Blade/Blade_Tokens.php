@@ -6,26 +6,26 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Condition_Tokens\Blade_IF;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Assign;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Comment;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Echo;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Functions;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Literal;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Range;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Var;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Conditional\Blade_IF;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Assign;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Literal;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Var;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Assignment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Range_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Assignment_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 final class Blade_Tokens extends Token_Factory_Base {
 	public function comment( string $content ): Comment_Token {

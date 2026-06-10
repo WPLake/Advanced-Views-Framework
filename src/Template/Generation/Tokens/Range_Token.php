@@ -6,8 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-
 abstract class Range_Token implements Template_Token {
 	protected ?Template_Token $from = null;
 	protected ?Template_Token $to   = null;

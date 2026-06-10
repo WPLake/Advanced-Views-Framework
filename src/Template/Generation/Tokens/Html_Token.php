@@ -6,8 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Generation\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
-
 class Html_Token implements Template_Token {
 	/**
 	 * @var callable

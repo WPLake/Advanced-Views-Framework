@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class Layout_Factory extends Instance_Factory {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Layout_Markup $layout_markup;
-	protected Template_Engines $template_engines;
+	protected Template_Renderer_Storage $template_engines;
 	protected Field_Markup $field_markup;
 	protected Data_Vendors $data_vendors;
 
@@ -26,7 +26,7 @@ class Layout_Factory extends Instance_Factory {
 		Front_Assets $front_assets,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Layout_Markup $layout_markup,
-		Template_Engines $template_engines,
+		Template_Renderer_Storage $template_engines,
 		Field_Markup $field_markup,
 		Data_Vendors $data_vendors
 	) {

@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Renderer_Base;
+use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer_Base;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Environment;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Loader\FilesystemLoader;
 use Org\Wplake\Advanced_Views\Vendors\Twig\TwigFilter;

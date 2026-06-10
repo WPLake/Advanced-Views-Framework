@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template\Generation;
 
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
+
 defined( 'ABSPATH' ) || exit;
 
 abstract class Template_Generator {

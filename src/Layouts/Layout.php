@@ -20,7 +20,8 @@ use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Engines\Template_Engines;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
@@ -42,7 +43,7 @@ class Layout extends Instance {
 
 	public function __construct(
 		Data_Vendors $data_vendors,
-		Template_Engines $template_engines,
+		Template_Renderer_Storage $template_engines,
 		string $twig_template,
 		Layout_Settings $layout_settings,
 		Source $source,
@@ -202,7 +203,7 @@ class Layout extends Instance {
 			// Blade requires at least some spacing between its tokens.
 			if ( in_array(
 				$this->layout_settings->template_engine,
-				array( Template_Engines::TWIG, '' ),
+				array( Token_Factory_Storage::TWIG, '' ),
 				true
 			) ) {
 				$unnecessary_symbols[] = "\t";

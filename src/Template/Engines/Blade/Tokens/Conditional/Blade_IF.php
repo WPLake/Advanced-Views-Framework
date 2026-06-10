@@ -2,15 +2,15 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Condition_Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Conditional;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Branch;
-use Org\Wplake\Advanced_Views\Template\Generation\Condition_Tokens\IF_Token;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Branch;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 
-final class Twig_IF extends IF_Token {
+final class Blade_IF extends IF_Token {
 	public function print(): void {
 		if ( $this->if_branch instanceof IF_Branch ) {
 			$this->print_branch( 'if', $this->if_branch );
@@ -24,29 +24,24 @@ final class Twig_IF extends IF_Token {
 			$this->print_branch( 'else', $this->else_branch );
 		}
 
-		$this->print_branch_open_tag( 'endif' );
-		$this->print_branch_close_tag();
+		$this->print_branch_token( 'endif' );
 	}
 
 	protected function print_branch( string $type, IF_Branch $branch ): void {
-		$this->print_branch_open_tag( $type );
+		$this->print_branch_token( $type );
 
 		if ( $branch->condition instanceof Template_Token ) {
+			echo ' (';
 			$branch->condition->print();
+			echo ')';
 		}
-
-		$this->print_branch_close_tag();
 
 		if ( $branch->body instanceof Template_Token ) {
 			$branch->body->print();
 		}
 	}
 
-	protected function print_branch_open_tag( string $type ): void {
-		printf( '{%% %s', esc_html( $type ) );
-	}
-
-	protected function print_branch_close_tag(): void {
-		echo ' %}';
+	protected function print_branch_token( string $type ): void {
+		printf( '@%s', esc_html( $type ) );
 	}
 }
