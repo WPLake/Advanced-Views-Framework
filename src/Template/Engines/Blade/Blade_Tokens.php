@@ -12,9 +12,9 @@ use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Functions;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Blade_Range;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Conditional\Blade_IF;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Assign;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Assignment;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Literal;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Var;
+use Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable\Blade_Variable;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
@@ -37,7 +37,7 @@ final class Blade_Tokens extends Token_Factory_Base {
 	}
 
 	public function variable( string $name ): Variable_Token {
-		return new Blade_Var( $name );
+		return new Blade_Variable( $name );
 	}
 
 	public function if(): IF_Token {
@@ -49,7 +49,7 @@ final class Blade_Tokens extends Token_Factory_Base {
 	}
 
 	public function assignment(): Assignment_Token {
-		return new Blade_Assign();
+		return new Blade_Assignment();
 	}
 
 	public function literal( $value ): Literal_Token {

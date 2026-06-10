@@ -16,7 +16,6 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
-use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
@@ -179,7 +178,7 @@ class Post_Selection extends Instance {
 			// Blade requires at least some spacing between its tokens.
 			if ( in_array(
 				$this->settings->template_engine,
-				array( Token_Factory_Storage::TWIG, '' ),
+				array( Template_Renderer_Storage::TWIG, '' ),
 				true
 			) ) {
 				$unnecessary_symbols[] = "\t";

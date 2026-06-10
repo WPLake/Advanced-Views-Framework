@@ -15,12 +15,16 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
+use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 
 class Template_Renderer_Storage extends Action implements Hooks_Interface {
+	const TWIG  = 'twig';
+	const BLADE = 'blade';
+
 	private string $uploads_folder;
 	/**
 	 * @var array<string, Template_Renderer|null>
@@ -29,82 +33,21 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin $plugin;
 	private Settings $settings;
+	private Token_Factory_Storage $token_factory_storage;
 
 	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
 		parent::__construct( $logger );
 
-		$this->uploads_folder     = $uploads_folder;
-		$this->plugin             = $plugin;
-		$this->settings           = $settings;
-		$this->template_engines   = array();
-		$this->wp_filesystem_base = null;
+		$this->uploads_folder        = $uploads_folder;
+		$this->plugin                = $plugin;
+		$this->settings              = $settings;
+		$this->template_engines      = array();
+		$this->wp_filesystem_base    = null;
+		$this->token_factory_storage = new Token_Factory_Storage();
 	}
 
-	protected function is_templates_dir_writable(): bool {
-		$templates_dir = $this->uploads_folder;
-		$wp_filesystem = $this->get_wp_filesystem();
-
-		if ( false === $wp_filesystem->is_dir( $templates_dir ) ) {
-			return false;
-		}
-
-		$test_file = $templates_dir . '/test.txt';
-
-		// the best way to check is to make test write
-		// (check of permissions or 'is_writable' is not enough, as it can be set to 777, but the folder can be owned by another user).
-
-		$is_written = false !== $wp_filesystem->put_contents( $test_file, 'test' );
-
-		if ( false === $is_written ) {
-			return false;
-		}
-
-		$content = $wp_filesystem->get_contents( $test_file );
-
-		$is_writable = 'test' === $content;
-
-		$is_removed = $wp_filesystem->delete( $test_file );
-
-		return $is_writable &&
-				$is_removed;
-	}
-
-	protected function get_uploads_folder(): string {
-		return $this->uploads_folder;
-	}
-
-	protected function get_settings(): Settings {
-		return $this->settings;
-	}
-
-	protected function make_renderer( string $name ): ?Template_Renderer {
-		$instance = null;
-
-		switch ( $name ) {
-			case Token_Factory_Storage::TWIG:
-				$instance = new Twig_Renderer(
-					$this->uploads_folder,
-					$this->get_logger(),
-					$this->settings,
-					$this->get_wp_filesystem()
-				);
-				break;
-			case Token_Factory_Storage::BLADE:
-				$instance = new Blade_Renderer(
-					$this->uploads_folder,
-					$this->get_logger(),
-					$this->settings,
-					$this->get_wp_filesystem()
-				);
-
-				$instance = false === $instance->is_available() ?
-					null :
-					$instance;
-
-				break;
-		}
-
-		return $instance;
+	public function get_token_factory_storage(): Token_Factory_Storage {
+		return $this->token_factory_storage;
 	}
 
 	// public for tests only.
@@ -203,11 +146,82 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		return $this->template_engines[ $name ];
 	}
 
+	public function resolve_token_factory( string $template_engine ): Token_Factory {
+		return $this->token_factory_storage->resolve_token_factory( $template_engine );
+	}
+
 	public function set_hooks( Route_Detector $route_detector ): void {
 		if ( ! $route_detector->is_admin_route() ) {
 			return;
 		}
 
 		self::add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
+	}
+
+	protected function is_templates_dir_writable(): bool {
+		$templates_dir = $this->uploads_folder;
+		$wp_filesystem = $this->get_wp_filesystem();
+
+		if ( false === $wp_filesystem->is_dir( $templates_dir ) ) {
+			return false;
+		}
+
+		$test_file = $templates_dir . '/test.txt';
+
+		// the best way to check is to make test write
+		// (check of permissions or 'is_writable' is not enough, as it can be set to 777, but the folder can be owned by another user).
+
+		$is_written = false !== $wp_filesystem->put_contents( $test_file, 'test' );
+
+		if ( false === $is_written ) {
+			return false;
+		}
+
+		$content = $wp_filesystem->get_contents( $test_file );
+
+		$is_writable = 'test' === $content;
+
+		$is_removed = $wp_filesystem->delete( $test_file );
+
+		return $is_writable &&
+				$is_removed;
+	}
+
+	protected function get_uploads_folder(): string {
+		return $this->uploads_folder;
+	}
+
+	protected function get_settings(): Settings {
+		return $this->settings;
+	}
+
+	protected function make_renderer( string $name ): ?Template_Renderer {
+		$instance = null;
+
+		switch ( $name ) {
+			case self::TWIG:
+				$instance = new Twig_Renderer(
+					$this->uploads_folder,
+					$this->get_logger(),
+					$this->settings,
+					$this->get_wp_filesystem()
+				);
+				break;
+			case self::BLADE:
+				$instance = new Blade_Renderer(
+					$this->uploads_folder,
+					$this->get_logger(),
+					$this->settings,
+					$this->get_wp_filesystem()
+				);
+
+				$instance = false === $instance->is_available() ?
+					null :
+					$instance;
+
+				break;
+		}
+
+		return $instance;
 	}
 }

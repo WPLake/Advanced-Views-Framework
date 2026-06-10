@@ -24,7 +24,7 @@ final class Twig_Loop extends Loop_Token {
 			$this->source_var->print();
 		}
 
-		echo '%}';
+		echo ' %}';
 
 		Template_Generator::new_line();
 

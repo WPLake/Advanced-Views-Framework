@@ -315,7 +315,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$post_query                             = new Post_Query( $query_builder, $this->logger );
 			$post_selection_markup                  = new Post_Selection_Markup(
 				$this->front_assets,
-				$this->template_engines,
+				$this->template_engines->get_token_factory_storage(),
 				$this->layout_cpt
 			);
 			$this->post_selection_factory           = new Post_Selection_Factory(

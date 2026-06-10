@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Assignment_Token;
 
-final class Blade_Assign extends Assignment_Token {
+final class Blade_Assignment extends Assignment_Token {
 	public function print(): void {
 		echo '@php';
 

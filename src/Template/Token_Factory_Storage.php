@@ -11,8 +11,6 @@ use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Tokens;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 
 final class Token_Factory_Storage {
-	public const TWIG  = 'twig';
-	public const BLADE = 'blade';
 
 	/**
 	 * @var array<string, Token_Factory>
@@ -24,8 +22,8 @@ final class Token_Factory_Storage {
 		$twig_tokens = new Twig_Tokens();
 
 		$this->token_factories = array(
-			self::TWIG  => $twig_tokens,
-			self::BLADE => new Blade_Tokens(),
+			Template_Renderer_Storage::TWIG  => $twig_tokens,
+			Template_Renderer_Storage::BLADE => new Blade_Tokens(),
 		);
 
 		$this->default_token_factory = $twig_tokens;

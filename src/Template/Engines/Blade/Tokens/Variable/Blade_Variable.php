@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
-final class Blade_Var extends Variable_Token {
+final class Blade_Variable extends Variable_Token {
 	public function print(): void {
 		printf(
 			'$%s',

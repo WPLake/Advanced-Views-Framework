@@ -6,16 +6,16 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens\Twig_Comparison;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens\Twig_IF;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Assign;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Conditional\Twig_Comparison;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Conditional\Twig_IF;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Comment;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Echo;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Functions;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Literal;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Loop;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Range;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Twig_Var;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Variable\Twig_Assignnment;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Variable\Twig_Literal;
+use Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Variable\Twig_Variable;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory_Base;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Comment_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_Token;
@@ -39,7 +39,7 @@ final class Twig_Tokens extends Token_Factory_Base {
 	}
 
 	public function variable( string $name ): Variable_Token {
-		return new Twig_Var( $name );
+		return new Twig_Variable( $name );
 	}
 
 	public function if(): IF_Token {
@@ -51,7 +51,7 @@ final class Twig_Tokens extends Token_Factory_Base {
 	}
 
 	public function assignment(): Assignment_Token {
-		return new Twig_Assign();
+		return new Twig_Assignnment();
 	}
 
 	public function comparison(): Comparison_Token {

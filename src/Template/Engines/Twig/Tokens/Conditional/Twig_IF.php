@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Condition_Tokens;
+namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens\Conditional;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,6 +33,7 @@ final class Twig_IF extends IF_Token {
 
 		if ( $branch->condition instanceof Template_Token ) {
 			$branch->condition->print();
+			echo ' ';
 		}
 
 		$this->print_branch_close_tag();
@@ -43,10 +44,10 @@ final class Twig_IF extends IF_Token {
 	}
 
 	protected function print_branch_open_tag( string $type ): void {
-		printf( '{%% %s', esc_html( $type ) );
+		printf( '{%% %s ', esc_html( $type ) );
 	}
 
 	protected function print_branch_close_tag(): void {
-		echo ' %}';
+		echo '%}';
 	}
 }

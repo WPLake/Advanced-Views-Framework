@@ -27,8 +27,9 @@ class Layout_Markup {
 	private Template_Renderer_Storage $template_engines;
 
 	public function __construct( Field_Markup $field_markup, Data_Vendors $data_vendors, Template_Renderer_Storage $template_engines ) {
-		$this->field_markup     = $field_markup;
-		$this->data_vendors     = $data_vendors;
+		$this->field_markup = $field_markup;
+		$this->data_vendors = $data_vendors;
+		// fixme replace to token_factory_storage.
 		$this->template_engines = $template_engines;
 		$this->markups_safe     = array();
 	}
