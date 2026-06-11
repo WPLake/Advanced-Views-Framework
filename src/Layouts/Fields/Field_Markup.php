@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
@@ -18,12 +20,10 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Format_Token;
 use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
-
-defined( 'ABSPATH' ) || exit;
 
 class Field_Markup {
 	private Data_Vendors $data_vendors;
@@ -164,9 +164,9 @@ class Field_Markup {
 			$row_classes .= $row_class;
 		}
 
-		Format_Token::tab( $tab_number );
+		Format_Token::tabulation( $tab_number );
 		printf( '<%s class="%s">', esc_html( $tag ), esc_html( $row_classes ) );
-		Format_Token::new_line();
+		Format_Token::next_line();
 
 		++$tab_number;
 	}
@@ -202,12 +202,12 @@ class Field_Markup {
 				'';
 		}
 
-		Format_Token::tab( $tabs_number );
+		Format_Token::tabulation( $tabs_number );
 
 		printf( '<p class="%s">', esc_html( $label_class ) );
 
-		Format_Token::new_line();
-		Format_Token::tab( ++$tabs_number );
+		Format_Token::next_line();
+		Format_Token::tabulation( ++$tabs_number );
 
 		$token_generator = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
@@ -217,12 +217,12 @@ class Field_Markup {
 		$token_generator->to_echo( $var )
 						->print();
 
-		Format_Token::new_line();
-		Format_Token::tab( --$tabs_number );
+		Format_Token::next_line();
+		Format_Token::tabulation( --$tabs_number );
 
 		echo '</p>';
 
-		Format_Token::new_line();
+		Format_Token::next_line();
 	}
 
 	/**
@@ -271,7 +271,7 @@ class Field_Markup {
 	protected function print_opening_field_outers(
 		array $field_outers,
 		int &$tabs_number,
-		Token_Factory $token_generator
+		Token_Factory $token_factory
 	): void {
 		foreach ( $field_outers as $outer ) {
 			echo "\r\n" . esc_html( str_repeat( "\t", $tabs_number ) );
@@ -283,15 +283,17 @@ class Field_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $token_generator->variable( $variable_info['field_id'] )
-										->add_item_path( $variable_info['item_key'] );
+				$var = $token_factory->variable( $variable_info['field_id'] )
+									->add_item_path( $variable_info['item_key'] );
 
-				Template_Generator::attribute( $attr, $var );
+				$token_factory->format()
+				->attribute( $attr, $var );
 			}
 
 			echo '>';
 
-			Format_Token::new_line();
+			$token_factory->format()
+							->new_line();
 
 			++$tabs_number;
 		}
@@ -367,7 +369,7 @@ class Field_Markup {
 			$field_classes .= $attr_class;
 		}
 
-		Format_Token::tab( $tabs_number );
+		Format_Token::tabulation( $tabs_number );
 
 		printf(
 			'<%s class="%s"',
@@ -416,7 +418,7 @@ class Field_Markup {
 
 		if ( $is_with_wrapper &&
 			false === $is_with_outer_wrappers ) {
-			Format_Token::new_line();
+			Format_Token::next_line();
 		}
 
 		$token_factory     = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
@@ -435,11 +437,11 @@ class Field_Markup {
 		$markup_field_data->set_is_with_field_wrapper( $is_with_wrapper );
 		$markup_field_data->set_is_with_row_wrapper( $this->is_with_row_wrapper( $layout_settings, $field_settings, $field_meta ) );
 
-		Format_Token::tab( $tabs_number );
+		Format_Token::tabulation( $tabs_number );
 
 		$markup_field_instance->print_markup( $field_id, $markup_field_data );
 
-		Format_Token::new_line();
+		Format_Token::next_line();
 
 		// read back, as it may be changed in getMarkup().
 		$tabs_number = $markup_field_data->get_tabs_number();
@@ -450,9 +452,9 @@ class Field_Markup {
 	 */
 	protected function print_closing_field_outers( array $field_outers, int &$tabs_number ): void {
 		foreach ( $field_outers as $outer ) {
-			Format_Token::tab( --$tabs_number );
+			Format_Token::tabulation( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
-			Format_Token::new_line();
+			Format_Token::next_line();
 		}
 	}
 
@@ -569,19 +571,19 @@ class Field_Markup {
 		$this->print_closing_field_outers( $field_outers, $tabs_number );
 
 		if ( $is_with_field_wrapper ) {
-			Format_Token::tab( --$tabs_number );
+			Format_Token::tabulation( --$tabs_number );
 
 			printf( '</%s>', esc_html( $field_tag ) );
 
-			Format_Token::new_line();
+			Format_Token::next_line();
 		}
 
 		if ( $is_with_row_wrapper ) {
-			Format_Token::tab( --$tabs_number );
+			Format_Token::tabulation( --$tabs_number );
 
 			printf( '</%s>', esc_html( $row_tag ) );
 
-			Format_Token::new_line();
+			Format_Token::next_line();
 		}
 
 		return $tabs_number;

@@ -69,7 +69,8 @@ abstract class List_Field extends Markup_Field {
 		$item_var   = $token_factory->variable( static::LOOP_ITEM_NAME );
 		$loop_body  = $token_factory->html( fn() => $this->print_loop_body( $field_id, $markup_field_data ) );
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->print_tabs();
 
 		$token_factory->loop()
@@ -78,14 +79,16 @@ abstract class List_Field extends Markup_Field {
 						->set_body( $loop_body )
 						->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 	}
 
 	protected function print_loop_body( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory    = $markup_field_data->get_token_factory();
 		$is_delimiter_set = strlen( $markup_field_data->get_field_data()->options_delimiter ) > 0;
 
-		Format_Token::new_line();
+		$token_factory->format()
+			->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		if ( $is_delimiter_set ) {
@@ -100,7 +103,8 @@ abstract class List_Field extends Markup_Field {
 				->set_condition( $secondary_element_comparison )
 				->set_body( $token_factory->html( fn() => $this->print_item_delimiter( $field_id, $markup_field_data ) ) );
 
-			Format_Token::new_line();
+			$token_factory->format()
+						->new_line();
 			$markup_field_data->print_tabs();
 
 			$if->print();
@@ -111,14 +115,16 @@ abstract class List_Field extends Markup_Field {
 
 		$this->print_inner_item( $field_id, $markup_field_data );
 
-		Format_Token::new_line();
+		$token_factory->format()
+			->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_item_delimiter( string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -132,7 +138,8 @@ abstract class List_Field extends Markup_Field {
 			)
 		);
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$delimiter_var = $token_factory->variable( $field_id )
@@ -140,12 +147,14 @@ abstract class List_Field extends Markup_Field {
 		$token_factory->to_echo( $delimiter_var )
 						->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</span>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 

@@ -11,27 +11,27 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 class Link_Field extends Markup_Field {
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$target_var     = $token_generator->variable( $field_id )
+		$target_var     = $token_factory->variable( $field_id )
 										->add_item_path( 'target' );
-		$href_var       = $token_generator->variable( $field_id )
+		$href_var       = $token_factory->variable( $field_id )
 										->add_item_path( 'value' );
-		$link_label_var = $token_generator->variable( $field_id )
+		$link_label_var = $token_factory->variable( $field_id )
 											->add_item_path( 'linkLabel' );
-		$title_var      = $token_generator->variable( $field_id )
+		$title_var      = $token_factory->variable( $field_id )
 									->add_item_path( 'title' );
 
 		echo '<a';
 
-		Template_Generator::attribute( 'target', $target_var );
+		$token_factory->format()
+						->attribute( 'target', $target_var );
 
 		printf(
 			' class="%s"',
@@ -43,22 +43,25 @@ class Link_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::attribute( 'href', $href_var );
+		$token_factory->format()
+						->attribute( 'href', $href_var );
 
 		echo '>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$comparison = $token_generator->comparison()
+		$comparison = $token_factory->comparison()
 			->set_left_operand( $link_label_var )
 			->set_comparison_empty()
 			->set_right_operand( $title_var );
 
-		$token_generator->to_echo( $comparison )
+		$token_factory->to_echo( $comparison )
 						->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</a>';

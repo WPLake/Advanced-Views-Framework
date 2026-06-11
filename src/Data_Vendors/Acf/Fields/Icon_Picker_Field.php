@@ -61,7 +61,9 @@ class Icon_Picker_Field extends Markup_Field {
 	}
 
 	protected function print_icon_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Format_Token::new_line();
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$token_factory->format()->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -73,27 +75,31 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_factory()->to_echo( $var )->print();
+		$var = $token_factory->variable( $field_id )->add_item_path( 'value' );
+		$token_factory->to_echo( $var )->print();
 
 		echo '"></i>';
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_icon_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Format_Token::new_line();
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$token_factory->format()->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_custom_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Format_Token::new_line();
+		$token_factory = $markup_field_data->get_token_factory();
+
+		$token_factory->format()->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -105,12 +111,14 @@ class Icon_Picker_Field extends Markup_Field {
 				)
 			),
 		);
-		$var = $markup_field_data->get_token_factory()->variable( $field_id )->add_item_path( 'value' );
-		$markup_field_data->get_token_factory()->to_echo( $var )->print();
+		$var = $token_factory->variable( $field_id )
+							->add_item_path( 'value' );
+		$token_factory->to_echo( $var )
+						->print();
 
 		echo '" loading="lazy" alt="icon">';
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 

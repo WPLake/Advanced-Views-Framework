@@ -9,6 +9,9 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
+/**
+ * @phpstan-type Attribute_Value Variable_Token|string
+ */
 class Format_Token {
 	protected const NEW_LINE = "\r\n";
 	protected const TAB      = "\t";
@@ -36,14 +39,21 @@ class Format_Token {
 		echo esc_html( $tabs );
 	}
 
+	/**
+	 * @param Attribute_Value $value
+	 */
 	public function attribute(
 		string $name,
-		Variable_Token $value
+		$value
 	): self {
 		printf( ' %s="', esc_html( $name ) );
 
-		$this->token_factory->to_echo( $value )
-							->print();
+		if ( $value instanceof Variable_Token ) {
+			$this->token_factory->to_echo( $value )
+								->print();
+		} else {
+			echo esc_html( $value );
+		}
 
 		echo '"';
 
@@ -51,7 +61,7 @@ class Format_Token {
 	}
 
 	/**
-	 * @param array<string, Variable_Token> $attributes
+	 * @param array<string, Attribute_Value> $attributes
 	 *
 	 * @return self
 	 */

@@ -31,7 +31,8 @@ class Select_Field extends List_Field {
 
 		$token_factory = $markup_field_data->get_token_factory();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $token_factory
@@ -41,7 +42,8 @@ class Select_Field extends List_Field {
 							->to_echo( $var )
 							->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';

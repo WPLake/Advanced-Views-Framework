@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Acf\Acf_Data_Vendor;
 use Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\Meta_Box_Data_Vendor;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
@@ -12,11 +14,8 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
 
 class Map_Field extends Markup_Field {
 	protected function print_map_marker_attributes(
@@ -24,7 +23,7 @@ class Map_Field extends Markup_Field {
 		string $item_id,
 		Markup_Field_Data $markup_field_data
 	): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
 		printf(
 			'class="%s"',
@@ -37,13 +36,18 @@ class Map_Field extends Markup_Field {
 			),
 		);
 
-		$lat_var = $token_generator->variable( $item_id )
+		$lat_var = $token_factory->variable( $item_id )
 									->add_item_path( 'lat' );
-		$lng_var = $token_generator->variable( $item_id )
+		$lng_var = $token_factory->variable( $item_id )
 									->add_item_path( 'lng' );
 
-		Template_Generator::attribute( 'data-lat', $lat_var );
-		Template_Generator::attribute( 'data-lng', $lng_var );
+		$token_factory->format()
+						->attributes(
+							array(
+								'data-lat' => $lat_var,
+								'data-lng' => $lng_var,
+							)
+						);
 	}
 
 	/**
@@ -215,8 +219,7 @@ class Map_Field extends Markup_Field {
 			return;
 		}
 
-		$current_tabs_number = $markup_field_data->get_tabs_number();
-		$attributes_map      = array(
+		$attributes_map = array(
 			'data-zoom'       => 'zoom',
 			'data-center-lat' => 'center_lat',
 			'data-center-lng' => 'center_lng',
@@ -232,10 +235,14 @@ class Map_Field extends Markup_Field {
 			$var = $token_factory->variable( $field_id )
 								->add_item_path( $key );
 
-			Template_Generator::attribute( $attribute, $var );
+			$token_factory->format()
+			->attribute( $attribute, $var );
 		}
 		echo '>';
-		echo "\r\n" . esc_html( str_repeat( "\t", ++$current_tabs_number ) );
+
+		$token_factory->format()
+			->new_line();
+		$markup_field_data->increment_and_print_tabs();
 
 		if ( $field_meta->is_multiple() ) {
 			$this->print_item_loop( $field_id, $markup_field_data );
@@ -245,7 +252,10 @@ class Map_Field extends Markup_Field {
 			$this->print_inner_item( $field_id, $field_id, $markup_field_data );
 		}
 
-		echo "\r\n" . esc_html( str_repeat( "\t", --$current_tabs_number ) );
+		$token_factory->format()
+			->new_line();
+		$markup_field_data->decrement_and_print_tabs();
+
 		echo '</div>';
 	}
 
@@ -257,13 +267,16 @@ class Map_Field extends Markup_Field {
 		$item_var   = $token_factory->variable( 'marker' );
 
 		$loop_body = $token_factory->html(
-			function () use ( $field_id, $item_var, $markup_field_data ) {
-				Format_Token::new_line();
+			function () use ( $field_id, $item_var, $markup_field_data, $token_factory ) {
+				$token_factory->format()
+								->new_line();
+
 				$markup_field_data->increment_and_print_tabs();
 
 				$this->print_inner_item( $field_id, $item_var->get_name(), $markup_field_data );
 
-				Format_Token::new_line();
+				$token_factory->format()
+								->new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -281,9 +294,15 @@ class Map_Field extends Markup_Field {
 										->add_item_path( 'value' );
 
 		$if_body = $token_factory->html(
-			function () use ( $field_id, $item_id, $markup_field_data ) {
+			function () use ( $field_id, $item_id, $markup_field_data, $token_factory ) {
+				$token_factory->format()
+								->new_line();
+				$markup_field_data->increment_and_print_tabs();
+
 				$this->print_inner_item( $field_id, $item_id, $markup_field_data );
-				Format_Token::new_line();
+
+				$token_factory->format()
+								->new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -293,9 +312,6 @@ class Map_Field extends Markup_Field {
 		$if->new_if_branch()
 			->set_condition( $value_var )
 			->set_body( $if_body );
-
-		Format_Token::new_line();
-		$markup_field_data->increment_and_print_tabs();
 
 		$if->print();
 	}

@@ -15,7 +15,6 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
@@ -34,17 +33,22 @@ class Menu_Items_Field extends Markup_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$id_var        = $token_generator->variable( $field_id )
+		$id_var        = $token_factory->variable( $field_id )
 										->add_item_path( 'layout_id' );
-		$object_id_var = $token_generator->variable( $item_id )
+		$object_id_var = $token_factory->variable( $item_id )
 										->add_item_path( 'value' );
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
 
-		Template_Generator::attribute( 'id', $id_var );
-		Template_Generator::attribute( 'object-id', $object_id_var );
+		$token_factory->format()
+			->attributes(
+				array(
+					'id'        => $id_var,
+					'object-id' => $object_id_var,
+				)
+			);
 
 		echo ']';
 	}
@@ -59,7 +63,8 @@ class Menu_Items_Field extends Markup_Field {
 			fn()=>$this->print_loop_body( $field_id, $item_var->get_name(), $markup_field_data )
 		);
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->print_tabs();
 
 		$token_factory->loop()
@@ -68,13 +73,15 @@ class Menu_Items_Field extends Markup_Field {
 						->set_body( $loop_body )
 						->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 	}
 
 	protected function print_loop_body( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -125,14 +132,16 @@ class Menu_Items_Field extends Markup_Field {
 
 		echo '</li>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_children( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -146,7 +155,8 @@ class Menu_Items_Field extends Markup_Field {
 			)
 		);
 
-		echo "\r\n\r\n";
+		$token_factory->format()
+						->new_line( 2 );
 		$markup_field_data->increment_and_print_tabs();
 
 		$children_var      = $token_factory->variable( $item_id )
@@ -162,19 +172,22 @@ class Menu_Items_Field extends Markup_Field {
 						->set_body( $loop_body )
 						->print();
 
-		echo "\r\n\r\n";
+		$token_factory->format()
+						->new_line( 2 );
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</ul>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_sub_loop_body( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
-		Format_Token::new_line();
+		$token_factory->format()
+		->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -193,17 +206,20 @@ class Menu_Items_Field extends Markup_Field {
 		$this->print_conditional_class( 'sub-menu-item--active', $is_active_var, $markup_field_data );
 		echo '">';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->print_item_markup( $field_id, $item_id, $markup_field_data );
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</li>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 

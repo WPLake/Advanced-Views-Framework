@@ -11,13 +11,13 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+
 
 defined( 'ABSPATH' ) || exit;
 
 class Image_Field extends Markup_Field {
 	protected function print_inner_attributes( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator  = $markup_field_data->get_token_factory();
+		$token_factory    = $markup_field_data->get_token_factory();
 		$inner_attributes = array();
 
 		foreach ( $markup_field_data->get_field_assets() as $field_asset ) {
@@ -28,16 +28,17 @@ class Image_Field extends Markup_Field {
 		}
 
 		foreach ( $inner_attributes as $name => $variable_info ) {
-			$var = $token_generator->variable( $variable_info['field_id'] )
+			$var = $token_factory->variable( $variable_info['field_id'] )
 									->add_item_path( $variable_info['item_key'] );
 
-			Template_Generator::attribute( $name, $token_generator->to_echo( $var ) );
+			$token_factory->format()
+				->attribute( $name, $var );
 		}
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
-		$attributes_map  = array(
+		$token_factory  = $markup_field_data->get_token_factory();
+		$attributes_map = array(
 			'src'      => 'value',
 			'width'    => 'width',
 			'height'   => 'height',
@@ -59,10 +60,11 @@ class Image_Field extends Markup_Field {
 		);
 
 		foreach ( $attributes_map as $attribute_name => $item_key ) {
-			$var = $token_generator->variable( $field_id )
+			$var = $token_factory->variable( $field_id )
 									->add_item_path( $item_key );
 
-			Template_Generator::attribute( $attribute_name, $var );
+			$token_factory->format()
+							->attribute( $attribute_name, $var );
 		}
 
 		$this->print_inner_attributes( $field_id, $markup_field_data );

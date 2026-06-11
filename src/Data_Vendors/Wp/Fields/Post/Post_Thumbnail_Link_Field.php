@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
+
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,16 +26,17 @@ class Post_Thumbnail_Link_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$target_var = $token_generator->variable( $field_id )
+		$target_var = $token_factory->variable( $field_id )
 										->add_item_path( 'target' );
-		$href_var   = $token_generator->variable( $field_id )
+		$href_var   = $token_factory->variable( $field_id )
 										->add_item_path( 'href' );
 
 		echo '<a';
 
-		Template_Generator::attribute( 'target', $target_var );
+		$token_factory->format()
+						->attribute( 'target', $target_var );
 
 		printf(
 			' class="%s"',
@@ -44,17 +45,22 @@ class Post_Thumbnail_Link_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::attribute( 'href', $href_var );
+		$token_factory->format()
+						->attribute( 'href', $href_var );
 
 		echo '>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
+
 		$markup_field_data->increment_and_print_tabs();
 
 		$markup_field_data->set_is_with_field_wrapper( true );
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
+
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</a>';

@@ -4,17 +4,16 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use WP_Term;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
-
-defined( 'ABSPATH' ) || exit;
 
 class Taxonomy_Field extends List_Field {
 	const LOOP_ITEM_NAME = 'term_item';
@@ -60,23 +59,26 @@ class Taxonomy_Field extends List_Field {
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator  = $markup_field_data->get_token_factory();
+		$token_factory    = $markup_field_data->get_token_factory();
 		$object_id_source = $markup_field_data->get_field_meta()->is_multiple() ?
 			'term_item' :
 			$field_id;
 
-		$id_var      = $token_generator->variable( $field_id )
+		$id_var      = $token_factory->variable( $field_id )
 										->add_item_path( 'layout_id' );
-		$term_id_var = $token_generator->variable( $object_id_source )
+		$term_id_var = $token_factory->variable( $object_id_source )
 										->add_item_path( 'value' );
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
 
-		Template_Generator::attribute( 'id', $id_var );
-
-		echo ' object-id="term"';
-
-		Template_Generator::attribute( 'term-id', $term_id_var );
+		$token_factory->format()
+			->attributes(
+				array(
+					'id'        => $id_var,
+					'object-id' => 'term',
+					'term-id'   => $term_id_var,
+				)
+			);
 
 		echo ']';
 	}

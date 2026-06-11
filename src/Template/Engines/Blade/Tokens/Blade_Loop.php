@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Format_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 
@@ -25,8 +24,6 @@ final class Blade_Loop extends Loop_Token {
 		}
 
 		echo ')';
-
-		Format_Token::next_line();
 
 		if ( $this->body instanceof Template_Token ) {
 			$this->body->print();

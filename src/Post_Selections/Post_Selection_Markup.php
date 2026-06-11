@@ -12,7 +12,6 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
@@ -375,6 +374,7 @@ class Post_Selection_Markup {
 				$tabs_number += 2;
 
 				$token_factory->format()
+					->new_line()
 								->tab( $tabs_number );
 
 				$this->print_shortcode( $post_selection_settings );

@@ -36,13 +36,15 @@ class Gallery_Field extends Markup_Field {
 									->add_item_path( 'value' );
 		$item_var   = $token_factory->variable( 'image_item' );
 		$loop_body  = $token_factory->html(
-			function () use ( $markup_field_data, $field_id, $item_var ) {
-				Format_Token::new_line();
+			function () use ( $markup_field_data, $field_id, $item_var, $token_factory ) {
+				$token_factory->format()
+					->new_line();
 				$markup_field_data->increment_and_print_tabs();
 
 				$this->print_item( $field_id, $item_var->get_name(), $markup_field_data );
 
-				Format_Token::new_line();
+				$token_factory->format()
+						->new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -52,12 +54,14 @@ class Gallery_Field extends Markup_Field {
 						->set_item_var( $item_var )
 						->set_body( $loop_body );
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->print_tabs();
 
 		$loop->print();
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 	}
 
 	/**

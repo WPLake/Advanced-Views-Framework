@@ -4,7 +4,6 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Template\Engines\Twig\Tokens;
 
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Format_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Loop_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Template_Token;
 
@@ -25,8 +24,6 @@ final class Twig_Loop extends Loop_Token {
 		}
 
 		echo ' %}';
-
-		Format_Token::next_line();
 
 		if ( $this->body instanceof Template_Token ) {
 			$this->body->print();

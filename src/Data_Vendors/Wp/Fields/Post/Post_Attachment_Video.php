@@ -13,13 +13,12 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 class Post_Attachment_Video extends Markup_Field {
 	use Custom_Field;
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
 		printf(
 			'<video class="%s" controls>',
@@ -30,23 +29,32 @@ class Post_Attachment_Video extends Markup_Field {
 				)
 			),
 		);
-		Format_Token::new_line();
+
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$src_var  = $token_generator->variable( $field_id )
+		$src_var  = $token_factory->variable( $field_id )
 									->add_item_path( 'value' );
-		$type_var = $token_generator->variable( $field_id )
+		$type_var = $token_factory->variable( $field_id )
 									->add_item_path( 'mime_type' );
 
 		echo '<source';
 
-		Template_Generator::attribute( 'src', $src_var );
-		Template_Generator::attribute( 'type', $type_var );
+		$token_factory->format()
+						->attributes(
+							array(
+								'src'  => $src_var,
+								'type' => $type_var,
+							)
+						);
 
 		echo '>';
 
-		Format_Token::new_line();
+		$token_factory->format()
+						->new_line();
 		$markup_field_data->decrement_and_print_tabs();
+
 		echo '</video>';
 	}
 

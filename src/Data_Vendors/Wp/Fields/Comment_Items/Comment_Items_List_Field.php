@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Comment_Items;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
@@ -12,15 +14,14 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use WP_Comment;
-
-defined( 'ABSPATH' ) || exit;
 
 class Comment_Items_List_Field extends Markup_Field {
 	use Custom_Field;
 
 	protected function print_internal_item_layout( string $item_id, Markup_Field_Data $markup_field_data ): void {
+		$token_factory = $markup_field_data->get_token_factory();
+
 		// opening 'comment' div.
 		printf(
 			'<div class="%s">',
@@ -28,7 +29,8 @@ class Comment_Items_List_Field extends Markup_Field {
 				$this->get_field_class( 'comment', $markup_field_data )
 			),
 		);
-		Format_Token::new_line();
+		$token_factory->format()->
+		new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		// comment author name.
@@ -42,23 +44,23 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
-		$var = $markup_field_data->get_token_factory()
+		$var = $token_factory
 								->variable( $item_id )
 								->add_item_path( 'author_name' );
-		$markup_field_data->get_token_factory()
+		$token_factory
 							->to_echo( $var )
 							->print();
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// comment author email.
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->print_tabs();
 
 		printf(
@@ -71,7 +73,7 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $markup_field_data->get_token_factory()
@@ -83,33 +85,36 @@ class Comment_Items_List_Field extends Markup_Field {
 							->set_is_raw( true )
 		->print();
 
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// closing 'comment' div.
-		Format_Token::new_line();
+		$token_factory->format()->new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 	}
 
 	protected function print_external_item_layout( string $field_id, string $item_id, Markup_Field_Data $markup_field_data ): void {
-		$token_generator = $markup_field_data->get_token_factory();
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$id_var         = $token_generator->variable( $field_id )
+		$id_var         = $token_factory->variable( $field_id )
 											->add_item_path( 'layout_id' );
-		$comment_id_var = $token_generator->variable( $item_id )
+		$comment_id_var = $token_factory->variable( $item_id )
 											->add_item_path( 'comment_id' );
 
 		printf( '[%s', esc_html( Hard_Layout_Cpt::cpt_name() ) );
 
-		Template_Generator::attribute( 'id', $id_var );
-
-		echo ' object-id="comment"';
-
-		Template_Generator::attribute( 'comment-id', $comment_id_var );
+		$token_factory->format()
+						->attributes(
+							array(
+								'id'         => $id_var,
+								'object-id'  => 'comment',
+								'comment-id' => $comment_id_var,
+							)
+						);
 
 		echo ']';
 	}

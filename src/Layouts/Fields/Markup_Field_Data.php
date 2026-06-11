@@ -12,7 +12,6 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 
 defined( 'ABSPATH' ) || exit;
@@ -207,15 +206,18 @@ class Markup_Field_Data extends Template_Field_Data {
 	}
 
 	public function print_tabs(): void {
-		Format_Token::tab( $this->get_tabs_number() );
+		$this->token_factory->format()
+							->tab( $this->get_tabs_number() );
 	}
 
 	public function increment_and_print_tabs(): void {
-		Format_Token::tab( $this->increment_and_get_tabs_number() );
+		$this->token_factory->format()
+							->tab( $this->increment_and_get_tabs_number() );
 	}
 
 	public function decrement_and_print_tabs(): void {
-		Format_Token::tab( $this->decrement_and_get_tabs_number() );
+		$this->token_factory->format()
+							->tab( $this->decrement_and_get_tabs_number() );
 	}
 
 	public function get_token_factory(): Token_Factory {
