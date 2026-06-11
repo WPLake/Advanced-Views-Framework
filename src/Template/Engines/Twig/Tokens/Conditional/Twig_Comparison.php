@@ -15,7 +15,7 @@ final class Twig_Comparison extends Comparison_Token {
 	public function print(): void {
 		parent::print();
 
-		if ( self::COMPARISON_EMPTY === $this->operator ) {
+		if ( self::COMPARISON_EMPTY === $this->operator_escaped ) {
 			echo ')';
 		}
 	}

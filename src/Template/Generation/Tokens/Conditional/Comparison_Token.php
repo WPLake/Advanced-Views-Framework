@@ -16,9 +16,9 @@ class Comparison_Token implements Template_Token {
 	const COMPARISON_EMPTY   = ' ?: ';
 	const COMPARISON_OR      = ' || ';
 
-	protected ?Template_Token $left  = null;
-	protected ?Template_Token $right = null;
-	protected string $operator       = '';
+	protected ?Template_Token $left    = null;
+	protected ?Template_Token $right   = null;
+	protected string $operator_escaped = '';
 
 	public function set_left_operand( Template_Token $left ): self {
 		$this->left = $left;
@@ -33,38 +33,38 @@ class Comparison_Token implements Template_Token {
 	}
 
 	public function set_comparison_greater(): self {
-		$this->operator = static::COMPARISON_GREATER;
+		$this->operator_escaped = static::COMPARISON_GREATER;
 
 		return $this;
 	}
 
 
 	public function set_comparison_less(): self {
-		$this->operator = static::COMPARISON_LESS;
+		$this->operator_escaped = static::COMPARISON_LESS;
 
 		return $this;
 	}
 
 	public function set_comparison_more(): self {
-		$this->operator = static::COMPARISON_MORE;
+		$this->operator_escaped = static::COMPARISON_MORE;
 
 		return $this;
 	}
 
 	public function set_comparison_equal(): self {
-		$this->operator = static::COMPARISON_EQUAL;
+		$this->operator_escaped = static::COMPARISON_EQUAL;
 
 		return $this;
 	}
 
 	public function set_comparison_empty(): self {
-		$this->operator = static::COMPARISON_EMPTY;
+		$this->operator_escaped = static::COMPARISON_EMPTY;
 
 		return $this;
 	}
 
 	public function set_comparison_or(): self {
-		$this->operator = static::COMPARISON_OR;
+		$this->operator_escaped = static::COMPARISON_OR;
 
 		return $this;
 	}
@@ -74,8 +74,9 @@ class Comparison_Token implements Template_Token {
 			$this->left->print();
 		}
 
-		if ( strlen( $this->operator ) > 0 ) {
-			echo esc_html( $this->operator );
+		if ( strlen( $this->operator_escaped ) > 0 ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $this->operator_escaped;
 		}
 
 		if ( $this->right instanceof Template_Token ) {

@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
+use function Org\Wplake\Advanced_Views\Utils\repeat_str;
 
 /**
  * @phpstan-type Attribute_Value Variable_Token|string
@@ -25,7 +26,7 @@ class Format_Token {
 	 * @deprecated use dynamic methods below
 	 */
 	public static function next_line( int $count = 1 ): void {
-		$char = str_repeat( self::NEW_LINE, $count );
+		$char = repeat_str( self::NEW_LINE, $count );
 
 		echo esc_html( $char );
 	}
@@ -34,10 +35,11 @@ class Format_Token {
 	 * @deprecated use dynamic methods below
 	 */
 	public static function tabulation( int $count = 1 ): void {
-		$tabs = str_repeat( self::TAB, $count );
+		$tabs = repeat_str( self::TAB, $count );
 
 		echo esc_html( $tabs );
 	}
+
 
 	/**
 	 * @param Attribute_Value $value
