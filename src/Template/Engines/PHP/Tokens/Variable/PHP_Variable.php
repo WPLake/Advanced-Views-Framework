@@ -2,13 +2,13 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Template\Engines\Blade\Tokens\Variable;
+namespace Org\Wplake\Advanced_Views\Template\Engines\PHP\Tokens\Variable;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
-final class Blade_Variable extends Variable_Token {
+final class PHP_Variable extends Variable_Token {
 	public function print(): void {
 		printf(
 			'$%s',

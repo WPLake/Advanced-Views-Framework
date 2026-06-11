@@ -8,12 +8,12 @@ use Exception;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Optional_Vendors\Jenssegers\Blade\Blade as Blade_Engine;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer_Base;
+use Org\Wplake\Advanced_Views\Template\Rendering\File_Template_Renderer_Base;
 use WP_Filesystem_Base;
 
 defined( 'ABSPATH' ) || exit;
 
-class Blade_Renderer extends Template_Renderer_Base {
+class Blade_Renderer extends File_Template_Renderer_Base {
 	// @phpstan-ignore-next-line
 	private ?Blade_Engine $blade_engine;
 

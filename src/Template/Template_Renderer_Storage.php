@@ -15,7 +15,6 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
@@ -144,10 +143,6 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		}
 
 		return $this->template_engines[ $name ];
-	}
-
-	public function resolve_token_factory( string $template_engine ): Token_Factory {
-		return $this->token_factory_storage->resolve_token_factory( $template_engine );
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {

@@ -9,7 +9,7 @@ use Org\Wplake\Advanced_Views\Logger;
 defined( 'ABSPATH' ) || exit;
 
 class Action extends Hookable {
-	private Logger $logger;
+	protected Logger $logger;
 
 	public function __construct( Logger $logger ) {
 		$this->logger = $logger;
