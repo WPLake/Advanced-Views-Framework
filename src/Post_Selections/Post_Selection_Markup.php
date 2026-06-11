@@ -49,7 +49,7 @@ class Post_Selection_Markup {
 				$pages_var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 											->add_item_path( 'pages_amount' );
 
-				Template_Generator::new_line();
+				$token_factory->format()->new_line();
 				echo "\t\t<div>\r\n";
 				echo "\t\t\t";
 				$token_factory->functions()
@@ -74,10 +74,11 @@ class Post_Selection_Markup {
 
 		$if->print();
 
-		Template_Generator::new_line();
+		$token_factory->format()->new_line();
 	}
 
 	protected function print_items_opening_wrapper(
+		Token_Factory $token_factory,
 		Post_Selection_Settings $post_selection_settings,
 		int &$tabs_number,
 		string $class_name = ''
@@ -99,9 +100,11 @@ class Post_Selection_Markup {
 				' ' . $external;
 		}
 
-		Template_Generator::tabulation( ++$tabs_number );
+		$token_factory->format()
+						->tab( ++$tabs_number );
+
 		printf( '<div class="%s">', esc_html( $classes ) );
-		Template_Generator::new_line();
+		$token_factory->format()->new_line();
 	}
 
 	/**
@@ -110,10 +113,10 @@ class Post_Selection_Markup {
 	protected function print_opening_item_outers(
 		array $item_outers,
 		int &$tabs_number,
-		Token_Factory $token_generator
+		Token_Factory $token_factory
 	): void {
 		foreach ( $item_outers as $outer ) {
-			Template_Generator::tabulation( ++$tabs_number );
+			$token_factory->format()->tab( ++$tabs_number );
 			printf( '<%s', esc_html( $outer->tag ) );
 
 			foreach ( $outer->attrs as $attr => $value ) {
@@ -121,14 +124,16 @@ class Post_Selection_Markup {
 			}
 
 			foreach ( $outer->variable_attrs as $attr => $variable_info ) {
-				$var = $token_generator->variable( $variable_info['field_id'] )
-										->add_item_path( $variable_info['item_key'] );
+				$var = $token_factory->variable( $variable_info['field_id'] )
+									->add_item_path( $variable_info['item_key'] );
 
-				Template_Generator::attribute( $attr, $var );
+				$token_factory->format()
+								->attribute( $attr, $var );
 			}
 
 			echo '>';
-			Template_Generator::new_line();
+			$token_factory->format()
+							->new_line();
 		}
 	}
 
@@ -141,11 +146,12 @@ class Post_Selection_Markup {
 	/**
 	 * @param Html_Wrapper[] $item_outers
 	 */
-	protected function print_closing_item_outers( array $item_outers, int &$tabs_number ): void {
+	protected function print_closing_item_outers( Token_Factory $token_factory, array $item_outers, int &$tabs_number ): void {
 		foreach ( $item_outers as $outer ) {
-			Template_Generator::tabulation( --$tabs_number );
+			$token_factory->format()
+							->tab( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
-			Template_Generator::new_line();
+			$token_factory->format()->new_line();
 		}
 	}
 
@@ -158,8 +164,13 @@ class Post_Selection_Markup {
 
 		printf( '[%s', esc_html( $this->public_cpt->shortcode() ) );
 
-		Template_Generator::attribute( 'id', $token_factory->to_echo( $id_var ) );
-		Template_Generator::attribute( 'object-id', $token_factory->to_echo( $post_id_var ) );
+		$token_factory->format()
+						->attributes(
+							array(
+								'id'        => $id_var,
+								'object-id' => $post_id_var,
+							)
+						);
 
 		$asset_attrs = $this->front_assets->get_card_shortcode_attrs( $post_selection_settings );
 
@@ -168,7 +179,7 @@ class Post_Selection_Markup {
 		}
 
 		echo ']';
-		Template_Generator::new_line();
+		$token_factory->format()->new_line();
 	}
 
 	public function print_markup(
@@ -316,7 +327,7 @@ class Post_Selection_Markup {
 
 		$tabs_number = $this->print_opening_tag( $token_factory, $post_selection_settings, $tabs_number );
 		$if->print();
-		$this->print_closing_tag( $post_selection_settings );
+		$this->print_closing_tag( $token_factory, $post_selection_settings );
 	}
 
 	protected function print_items_markup(
@@ -326,21 +337,25 @@ class Post_Selection_Markup {
 	): int {
 		$item_outers = $this->front_assets->get_card_item_outers( $post_selection_settings );
 
-		Template_Generator::new_line();
-		$this->print_items_opening_wrapper( $post_selection_settings, $tabs_number );
+		$token_factory->format()
+						->new_line();
+
+		$this->print_items_opening_wrapper( $token_factory, $post_selection_settings, $tabs_number );
 		$this->print_opening_item_outers( $item_outers, $tabs_number, $token_factory );
 
 		$tabs_number = $this->print_loop( $token_factory, $post_selection_settings, $tabs_number );
 
-		$this->print_closing_item_outers( $item_outers, $tabs_number );
+		$this->print_closing_item_outers( $token_factory, $item_outers, $tabs_number );
 		$tabs_number = $this->print_items_closing_wrapper( $tabs_number );
 
 		if ( strlen( $post_selection_settings->no_posts_found_message ) > 0 ) {
-			Template_Generator::tabulation( --$tabs_number );
+			$token_factory->format()
+							->tab( --$tabs_number );
 		}
 
 		// endif in any case.
-		Template_Generator::tabulation( --$tabs_number );
+		$token_factory->format()
+						->tab( --$tabs_number );
 
 		return $tabs_number;
 	}
@@ -356,15 +371,21 @@ class Post_Selection_Markup {
 		$post_id_var = $token_factory->variable( 'post_id' );
 
 		$loop_body = $token_factory->html(
-			function () use ( $tabs_number, $post_selection_settings ) {
+			function () use ( $tabs_number, $post_selection_settings, $token_factory ) {
 				$tabs_number += 2;
-				Template_Generator::tabulation( $tabs_number );
+
+				$token_factory->format()
+								->tab( $tabs_number );
+
 				$this->print_shortcode( $post_selection_settings );
-				Template_Generator::tabulation( --$tabs_number );
+
+				$token_factory->format()
+								->tab( --$tabs_number );
 			}
 		);
 
-		Template_Generator::tabulation( ++$tabs_number );
+		$token_factory->format()
+						->tab( ++$tabs_number );
 
 		$token_factory->loop()
 						->set_source_var( $post_ids_var )
@@ -372,7 +393,8 @@ class Post_Selection_Markup {
 						->set_body( $loop_body )
 						->print();
 
-		Template_Generator::new_line();
+		$token_factory->format()
+						->new_line();
 
 		return $tabs_number;
 	}
@@ -383,42 +405,58 @@ class Post_Selection_Markup {
 		int $tabs_number
 	): int {
 		printf( '<%s class="', esc_html( $post_selection_settings->get_tag_name() ) );
+
 		$var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 							->add_item_path( 'classes' );
-		$token_factory->to_echo( $var )->print();
+
+		$token_factory->to_echo( $var )
+						->print();
 
 		echo esc_html( $post_selection_settings->get_bem_name() );
+
 		if ( ! $post_selection_settings->has_unique_bem_name() ) {
 			echo ' ' . sprintf( '%s--id--', esc_html( $post_selection_settings->get_bem_name() ) );
+
 			$var = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 								->add_item_path( 'id' );
+
 			$token_factory->to_echo( $var )->print();
 
 		}
 		echo '">';
 
 		if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
-			Template_Generator::new_line();
+			$token_factory->format()
+							->new_line();
 			echo '<template shadowrootmode="open">';
 		}
 
-		echo "\r\n\r\n";
-		Template_Generator::tabulation( $tabs_number );
+		$token_factory->format()
+					->new_line( 2 )
+						->tab( $tabs_number );
 
 		return $tabs_number;
 	}
 
-	protected function print_closing_tag( Post_Selection_Settings $post_selection_settings ): void {
-		Template_Generator::new_line();
+	protected function print_closing_tag( Token_Factory $token_factory, Post_Selection_Settings $post_selection_settings ): void {
+		$token_factory->format()
+						->new_line();
 
 		$this->print_extra_markup( $post_selection_settings );
 
 		if ( Post_Selection_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $post_selection_settings->web_component ) {
-			Template_Generator::new_line();
+			$token_factory->format()
+							->new_line();
 			echo '</template>';
 		}
 
-		echo "\r\n" . sprintf( '</%s>', esc_html( $post_selection_settings->get_tag_name() ) ) . "\r\n";
+		$token_factory->format()
+			->new_line();
+
+		printf( '</%s>', esc_html( $post_selection_settings->get_tag_name() ) );
+
+		$token_factory->format()
+						->new_line();
 	}
 
 	protected function print_not_found_markup(
@@ -426,8 +464,9 @@ class Post_Selection_Markup {
 		Post_Selection_Settings $post_selection_settings,
 		int $tabs_number
 	): int {
-		Template_Generator::new_line();
-		Template_Generator::tabulation( ++$tabs_number );
+		$token_factory->format()
+						->new_line()
+						->tab( ++$tabs_number );
 		$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
 			sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
 			'';
@@ -440,7 +479,8 @@ class Post_Selection_Markup {
 		$token_factory->to_echo( $var )->print();
 
 		echo '</div>';
-		Template_Generator::new_line();
+		$token_factory->format()
+						->new_line();
 
 		return $tabs_number;
 	}

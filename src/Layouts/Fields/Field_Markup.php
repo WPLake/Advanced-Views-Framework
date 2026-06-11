@@ -164,9 +164,9 @@ class Field_Markup {
 			$row_classes .= $row_class;
 		}
 
-		Template_Generator::tabulation( $tab_number );
+		Format_Token::tab( $tab_number );
 		printf( '<%s class="%s">', esc_html( $tag ), esc_html( $row_classes ) );
-		Template_Generator::new_line();
+		Format_Token::new_line();
 
 		++$tab_number;
 	}
@@ -202,12 +202,12 @@ class Field_Markup {
 				'';
 		}
 
-		Template_Generator::tabulation( $tabs_number );
+		Format_Token::tab( $tabs_number );
 
 		printf( '<p class="%s">', esc_html( $label_class ) );
 
-		Template_Generator::new_line();
-		Template_Generator::tabulation( ++$tabs_number );
+		Format_Token::new_line();
+		Format_Token::tab( ++$tabs_number );
 
 		$token_generator = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
@@ -217,12 +217,12 @@ class Field_Markup {
 		$token_generator->to_echo( $var )
 						->print();
 
-		Template_Generator::new_line();
-		Template_Generator::tabulation( --$tabs_number );
+		Format_Token::new_line();
+		Format_Token::tab( --$tabs_number );
 
 		echo '</p>';
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 	}
 
 	/**
@@ -291,7 +291,7 @@ class Field_Markup {
 
 			echo '>';
 
-			Template_Generator::new_line();
+			Format_Token::new_line();
 
 			++$tabs_number;
 		}
@@ -367,7 +367,7 @@ class Field_Markup {
 			$field_classes .= $attr_class;
 		}
 
-		Template_Generator::tabulation( $tabs_number );
+		Format_Token::tab( $tabs_number );
 
 		printf(
 			'<%s class="%s"',
@@ -416,7 +416,7 @@ class Field_Markup {
 
 		if ( $is_with_wrapper &&
 			false === $is_with_outer_wrappers ) {
-			Template_Generator::new_line();
+			Format_Token::new_line();
 		}
 
 		$token_factory     = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
@@ -435,11 +435,11 @@ class Field_Markup {
 		$markup_field_data->set_is_with_field_wrapper( $is_with_wrapper );
 		$markup_field_data->set_is_with_row_wrapper( $this->is_with_row_wrapper( $layout_settings, $field_settings, $field_meta ) );
 
-		Template_Generator::tabulation( $tabs_number );
+		Format_Token::tab( $tabs_number );
 
 		$markup_field_instance->print_markup( $field_id, $markup_field_data );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 
 		// read back, as it may be changed in getMarkup().
 		$tabs_number = $markup_field_data->get_tabs_number();
@@ -450,9 +450,9 @@ class Field_Markup {
 	 */
 	protected function print_closing_field_outers( array $field_outers, int &$tabs_number ): void {
 		foreach ( $field_outers as $outer ) {
-			Template_Generator::tabulation( --$tabs_number );
+			Format_Token::tab( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
-			Template_Generator::new_line();
+			Format_Token::new_line();
 		}
 	}
 
@@ -569,19 +569,19 @@ class Field_Markup {
 		$this->print_closing_field_outers( $field_outers, $tabs_number );
 
 		if ( $is_with_field_wrapper ) {
-			Template_Generator::tabulation( --$tabs_number );
+			Format_Token::tab( --$tabs_number );
 
 			printf( '</%s>', esc_html( $field_tag ) );
 
-			Template_Generator::new_line();
+			Format_Token::new_line();
 		}
 
 		if ( $is_with_row_wrapper ) {
-			Template_Generator::tabulation( --$tabs_number );
+			Format_Token::tab( --$tabs_number );
 
 			printf( '</%s>', esc_html( $row_tag ) );
 
-			Template_Generator::new_line();
+			Format_Token::new_line();
 		}
 
 		return $tabs_number;

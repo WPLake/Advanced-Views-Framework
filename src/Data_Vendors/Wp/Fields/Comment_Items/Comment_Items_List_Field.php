@@ -28,7 +28,7 @@ class Comment_Items_List_Field extends Markup_Field {
 				$this->get_field_class( 'comment', $markup_field_data )
 			),
 		);
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		// comment author name.
@@ -42,7 +42,7 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $markup_field_data->get_token_factory()
@@ -52,13 +52,13 @@ class Comment_Items_List_Field extends Markup_Field {
 							->to_echo( $var )
 							->print();
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// comment author email.
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->print_tabs();
 
 		printf(
@@ -71,7 +71,7 @@ class Comment_Items_List_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $markup_field_data->get_token_factory()
@@ -83,13 +83,13 @@ class Comment_Items_List_Field extends Markup_Field {
 							->set_is_raw( true )
 		->print();
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// closing 'comment' div.
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';

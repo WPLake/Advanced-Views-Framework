@@ -13,7 +13,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,12 +37,12 @@ class Gallery_Field extends Markup_Field {
 		$item_var   = $token_factory->variable( 'image_item' );
 		$loop_body  = $token_factory->html(
 			function () use ( $markup_field_data, $field_id, $item_var ) {
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->increment_and_print_tabs();
 
 				$this->print_item( $field_id, $item_var->get_name(), $markup_field_data );
 
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -53,12 +52,12 @@ class Gallery_Field extends Markup_Field {
 						->set_item_var( $item_var )
 						->set_body( $loop_body );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->print_tabs();
 
 		$loop->print();
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 	}
 
 	/**

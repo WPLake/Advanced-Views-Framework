@@ -114,18 +114,21 @@ class Markup_Field_Data extends Template_Field_Data {
 				$var = $this->token_factory->variable( $variable_info['field_id'] )
 											->add_item_path( $variable_info['item_key'] );
 
-				Template_Generator::attribute( $attr, $var );
+				$this->token_factory->format()
+									->attribute( $attr, $var );
 			}
 
 			echo '>';
 
-			Template_Generator::new_line();
+			$this->token_factory->format()
+				->new_line();
 
 			++$this->tabs_number;
 
 			if ( false === $is_without_last_item_tabs ||
 				$counter !== $last_item_number ) {
-				Template_Generator::tabulation( $this->tabs_number );
+				$this->token_factory->format()
+					->tab( $this->tabs_number );
 			}
 
 			++$counter;
@@ -144,10 +147,13 @@ class Markup_Field_Data extends Template_Field_Data {
 		foreach ( $item_outers as $outer ) {
 			if ( 0 !== $counter ||
 				false === $is_without_first_item_new_line ) {
-				Template_Generator::new_line();
+				$this->token_factory->format()
+					->new_line();
 			}
 
-			Template_Generator::tabulation( --$this->tabs_number );
+			$this->token_factory->format()
+				->tab( --$this->tabs_number );
+
 			printf( '</%s>', esc_html( $outer->tag ) );
 
 			++$counter;
@@ -201,15 +207,15 @@ class Markup_Field_Data extends Template_Field_Data {
 	}
 
 	public function print_tabs(): void {
-		Template_Generator::tabulation( $this->get_tabs_number() );
+		Format_Token::tab( $this->get_tabs_number() );
 	}
 
 	public function increment_and_print_tabs(): void {
-		Template_Generator::tabulation( $this->increment_and_get_tabs_number() );
+		Format_Token::tab( $this->increment_and_get_tabs_number() );
 	}
 
 	public function decrement_and_print_tabs(): void {
-		Template_Generator::tabulation( $this->decrement_and_get_tabs_number() );
+		Format_Token::tab( $this->decrement_and_get_tabs_number() );
 	}
 
 	public function get_token_factory(): Token_Factory {

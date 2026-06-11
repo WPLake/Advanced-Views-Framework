@@ -258,12 +258,12 @@ class Map_Field extends Markup_Field {
 
 		$loop_body = $token_factory->html(
 			function () use ( $field_id, $item_var, $markup_field_data ) {
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->increment_and_print_tabs();
 
 				$this->print_inner_item( $field_id, $item_var->get_name(), $markup_field_data );
 
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -283,7 +283,7 @@ class Map_Field extends Markup_Field {
 		$if_body = $token_factory->html(
 			function () use ( $field_id, $item_id, $markup_field_data ) {
 				$this->print_inner_item( $field_id, $item_id, $markup_field_data );
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -294,7 +294,7 @@ class Map_Field extends Markup_Field {
 			->set_condition( $value_var )
 			->set_body( $if_body );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$if->print();

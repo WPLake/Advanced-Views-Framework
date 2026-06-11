@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Comparison_
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\Conditional_Value_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Conditional\IF_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Echo_Token;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Format_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Function_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Functions_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Html_Token;
@@ -55,4 +56,6 @@ interface Token_Factory {
 	public function functions(): Functions_Token;
 
 	public function range(): Range_Token;
+
+	public function format():Format_Token;
 }

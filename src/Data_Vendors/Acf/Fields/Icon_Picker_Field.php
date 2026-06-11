@@ -11,7 +11,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 defined( 'ABSPATH' ) || exit;
@@ -62,7 +61,7 @@ class Icon_Picker_Field extends Markup_Field {
 	}
 
 	protected function print_icon_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -79,22 +78,22 @@ class Icon_Picker_Field extends Markup_Field {
 
 		echo '"></i>';
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_icon_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 
 	protected function print_custom_image_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		printf(
@@ -111,7 +110,7 @@ class Icon_Picker_Field extends Markup_Field {
 
 		echo '" loading="lazy" alt="icon">';
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 	}
 

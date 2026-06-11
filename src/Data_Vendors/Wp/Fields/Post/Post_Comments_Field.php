@@ -11,7 +11,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use WP_Comment;
 
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +26,7 @@ class Post_Comments_Field extends Markup_Field {
 				$this->get_field_class( 'comment', $markup_field_data )
 			),
 		);
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		// comment author name.
@@ -41,19 +40,19 @@ class Post_Comments_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $markup_field_data->get_token_factory()->variable( $item_id )->add_item_path( 'author_name' );
 		$markup_field_data->get_token_factory()->to_echo( $var )->print();
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// comment author email.
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->print_tabs();
 
 		printf(
@@ -66,7 +65,7 @@ class Post_Comments_Field extends Markup_Field {
 			)
 		);
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$var = $markup_field_data->get_token_factory()->variable( 'comment_item' )
@@ -76,13 +75,13 @@ class Post_Comments_Field extends Markup_Field {
 							->set_is_raw( true )
 		->print();
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
 
 		// closing 'comment' div.
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</div>';
@@ -170,12 +169,12 @@ class Post_Comments_Field extends Markup_Field {
 
 		$markup = $token_factory->html(
 			function () use ( $markup_field_data, $field_id, $comment_var ) {
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->increment_and_print_tabs();
 
 				$this->print_item_markup( $field_id, $comment_var->get_name(), $markup_field_data );
 
-				Template_Generator::new_line();
+				Format_Token::new_line();
 				$markup_field_data->decrement_and_print_tabs();
 			}
 		);
@@ -185,7 +184,7 @@ class Post_Comments_Field extends Markup_Field {
 			->set_item_var( $comment_var )
 			->set_body( $markup );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->print_tabs();
 
 		$loop->print();

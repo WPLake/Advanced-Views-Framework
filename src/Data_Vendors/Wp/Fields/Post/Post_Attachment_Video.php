@@ -30,7 +30,7 @@ class Post_Attachment_Video extends Markup_Field {
 				)
 			),
 		);
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$src_var  = $token_generator->variable( $field_id )
@@ -45,7 +45,7 @@ class Post_Attachment_Video extends Markup_Field {
 
 		echo '>';
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 		echo '</video>';
 	}

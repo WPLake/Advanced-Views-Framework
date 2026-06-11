@@ -12,7 +12,6 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
 class Layout_Markup {
@@ -56,7 +55,7 @@ class Layout_Markup {
 							);
 
 		$markup = $token_factory->html(
-			function () use ( $field_meta, $layout_settings, $item_settings, $field_id, $field_type ) {
+			function () use ( $field_meta, $layout_settings, $item_settings, $field_id, $field_type, $token_factory ) {
 				$row_tabs_number = 2;
 
 				$row_type = 'row';
@@ -68,7 +67,8 @@ class Layout_Markup {
 					$row_type = $field_type;
 				}
 
-				Template_Generator::new_line();
+				$token_factory->format()
+								->new_line();
 
 				$this->field_markup->print_row_markup(
 					$row_type,
@@ -81,7 +81,7 @@ class Layout_Markup {
 					$field_id
 				);
 
-				Template_Generator::tabulation();
+				$token_factory->format()->tab();
 			}
 		);
 
@@ -96,12 +96,12 @@ class Layout_Markup {
 			->set_condition( $condition )
 			->set_body( $markup );
 
-		Template_Generator::new_line();
-		Template_Generator::tabulation();
+		$token_factory->format()->new_line();
+		$token_factory->format()->tab();
 
 		$if->print();
 
-		Template_Generator::new_line( 2 );
+		$token_factory->format()->new_line( 2 );
 	}
 
 	protected function generate_markup( Layout_Settings $layout_settings ): void {
@@ -137,11 +137,13 @@ class Layout_Markup {
 		}
 		echo '">';
 
-		Template_Generator::new_line();
+		$token_factory->format()
+						->new_line();
 
 		if ( Layout_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '<template shadowrootmode="open">';
-			Template_Generator::new_line();
+			$token_factory->format()
+							->new_line();
 		}
 
 		foreach ( $layout_settings->items as $item ) {
@@ -154,12 +156,14 @@ class Layout_Markup {
 
 		if ( Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $layout_settings->web_component ) {
 			echo '</template>';
-			Template_Generator::new_line();
+			$token_factory->format()
+							->new_line();
 		}
 
 		printf( '</%s>', esc_html( $tag_name ) );
 
-		Template_Generator::new_line();
+		$token_factory->format()
+						->new_line();
 	}
 
 	protected function print_safe_markup( Layout_Settings $layout_settings, bool $is_cache_disabled ): void {

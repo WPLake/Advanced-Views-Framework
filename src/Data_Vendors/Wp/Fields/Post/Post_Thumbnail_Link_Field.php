@@ -48,13 +48,13 @@ class Post_Thumbnail_Link_Field extends Markup_Field {
 
 		echo '>';
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->increment_and_print_tabs();
 
 		$markup_field_data->set_is_with_field_wrapper( true );
 		$this->image_field->print_markup( $field_id, $markup_field_data );
 
-		Template_Generator::new_line();
+		Format_Token::new_line();
 		$markup_field_data->decrement_and_print_tabs();
 
 		echo '</a>';

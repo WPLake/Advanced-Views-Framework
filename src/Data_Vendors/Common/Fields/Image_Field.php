@@ -31,7 +31,7 @@ class Image_Field extends Markup_Field {
 			$var = $token_generator->variable( $variable_info['field_id'] )
 									->add_item_path( $variable_info['item_key'] );
 
-			Template_Generator::attribute( $name, $var );
+			Template_Generator::attribute( $name, $token_generator->to_echo( $var ) );
 		}
 	}
 
