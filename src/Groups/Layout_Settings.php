@@ -82,21 +82,21 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-type textarea
 	 * @new_lines br
 	 * @label Default Template
-	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup.
+	 * @instructions Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup.
 	 * @disabled 1
 	 */
 	public string $markup;
 	/**
 	 * @a-type textarea
 	 * @label Custom Template
-	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br>Note: WordPress shortcodes inside the template are only supported in the Pro version. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
 	 */
 	public string $custom_markup;
 	/**
 	 * @a-type select
 	 * @label Template Engine
 	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this View.
-	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @choices {"php":"Vanilla PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
 	 * @default_value twig
 	 */
 	public string $template_engine;

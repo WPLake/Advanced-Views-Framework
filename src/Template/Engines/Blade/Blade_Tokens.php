@@ -66,4 +66,10 @@ final class Blade_Tokens extends Token_Factory_Base {
 	public function range(): Range_Token {
 		return new PHP_Range();
 	}
+
+	public function loop_is_first(): Variable_Token {
+		return $this->variable( 'loop' )
+					->set_is_object( true )
+					->add_item_path( 'first' );
+	}
 }

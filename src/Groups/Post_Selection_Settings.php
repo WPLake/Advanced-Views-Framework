@@ -220,7 +220,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @a-type textarea
 	 * @new_lines br
 	 * @label Default Template
-	 * @instructions Output preview of the generated <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup.
+	 * @instructions Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup.
 	 * @disabled 1
 	 */
 	public string $markup;
@@ -234,7 +234,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @a-type select
 	 * @label Template Engine
 	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Post Selection.
-	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @choices {"php":"Vanilla PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
 	 * @default_value twig
 	 */
 	public string $template_engine;

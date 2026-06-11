@@ -63,4 +63,8 @@ final class PHP_Tokens extends Token_Factory_Base {
 	public function range(): Range_Token {
 		return new PHP_Range();
 	}
+
+	public function loop_is_first(): Variable_Token {
+		// fixme somehow implement.
+	}
 }

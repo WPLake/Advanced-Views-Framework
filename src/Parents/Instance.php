@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Parents;
 use Error;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer_Base;
 use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use WP_REST_Request;
 
@@ -21,8 +22,8 @@ abstract class Instance {
 	public function __construct( Template_Renderer_Storage $template_renderer_storage, Cpt_Settings $cpt_settings, string $template, string $classes = '' ) {
 		$this->template_renderer_storage = $template_renderer_storage;
 		$this->cpt_settings              = $cpt_settings;
-		$this->template         = $template;
-		$this->classes          = $classes;
+		$this->template                  = $template;
+		$this->classes                   = $classes;
 	}
 
 	/**
@@ -142,13 +143,7 @@ abstract class Instance {
 		$this->render_template_and_print_html( $this->template, $twig_variables_for_validation, true );
 		$html = (string) ob_get_clean();
 
-		preg_match( '/<span class="acf-views__error-message">(.*)$/', $html, $error_message );
-
-		$error_message = $error_message[1] ?? '';
-		$error_message = str_replace( '</span>', '', $error_message );
-		$error_message = trim( $error_message );
-
-		return $error_message;
+		return Template_Renderer_Base::extract_error_message( $html );
 	}
 
 	/**

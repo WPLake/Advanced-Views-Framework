@@ -5,11 +5,11 @@ namespace Org\Wplake\Advanced_Views\Template\Rendering;
 
 defined( 'ABSPATH' ) || exit;
 
-use Error;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Settings;
+use Throwable;
 
 abstract class Template_Renderer_Base extends Action implements Template_Renderer {
 	protected Settings $settings;
@@ -21,11 +21,29 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 		$this->settings = $settings;
 	}
 
+	public static function extract_error_message( string $markup ): string {
+		preg_match( '/<span class="acf-views__error-message">(.*)$/', $markup, $error_message );
+
+		$error_message = $error_message[1] ?? '';
+		$error_message = str_replace( '</span>', '', $error_message );
+		$error_message = trim( $error_message );
+
+		return $error_message;
+	}
+
+	protected static function print_error_message( string $unique_view_id, string $error_message ): void {
+		printf(
+			'<p style="color:red;" class="acf-views__error">Advanced Views (%s) template: <span class="acf-views__error-message">%s</span></p>',
+			esc_html( $unique_view_id ),
+			esc_html( $error_message )
+		);
+	}
+
 	/**
 	 * @param array<string,mixed> $args
 	 */
 	protected function handle_error(
-		Error $error,
+		Throwable $error,
 		array $args,
 		string $unique_id,
 		bool $is_validation
@@ -50,7 +68,7 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 			);
 		}
 
-		$this->print_error_message( $unique_id, $error_message );
+		self::print_error_message( $unique_id, $error_message );
 
 		// do not include in case of the validation, it doesn't have sense + breaks the error grep regex.
 		if ( $is_debug_mode &&
@@ -58,13 +76,5 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 			// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
 			echo '<pre>' . esc_html( print_r( $args, true ) ) . '</pre>';
 		}
-	}
-
-	protected function print_error_message( string $unique_view_id, string $error_message ): void {
-		printf(
-			'<p style="color:red;" class="acf-views__error">Advanced Views (%s) template: <span class="acf-views__error-message">%s</span></p>',
-			esc_html( $unique_view_id ),
-			esc_html( $error_message )
-		);
 	}
 }

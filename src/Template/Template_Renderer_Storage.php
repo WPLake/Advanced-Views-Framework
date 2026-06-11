@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
+use Org\Wplake\Advanced_Views\Template\Engines\PHP\PHP_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
 use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -23,6 +24,7 @@ use WP_Filesystem_Base;
 class Template_Renderer_Storage extends Action implements Hooks_Interface {
 	const TWIG  = 'twig';
 	const BLADE = 'blade';
+	const PHP   = 'php';
 
 	private string $uploads_folder;
 	/**
@@ -214,6 +216,9 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 					null :
 					$instance;
 
+				break;
+			case self::PHP:
+				$instance = new PHP_Renderer( $this->logger, $this->settings );
 				break;
 		}
 

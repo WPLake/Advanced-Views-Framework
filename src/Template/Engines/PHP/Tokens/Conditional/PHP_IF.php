@@ -25,7 +25,7 @@ final class PHP_IF extends IF_Token {
 		}
 
 		$this->print_branch_token( 'endif' );
-		echo ' ?>';
+		echo '; ?>';
 	}
 
 	protected function print_branch( string $type, IF_Branch $branch ): void {

@@ -73,7 +73,7 @@ class Plugin_Settings extends Group {
 	 * @a-type select
 	 * @label Template engine
 	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Layouts and Post Selections.
-	 * @choices {"twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @choices {"php":"Vanilla PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
 	 * @default_value twig
 	 */
 	public string $template_engine;

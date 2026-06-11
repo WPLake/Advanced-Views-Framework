@@ -464,9 +464,12 @@ class Post_Selection_Markup {
 		Post_Selection_Settings $post_selection_settings,
 		int $tabs_number
 	): int {
+		$tabs_number += 2;
+
 		$token_factory->format()
 						->new_line()
-						->tab( ++$tabs_number );
+						->tab( $tabs_number );
+
 		$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
 			sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
 			'';
@@ -479,8 +482,10 @@ class Post_Selection_Markup {
 		$token_factory->to_echo( $var )->print();
 
 		echo '</div>';
+
 		$token_factory->format()
-						->new_line();
+						->new_line()
+			->tab( --$tabs_number );
 
 		return $tabs_number;
 	}

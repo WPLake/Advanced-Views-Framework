@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Template;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Tokens;
+use Org\Wplake\Advanced_Views\Template\Engines\PHP\PHP_Tokens;
 use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Tokens;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
 
@@ -24,6 +25,7 @@ final class Token_Factory_Storage {
 		$this->token_factories = array(
 			Template_Renderer_Storage::TWIG  => $twig_tokens,
 			Template_Renderer_Storage::BLADE => new Blade_Tokens(),
+			Template_Renderer_Storage::PHP   => new PHP_Tokens(),
 		);
 
 		$this->default_token_factory = $twig_tokens;
