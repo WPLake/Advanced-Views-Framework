@@ -32,13 +32,13 @@ class Post_Selection extends Instance {
 	private array $post_ids;
 
 	public function __construct(
-		Template_Renderer_Storage $template_engines,
+		Template_Renderer_Storage $template_renderer_storage,
 		Post_Selection_Settings $post_selection_settings,
 		Post_Query $post_query,
 		Post_Selection_Markup $post_selection_markup,
 		string $classes = ''
 	) {
-		parent::__construct( $template_engines, $post_selection_settings, '', $classes );
+		parent::__construct( $template_renderer_storage, $post_selection_settings, '', $classes );
 
 		$this->settings              = $post_selection_settings;
 		$this->post_query            = $post_query;
@@ -334,7 +334,8 @@ class Post_Selection extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		$template_engine = $this->get_template_engines()->get_template_renderer( $this->settings->template_engine );
+		$template_engine = $this->get_template_renderer_storage()
+		                        ->resolve_template_renderer( $this->settings->template_engine );
 
 		ob_start();
 

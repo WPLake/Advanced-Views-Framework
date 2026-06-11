@@ -26,7 +26,7 @@ abstract class Template_Generator {
 		echo '"';
 	}
 
-	public static function tabs( int $count ): void {
+	public static function tabulation( int $count = 1 ): void {
 		$tabs = str_repeat( self::TAB, $count );
 
 		echo esc_html( $tabs );

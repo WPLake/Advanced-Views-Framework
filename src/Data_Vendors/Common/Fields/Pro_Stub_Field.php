@@ -17,7 +17,8 @@ class Pro_Stub_Field extends Markup_Field {
 		$message = __( 'This field is available in the Pro version only', 'acf-views' );
 
 		$markup_field_data->get_token_factory()
-							->comment( $message );
+							->comment( $message )
+							->print();
 	}
 
 	/**

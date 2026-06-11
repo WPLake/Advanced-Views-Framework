@@ -42,14 +42,14 @@ class Layout extends Instance {
 
 	public function __construct(
 		Data_Vendors $data_vendors,
-		Template_Renderer_Storage $template_engines,
+		Template_Renderer_Storage $template_renderer_storage,
 		string $twig_template,
 		Layout_Settings $layout_settings,
 		Source $source,
 		Field_Markup $field_markup,
 		string $classes = ''
 	) {
-		parent::__construct( $template_engines, $layout_settings, $twig_template, $classes );
+		parent::__construct( $template_renderer_storage, $layout_settings, $twig_template, $classes );
 
 		$this->layout_settings = $layout_settings;
 		$this->data_vendors    = $data_vendors;
@@ -330,7 +330,8 @@ class Layout extends Instance {
 			}
 		}
 
-		$template_engine = $this->get_template_engines()->get_template_renderer( $this->layout_settings->template_engine );
+		$template_engine = $this->get_template_renderer_storage()
+								->resolve_template_renderer( $this->layout_settings->template_engine );
 
 		if ( null !== $template_engine ) {
 			$template_engine->print(

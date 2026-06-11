@@ -20,7 +20,7 @@ use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 defined( 'ABSPATH' ) || exit;
@@ -32,13 +32,13 @@ class Field_Markup {
 	 * @var array<string,array<string,Markup_Field_Interface|null>>
 	 */
 	private array $cache;
-	private Template_Renderer_Storage $template_engines;
+	private Token_Factory_Storage $token_factory_storage;
 
-	public function __construct( Data_Vendors $data_vendors, Front_Assets $front_assets, Template_Renderer_Storage $template_engines ) {
-		$this->data_vendors     = $data_vendors;
-		$this->front_assets     = $front_assets;
-		$this->template_engines = $template_engines;
-		$this->cache            = array();
+	public function __construct( Data_Vendors $data_vendors, Front_Assets $front_assets, Token_Factory_Storage $token_factory_storage ) {
+		$this->data_vendors          = $data_vendors;
+		$this->front_assets          = $front_assets;
+		$this->token_factory_storage = $token_factory_storage;
+		$this->cache                 = array();
 	}
 
 	protected function get_markup_field_instance( string $vendor_name, string $field_type ): ?Markup_Field_Interface {
@@ -164,7 +164,7 @@ class Field_Markup {
 			$row_classes .= $row_class;
 		}
 
-		Template_Generator::tabs( $tab_number );
+		Template_Generator::tabulation( $tab_number );
 		printf( '<%s class="%s">', esc_html( $tag ), esc_html( $row_classes ) );
 		Template_Generator::new_line();
 
@@ -202,14 +202,14 @@ class Field_Markup {
 				'';
 		}
 
-		Template_Generator::tabs( $tabs_number );
+		Template_Generator::tabulation( $tabs_number );
 
 		printf( '<p class="%s">', esc_html( $label_class ) );
 
 		Template_Generator::new_line();
-		Template_Generator::tabs( ++$tabs_number );
+		Template_Generator::tabulation( ++$tabs_number );
 
-		$token_generator = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+		$token_generator = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
 		$var = $token_generator->variable( $field_id )
 								->add_item_path( 'label' );
@@ -218,7 +218,7 @@ class Field_Markup {
 						->print();
 
 		Template_Generator::new_line();
-		Template_Generator::tabs( --$tabs_number );
+		Template_Generator::tabulation( --$tabs_number );
 
 		echo '</p>';
 
@@ -367,7 +367,7 @@ class Field_Markup {
 			$field_classes .= $attr_class;
 		}
 
-		Template_Generator::tabs( $tabs_number );
+		Template_Generator::tabulation( $tabs_number );
 
 		printf(
 			'<%s class="%s"',
@@ -419,7 +419,7 @@ class Field_Markup {
 			Template_Generator::new_line();
 		}
 
-		$token_factory     = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+		$token_factory     = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 		$markup_field_data = new Markup_Field_Data(
 			$layout_settings,
 			$item_settings,
@@ -435,7 +435,7 @@ class Field_Markup {
 		$markup_field_data->set_is_with_field_wrapper( $is_with_wrapper );
 		$markup_field_data->set_is_with_row_wrapper( $this->is_with_row_wrapper( $layout_settings, $field_settings, $field_meta ) );
 
-		Template_Generator::tabs( $tabs_number );
+		Template_Generator::tabulation( $tabs_number );
 
 		$markup_field_instance->print_markup( $field_id, $markup_field_data );
 
@@ -450,7 +450,7 @@ class Field_Markup {
 	 */
 	protected function print_closing_field_outers( array $field_outers, int &$tabs_number ): void {
 		foreach ( $field_outers as $outer ) {
-			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabulation( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 			Template_Generator::new_line();
 		}
@@ -476,7 +476,7 @@ class Field_Markup {
 			$this->data_vendors->get_field_front_assets( $field_settings->get_vendor_name(), $field_settings )
 		);
 		$is_label_out_of_row = $this->is_label_out_of_row( $field_assets );
-		$token_factory       = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+		$token_factory       = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
 		$row_tag = '';
 
@@ -550,7 +550,10 @@ class Field_Markup {
 
 		$this->print_opening_field_outers( $field_outers, $tabs_number, $token_factory );
 
-		if ( '' === $custom_field_markup ) {
+		if ( strlen( $custom_field_markup ) > 0 ) {
+			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $custom_field_markup;
+		} else {
 			$this->print_field_markup(
 				$field_assets,
 				$layout_settings,
@@ -561,23 +564,23 @@ class Field_Markup {
 				$field_id,
 				$is_with_outer_wrappers
 			);
-		} else {
-			// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $custom_field_markup;
 		}
 
 		$this->print_closing_field_outers( $field_outers, $tabs_number );
 
 		if ( $is_with_field_wrapper ) {
-			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabulation( --$tabs_number );
+
 			printf( '</%s>', esc_html( $field_tag ) );
+
 			Template_Generator::new_line();
 		}
 
 		if ( $is_with_row_wrapper ) {
-			Template_Generator::tabs( --$tabs_number );
-			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabulation( --$tabs_number );
+
 			printf( '</%s>', esc_html( $row_tag ) );
+
 			Template_Generator::new_line();
 		}
 

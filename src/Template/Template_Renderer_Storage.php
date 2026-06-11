@@ -138,7 +138,7 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		$wp_filesystem->rmdir( $templates_dir, true );
 	}
 
-	public function get_template_renderer( string $name ): ?Template_Renderer {
+	public function resolve_template_renderer( string $name ): ?Template_Renderer {
 		if ( ! key_exists( $name, $this->template_engines ) ) {
 			$this->template_engines[ $name ] = $this->make_renderer( $name );
 		}

@@ -193,12 +193,12 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$field_markup  = new Field_Markup(
 				$this->data_vendors,
 				$this->front_assets,
-				$this->template_engines
+				$this->template_engines->get_token_factory_storage()
 			);
 			$layout_markup = new Layout_Markup(
 				$field_markup,
 				$this->data_vendors,
-				$this->template_engines
+				$this->template_engines->get_token_factory_storage()
 			);
 
 			$this->layout_factory          = new Layout_Factory(

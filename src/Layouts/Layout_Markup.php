@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -11,9 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
-
-defined( 'ABSPATH' ) || exit;
+use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
 class Layout_Markup {
 	/**
@@ -24,14 +24,13 @@ class Layout_Markup {
 	private array $markups_safe;
 	private Field_Markup $field_markup;
 	private Data_Vendors $data_vendors;
-	private Template_Renderer_Storage $template_engines;
+	private Token_Factory_Storage $token_factory_storage;
 
-	public function __construct( Field_Markup $field_markup, Data_Vendors $data_vendors, Template_Renderer_Storage $template_engines ) {
-		$this->field_markup = $field_markup;
-		$this->data_vendors = $data_vendors;
-		// fixme replace to token_factory_storage.
-		$this->template_engines = $template_engines;
-		$this->markups_safe     = array();
+	public function __construct( Field_Markup $field_markup, Data_Vendors $data_vendors, Token_Factory_Storage $token_factory_storage ) {
+		$this->field_markup          = $field_markup;
+		$this->data_vendors          = $data_vendors;
+		$this->token_factory_storage = $token_factory_storage;
+		$this->markups_safe          = array();
 	}
 
 	protected function generate_row_markup(
@@ -45,7 +44,7 @@ class Layout_Markup {
 			return;
 		}
 
-		$token_factory = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+		$token_factory = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
 		$field_id   = $item_settings->field->get_template_field_id();
 		$field_type = $field_meta->get_type();
@@ -82,7 +81,7 @@ class Layout_Markup {
 					$field_id
 				);
 
-				echo "\t";
+				Template_Generator::tabulation();
 			}
 		);
 
@@ -97,13 +96,16 @@ class Layout_Markup {
 			->set_condition( $condition )
 			->set_body( $markup );
 
-		echo "\r\n\t";
+		Template_Generator::new_line();
+		Template_Generator::tabulation();
+
 		$if->print();
-		echo "\r\n\r\n";
+
+		Template_Generator::new_line( 2 );
 	}
 
 	protected function generate_markup( Layout_Settings $layout_settings ): void {
-		$token_factory = $this->template_engines->resolve_token_factory( $layout_settings->template_engine );
+		$token_factory = $this->token_factory_storage->resolve_token_factory( $layout_settings->template_engine );
 
 		$bem_name = $layout_settings->get_bem_name();
 		$tag_name = $layout_settings->get_tag_name();
@@ -129,7 +131,8 @@ class Layout_Markup {
 
 			$var = $token_factory->variable( Hard_Layout_Cpt::variable_name() )
 								->add_item_path( 'object_id' );
-			$token_factory->to_echo( $var )->print();
+			$token_factory->to_echo( $var )
+							->print();
 
 		}
 		echo '">';

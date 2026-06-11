@@ -125,7 +125,7 @@ class Markup_Field_Data extends Template_Field_Data {
 
 			if ( false === $is_without_last_item_tabs ||
 				$counter !== $last_item_number ) {
-				Template_Generator::tabs( $this->tabs_number );
+				Template_Generator::tabulation( $this->tabs_number );
 			}
 
 			++$counter;
@@ -147,7 +147,7 @@ class Markup_Field_Data extends Template_Field_Data {
 				Template_Generator::new_line();
 			}
 
-			Template_Generator::tabs( --$this->tabs_number );
+			Template_Generator::tabulation( --$this->tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 
 			++$counter;
@@ -201,15 +201,15 @@ class Markup_Field_Data extends Template_Field_Data {
 	}
 
 	public function print_tabs(): void {
-		Template_Generator::tabs( $this->get_tabs_number() );
+		Template_Generator::tabulation( $this->get_tabs_number() );
 	}
 
 	public function increment_and_print_tabs(): void {
-		Template_Generator::tabs( $this->increment_and_get_tabs_number() );
+		Template_Generator::tabulation( $this->increment_and_get_tabs_number() );
 	}
 
 	public function decrement_and_print_tabs(): void {
-		Template_Generator::tabs( $this->decrement_and_get_tabs_number() );
+		Template_Generator::tabulation( $this->decrement_and_get_tabs_number() );
 	}
 
 	public function get_token_factory(): Token_Factory {

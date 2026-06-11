@@ -14,13 +14,13 @@ defined( 'ABSPATH' ) || exit;
 
 abstract class Instance {
 	private string $template;
-	private Template_Renderer_Storage $template_engines;
+	private Template_Renderer_Storage $template_renderer_storage;
 	private Cpt_Settings $cpt_settings;
 	private string $classes;
 
-	public function __construct( Template_Renderer_Storage $template_engines, Cpt_Settings $cpt_settings, string $template, string $classes = '' ) {
-		$this->template_engines = $template_engines;
-		$this->cpt_settings     = $cpt_settings;
+	public function __construct( Template_Renderer_Storage $template_renderer_storage, Cpt_Settings $cpt_settings, string $template, string $classes = '' ) {
+		$this->template_renderer_storage = $template_renderer_storage;
+		$this->cpt_settings              = $cpt_settings;
 		$this->template         = $template;
 		$this->classes          = $classes;
 	}
@@ -79,8 +79,8 @@ abstract class Instance {
 		return $custom_args;
 	}
 
-	protected function get_template_engines(): Template_Renderer_Storage {
-		return $this->template_engines;
+	protected function get_template_renderer_storage(): Template_Renderer_Storage {
+		return $this->template_renderer_storage;
 	}
 
 	protected function get_template(): string {

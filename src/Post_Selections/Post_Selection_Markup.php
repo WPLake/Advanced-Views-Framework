@@ -14,7 +14,6 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Generation\Template_Generator;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
 class Post_Selection_Markup {
@@ -100,7 +99,7 @@ class Post_Selection_Markup {
 				' ' . $external;
 		}
 
-		Template_Generator::tabs( ++$tabs_number );
+		Template_Generator::tabulation( ++$tabs_number );
 		printf( '<div class="%s">', esc_html( $classes ) );
 		Template_Generator::new_line();
 	}
@@ -114,7 +113,7 @@ class Post_Selection_Markup {
 		Token_Factory $token_generator
 	): void {
 		foreach ( $item_outers as $outer ) {
-			Template_Generator::tabs( ++$tabs_number );
+			Template_Generator::tabulation( ++$tabs_number );
 			printf( '<%s', esc_html( $outer->tag ) );
 
 			foreach ( $outer->attrs as $attr => $value ) {
@@ -144,7 +143,7 @@ class Post_Selection_Markup {
 	 */
 	protected function print_closing_item_outers( array $item_outers, int &$tabs_number ): void {
 		foreach ( $item_outers as $outer ) {
-			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabulation( --$tabs_number );
 			printf( '</%s>', esc_html( $outer->tag ) );
 			Template_Generator::new_line();
 		}
@@ -337,11 +336,11 @@ class Post_Selection_Markup {
 		$tabs_number = $this->print_items_closing_wrapper( $tabs_number );
 
 		if ( strlen( $post_selection_settings->no_posts_found_message ) > 0 ) {
-			Template_Generator::tabs( --$tabs_number );
+			Template_Generator::tabulation( --$tabs_number );
 		}
 
 		// endif in any case.
-		Template_Generator::tabs( --$tabs_number );
+		Template_Generator::tabulation( --$tabs_number );
 
 		return $tabs_number;
 	}
@@ -359,13 +358,13 @@ class Post_Selection_Markup {
 		$loop_body = $token_factory->html(
 			function () use ( $tabs_number, $post_selection_settings ) {
 				$tabs_number += 2;
-				Template_Generator::tabs( $tabs_number );
+				Template_Generator::tabulation( $tabs_number );
 				$this->print_shortcode( $post_selection_settings );
-				Template_Generator::tabs( --$tabs_number );
+				Template_Generator::tabulation( --$tabs_number );
 			}
 		);
 
-		Template_Generator::tabs( ++$tabs_number );
+		Template_Generator::tabulation( ++$tabs_number );
 
 		$token_factory->loop()
 						->set_source_var( $post_ids_var )
@@ -404,7 +403,7 @@ class Post_Selection_Markup {
 		}
 
 		echo "\r\n\r\n";
-		Template_Generator::tabs( $tabs_number );
+		Template_Generator::tabulation( $tabs_number );
 
 		return $tabs_number;
 	}
@@ -428,7 +427,7 @@ class Post_Selection_Markup {
 		int $tabs_number
 	): int {
 		Template_Generator::new_line();
-		Template_Generator::tabs( ++$tabs_number );
+		Template_Generator::tabulation( ++$tabs_number );
 		$no_posts_message_class = Post_Selection_Settings::CLASS_GENERATION_NONE !== $post_selection_settings->classes_generation ?
 			sprintf( '%s__no-posts-message', $post_selection_settings->get_bem_name() ) :
 			'';
