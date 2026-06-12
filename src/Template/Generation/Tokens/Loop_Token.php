@@ -11,6 +11,7 @@ defined( 'ABSPATH' ) || exit;
 abstract class Loop_Token implements Template_Token {
 	protected ?Template_Token $source_var = null;
 	protected ?Variable_Token $item_var   = null;
+	protected ?Variable_Token $index_var  = null;
 	protected ?Template_Token $body       = null;
 
 	public function set_source_var( Template_Token $source_var ): self {
@@ -21,6 +22,12 @@ abstract class Loop_Token implements Template_Token {
 
 	public function set_item_var( Variable_Token $item_var ): self {
 		$this->item_var = $item_var;
+
+		return $this;
+	}
+
+	public function set_index_var( Variable_Token $index_var ): self {
+		$this->index_var = $index_var;
 
 		return $this;
 	}

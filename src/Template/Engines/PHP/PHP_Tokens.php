@@ -28,6 +28,8 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Literal_Token;
 use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 final class PHP_Tokens extends Token_Factory_Base {
+	protected const LOOP_INDEX_VAR = 'key';
+
 	public function comment( string $content ): Comment_Token {
 		return new PHP_Comment( $content );
 	}
@@ -45,7 +47,11 @@ final class PHP_Tokens extends Token_Factory_Base {
 	}
 
 	public function loop(): Loop_Token {
-		return new PHP_Loop();
+		$loop = new PHP_Loop();
+
+		$key_var = $this->variable( self::LOOP_INDEX_VAR );
+
+		return $loop->set_index_var( $key_var );
 	}
 
 	public function assignment(): Assignment_Token {

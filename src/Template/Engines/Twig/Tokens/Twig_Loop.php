@@ -13,6 +13,11 @@ final class Twig_Loop extends Loop_Token {
 	public function print(): void {
 		echo '{% for ';
 
+		if ( $this->index_var instanceof Template_Token ) {
+			$this->index_var->print();
+			echo ', ';
+		}
+
 		if ( $this->item_var instanceof Template_Token ) {
 			$this->item_var->print();
 		}

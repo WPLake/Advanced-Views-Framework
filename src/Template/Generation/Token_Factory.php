@@ -26,6 +26,9 @@ use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token
  * @phpstan-import-type Literal_Value from Literal_Token
  */
 interface Token_Factory {
+	// fixme
+	const LOOP_INDEX_KEY = 'index';
+
 	public function comment( string $content ): Comment_Token;
 
 	public function to_echo( Template_Token $content ): Echo_Token;
@@ -36,6 +39,7 @@ interface Token_Factory {
 
 	public function loop(): Loop_Token;
 
+	/ fixme
 	public function loop_is_first(): Variable_Token;
 
 	public function assignment(): Assignment_Token;
@@ -57,5 +61,5 @@ interface Token_Factory {
 
 	public function range(): Range_Token;
 
-	public function format():Format_Token;
+	public function format(): Format_Token;
 }
