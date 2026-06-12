@@ -287,27 +287,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	}
 
 	/**
-	 * Converts non-english strings, like 'як справи' to 'jak spravi',
-	 * so it can be used in the field id generation.
-	 *
-	 * @return array<string, string>
-	 */
-	protected function get_sub_field_choices_in_english(): array {
-		/**
-		 * @var array<string, string> $sub_field_choices
-		 */
-		$sub_field_choices = $this->data_vendors->get_sub_field_choices();
-
-		foreach ( $sub_field_choices as &$value ) {
-			// converts non-english strings, like 'як справи' to 'jak spravi'.
-			$transliterated_value = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
-			$value                = string( $transliterated_value );
-		}
-
-		return $sub_field_choices;
-	}
-
-	/**
 	 * @return array<string,mixed>
 	 */
 	protected function get_js_data_for_cpt_item_page(): array {
