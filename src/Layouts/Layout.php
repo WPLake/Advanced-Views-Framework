@@ -549,7 +549,7 @@ class Layout extends Instance {
 	protected function get_array_field_names_from_markup( string $markup ): array {
 		preg_match_all(
 			// without the closing for tag, to allow |sort filter and others.
-			'/{% for [a-z0-9_]+ in ([a-z0-9_]+)\.value/',
+			'/{% for [a-z-0-9_]+, [a-z0-9_]+ in ([a-z0-9_]+)\.value/',
 			$markup,
 			$arrays_from_loops,
 			PREG_OFFSET_CAPTURE | PREG_SET_ORDER

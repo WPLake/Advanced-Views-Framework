@@ -195,8 +195,8 @@ class Post_Comments_Field extends Markup_Field {
 		);
 
 		$loop = $token_factory->loop()
-			->set_source_var( $value_var )
-			->set_item_var( $comment_var )
+			->set_source_variable( $value_var )
+			->set_item_variable( $comment_var )
 			->set_body( $markup );
 
 		$token_factory->format()

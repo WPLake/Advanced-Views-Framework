@@ -19,10 +19,8 @@ final class PHP_Loop extends Loop_Token {
 
 		echo ' as ';
 
-		if ( $this->index_var instanceof Template_Token ) {
-			$this->index_var->print();
-			echo ' => ';
-		}
+		$this->index_var->print();
+		echo ' => ';
 
 		if ( $this->item_var instanceof Template_Token ) {
 			$this->item_var->print();

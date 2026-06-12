@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Variable\Variable_Token;
 
 abstract class List_Field extends Markup_Field {
 	const LOOP_ITEM_NAME = 'item';
@@ -67,15 +68,19 @@ abstract class List_Field extends Markup_Field {
 		$source_var = $token_factory->variable( $field_id )
 										->add_item_path( 'value' );
 		$item_var   = $token_factory->variable( static::LOOP_ITEM_NAME );
-		$loop_body  = $token_factory->html( fn() => $this->print_loop_body( $field_id, $markup_field_data ) );
+		$loop       = $token_factory->loop()
+			->set_source_variable( $source_var )
+			->set_item_variable( $item_var );
+
+		$loop_body = $token_factory->html(
+			fn() => $this->print_loop_body( $loop->get_index_variable(), $field_id, $markup_field_data )
+		);
 
 		$token_factory->format()
 						->new_line();
 		$markup_field_data->print_tabs();
 
-		$token_factory->loop()
-						->set_source_var( $source_var )
-						->set_item_var( $item_var )
+		$loop
 						->set_body( $loop_body )
 						->print();
 
@@ -83,7 +88,7 @@ abstract class List_Field extends Markup_Field {
 						->new_line();
 	}
 
-	protected function print_loop_body( string $field_id, Markup_Field_Data $markup_field_data ): void {
+	protected function print_loop_body( Variable_Token $index_var, string $field_id, Markup_Field_Data $markup_field_data ): void {
 		$token_factory    = $markup_field_data->get_token_factory();
 		$is_delimiter_set = strlen( $markup_field_data->get_field_data()->options_delimiter ) > 0;
 
@@ -95,9 +100,9 @@ abstract class List_Field extends Markup_Field {
 			$if = $token_factory->if();
 
 			$secondary_element_comparison = $token_factory->comparison()
-				->set_left_operand( $token_factory->literal( false ) )
-				->set_comparison_equal()
-				->set_right_operand( $token_factory->loop_is_first() );
+				->set_left_operand( $index_var )
+				->set_comparison_greater()
+				->set_right_operand( $token_factory->literal( 0 ) );
 
 			$if->new_if_branch()
 				->set_condition( $secondary_element_comparison )

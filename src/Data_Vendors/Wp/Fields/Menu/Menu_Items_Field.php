@@ -68,8 +68,8 @@ class Menu_Items_Field extends Markup_Field {
 		$markup_field_data->print_tabs();
 
 		$token_factory->loop()
-						->set_source_var( $value_var )
-						->set_item_var( $item_var )
+						->set_source_variable( $value_var )
+						->set_item_variable( $item_var )
 						->set_body( $loop_body )
 						->print();
 
@@ -167,8 +167,8 @@ class Menu_Items_Field extends Markup_Field {
 		);
 
 		$token_factory->loop()
-						->set_source_var( $children_var )
-						->set_item_var( $sub_menu_item_var )
+						->set_source_variable( $children_var )
+						->set_item_variable( $sub_menu_item_var )
 						->set_body( $loop_body )
 						->print();
 

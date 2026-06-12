@@ -282,8 +282,8 @@ class Map_Field extends Markup_Field {
 		);
 
 		$token_factory->loop()
-						->set_source_var( $source_var )
-						->set_item_var( $item_var )
+						->set_source_variable( $source_var )
+						->set_item_variable( $item_var )
 						->set_body( $loop_body )
 						->print();
 	}

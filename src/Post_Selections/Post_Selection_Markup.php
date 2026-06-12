@@ -41,7 +41,7 @@ class Post_Selection_Markup {
 									->add_item_path( 'pages_amount' );
 		$comparison = $token_factory->comparison()
 									->set_left_operand( $pages_var )
-									->set_comparison_more()
+									->set_comparison_greater()
 									->set_right_operand( $token_factory->literal( 1 ) );
 		$body       = $token_factory->html(
 			function () use ( $token_factory ) {
@@ -388,8 +388,8 @@ class Post_Selection_Markup {
 						->tab( ++$tabs_number );
 
 		$token_factory->loop()
-						->set_source_var( $post_ids_var )
-						->set_item_var( $post_id_var )
+						->set_source_variable( $post_ids_var )
+						->set_item_variable( $post_id_var )
 						->set_body( $loop_body )
 						->print();
 

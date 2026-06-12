@@ -49,7 +49,7 @@ abstract class File_Template_Renderer_Base extends Template_Renderer_Base {
 				)
 			);
 
-			$this->print_error_message( $unique_id, 'Templates folder is not writable' );
+			self::print_error_message( $unique_id, 'Templates folder is not writable' );
 
 			return;
 		}
@@ -74,7 +74,7 @@ abstract class File_Template_Renderer_Base extends Template_Renderer_Base {
 				)
 			);
 
-			$this->print_error_message( $unique_id, "Can't write template file" );
+			self::print_error_message( $unique_id, "Can't write template file" );
 
 			return;
 		}

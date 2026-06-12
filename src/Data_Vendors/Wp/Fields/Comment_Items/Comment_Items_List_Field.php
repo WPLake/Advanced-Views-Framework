@@ -210,14 +210,39 @@ class Comment_Items_List_Field extends Markup_Field {
 	}
 
 	public function print_markup( string $field_id, Markup_Field_Data $markup_field_data ): void {
-		echo "\r\n" . esc_html( str_repeat( "\t", $markup_field_data->get_tabs_number() ) );
-		printf( '{%% for comment_item in %s.value %%}', esc_html( $field_id ) );
-		echo "\r\n" . esc_html( str_repeat( "\t", $markup_field_data->increment_and_get_tabs_number() ) );
+		$token_factory = $markup_field_data->get_token_factory();
 
-		$this->print_item( $field_id, 'comment_item', $markup_field_data );
+		$value_var = $token_factory->variable( $field_id )
+			->add_item_path( 'value' );
 
-		echo "\r\n" . esc_html( str_repeat( "\t", $markup_field_data->decrement_and_get_tabs_number() ) );
-		echo "{% endfor %}\r\n";
+		$item_var = $token_factory->variable( 'comment_item' );
+
+		$body = $token_factory->html(
+			function () use ( $token_factory, $markup_field_data, $field_id, $item_var ) {
+				$token_factory->format()
+							->new_line();
+				$markup_field_data->increment_and_print_tabs();
+
+				$this->print_item( $field_id, $item_var->get_name(), $markup_field_data );
+
+				$token_factory->format()
+							->new_line();
+				$markup_field_data->decrement_and_print_tabs();
+			}
+		);
+
+		$token_factory->format()
+						->new_line();
+		$markup_field_data->print_tabs();
+
+		$token_factory->loop()
+			->set_source_variable( $value_var )
+			->set_item_variable( $item_var )
+				->set_body( $body )
+			->print();
+
+		$token_factory->format()
+						->new_line();
 	}
 
 	/**

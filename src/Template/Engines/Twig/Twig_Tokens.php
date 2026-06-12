@@ -47,7 +47,7 @@ final class Twig_Tokens extends Token_Factory_Base {
 	}
 
 	public function loop(): Loop_Token {
-		return new Twig_Loop();
+		return new Twig_Loop( $this );
 	}
 
 	public function assignment(): Assignment_Token {
@@ -68,11 +68,5 @@ final class Twig_Tokens extends Token_Factory_Base {
 
 	public function range(): Range_Token {
 		return new Twig_Range();
-	}
-
-	public function loop_is_first(): Variable_Token {
-		return $this->variable( 'loop' )
-					->set_is_object( true )
-					->add_item_path( 'first' );
 	}
 }
