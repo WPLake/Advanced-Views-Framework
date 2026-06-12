@@ -4,11 +4,14 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
@@ -25,10 +28,10 @@ use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actio
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
 
 class Admin_Assets extends Hookable implements Hooks_Interface {
 	/**
@@ -40,6 +43,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	private Layout_Factory $layout_factory;
 	private Post_Selection_Factory $post_selection_factory;
 	private Data_Vendors $data_vendors;
+	private Settings $settings;
+	private Token_Factory_Storage $token_factory_storage;
 
 	public function __construct(
 		Plugin $plugin,
@@ -47,7 +52,9 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Layout_Factory $layout_factory,
 		Post_Selection_Factory $post_selection_factory,
-		Data_Vendors $data_vendors
+		Data_Vendors $data_vendors,
+		Settings $settings,
+		Token_Factory_Storage $token_factory_storage
 	) {
 		$this->plugin                           = $plugin;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
@@ -55,6 +62,41 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		$this->layout_factory                   = $layout_factory;
 		$this->post_selection_factory           = $post_selection_factory;
 		$this->data_vendors                     = $data_vendors;
+		$this->settings                         = $settings;
+		$this->token_factory_storage            = $token_factory_storage;
+	}
+
+	public function enqueue_admin_scripts(): void {
+		$current_screen = get_current_screen();
+
+		if ( null === $current_screen ||
+		false === $this->is_target_screen() ) {
+			return;
+		}
+
+		$this->enqueue_admin_assets( $current_screen->base );
+	}
+
+	public function enqueue_editor_styles(): void {
+		if ( false === $this->is_target_screen() ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			Hard_Layout_Cpt::cpt_name() . '_editor',
+			$this->plugin->get_assets_url( 'admin/css/editor.min.css' ),
+			array(),
+			$this->plugin->get_version()
+		);
+	}
+
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		self::add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
 	}
 
 	/**
@@ -271,13 +313,26 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	protected function get_js_data_for_cpt_item_page(): array {
 		global $post;
 
-		$is_view      = Hard_Layout_Cpt::cpt_name() === $post->post_type;
+		$is_layout    = Hard_Layout_Cpt::cpt_name() === $post->post_type;
 		$is_published = 'publish' === $post->post_status;
 
-		if ( $is_view ) {
-			$autocomplete_variables    = $is_published ?
+		$settings_storage = $is_layout ?
+			$this->layouts_settings_storage :
+			$this->post_selections_settings_storage;
+		$settings         = $is_published ?
+			$settings_storage->get( $post->post_name ) :
+			null;
+
+		$template_engine   = $settings instanceof Cpt_Settings ?
+			$settings->template_engine :
+			$this->settings->get_template_engine();
+		$template_ace_mode = $this->token_factory_storage->resolve_ace_mode( $template_engine );
+
+		if ( $is_layout ) {
+			$autocomplete_variables = $is_published ?
 				$this->layout_factory->get_autocomplete_variables( $post->post_name ) :
 				array();
+
 			$textarea_items_to_refresh = array(
 				'acf-local_acf_views_view__markup',
 				'acf-local_acf_views_view__css-code',
@@ -307,7 +362,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		// if permalink structure isn't set (?id=x), then the first postbox request is required
 		// (otherwise the post status will left 'auto-draft').
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
-									$is_our_add_screen;
+										$is_our_add_screen;
 
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,
@@ -317,26 +372,13 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'refreshRoute'             => $refresh_route,
 			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
 			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
-			'mods'                     => array(
-				'_twig' => array(
-					'mode' => 'ace/mode/twig',
-				),
-				'_css'  => array(
-					'mode' => 'ace/mode/css',
-				),
-				'_js'   => array(
-					'mode' => 'ace/mode/javascript',
-				),
-				'_php'  => array(
-					'mode' => 'ace/mode/php',
-				),
-			),
+			'mods'                     => ACE_Mods::get_all(),
 			'markupTextarea'           => array(
 				array(
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ),
 					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 					'isReadOnly'                 => true,
-					'mode'                       => '_twig',
+					'mode'                       => $template_ace_mode,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Default Template', 'acf-views' ),
 				),
@@ -344,7 +386,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
 					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_twig',
+					'mode'                       => $template_ace_mode,
 					'isWithVariableAutocomplete' => true,
 					'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
 				),
@@ -352,7 +394,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_CODE ),
 					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_css',
+					'mode'                       => ACE_Mods::CSS,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
 				),
@@ -360,7 +402,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_JS_CODE ),
 					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_js',
+					'mode'                       => ACE_Mods::JAVASCRIPT,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'JS Code', 'acf-views' ),
 				),
@@ -368,7 +410,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ),
 					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_php',
+					'mode'                       => ACE_Mods::PHP,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Custom Data', 'acf-views' ),
 				),
@@ -376,7 +418,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
 					'isReadOnly'                 => true,
-					'mode'                       => '_twig',
+					'mode'                       => $template_ace_mode,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Default Template', 'acf-views' ),
 				),
@@ -384,7 +426,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_twig',
+					'mode'                       => $template_ace_mode,
 					'isWithVariableAutocomplete' => true,
 					'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
 				),
@@ -392,7 +434,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_css',
+					'mode'                       => ACE_Mods::CSS,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
 				),
@@ -400,7 +442,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_js',
+					'mode'                       => ACE_Mods::JAVASCRIPT,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'JS Code', 'acf-views' ),
 				),
@@ -408,7 +450,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
 					'isReadOnly'                 => true,
-					'mode'                       => '_twig',
+					'mode'                       => ACE_Mods::TWIG,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Query Preview', 'acf-views' ),
 				),
@@ -416,7 +458,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
 					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
 					'isReadOnly'                 => false,
-					'mode'                       => '_php',
+					'mode'                       => ACE_Mods::PHP,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Custom data', 'acf-views' ),
 				),
@@ -463,6 +505,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
 		);
 	}
+
 
 	protected function get_cpt_item_js_file_url(): string {
 		return $this->plugin->get_assets_url( 'admin/js/cpt-item.min.js' );
@@ -555,38 +598,5 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		}
 
 		return true;
-	}
-
-	public function enqueue_admin_scripts(): void {
-		$current_screen = get_current_screen();
-
-		if ( null === $current_screen ||
-		false === $this->is_target_screen() ) {
-			return;
-		}
-
-		$this->enqueue_admin_assets( $current_screen->base );
-	}
-
-	public function enqueue_editor_styles(): void {
-		if ( false === $this->is_target_screen() ) {
-			return;
-		}
-
-		wp_enqueue_style(
-			Hard_Layout_Cpt::cpt_name() . '_editor',
-			$this->plugin->get_assets_url( 'admin/css/editor.min.css' ),
-			array(),
-			$this->plugin->get_version()
-		);
-	}
-
-	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( false === $route_detector->is_admin_route() ) {
-			return;
-		}
-
-		self::add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
 	}
 }

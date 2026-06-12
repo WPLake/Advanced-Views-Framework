@@ -549,7 +549,9 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->layouts_settings_storage,
 				$this->layout_factory,
 				$this->post_selection_factory,
-				$this->data_vendors
+				$this->data_vendors,
+				$this->settings,
+				$this->template_engines->get_token_factory_storage()
 			);
 
 			$this->live_reloader = new Live_Reloader(
