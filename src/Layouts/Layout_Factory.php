@@ -4,21 +4,21 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
-use Org\Wplake\Advanced_Views\Template\Templates_Environment;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_REST_Request;
-
-defined( 'ABSPATH' ) || exit;
 
 class Layout_Factory extends Instance_Factory {
 	private Layouts_Settings_Storage $layouts_settings_storage;
 	private Layout_Markup $layout_markup;
-	protected Templates_Environment $template_engines;
+	protected Engines_Storage $engines_storage;
 	protected Field_Markup $field_markup;
 	protected Data_Vendors $data_vendors;
 
@@ -26,7 +26,7 @@ class Layout_Factory extends Instance_Factory {
 		Front_Assets $front_assets,
 		Layouts_Settings_Storage $layouts_settings_storage,
 		Layout_Markup $layout_markup,
-		Templates_Environment $template_engines,
+		Engines_Storage $engines_storage,
 		Field_Markup $field_markup,
 		Data_Vendors $data_vendors
 	) {
@@ -34,7 +34,7 @@ class Layout_Factory extends Instance_Factory {
 
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->layout_markup            = $layout_markup;
-		$this->template_engines         = $template_engines;
+		$this->engines_storage          = $engines_storage;
 		$this->field_markup             = $field_markup;
 		$this->data_vendors             = $data_vendors;
 	}
@@ -113,7 +113,7 @@ class Layout_Factory extends Instance_Factory {
 	): Layout {
 		return new Layout(
 			$this->data_vendors,
-			$this->template_engines,
+			$this->engines_storage,
 			$markup,
 			$settings,
 			$source,

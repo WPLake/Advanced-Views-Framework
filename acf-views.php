@@ -194,19 +194,19 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$field_markup  = new Field_Markup(
 				$this->data_vendors,
 				$this->front_assets,
-				$this->templates_environment->get_token_factory_storage()
+				$this->engines_storage
 			);
 			$layout_markup = new Layout_Markup(
 				$field_markup,
 				$this->data_vendors,
-				$this->templates_environment->get_token_factory_storage()
+				$this->engines_storage
 			);
 
 			$this->layout_factory          = new Layout_Factory(
 				$this->front_assets,
 				$this->layouts_settings_storage,
 				$layout_markup,
-				$this->templates_environment,
+				$this->engines_storage,
 				$field_markup,
 				$this->data_vendors
 			);
@@ -231,7 +231,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->html,
 				$this->layout_factory,
 				$this->layout_cpt,
-				$this->templates_environment
+				$this->engines_storage
 			);
 
 			$this->layout_shortcode = new Layout_Shortcode(
@@ -317,14 +317,14 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$post_query                             = new Post_Query( $query_builder, $this->logger );
 			$post_selection_markup                  = new Post_Selection_Markup(
 				$this->front_assets,
-				$this->templates_environment->get_token_factory_storage(),
+				$this->engines_storage,
 				$this->layout_cpt
 			);
 			$this->post_selection_factory           = new Post_Selection_Factory(
 				$this->front_assets,
 				$post_query,
 				$post_selection_markup,
-				$this->templates_environment,
+				$this->engines_storage,
 				$this->post_selections_settings_storage
 			);
 			$this->post_selections_cpt_meta_boxes   = new Post_Selections_Cpt_Meta_Boxes(
@@ -347,7 +347,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selections_cpt_meta_boxes,
 				$this->post_selection_factory,
 				$this->post_selection_cpt,
-				$this->templates_environment
+				$this->engines_storage
 			);
 
 			$this->post_selections_cpt                 = new Post_Selections_Cpt(

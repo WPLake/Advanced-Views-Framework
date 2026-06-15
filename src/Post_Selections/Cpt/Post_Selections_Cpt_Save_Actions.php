@@ -21,7 +21,7 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
-use Org\Wplake\Advanced_Views\Template\Templates_Environment;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_REST_Request;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
@@ -50,7 +50,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Post_Selection_Factory $post_selection_factory,
 		Public_Cpt $public_cpt,
-		Templates_Environment $renderer_storage
+		Engines_Storage $engines_storage
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$post_selection_settings = $post_selection_settings->getDeepClone();
@@ -62,7 +62,7 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 			$post_selection_settings,
 			$front_assets,
 			$public_cpt,
-			$renderer_storage
+			$engines_storage
 		);
 
 		$this->selection_settings_storage     = $post_selections_settings_storage;
