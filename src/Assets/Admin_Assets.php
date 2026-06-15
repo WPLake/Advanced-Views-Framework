@@ -302,12 +302,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			$settings_storage->get( $post->post_name ) :
 			null;
 
-		// fixme make unique per every field
-		$template_engine   = $settings instanceof Cpt_Settings ?
-			$settings->template_engine :
-			$this->settings->get_template_engine();
-		$template_ace_mode = $this->token_factory_storage->resolve_ace_mode( $template_engine );
-
 		if ( $is_layout ) {
 			$autocomplete_variables = $is_published ?
 				$this->layout_factory->get_autocomplete_variables( $post->post_name ) :
@@ -343,6 +337,12 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		// (otherwise the post status will left 'auto-draft').
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
+
+		// fixme make unique per every field
+		$template_engine   = $settings instanceof Cpt_Settings ?
+			$settings->template_engine :
+			$this->settings->get_template_engine();
+		$template_ace_mode = $this->token_factory_storage->resolve_ace_mode( $template_engine );
 
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,

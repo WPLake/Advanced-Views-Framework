@@ -22,6 +22,7 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use WP_REST_Request;
 
 class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
@@ -44,7 +45,8 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
 		Html $html,
 		Layout_Factory $layout_factory,
-		Public_Cpt $public_cpt
+		Public_Cpt $public_cpt,
+		Template_Renderer_Storage $renderer_storage
 	) {
 		// make a clone before passing to the parent, to make sure that external changes won't appear in this object.
 		$layout_settings = $layout_settings->getDeepClone();
@@ -55,7 +57,8 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 			$plugin,
 			$layout_settings,
 			$front_assets,
-			$public_cpt
+			$public_cpt,
+			$renderer_storage
 		);
 
 		$this->layouts_settings_storage = $layouts_settings_storage;

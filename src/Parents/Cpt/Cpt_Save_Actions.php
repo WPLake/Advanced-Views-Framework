@@ -280,6 +280,18 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->perform_save_actions( $post_id );
 	}
 
+	protected function resolve_field_renderer( string $field_name, Cpt_Settings $cpt_settings ): ?Template_Renderer {
+		$template_fields = $cpt_settings->get_template_fields();
+
+		if ( key_exists( $field_name, $template_fields ) ) {
+			$field_engine = $template_fields[ $field_name ];
+
+			return $this->template_renderer_storage
+				->resolve_template_renderer( $field_engine );
+		}
+
+		return null;
+	}
 	/**
 	 * @param mixed $value
 	 * @param array<string,mixed> $field
@@ -291,16 +303,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->cpt_settings;
 
-		$template_fields = $this->cpt_settings->get_template_fields();
+		$field_renderer = $this->resolve_field_renderer( $field_name, $validation_instance );
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
-		if ( key_exists( $field_name, $template_fields ) ) {
-			$field_engine = $template_fields[ $field_name ];
-
+		if ( $field_renderer instanceof Template_Renderer ) {
 			$value = string( $value );
-			$value = $this->template_renderer_storage
-				->resolve_template_renderer( $field_engine )
-				->unmock_provocative_symbols( $value );
+			$value = $field_renderer->unmock_provocative_symbols( $value );
 		}
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
@@ -402,16 +410,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$template_fields = $instance_data->get_template_fields();
+		$field_renderer = $this->resolve_field_renderer( $field_name, $instance_data );
 
 		// to avoid issues with security plugins, like WordFence.
-		if ( key_exists( $field_name, $template_fields ) ) {
-			$field_engine = $template_fields[ $field_name ];
-
+		if ( $field_renderer instanceof Template_Renderer ) {
 			$value = string( $value );
-			$value = $this->template_renderer_storage
-				->resolve_template_renderer( $field_engine )
-				->mock_provocative_symbols( $value );
+
+			$value = $field_renderer->mock_provocative_symbols( $value );
 		}
 
 		return $value;

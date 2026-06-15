@@ -147,7 +147,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			);
 
 			$this->plugin           = new Plugin( __FILE__, $this->options, $this->settings );
-			$this->template_engines = new Template_Renderer_Storage(
+			$this->renderer_storage = new Template_Renderer_Storage(
 				$uploads_folder,
 				$this->logger,
 				$this->plugin,
@@ -193,19 +193,19 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$field_markup  = new Field_Markup(
 				$this->data_vendors,
 				$this->front_assets,
-				$this->template_engines->get_token_factory_storage()
+				$this->renderer_storage->get_token_factory_storage()
 			);
 			$layout_markup = new Layout_Markup(
 				$field_markup,
 				$this->data_vendors,
-				$this->template_engines->get_token_factory_storage()
+				$this->renderer_storage->get_token_factory_storage()
 			);
 
 			$this->layout_factory          = new Layout_Factory(
 				$this->front_assets,
 				$this->layouts_settings_storage,
 				$layout_markup,
-				$this->template_engines,
+				$this->renderer_storage,
 				$field_markup,
 				$this->data_vendors
 			);
@@ -229,7 +229,8 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->layouts_cpt_meta_boxes,
 				$this->html,
 				$this->layout_factory,
-				$this->layout_cpt
+				$this->layout_cpt,
+				$this->renderer_storage
 			);
 
 			$this->layout_shortcode = new Layout_Shortcode(
@@ -315,14 +316,14 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$post_query                             = new Post_Query( $query_builder, $this->logger );
 			$post_selection_markup                  = new Post_Selection_Markup(
 				$this->front_assets,
-				$this->template_engines->get_token_factory_storage(),
+				$this->renderer_storage->get_token_factory_storage(),
 				$this->layout_cpt
 			);
 			$this->post_selection_factory           = new Post_Selection_Factory(
 				$this->front_assets,
 				$post_query,
 				$post_selection_markup,
-				$this->template_engines,
+				$this->renderer_storage,
 				$this->post_selections_settings_storage
 			);
 			$this->post_selections_cpt_meta_boxes   = new Post_Selections_Cpt_Meta_Boxes(
@@ -344,7 +345,8 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->html,
 				$this->post_selections_cpt_meta_boxes,
 				$this->post_selection_factory,
-				$this->post_selection_cpt
+				$this->post_selection_cpt,
+				$this->renderer_storage
 			);
 
 			$this->post_selections_cpt                 = new Post_Selections_Cpt(
@@ -551,7 +553,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_factory,
 				$this->data_vendors,
 				$this->settings,
-				$this->template_engines->get_token_factory_storage()
+				$this->renderer_storage->get_token_factory_storage()
 			);
 
 			$this->live_reloader = new Live_Reloader(
@@ -580,7 +582,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 		protected function environment(): void {
 			$this->plugin_environment = new Plugin_Environment(
-				$this->template_engines,
+				$this->renderer_storage,
 				$this->automatic_reports,
 				$this->settings,
 				$this->plugin,
