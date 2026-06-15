@@ -34,12 +34,4 @@ final class PHP_Renderer extends Template_Renderer_Base {
 
 		return $template;
 	}
-
-	public function get_provocative_symbols_map(): array {
-		return array(
-			'<?php' => '__open__',
-			'<?='   => '__echo__',
-			'<?'    => '__short__',
-		);
-	}
 }

@@ -18,8 +18,8 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
@@ -49,7 +49,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	private array $validated_input_names;
 	private Front_Assets $front_assets;
 	protected Public_Cpt $public_plugin_cpt;
-	protected Template_Renderer_Storage $template_renderer_storage;
+	protected Engines_Storage $engines_storage;
 
 	public function __construct(
 		Logger $logger,
@@ -58,7 +58,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		Cpt_Settings $cpt_settings,
 		Front_Assets $front_assets,
 		Public_Cpt $public_cpt,
-		Template_Renderer_Storage $template_renderer_storage
+		Engines_Storage $engines_storage
 	) {
 		parent::__construct( $logger );
 
@@ -66,13 +66,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->plugin               = $plugin;
 		// don't make a clone, as otherwise $viewValidationData in inheritors won't be actual anymore
 		// (there is a clone at the child class level).
-		$this->cpt_settings              = $cpt_settings;
-		$this->front_assets              = $front_assets;
-		$this->available_acf_fields      = array_keys( $this->cpt_settings->getFieldValues() );
-		$this->field_values              = array();
-		$this->validated_input_names     = array();
-		$this->public_plugin_cpt         = $public_cpt;
-		$this->template_renderer_storage = $template_renderer_storage;
+		$this->cpt_settings          = $cpt_settings;
+		$this->front_assets          = $front_assets;
+		$this->available_acf_fields  = array_keys( $this->cpt_settings->getFieldValues() );
+		$this->field_values          = array();
+		$this->validated_input_names = array();
+		$this->public_plugin_cpt     = $public_cpt;
+		$this->engines_storage       = $engines_storage;
 	}
 
 	abstract protected function get_cpt_name(): string;
@@ -280,14 +280,14 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->perform_save_actions( $post_id );
 	}
 
-	protected function resolve_field_renderer( string $field_name, Cpt_Settings $cpt_settings ): ?Template_Renderer {
+	protected function resolve_template_integration( string $field_name, Cpt_Settings $cpt_settings ): ?Template_Integration {
 		$template_fields = $cpt_settings->get_template_fields();
 
 		if ( key_exists( $field_name, $template_fields ) ) {
 			$field_engine = $template_fields[ $field_name ];
 
-			return $this->template_renderer_storage
-				->resolve_template_renderer( $field_engine );
+			return $this->engines_storage
+				->resolve_integration( $field_engine );
 		}
 
 		return null;
@@ -303,12 +303,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->cpt_settings;
 
-		$field_renderer = $this->resolve_field_renderer( $field_name, $validation_instance );
+		$template_integration = $this->resolve_template_integration( $field_name, $validation_instance );
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
-		if ( $field_renderer instanceof Template_Renderer ) {
+		if ( $template_integration instanceof Template_Integration ) {
 			$value = string( $value );
-			$value = $field_renderer->unmock_provocative_symbols( $value );
+			$value = $template_integration->unmock_provocative_symbols( $value );
 		}
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
@@ -410,13 +410,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$field_renderer = $this->resolve_field_renderer( $field_name, $instance_data );
+		$template_integration = $this->resolve_template_integration( $field_name, $instance_data );
 
 		// to avoid issues with security plugins, like WordFence.
-		if ( $field_renderer instanceof Template_Renderer ) {
+		if ( $template_integration instanceof Template_Integration ) {
 			$value = string( $value );
 
-			$value = $field_renderer->mock_provocative_symbols( $value );
+			$value = $template_integration->mock_provocative_symbols( $value );
 		}
 
 		return $value;

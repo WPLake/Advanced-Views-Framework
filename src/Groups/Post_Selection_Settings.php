@@ -10,7 +10,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
 
@@ -551,7 +551,7 @@ return new class extends Selection_Controller_Base {
 
 	public function get_template_fields(): array {
 		return array(
-			self::getAcfFieldName( self::FIELD_EXTRA_QUERY_ARGUMENTS ) => Template_Renderer_Storage::PHP,
+			self::getAcfFieldName( self::FIELD_EXTRA_QUERY_ARGUMENTS ) => Engines_Storage::PHP,
 			self::getAcfFieldName( self::FIELD_MARKUP ) => $this->template_engine,
 			self::getAcfFieldName( self::FIELD_CUSTOM_MARKUP ) => $this->template_engine,
 		);

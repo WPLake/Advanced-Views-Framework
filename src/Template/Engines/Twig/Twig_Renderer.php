@@ -187,8 +187,4 @@ class Twig_Renderer extends File_Template_Renderer_Base {
 		// always available.
 		return true;
 	}
-
-	public function get_provocative_symbols_map(): array {
-		return array();
-	}
 }

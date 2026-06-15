@@ -80,7 +80,8 @@ use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Bui
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
 use Org\Wplake\Advanced_Views\Tools\Tools;
@@ -146,14 +147,14 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->layout_settings
 			);
 
-			$this->plugin           = new Plugin( __FILE__, $this->options, $this->settings );
-			$this->renderer_storage = new Template_Renderer_Storage(
+			$this->plugin                = new Plugin( __FILE__, $this->options, $this->settings );
+			$this->templates_environment = new Templates_Environment(
 				$uploads_folder,
 				$this->logger,
 				$this->plugin,
-				$this->settings
 			);
-			$this->item_settings    = $this->group_creator->create( Item_Settings::class );
+			$this->engines_storage       = new Engines_Storage( $uploads_folder, $this->logger, $this->settings );
+			$this->item_settings         = $this->group_creator->create( Item_Settings::class );
 
 			$this->data_vendors            = new Data_Vendors( $this->logger );
 			$this->live_reloader_component = new Live_Reloader_Component( $this->plugin, $this->settings );
@@ -193,19 +194,19 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$field_markup  = new Field_Markup(
 				$this->data_vendors,
 				$this->front_assets,
-				$this->renderer_storage->get_token_factory_storage()
+				$this->templates_environment->get_token_factory_storage()
 			);
 			$layout_markup = new Layout_Markup(
 				$field_markup,
 				$this->data_vendors,
-				$this->renderer_storage->get_token_factory_storage()
+				$this->templates_environment->get_token_factory_storage()
 			);
 
 			$this->layout_factory          = new Layout_Factory(
 				$this->front_assets,
 				$this->layouts_settings_storage,
 				$layout_markup,
-				$this->renderer_storage,
+				$this->templates_environment,
 				$field_markup,
 				$this->data_vendors
 			);
@@ -230,7 +231,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->html,
 				$this->layout_factory,
 				$this->layout_cpt,
-				$this->renderer_storage
+				$this->templates_environment
 			);
 
 			$this->layout_shortcode = new Layout_Shortcode(
@@ -316,14 +317,14 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$post_query                             = new Post_Query( $query_builder, $this->logger );
 			$post_selection_markup                  = new Post_Selection_Markup(
 				$this->front_assets,
-				$this->renderer_storage->get_token_factory_storage(),
+				$this->templates_environment->get_token_factory_storage(),
 				$this->layout_cpt
 			);
 			$this->post_selection_factory           = new Post_Selection_Factory(
 				$this->front_assets,
 				$post_query,
 				$post_selection_markup,
-				$this->renderer_storage,
+				$this->templates_environment,
 				$this->post_selections_settings_storage
 			);
 			$this->post_selections_cpt_meta_boxes   = new Post_Selections_Cpt_Meta_Boxes(
@@ -346,7 +347,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selections_cpt_meta_boxes,
 				$this->post_selection_factory,
 				$this->post_selection_cpt,
-				$this->renderer_storage
+				$this->templates_environment
 			);
 
 			$this->post_selections_cpt                 = new Post_Selections_Cpt(
@@ -553,7 +554,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_factory,
 				$this->data_vendors,
 				$this->settings,
-				$this->renderer_storage->get_token_factory_storage()
+				$this->engines_storage
 			);
 
 			$this->live_reloader = new Live_Reloader(
@@ -582,7 +583,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 		protected function environment(): void {
 			$this->plugin_environment = new Plugin_Environment(
-				$this->renderer_storage,
+				$this->templates_environment,
 				$this->automatic_reports,
 				$this->settings,
 				$this->plugin,

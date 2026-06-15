@@ -11,10 +11,10 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 
 final class Plugin_Environment {
-	private Template_Renderer_Storage $template_engines;
+	private Templates_Environment $template_engines;
 	private Automated_Reports $automated_reports;
 	private Settings $settings;
 	private Plugin $plugin;
@@ -32,7 +32,7 @@ final class Plugin_Environment {
 	 * @param Cpt_Settings_Storage[] $storages
 	 */
 	public function __construct(
-		Template_Renderer_Storage $template_engines,
+		Templates_Environment $template_engines,
 		Automated_Reports $automated_reports,
 		Settings $settings,
 		Plugin $plugin,

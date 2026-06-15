@@ -15,7 +15,7 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
-use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
@@ -32,13 +32,13 @@ class Post_Selection extends Instance {
 	private array $post_ids;
 
 	public function __construct(
-		Template_Renderer_Storage $template_renderer_storage,
+		Engines_Storage $engines_storage,
 		Post_Selection_Settings $post_selection_settings,
 		Post_Query $post_query,
 		Post_Selection_Markup $post_selection_markup,
 		string $classes = ''
 	) {
-		parent::__construct( $template_renderer_storage, $post_selection_settings, '', $classes );
+		parent::__construct( $engines_storage, $post_selection_settings, '', $classes );
 
 		$this->settings              = $post_selection_settings;
 		$this->post_query            = $post_query;
@@ -178,7 +178,7 @@ class Post_Selection extends Instance {
 			// Blade requires at least some spacing between its tokens.
 			if ( in_array(
 				$this->settings->template_engine,
-				array( Template_Renderer_Storage::TWIG, '' ),
+				array( Engines_Storage::TWIG, '' ),
 				true
 			) ) {
 				$unnecessary_symbols[] = "\t";
@@ -334,8 +334,8 @@ class Post_Selection extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		$template_engine = $this->get_template_renderer_storage()
-		                        ->resolve_template_renderer( $this->settings->template_engine );
+		$template_engine = $this->engines_storage
+								->resolve_renderer( $this->settings->template_engine );
 
 		ob_start();
 

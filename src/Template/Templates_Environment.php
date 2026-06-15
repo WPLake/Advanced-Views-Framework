@@ -12,39 +12,22 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
-use Org\Wplake\Advanced_Views\Template\Engines\PHP\PHP_Renderer;
-use Org\Wplake\Advanced_Views\Template\Engines\Twig\Twig_Renderer;
-use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 
-class Template_Renderer_Storage extends Action implements Hooks_Interface {
-	const TWIG  = 'twig';
-	const BLADE = 'blade';
-	const PHP   = 'php';
-
+class Templates_Environment extends Action implements Hooks_Interface {
 	private string $uploads_folder;
-	/**
-	 * @var array<string, Template_Renderer|null>
-	 */
-	private array $template_engines;
+
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private Plugin $plugin;
-	private Settings $settings;
-	private Token_Factory_Storage $token_factory_storage;
 
-	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin, Settings $settings ) {
+	public function __construct( string $uploads_folder, Logger $logger, Plugin $plugin ) {
 		parent::__construct( $logger );
 
-		$this->uploads_folder        = $uploads_folder;
-		$this->plugin                = $plugin;
-		$this->settings              = $settings;
-		$this->template_engines      = array();
-		$this->wp_filesystem_base    = null;
-		$this->token_factory_storage = new Token_Factory_Storage();
+		$this->uploads_folder     = $uploads_folder;
+		$this->plugin             = $plugin;
+		$this->wp_filesystem_base = null;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
@@ -53,10 +36,6 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		}
 
 		self::add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
-	}
-
-	public function get_token_factory_storage(): Token_Factory_Storage {
-		return $this->token_factory_storage;
 	}
 
 	// public for tests only.
@@ -147,14 +126,6 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		$wp_filesystem->rmdir( $templates_dir, true );
 	}
 
-	public function resolve_template_renderer( string $name ): ?Template_Renderer {
-		if ( ! key_exists( $name, $this->template_engines ) ) {
-			$this->template_engines[ $name ] = $this->make_renderer( $name );
-		}
-
-		return $this->template_engines[ $name ];
-	}
-
 	protected function is_templates_dir_writable(): bool {
 		$templates_dir = $this->uploads_folder;
 		$wp_filesystem = $this->get_wp_filesystem();
@@ -182,46 +153,5 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 
 		return $is_writable &&
 				$is_removed;
-	}
-
-	protected function get_uploads_folder(): string {
-		return $this->uploads_folder;
-	}
-
-	protected function get_settings(): Settings {
-		return $this->settings;
-	}
-
-	protected function make_renderer( string $name ): ?Template_Renderer {
-		$instance = null;
-
-		switch ( $name ) {
-			case self::TWIG:
-				$instance = new Twig_Renderer(
-					$this->uploads_folder,
-					$this->get_logger(),
-					$this->settings,
-					$this->get_wp_filesystem()
-				);
-				break;
-			case self::BLADE:
-				$instance = new Blade_Renderer(
-					$this->uploads_folder,
-					$this->get_logger(),
-					$this->settings,
-					$this->get_wp_filesystem()
-				);
-
-				$instance = false === $instance->is_available() ?
-					null :
-					$instance;
-
-				break;
-			case self::PHP:
-				$instance = new PHP_Renderer( $this->logger, $this->settings );
-				break;
-		}
-
-		return $instance;
 	}
 }

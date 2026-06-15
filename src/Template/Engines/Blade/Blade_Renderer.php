@@ -75,8 +75,4 @@ class Blade_Renderer extends File_Template_Renderer_Base {
 		// not loaded if PHP < 8.2.
 		return class_exists( Blade_Engine::class );
 	}
-
-	public function get_provocative_symbols_map(): array {
-		return array();
-	}
 }

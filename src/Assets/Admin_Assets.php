@@ -29,7 +29,8 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Setti
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -44,7 +45,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	private Post_Selection_Factory $post_selection_factory;
 	private Data_Vendors $data_vendors;
 	private Settings $settings;
-	private Token_Factory_Storage $token_factory_storage;
+	private Engines_Storage $engines_storage;
 
 	public function __construct(
 		Plugin $plugin,
@@ -54,7 +55,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		Post_Selection_Factory $post_selection_factory,
 		Data_Vendors $data_vendors,
 		Settings $settings,
-		Token_Factory_Storage $token_factory_storage
+		Engines_Storage $engines_storage
 	) {
 		$this->plugin                           = $plugin;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
@@ -63,7 +64,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		$this->post_selection_factory           = $post_selection_factory;
 		$this->data_vendors                     = $data_vendors;
 		$this->settings                         = $settings;
-		$this->token_factory_storage            = $token_factory_storage;
+		$this->engines_storage                  = $engines_storage;
 	}
 
 	public function enqueue_admin_scripts(): void {
@@ -342,7 +343,10 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		$template_engine   = $settings instanceof Cpt_Settings ?
 			$settings->template_engine :
 			$this->settings->get_template_engine();
-		$template_ace_mode = $this->token_factory_storage->resolve_ace_mode( $template_engine );
+		$integration       = $this->engines_storage->resolve_integration( $template_engine );
+		$template_ace_mode = $integration instanceof Template_Integration ?
+		$integration->get_ace_mode() :
+		'';
 
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,

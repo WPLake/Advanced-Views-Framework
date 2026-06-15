@@ -12,22 +12,18 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-use Org\Wplake\Advanced_Views\Template\Token_Factory_Storage;
 
 class Post_Selection_Markup {
 	private Front_Assets $front_assets;
-	private Token_Factory_Storage $token_factory_storage;
+	protected Engines_Storage $engines_storage;
 	private Public_Cpt $public_cpt;
 
-	public function __construct( Front_Assets $front_assets, Token_Factory_Storage $token_factory_storage, Public_Cpt $public_cpt ) {
-		$this->front_assets          = $front_assets;
-		$this->token_factory_storage = $token_factory_storage;
-		$this->public_cpt            = $public_cpt;
-	}
-
-	protected function get_token_factory_storage(): Token_Factory_Storage {
-		return $this->token_factory_storage;
+	public function __construct( Front_Assets $front_assets, Engines_Storage $engines_storage, Public_Cpt $public_cpt ) {
+		$this->front_assets    = $front_assets;
+		$this->engines_storage = $engines_storage;
+		$this->public_cpt      = $public_cpt;
 	}
 
 	protected function print_extra_markup( Post_Selection_Settings $post_selection_settings ): void {
@@ -35,7 +31,7 @@ class Post_Selection_Markup {
 			return;
 		}
 
-		$token_factory = $this->token_factory_storage->resolve_token_factory( $post_selection_settings->template_engine );
+		$token_factory = $this->engines_storage->resolve_token_factory( $post_selection_settings->template_engine );
 
 		$pages_var  = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 									->add_item_path( 'pages_amount' );
@@ -155,7 +151,7 @@ class Post_Selection_Markup {
 	}
 
 	protected function print_shortcode( Post_Selection_Settings $post_selection_settings ): void {
-		$token_factory = $this->token_factory_storage->resolve_token_factory( $post_selection_settings->template_engine );
+		$token_factory = $this->engines_storage->resolve_token_factory( $post_selection_settings->template_engine );
 
 		$id_var      = $token_factory->variable( Hard_Post_Selection_Cpt::variable_name() )
 											->add_item_path( 'layout_id' );
@@ -199,7 +195,7 @@ class Post_Selection_Markup {
 			}
 		}
 
-		$token_factory = $this->token_factory_storage->resolve_token_factory( $post_selection_settings->template_engine );
+		$token_factory = $this->engines_storage->resolve_token_factory( $post_selection_settings->template_engine );
 
 		$tabs_number = 1;
 
