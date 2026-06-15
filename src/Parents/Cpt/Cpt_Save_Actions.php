@@ -280,18 +280,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->perform_save_actions( $post_id );
 	}
 
-	protected function resolve_template_integration( string $field_name, Cpt_Settings $cpt_settings ): ?Template_Integration {
-		$template_fields = $cpt_settings->get_template_fields();
-
-		if ( key_exists( $field_name, $template_fields ) ) {
-			$field_engine = $template_fields[ $field_name ];
-
-			return $this->engines_storage
-				->resolve_integration( $field_engine );
-		}
-
-		return null;
-	}
 	/**
 	 * @param mixed $value
 	 * @param array<string,mixed> $field
@@ -303,7 +291,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->cpt_settings;
 
-		$template_integration = $this->resolve_template_integration( $field_name, $validation_instance );
+		$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $validation_instance );
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
 		if ( $template_integration instanceof Template_Integration ) {
@@ -410,7 +398,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$template_integration = $this->resolve_template_integration( $field_name, $instance_data );
+		$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $instance_data );
 
 		// to avoid issues with security plugins, like WordFence.
 		if ( $template_integration instanceof Template_Integration ) {

@@ -338,16 +338,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		// (otherwise the post status will left 'auto-draft').
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
-
-		// fixme make unique per every field
-		$template_engine   = $settings instanceof Cpt_Settings ?
-			$settings->template_engine :
-			$this->settings->get_template_engine();
-		$integration       = $this->engines_storage->resolve_integration( $template_engine );
-		$template_ace_mode = $integration instanceof Template_Integration ?
-		$integration->get_ace_mode() :
-		'';
-
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,
 			'autocompleteFunctions'    => $this->get_autocomplete_functions(),
@@ -357,96 +347,9 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
 			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
 			'mods'                     => ACE_Mods::get_all(),
-			'markupTextarea'           => array(
-				array(
-					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ),
-					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-					'isReadOnly'                 => true,
-					'mode'                       => $template_ace_mode,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'Default Template', 'acf-views' ),
-					// fixme: include mock symbols.
-				),
-				array(
-					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
-					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => $template_ace_mode,
-					'isWithVariableAutocomplete' => true,
-					'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_CODE ),
-					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::CSS,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_JS_CODE ),
-					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::JAVASCRIPT,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'JS Code', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ),
-					'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::PHP,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'Custom Data', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
-					'isReadOnly'                 => true,
-					'mode'                       => $template_ace_mode,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'Default Template', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => $template_ace_mode,
-					'isWithVariableAutocomplete' => true,
-					'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::CSS,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::JAVASCRIPT,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'JS Code', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
-					'isReadOnly'                 => true,
-					'mode'                       => ACE_Mods::TWIG,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'Query Preview', 'acf-views' ),
-				),
-				array(
-					'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
-					'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
-					'isReadOnly'                 => false,
-					'mode'                       => ACE_Mods::PHP,
-					'isWithVariableAutocomplete' => false,
-					'linkTitle'                  => __( 'Custom data', 'acf-views' ),
-				),
+			'markupTextarea'           => array_merge(
+				$this->get_textarea_fields(),
+				$this->get_textarea_template_fields( $settings ),
 			),
 			'fieldSelect'              => array(
 				array(
@@ -489,6 +392,126 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
 		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_textarea_fields(): array {
+		return array(
+			array(
+				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_CODE ),
+				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::CSS,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_JS_CODE ),
+				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::JAVASCRIPT,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'JS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::CSS,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::JAVASCRIPT,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'JS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'isReadOnly'                 => true,
+				'mode'                       => ACE_Mods::TWIG,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'Query Preview', 'acf-views' ),
+			),
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_textarea_template_fields( ?Cpt_Settings $cpt_settings ): array {
+		$fields = array(
+			array(
+				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ),
+				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => true,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'Default Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
+				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => false,
+				'isWithVariableAutocomplete' => true,
+				'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ),
+				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => false,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'PHP Controller', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => true,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'Default Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => false,
+				'isWithVariableAutocomplete' => true,
+				'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'isReadOnly'                 => false,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'PHP Controller', 'acf-views' ),
+			),
+		);
+
+		foreach ( $fields as &$field ) {
+			$field_name = $field['idSelector'];
+
+			if ( $cpt_settings instanceof Cpt_Settings ) {
+				$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $cpt_settings );
+
+				if ( $template_integration instanceof Template_Integration ) {
+					$field['mode'] = $template_integration->get_ace_mode();
+					// fixme provocative replacements
+
+					continue;
+				}
+			}
+
+			$template_engine     = $this->settings->get_template_engine();
+			$default_integration = $this->engines_storage->resolve_integration( $template_engine );
+
+			// fixme refer the code above
+		}
+
+		return $fields;
 	}
 
 

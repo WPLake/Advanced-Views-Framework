@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Template;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Integration;
@@ -84,6 +85,18 @@ class Engines_Storage {
 	public function resolve_integration( string $template_engine ): ?Template_Integration {
 		if ( key_exists( $template_engine, $this->integrations ) ) {
 			return $this->integrations[ $template_engine ];
+		}
+
+		return null;
+	}
+
+	public function resolve_field_integration( string $field_name, Cpt_Settings $cpt_settings ): ?Template_Integration {
+		$template_fields = $cpt_settings->get_template_fields();
+
+		if ( key_exists( $field_name, $template_fields ) ) {
+			$field_engine = $template_fields[ $field_name ];
+
+			return $this->resolve_integration( $field_engine );
 		}
 
 		return null;
