@@ -10,6 +10,7 @@ use Exception;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
 
 class Layout_Settings extends Cpt_Settings {
@@ -405,6 +406,16 @@ return new class extends Layout_Controller_Base {
 			$bem_name :
 			Hard_Layout_Cpt::markup_name();
 	}
+
+	public function get_template_fields(): array {
+		return array(
+			self::getAcfFieldName( self::FIELD_PHP_VARIABLES ) => Template_Renderer_Storage::PHP,
+			self::getAcfFieldName( self::FIELD_MARKUP ) => $this->template_engine,
+			self::getAcfFieldName( self::FIELD_CUSTOM_MARKUP ) => $this->template_engine,
+		);
+	}
+
+
 	public function get_item_class( string $suffix, Field_Settings $field_data ): string {
 		if ( self::CLASS_GENERATION_NONE === $this->classes_generation ) {
 			return '';

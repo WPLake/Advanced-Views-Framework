@@ -47,6 +47,14 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		$this->token_factory_storage = new Token_Factory_Storage();
 	}
 
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( ! $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		self::add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
+	}
+
 	public function get_token_factory_storage(): Token_Factory_Storage {
 		return $this->token_factory_storage;
 	}
@@ -145,14 +153,6 @@ class Template_Renderer_Storage extends Action implements Hooks_Interface {
 		}
 
 		return $this->template_engines[ $name ];
-	}
-
-	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( ! $route_detector->is_admin_route() ) {
-			return;
-		}
-
-		self::add_action( 'admin_notices', array( $this, 'show_templates_dir_is_not_writable_warning' ) );
 	}
 
 	protected function is_templates_dir_writable(): bool {

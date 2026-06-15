@@ -102,7 +102,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,string>
 	 */
-	protected function get_view_preview_js_data(): array {
+	protected function get_layout_preview_js_data(): array {
 		$js_data = array(
 			'HTML' => '',
 			'CSS'  => '',
@@ -152,7 +152,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @return array<string,string>
 	 */
-	protected function get_card_preview_js_data(): array {
+	protected function get_post_selection_preview_js_data(): array {
 		$js_data = array(
 			'HTML' => '',
 			'CSS'  => '',
@@ -302,6 +302,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			$settings_storage->get( $post->post_name ) :
 			null;
 
+		// fixme make unique per every field
 		$template_engine   = $settings instanceof Cpt_Settings ?
 			$settings->template_engine :
 			$this->settings->get_template_engine();
@@ -360,6 +361,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'mode'                       => $template_ace_mode,
 					'isWithVariableAutocomplete' => false,
 					'linkTitle'                  => __( 'Default Template', 'acf-views' ),
+					// fixme: include mock symbols.
 				),
 				array(
 					'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
@@ -477,8 +479,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 					'identifierInputId' => '',
 				),
 			),
-			'viewPreview'              => $this->get_view_preview_js_data(),
-			'cardPreview'              => $this->get_card_preview_js_data(),
+			'viewPreview'              => $this->get_layout_preview_js_data(),
+			'cardPreview'              => $this->get_post_selection_preview_js_data(),
 			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),

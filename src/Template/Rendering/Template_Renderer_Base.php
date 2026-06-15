@@ -31,6 +31,26 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 		return $error_message;
 	}
 
+	public function mock_provocative_symbols( string $template ): string {
+		$provocative_symbols_map = $this->get_provocative_symbols_map();
+
+		return str_replace(
+			array_keys( $provocative_symbols_map ),
+			array_values( $provocative_symbols_map ),
+			$template
+		);
+	}
+
+	public function unmock_provocative_symbols( string $template ): string {
+		$provocative_symbols_map = $this->get_provocative_symbols_map();
+
+		return str_replace(
+			array_values( $provocative_symbols_map ),
+			array_keys( $provocative_symbols_map ),
+			$template
+		);
+	}
+
 	protected static function print_error_message( string $unique_view_id, string $error_message ): void {
 		printf(
 			'<p style="color:red;" class="acf-views__error">Advanced Views (%s) template: <span class="acf-views__error-message">%s</span></p>',

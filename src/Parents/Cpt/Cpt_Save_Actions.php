@@ -8,10 +8,8 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
@@ -20,6 +18,8 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Template\Rendering\Template_Renderer;
+use Org\Wplake\Advanced_Views\Template\Template_Renderer_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
@@ -49,6 +49,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	private array $validated_input_names;
 	private Front_Assets $front_assets;
 	protected Public_Cpt $public_plugin_cpt;
+	protected Template_Renderer_Storage $template_renderer_storage;
 
 	public function __construct(
 		Logger $logger,
@@ -56,7 +57,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		Plugin $plugin,
 		Cpt_Settings $cpt_settings,
 		Front_Assets $front_assets,
-		Public_Cpt $public_cpt
+		Public_Cpt $public_cpt,
+		Template_Renderer_Storage $template_renderer_storage
 	) {
 		parent::__construct( $logger );
 
@@ -64,12 +66,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->plugin               = $plugin;
 		// don't make a clone, as otherwise $viewValidationData in inheritors won't be actual anymore
 		// (there is a clone at the child class level).
-		$this->cpt_settings          = $cpt_settings;
-		$this->front_assets          = $front_assets;
-		$this->available_acf_fields  = array_keys( $this->cpt_settings->getFieldValues() );
-		$this->field_values          = array();
-		$this->validated_input_names = array();
-		$this->public_plugin_cpt     = $public_cpt;
+		$this->cpt_settings              = $cpt_settings;
+		$this->front_assets              = $front_assets;
+		$this->available_acf_fields      = array_keys( $this->cpt_settings->getFieldValues() );
+		$this->field_values              = array();
+		$this->validated_input_names     = array();
+		$this->public_plugin_cpt         = $public_cpt;
+		$this->template_renderer_storage = $template_renderer_storage;
 	}
 
 	abstract protected function get_cpt_name(): string;
@@ -288,12 +291,16 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->cpt_settings;
 
-		$view_php_code_field = Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES );
-		$card_php_code_field = Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS );
+		$template_fields = $this->cpt_settings->get_template_fields();
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
-		if ( in_array( $field_name, array( $view_php_code_field, $card_php_code_field ), true ) ) {
-			$value = "<?php\n" . string( $value );
+		if ( key_exists( $field_name, $template_fields ) ) {
+			$field_engine = $template_fields[ $field_name ];
+
+			$value = string( $value );
+			$value = $this->template_renderer_storage
+				->resolve_template_renderer( $field_engine )
+				->unmock_provocative_symbols( $value );
 		}
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
@@ -395,13 +402,16 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$view_php_code_field = Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES );
-		$card_php_code_field = Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS );
+		$template_fields = $instance_data->get_template_fields();
 
 		// to avoid issues with security plugins, like WordFence.
-		if ( in_array( $field_name, array( $view_php_code_field, $card_php_code_field ), true ) &&
-			is_string( $value ) ) {
-			$value = str_replace( '<?php', '', $value );
+		if ( key_exists( $field_name, $template_fields ) ) {
+			$field_engine = $template_fields[ $field_name ];
+
+			$value = string( $value );
+			$value = $this->template_renderer_storage
+				->resolve_template_renderer( $field_engine )
+				->mock_provocative_symbols( $value );
 		}
 
 		return $value;
@@ -657,7 +667,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'refresh_request' ),
-				'permission_callback' => fn(): bool =>  is_user_logged_in(),
+				'permission_callback' => fn(): bool => is_user_logged_in(),
 			)
 		);
 	}
