@@ -285,7 +285,11 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->logger
 			);
 
-			$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
+			$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer(
+				$this->settings,
+				$this->plugin,
+				$this->layout_cpt->cpt_name()
+			);
 			$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
 
 			$this->layouts_git_cpt_table_tabs = new Layouts_Git_Cpt_Table_Tabs(
@@ -420,6 +424,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 
 			$this->post_selections_cpt_assets_reducer           = new Cpt_Assets_Reducer(
 				$this->settings,
+				$this->plugin,
 				$this->post_selection_cpt->cpt_name()
 			);
 			$this->post_selection_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings(

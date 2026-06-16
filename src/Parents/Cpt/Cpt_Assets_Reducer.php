@@ -4,20 +4,24 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
 class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 	private Settings $settings;
 	private string $cpt_name;
+	protected Plugin $plugin;
 
-	public function __construct( Settings $settings, string $cpt_name ) {
+	public function __construct( Settings $settings, Plugin $plugin, string $cpt_name ) {
 		$this->settings = $settings;
 		$this->cpt_name = $cpt_name;
+		$this->plugin   = $plugin;
 	}
 
 	protected function is_necessary_handle( string $handle ): bool {
@@ -223,9 +227,11 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 	}
 
 	public function print_fallback_message(): void {
+		$settings_url = $this->plugin->get_admin_url( Settings_Page::SLUG );
+
 		$safe_opening_tag = sprintf(
 			'<a href="%s" target="_blank">',
-			esc_url( get_admin_url( null, 'edit.php?post_type=acf_views&page=acf-views-settings' ) )
+			esc_url( $settings_url )
 		);
 
 		echo '<p class="acf-views__loading-fallback acf-views__loading-fallback--hidden">';
@@ -255,8 +261,8 @@ class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( false === $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ||
-		false === $this->settings->is_cpt_admin_optimization_enabled() ) {
+		if ( ! $route_detector->is_cpt_admin_route( $this->cpt_name, Route_Detector::CPT_EDIT ) ||
+		! $this->settings->is_cpt_admin_optimization_enabled() ) {
 			return;
 		}
 

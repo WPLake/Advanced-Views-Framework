@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.8.10 (2026-06-16) =
+- Fix: Layout & Selection loading optimizer message - old settings page url
+
 = 3.8.9 (2026-05-26) =
 - Fix: PHPController compatibility with the FS storage option
 - Fix: Readme changelog - wrong year
