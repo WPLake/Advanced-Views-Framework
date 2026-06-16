@@ -297,14 +297,14 @@ class Field_Markup {
 		foreach ( $field_assets as $field_asset ) {
 			$tag = $field_asset->get_field_wrapper_tag( $field_settings, $row_type );
 
-			if ( '' !== $tag ) {
+			if ( strlen( $tag ) > 0 ) {
 				return $tag;
 			}
 		}
 
 		$markup_field_instance = $this->get_markup_field_instance( $field_settings->get_vendor_name(), $field_settings->get_field_meta()->get_type() );
 
-		return null !== $markup_field_instance ?
+		return $markup_field_instance instanceof Markup_Field_Interface ?
 			$markup_field_instance->get_custom_field_wrapper_tag() :
 			'';
 	}
@@ -488,17 +488,17 @@ class Field_Markup {
 		);
 		$field_name_class      = $layout_settings->get_bem_name() . '__' . $field_settings->id . $row_suffix;
 
-		$row_tag   = '' !== $row_tag ?
-			$row_tag :
-			'div';
+		$row_tag   = 0 === strlen( $row_tag ) ?
+			'div' :
+			$row_tag;
 		$field_tag = $is_with_field_wrapper ?
 			$this->get_field_wrapper_tag( $field_assets, $field_settings, $row_type ) :
 			'';
-		$field_tag = '' !== $field_tag ?
-			$field_tag :
-			'div';
+		$field_tag = 0 === strlen( $field_tag ) ?
+			'div' :
+			$field_tag;
 
-		if ( '' !== $field_settings->label &&
+		if ( strlen( $field_settings->label ) > 0 &&
 			$is_label_out_of_row ) {
 			$this->print_label( $layout_settings, $field_settings, $tabs_number, $field_id );
 		}
