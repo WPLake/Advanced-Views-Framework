@@ -24,12 +24,9 @@ use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use WP_Post;
-use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
-	const REST_REFRESH_ROUTE = '';
-
 	use Safe_Array_Arguments;
 
 	private Cpt_Settings_Storage $cpt_settings_storage;
@@ -82,13 +79,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function make_validation_instance(): Instance;
 
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
-
-	/**
-	 * @param WP_REST_Request $wprest_request
-	 *
-	 * @return array<string,mixed>
-	 */
-	abstract public function refresh_request( WP_REST_Request $wprest_request ): array;
 
 	/**
 	 * @param array<string,string> $actual_pieces
@@ -653,18 +643,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->cpt_settings_storage->un_trash( $post_id );
 	}
 
-	public function register_rest_routes(): void {
-		register_rest_route(
-			'acf_views/v1',
-			static::REST_REFRESH_ROUTE,
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'refresh_request' ),
-				'permission_callback' => fn(): bool => is_user_logged_in(),
-			)
-		);
-	}
-
 	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
 	public function set_hooks( Route_Detector $route_detector ): void {
 		if ( false === $route_detector->is_admin_route() ) {
@@ -684,6 +662,5 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
 		self::add_action( 'trashed_post', array( $this, 'trash' ) );
 		self::add_action( 'untrashed_post', array( $this, 'unTrash' ) );
-		self::add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 }

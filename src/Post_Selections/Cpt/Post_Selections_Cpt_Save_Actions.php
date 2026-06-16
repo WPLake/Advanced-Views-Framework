@@ -22,10 +22,8 @@ use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use WP_REST_Request;
 
 class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
-	const REST_REFRESH_ROUTE = '/card-refresh';
 
 	private Post_Selection_Markup $post_selection_markup;
 	private Post_Query_Builder $query_builder;
@@ -160,66 +158,5 @@ class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
 		}
 
 		return $selection_settings;
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 * @throws Exception
-	 */
-	public function refresh_request( WP_REST_Request $wprest_request ): array {
-		$request_args = $wprest_request->get_json_params();
-		$card_id      = $this->get_int_arg( '_postId', $request_args );
-
-		$post_type = get_post( $card_id )->post_type ?? '';
-
-		if ( $this->get_cpt_name() !== $post_type ) {
-			return array( 'error' => 'Post id is wrong' );
-		}
-
-		$response = array();
-
-		$card_unique_id = get_post( $card_id )->post_name ?? '';
-
-		$card_data = $this->selection_settings_storage->get( $card_unique_id );
-		ob_start();
-		// ignore customMarkup (we need the preview).
-		$this->post_selection_markup->print_markup( $card_data, false, true );
-		$markup = (string) ob_get_clean();
-
-		ob_start();
-		$this->html->print_postbox_shortcode(
-			$card_data->get_unique_id( true ),
-			false,
-			$this->public_plugin_cpt,
-			$card_data->title,
-			true
-		);
-		$shortcodes = (string) ob_get_clean();
-
-		ob_start();
-		$this->post_selections_cpt_meta_boxes->print_related_acf_view_meta_box( $card_data );
-		$related_view_meta_box = (string) ob_get_clean();
-
-		$response['textareaItems'] = array(
-			// id => value.
-			'acf-local_acf_views_acf-card-data__markup'   => $markup,
-			'acf-local_acf_views_acf-card-data__css-code' => $card_data->get_css_code( Post_Selection_Settings::CODE_MODE_EDIT ),
-			'acf-local_acf_views_acf-card-data__js-code'  => $card_data->get_js_code(),
-			'acf-local_acf_views_acf-card-data__query-preview' => $card_data->query_preview,
-		);
-
-		$card_post = get_post( $card_id );
-
-		// only if post is already made.
-		if ( null !== $card_post ) {
-			$response['elements'] = array(
-				'#acf-cards_shortcode_cpt .inside' => $shortcodes,
-				'#acf-cards_related_view .inside'  => $related_view_meta_box,
-			);
-		}
-
-		$response['autocompleteData'] = $this->post_selection_factory->get_autocomplete_variables( $card_unique_id );
-
-		return $response;
 	}
 }

@@ -6,7 +6,6 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
-use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -23,10 +22,9 @@ use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use WP_REST_Request;
 
 class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
-	const REST_REFRESH_ROUTE = '/view-refresh';
+
 
 	private Layout_Markup $layout_markup;
 	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
@@ -181,86 +179,5 @@ class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
 		}
 
 		return $view_data;
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 * @throws Exception
-	 */
-	public function refresh_request( WP_REST_Request $wprest_request ): array {
-		$request_args = $wprest_request->get_json_params();
-		$view_id      = $this->get_int_arg( '_postId', $request_args );
-
-		$post_type = get_post( $view_id )->post_type ?? '';
-
-		if ( $this->get_cpt_name() !== $post_type ) {
-			return array( 'error' => 'Post id is wrong' );
-		}
-
-		$view_unique_id = get_post( $view_id )->post_name ?? '';
-
-		$view_data = $this->layouts_settings_storage->get( $view_unique_id );
-
-		ob_start();
-		$this->html->print_postbox_shortcode(
-			$view_data->get_unique_id( true ),
-			false,
-			$this->public_plugin_cpt,
-			get_the_title( $view_id ),
-			false,
-			$view_data->is_for_internal_usage_only()
-		);
-		$shortcodes = (string) ob_get_clean();
-
-		$response = array();
-
-		ob_start();
-		// ignore customMarkup (we need the preview).
-		$this->layout_markup->print_markup(
-			$view_data,
-			0,
-			'',
-			false,
-			true
-		);
-		$markup = (string) ob_get_clean();
-
-		ob_start();
-		$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data );
-		$related_groups_meta_box = (string) ob_get_clean();
-
-		ob_start();
-		$this->layouts_cpt_meta_boxes->print_related_views_meta_box(
-			$view_data
-		);
-		$related_views_meta_box = (string) ob_get_clean();
-
-		ob_start();
-		$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box(
-			$view_data
-		);
-		$related_cards_meta_box = (string) ob_get_clean();
-
-		$response['textareaItems'] = array(
-			// id => value.
-			'acf-local_acf_views_view__markup'   => $markup,
-			'acf-local_acf_views_view__css-code' => $view_data->get_css_code( Layout_Settings::CODE_MODE_EDIT ),
-			'acf-local_acf_views_view__js-code'  => $view_data->get_js_code(),
-		);
-		$post                      = get_post( $view_id );
-
-		// only if post is already made.
-		if ( null !== $post ) {
-			$response['elements'] = array(
-				'#acf-views_shortcode .inside'      => $shortcodes,
-				'#acf-views_related_groups .inside' => $related_groups_meta_box,
-				'#acf-views_related_views .inside'  => $related_views_meta_box,
-				'#acf-views_related_cards .inside'  => $related_cards_meta_box,
-			);
-		}
-
-		$response['autocompleteData'] = $this->layout_factory->get_autocomplete_variables( $view_unique_id );
-
-		return $response;
 	}
 }

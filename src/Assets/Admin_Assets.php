@@ -7,15 +7,7 @@ namespace Org\Wplake\Advanced_Views\Assets;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Source;
@@ -24,13 +16,11 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -285,233 +275,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		}
 
 		return $field_choices;
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function get_js_data_for_cpt_item_page(): array {
-		global $post;
-
-		$is_layout    = Hard_Layout_Cpt::cpt_name() === $post->post_type;
-		$is_published = 'publish' === $post->post_status;
-
-		$settings_storage = $is_layout ?
-			$this->layouts_settings_storage :
-			$this->post_selections_settings_storage;
-		$settings         = $is_published ?
-			$settings_storage->get( $post->post_name ) :
-			null;
-
-		if ( $is_layout ) {
-			$autocomplete_variables = $is_published ?
-				$this->layout_factory->get_autocomplete_variables( $post->post_name ) :
-				array();
-
-			$textarea_items_to_refresh = array(
-				'acf-local_acf_views_view__markup',
-				'acf-local_acf_views_view__css-code',
-				'acf-local_acf_views_view__js-code',
-			);
-			$refresh_route             = Layouts_Cpt_Save_Actions::REST_REFRESH_ROUTE;
-		} else {
-			$autocomplete_variables    = $is_published ?
-				$this->post_selection_factory->get_autocomplete_variables( $post->post_name ) :
-				array();
-			$textarea_items_to_refresh = array(
-				'acf-local_acf_views_acf-card-data__markup',
-				'acf-local_acf_views_acf-card-data__css-code',
-				'acf-local_acf_views_acf-card-data__js-code',
-				'acf-local_acf_views_acf-card-data__query-preview',
-			);
-			$refresh_route             = Post_Selections_Cpt_Save_Actions::REST_REFRESH_ROUTE;
-		}
-
-		$screen = get_current_screen();
-
-		$is_our_add_screen = null !== $screen &&
-							'post' === $screen->base &&
-							'add' === $screen->action &&
-							in_array( $screen->post_type, array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true );
-
-		// if permalink structure isn't set (?id=x), then the first postbox request is required
-		// (otherwise the post status will left 'auto-draft').
-		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
-										$is_our_add_screen;
-		return array(
-			'autocompleteVariables'    => $autocomplete_variables,
-			'autocompleteFunctions'    => $this->get_autocomplete_functions(),
-			'autocompleteFilters'      => $this->get_autocomplete_filters(),
-			'textareaItemsToRefresh'   => $textarea_items_to_refresh,
-			'refreshRoute'             => $refresh_route,
-			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
-			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
-			'mods'                     => ACE_Mods::get_all(),
-			'markupTextarea'           => array_merge(
-				$this->get_textarea_fields(),
-				$this->get_textarea_template_fields( $settings ),
-			),
-			'fieldSelect'              => array(
-				array(
-					'mainSelectId'      => Item_Settings::getAcfFieldName( Item_Settings::FIELD_GROUP ),
-					'subSelectId'       => Field_Settings::getAcfFieldName( Field_Settings::FIELD_KEY ),
-					'identifierInputId' => Field_Settings::getAcfFieldName( Field_Settings::FIELD_ID ),
-				),
-				array(
-					'mainSelectId'      => Post_Selection_Settings::getAcfFieldName(
-						Post_Selection_Settings::FIELD_ORDER_BY_META_FIELD_GROUP
-					),
-					'subSelectId'       => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ORDER_BY_META_FIELD_KEY ),
-					'identifierInputId' => '',
-				),
-				array(
-					'mainSelectId'      => Field_Settings::getAcfFieldName( Field_Settings::FIELD_KEY ),
-					'subSelectId'       => Repeater_Field_Settings::getAcfFieldName( Repeater_Field_Settings::FIELD_KEY ),
-					'identifierInputId' => Repeater_Field_Settings::getAcfFieldName( Repeater_Field_Settings::FIELD_ID ),
-					'isFieldsOnly'      => true,
-				),
-				array(
-					'mainSelectId'      => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_GROUP ),
-					'subSelectId'       => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_FIELD_KEY ),
-					'identifierInputId' => '',
-				),
-				array(
-					'mainSelectId'      => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TAXONOMY ),
-					'subSelectId'       => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TERM ),
-					'identifierInputId' => '',
-				),
-				array(
-					'mainSelectId'      => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_META_GROUP ),
-					'subSelectId'       => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_META_FIELD ),
-					'identifierInputId' => '',
-				),
-			),
-			'viewPreview'              => $this->get_layout_preview_js_data(),
-			'cardPreview'              => $this->get_post_selection_preview_js_data(),
-			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
-			'isPostboxRequestRequired' => $is_post_box_request_required,
-			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
-		);
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function get_textarea_fields(): array {
-		return array(
-			array(
-				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_CODE ),
-				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
-				'isReadOnly'                 => false,
-				'mode'                       => ACE_Mods::CSS,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_JS_CODE ),
-				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
-				'isReadOnly'                 => false,
-				'mode'                       => ACE_Mods::JAVASCRIPT,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'JS Code', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
-				'isReadOnly'                 => false,
-				'mode'                       => ACE_Mods::CSS,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
-				'isReadOnly'                 => false,
-				'mode'                       => ACE_Mods::JAVASCRIPT,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'JS Code', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
-				'isReadOnly'                 => true,
-				'mode'                       => ACE_Mods::TWIG,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'Query Preview', 'acf-views' ),
-			),
-		);
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function get_textarea_template_fields( ?Cpt_Settings $cpt_settings ): array {
-		$fields = array(
-			array(
-				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ),
-				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-				'isReadOnly'                 => true,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'Default Template', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
-				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-				'isReadOnly'                 => false,
-				'isWithVariableAutocomplete' => true,
-				'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ),
-				'tabIdSelector'              => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
-				'isReadOnly'                 => false,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'PHP Controller', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
-				'isReadOnly'                 => true,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'Default Template', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
-				'isReadOnly'                 => false,
-				'isWithVariableAutocomplete' => true,
-				'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
-			),
-			array(
-				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
-				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
-				'isReadOnly'                 => false,
-				'isWithVariableAutocomplete' => false,
-				'linkTitle'                  => __( 'PHP Controller', 'acf-views' ),
-			),
-		);
-
-		foreach ( $fields as &$field ) {
-			$field_name = $field['idSelector'];
-
-			if ( $cpt_settings instanceof Cpt_Settings ) {
-				$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $cpt_settings );
-
-				if ( $template_integration instanceof Template_Integration ) {
-					$field['mode'] = $template_integration->get_ace_mode();
-					// fixme provocative replacements
-
-					continue;
-				}
-			}
-
-			$template_engine     = $this->settings->get_template_engine();
-			$default_integration = $this->engines_storage->resolve_integration( $template_engine );
-
-			// fixme refer the code above
-		}
-
-		return $fields;
 	}
 
 
