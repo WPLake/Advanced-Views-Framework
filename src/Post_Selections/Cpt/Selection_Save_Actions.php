@@ -17,35 +17,35 @@ use Org\Wplake\Advanced_Views\Parents\Instance;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 
-class Post_Selections_Cpt_Save_Actions extends Cpt_Save_Actions {
+class Selection_Save_Actions extends Cpt_Save_Actions {
 
 	private Post_Selection_Markup $post_selection_markup;
 	private Post_Query_Builder $query_builder;
 	private Html $html;
-	private Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
+	private Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
 	private Post_Selection_Factory $post_selection_factory;
 	/**
 	 * @var Post_Selection_Settings
 	 */
 	private Post_Selection_Settings $post_selection_settings;
-	private Post_Selections_Settings_Storage $selection_settings_storage;
+	private Selection_Settings_Storage $selection_settings_storage;
 
 	public function __construct(
 		Logger $logger,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
 		Plugin $plugin,
 		Post_Selection_Settings $post_selection_settings,
 		Front_Assets $front_assets,
 		Post_Selection_Markup $post_selection_markup,
 		Post_Query_Builder $query_builder,
 		Html $html,
-		Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes,
+		Selection_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Post_Selection_Factory $post_selection_factory,
 		Public_Cpt $public_cpt,
 		Engines_Storage $engines_storage

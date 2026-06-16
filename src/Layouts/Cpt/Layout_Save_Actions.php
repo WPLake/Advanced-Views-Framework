@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
 use Org\Wplake\Advanced_Views\Layouts\Source;
@@ -23,24 +23,24 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 
-class Layouts_Cpt_Save_Actions extends Cpt_Save_Actions {
+class Layout_Save_Actions extends Cpt_Save_Actions {
 
 
 	private Layout_Markup $layout_markup;
-	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
+	private Layout_Meta_Boxes $layouts_cpt_meta_boxes;
 	private Html $html;
 	private Layout_Settings $layout_settings;
 	private Layout_Factory $layout_factory;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Logger $logger,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Plugin $plugin,
 		Layout_Settings $layout_settings,
 		Front_Assets $front_assets,
 		Layout_Markup $layout_markup,
-		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
+		Layout_Meta_Boxes $layouts_cpt_meta_boxes,
 		Html $html,
 		Layout_Factory $layout_factory,
 		Public_Cpt $public_cpt,

@@ -7,22 +7,22 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 
 class Post_Selections_Cpt extends Cpt {
 
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Plugin_Cpt $plugin_cpt, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+	public function __construct( Plugin_Cpt $plugin_cpt, Selection_Settings_Storage $post_selections_settings_storage ) {
 		parent::__construct( $plugin_cpt, $post_selections_settings_storage );
 
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 	}
 
-	protected function get_cards_data_storage(): Post_Selections_Settings_Storage {
+	protected function get_cards_data_storage(): Selection_Settings_Storage {
 		return $this->post_selections_settings_storage;
 	}
 

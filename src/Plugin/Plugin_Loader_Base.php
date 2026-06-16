@@ -48,15 +48,15 @@ use Org\Wplake\Advanced_Views\Groups_Integration\Mount_Point_Settings_Integratio
 use Org\Wplake\Advanced_Views\Groups_Integration\Post_Selection_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tax_Field_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Box;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Tabs;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Cpt_Table_Tabs;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Meta_Box;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
@@ -72,16 +72,16 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Meta_Box;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Tabs;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Cpt_Table;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Table;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
@@ -100,10 +100,10 @@ abstract class Plugin_Loader_Base {
 	protected Plugin_Environment $plugin_environment;
 	protected Version_Migrator $version_migrator;
 	protected Logger $logger;
-	protected Layouts_Settings_Storage $layouts_settings_storage;
-	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
-	protected Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
-	protected Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
+	protected Layout_Settings_Storage $layouts_settings_storage;
+	protected Selection_Settings_Storage $post_selections_settings_storage;
+	protected Layout_Save_Actions $layouts_cpt_save_actions;
+	protected Selection_Save_Actions $post_selections_cpt_save_actions;
 	protected Templates_Environment $templates_environment;
 	protected Public_Cpt $layout_cpt;
 	protected Public_Cpt $post_selection_cpt;
@@ -114,11 +114,11 @@ abstract class Plugin_Loader_Base {
 	 * @var File_System[]
 	 */
 	protected array $file_systems = array();
-	protected Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
+	protected Layout_Meta_Boxes $layouts_cpt_meta_boxes;
 	protected Layouts_Cpt $layouts_cpt;
 	protected Layouts_Cpt_Table $layouts_cpt_table;
-	protected Layouts_Git_Cpt_Table_Tabs $layouts_git_cpt_table_tabs;
-	protected Layouts_Git_Meta_Box $layouts_git_meta_box;
+	protected Layout_Git_Tabs $layouts_git_cpt_table_tabs;
+	protected Layout_Git_Box $layouts_git_meta_box;
 	protected Fs_Only_Tab $layouts_fs_only_tab;
 	protected Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
 	protected Layouts_Pre_Built_Tab $layouts_pre_built_tab;
@@ -128,13 +128,13 @@ abstract class Plugin_Loader_Base {
 	protected Cpt_Assets_Reducer $post_selections_cpt_assets_reducer;
 	protected Layout_Shortcode $layout_shortcode;
 	protected Shortcode_Block $layouts_shortcode_block;
-	protected Post_Selections_Cpt_Table $post_selections_cpt_table;
+	protected Post_Selections_Table $post_selections_cpt_table;
 	protected Post_Selections_Cpt $post_selections_cpt;
 	protected Fs_Only_Tab $post_selections_fs_only_tab;
-	protected Post_Selections_Cpt_Meta_Boxes $post_selections_cpt_meta_boxes;
+	protected Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
 	protected Post_Selections_Bulk_Validation_Tab $post_selections_bulk_validation_tab;
 	protected Post_Selections_Pre_Built_Tab $post_selections_pre_built_tab;
-	protected Post_Selections_View_Integration $post_selections_view_integration;
+	protected Selection_Layout_Integration $post_selections_view_integration;
 	protected Post_Selection_Shortcode $post_selection_shortcode;
 
 	protected Acf_Dependency $acf_dependency;
@@ -164,8 +164,8 @@ abstract class Plugin_Loader_Base {
 	protected Upgrade_Notice $upgrade_notice;
 	protected Mount_Points $mount_points;
 	protected Git_Lab_Api $git_lab_api;
-	protected Post_Selection_Git_Tabs $post_selection_git_tabs;
-	protected Post_Selection_Git_Meta_Box $post_selection_git_meta_box;
+	protected Selection_Git_Tabs $post_selection_git_tabs;
+	protected Selection_Git_Box $post_selection_git_meta_box;
 	protected Engines_Storage $engines_storage;
 
 	/**

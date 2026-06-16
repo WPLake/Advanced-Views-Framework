@@ -9,25 +9,25 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Meta_Box;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Box;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Git_Meta_Box;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 
-class Post_Selection_Git_Meta_Box extends Git_Meta_Box {
+class Selection_Git_Box extends Git_Meta_Box {
 
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Layouts_Git_Meta_Box $layouts_git_meta_box;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Layout_Git_Box $layouts_git_meta_box;
 
 	public function __construct(
 		string $cpt_name,
 		Settings $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Git_Lab_Api $git_lab_api,
-		Layouts_Settings_Storage $layouts_settings_storage,
-		Layouts_Git_Meta_Box $layouts_git_meta_box,
+		Layout_Settings_Storage $layouts_settings_storage,
+		Layout_Git_Box $layouts_git_meta_box,
 		Plugin $plugin
 	) {
 		parent::__construct( $cpt_name, $settings, $cpt_settings_storage, $git_lab_api, $plugin );

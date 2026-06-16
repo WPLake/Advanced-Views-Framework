@@ -11,27 +11,27 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Git_Cpt_Table_Tabs;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Tabs;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Git_Tabs;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Import_Result;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
 
 
-class Post_Selection_Git_Tabs extends Git_Tabs {
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Git_Cpt_Table_Tabs $layouts_git_cpt_table_tabs;
+class Selection_Git_Tabs extends Git_Tabs {
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Git_Tabs $layouts_git_cpt_table_tabs;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
 		Settings $settings,
 		Git_Lab_Api $git_lab_api,
 		Cpt_Settings $cpt_settings,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
 		Version_Migrator $version_migrator,
-		Layouts_Git_Cpt_Table_Tabs $layouts_git_cpt_table_tabs,
+		Layout_Git_Tabs $layouts_git_cpt_table_tabs,
 		Data_Vendors $data_vendors,
 		Logger $logger
 	) {

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_REST_Request;
@@ -18,14 +18,14 @@ class Post_Selection_Factory extends Instance_Factory {
 	protected Post_Query $query_builder;
 	protected Post_Selection_Markup $post_selection_markup;
 	protected Engines_Storage $engines_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 
 	public function __construct(
 		Front_Assets $front_assets,
 		Post_Query $query_builder,
 		Post_Selection_Markup $post_selection_markup,
 		Engines_Storage $engines_storage,
-		Post_Selections_Settings_Storage $post_selections_settings_storage
+		Selection_Settings_Storage $post_selections_settings_storage
 	) {
 		parent::__construct( $front_assets );
 
@@ -77,7 +77,7 @@ class Post_Selection_Factory extends Instance_Factory {
 					->get_template_variables_for_validation();
 	}
 
-	protected function get_cards_data_storage(): Post_Selections_Settings_Storage {
+	protected function get_cards_data_storage(): Selection_Settings_Storage {
 		return $this->post_selections_settings_storage;
 	}
 }

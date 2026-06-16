@@ -10,23 +10,23 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Git_Tabs;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Import_Result;
 use Org\Wplake\Advanced_Views\Settings;
 
-class Layouts_Git_Cpt_Table_Tabs extends Git_Tabs {
+class Layout_Git_Tabs extends Git_Tabs {
 	private Data_Vendors $data_vendors;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Cpt_Table $cpt_table,
 		Settings $settings,
 		Git_Lab_Api $git_lab_api,
 		Cpt_Settings $cpt_settings,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Version_Migrator $version_migrator,
 		Data_Vendors $data_vendors,
 		Logger $logger

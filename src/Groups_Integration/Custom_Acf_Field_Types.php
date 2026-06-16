@@ -6,18 +6,18 @@ namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 class Custom_Acf_Field_Types extends Hookable implements Hooks_Interface {
 
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 
-	public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
+	public function __construct( Layout_Settings_Storage $layouts_settings_storage ) {
 		$this->layouts_settings_storage = $layouts_settings_storage;
 	}
 

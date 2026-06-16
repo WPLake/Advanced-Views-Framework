@@ -42,16 +42,16 @@ use Org\Wplake\Advanced_Views\Groups_Integration\{Custom_Acf_Field_Types,
 	Post_Selection_Settings_Integration,
 	Tax_Field_Settings_Integration,
 	Tools_Settings_Integration,};
-use Org\Wplake\Advanced_Views\Layouts\{Cpt\Layouts_Cpt,
-	Cpt\Layouts_Cpt_Meta_Boxes,
-	Cpt\Layouts_Cpt_Save_Actions,
-	Cpt\Layouts_Git_Cpt_Table_Tabs,
-	Cpt\Layouts_Git_Meta_Box,
+use Org\Wplake\Advanced_Views\Layouts\{Cpt\Layout_Git_Box,
+	Cpt\Layout_Git_Tabs,
+	Cpt\Layout_Meta_Boxes,
+	Cpt\Layout_Save_Actions,
+	Cpt\Layouts_Cpt,
 	Cpt\Table\Layouts_Bulk_Validation_Tab,
 	Cpt\Table\Layouts_Cpt_Table,
 	Cpt\Table\Layouts_Pre_Built_Tab,
 	Data_Storage\Layout_Fs_Fields,
-	Data_Storage\Layouts_Settings_Storage,
+	Data_Storage\Layout_Settings_Storage,
 	Fields\Field_Markup,
 	Layout_Factory,
 	Layout_Markup};
@@ -63,19 +63,19 @@ use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\{Cpt\Post_Selections_Cpt,
-	Cpt\Post_Selections_Cpt_Meta_Boxes,
-	Cpt\Post_Selections_Cpt_Save_Actions,
-	Cpt\Post_Selections_View_Integration,
+	Cpt\Selection_Layout_Integration,
+	Cpt\Selection_Meta_Boxes,
+	Cpt\Selection_Save_Actions,
 	Cpt\Table\Post_Selections_Bulk_Validation_Tab,
-	Cpt\Table\Post_Selections_Cpt_Table,
 	Cpt\Table\Post_Selections_Pre_Built_Tab,
+	Cpt\Table\Post_Selections_Table,
 	Data_Storage\Post_Selection_Fs_Fields,
-	Data_Storage\Post_Selections_Settings_Storage,
+	Data_Storage\Selection_Settings_Storage,
 	Post_Query,
 	Post_Selection_Factory,
 	Post_Selection_Markup};
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Meta_Box;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
@@ -130,7 +130,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->logger,
 				$this->post_selection_cpt->folder_name()
 			);
-			$this->post_selections_settings_storage = new Post_Selections_Settings_Storage(
+			$this->post_selections_settings_storage = new Selection_Settings_Storage(
 				$this->logger,
 				$post_selections_file_system,
 				new Post_Selection_Fs_Fields(),
@@ -139,7 +139,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			);
 
 			$layouts_file_system            = new File_System( $this->logger, $this->layout_cpt->folder_name() );
-			$this->layouts_settings_storage = new Layouts_Settings_Storage(
+			$this->layouts_settings_storage = new Layout_Settings_Storage(
 				$this->logger,
 				$layouts_file_system,
 				new Layout_Fs_Fields(),
@@ -210,7 +210,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$field_markup,
 				$this->data_vendors
 			);
-			$this->layouts_cpt_meta_boxes  = new Layouts_Cpt_Meta_Boxes(
+			$this->layouts_cpt_meta_boxes  = new Layout_Meta_Boxes(
 				$this->html,
 				$this->plugin,
 				$this->layouts_settings_storage,
@@ -220,7 +220,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			);
 			$this->layouts_shortcode_block = new Shortcode_Block( $this->layout_cpt->shortcodes() );
 
-			$this->layouts_cpt_save_actions = new Layouts_Cpt_Save_Actions(
+			$this->layouts_cpt_save_actions = new Layout_Save_Actions(
 				$this->logger,
 				$this->layouts_settings_storage,
 				$this->plugin,
@@ -271,7 +271,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->layout_cpt,
 				true
 			);
-			$layouts_settings_storage    = new Layouts_Settings_Storage(
+			$layouts_settings_storage    = new Layout_Settings_Storage(
 				$this->logger,
 				$file_system,
 				new Layout_Fs_Fields(),
@@ -290,7 +290,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 			$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer( $this->settings, $this->layout_cpt->cpt_name() );
 			$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
 
-			$this->layouts_git_cpt_table_tabs = new Layouts_Git_Cpt_Table_Tabs(
+			$this->layouts_git_cpt_table_tabs = new Layout_Git_Tabs(
 				$this->layouts_cpt_table,
 				$this->settings,
 				$this->git_lab_api,
@@ -300,7 +300,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->data_vendors,
 				$this->logger
 			);
-			$this->layouts_git_meta_box       = new Layouts_Git_Meta_Box(
+			$this->layouts_git_meta_box       = new Layout_Git_Box(
 				$this->layout_cpt->cpt_name(),
 				$this->settings,
 				$this->layouts_settings_storage,
@@ -327,7 +327,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->engines_storage,
 				$this->post_selections_settings_storage
 			);
-			$this->post_selections_cpt_meta_boxes   = new Post_Selections_Cpt_Meta_Boxes(
+			$this->post_selections_cpt_meta_boxes   = new Selection_Meta_Boxes(
 				$this->html,
 				$this->plugin,
 				$this->post_selections_settings_storage,
@@ -335,7 +335,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_cpt,
 				$this->layout_cpt
 			);
-			$this->post_selections_cpt_save_actions = new Post_Selections_Cpt_Save_Actions(
+			$this->post_selections_cpt_save_actions = new Selection_Save_Actions(
 				$this->logger,
 				$this->post_selections_settings_storage,
 				$this->plugin,
@@ -354,7 +354,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_cpt,
 				$this->post_selections_settings_storage
 			);
-			$this->post_selections_cpt_table           = new Post_Selections_Cpt_Table(
+			$this->post_selections_cpt_table           = new Post_Selections_Table(
 				$this->post_selections_settings_storage,
 				$this->post_selection_cpt,
 				$this->html,
@@ -383,7 +383,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_cpt,
 				true
 			);
-			$post_selections_settings_storage    = new Post_Selections_Settings_Storage(
+			$post_selections_settings_storage    = new Selection_Settings_Storage(
 				$this->logger,
 				$file_system,
 				new Post_Selection_Fs_Fields(),
@@ -400,7 +400,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->layouts_pre_built_tab
 			);
 
-			$this->post_selection_git_tabs     = new Post_Selection_Git_Tabs(
+			$this->post_selection_git_tabs     = new Selection_Git_Tabs(
 				$this->post_selections_cpt_table,
 				$this->settings,
 				$this->git_lab_api,
@@ -411,7 +411,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->data_vendors,
 				$this->logger
 			);
-			$this->post_selection_git_meta_box = new Post_Selection_Git_Meta_Box(
+			$this->post_selection_git_meta_box = new Selection_Git_Box(
 				$this->post_selection_cpt->cpt_name(),
 				$this->settings,
 				$this->post_selections_settings_storage,
@@ -429,7 +429,7 @@ use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 				$this->post_selection_cpt->cpt_name()
 			);
 
-			$this->post_selections_view_integration = new Post_Selections_View_Integration(
+			$this->post_selections_view_integration = new Selection_Layout_Integration(
 				$this->post_selections_settings_storage,
 				$this->layouts_settings_storage,
 				$this->post_selections_cpt_save_actions,

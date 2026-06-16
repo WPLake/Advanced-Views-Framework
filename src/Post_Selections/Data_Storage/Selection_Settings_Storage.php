@@ -5,16 +5,16 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Post_Selections\Data_Storage;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 
 defined( 'ABSPATH' ) || exit;
 
-class Post_Selections_Settings_Storage extends Cpt_Settings_Storage {
+class Selection_Settings_Storage extends Cpt_Settings_Storage {
 	protected Post_Selection_Settings $card_data;
 	/**
 	 * @var array<string,Post_Selection_Settings>

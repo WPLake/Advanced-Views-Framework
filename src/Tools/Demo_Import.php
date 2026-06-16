@@ -14,12 +14,12 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -37,19 +37,19 @@ final class Demo_Import extends Hookable implements Hooks_Interface {
 
 	private string $error;
 	private bool $is_processed;
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
+	private Layout_Save_Actions $layouts_cpt_save_actions;
 	private Settings $settings;
 	private bool $is_import_request;
 	private Item_Settings $item_settings;
-	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Selection_Save_Actions $post_selections_cpt_save_actions;
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
-		Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions,
-		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Selection_Save_Actions $post_selections_cpt_save_actions,
+		Layout_Save_Actions $layouts_cpt_save_actions,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Settings $settings,
 		Item_Settings $item_settings
 	) {

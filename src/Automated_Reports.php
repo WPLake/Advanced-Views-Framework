@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views;
 
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
@@ -30,14 +30,14 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	private Plugin $plugin;
 	private Settings $settings;
 	private Options $options;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
 		Settings $settings,
 		Options $options,
-		Layouts_Settings_Storage $layouts_settings_storage
+		Layout_Settings_Storage $layouts_settings_storage
 	) {
 		parent::__construct( $logger );
 

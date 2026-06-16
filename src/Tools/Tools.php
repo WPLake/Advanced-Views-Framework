@@ -7,26 +7,26 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
-use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 use WP_Post;
 use WP_Query;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,8 +38,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 	 */
 	private array $values;
 	private Tools_Settings $tools_settings;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 	private Plugin $plugin;
 	private Logger $logger;
 	private Debug_Dump_Creator $debug_dump_creator;
@@ -57,8 +57,8 @@ final class Tools extends Hookable implements Hooks_Interface {
 
 	public function __construct(
 		Tools_Settings $tools_settings,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Plugin $plugin,
 		Logger $logger,
 		Debug_Dump_Creator $debug_dump_creator,

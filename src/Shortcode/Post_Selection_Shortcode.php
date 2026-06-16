@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
@@ -20,12 +20,12 @@ defined( 'ABSPATH' ) || exit;
 
 final class Post_Selection_Shortcode extends Shortcode {
 	protected Post_Selection_Factory $selection_factory;
-	protected Post_Selections_Settings_Storage $cards_data_storage;
+	protected Selection_Settings_Storage $cards_data_storage;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
 		Settings $settings,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
 		Post_Selection_Factory $post_selection_factory

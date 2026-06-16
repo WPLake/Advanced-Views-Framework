@@ -20,8 +20,8 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta;
 use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
@@ -369,8 +369,8 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	public function make_integration_instances(
 		Route_Detector $route_detector,
 		Item_Settings $item_settings,
-		Layouts_Settings_Storage $layouts_settings_storage,
-		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Settings_Storage $layouts_settings_storage,
+		Layout_Save_Actions $layouts_cpt_save_actions,
 		Layout_Factory $layout_factory,
 		Repeater_Field_Settings $repeater_field_settings,
 		Layout_Shortcode $layout_shortcode,
@@ -615,7 +615,7 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	protected function load_integration_instance(
 		Route_Detector $route_detector,
 		Data_Vendor_Integration_Interface $data_vendor_integration,
-		Layouts_Settings_Storage $layouts_settings_storage
+		Layout_Settings_Storage $layouts_settings_storage
 	): void {
 		// functions below only for the admin part.
 		if ( false === $route_detector->is_admin_route() ) {

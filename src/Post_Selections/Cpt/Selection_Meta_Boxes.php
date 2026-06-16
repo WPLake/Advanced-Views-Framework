@@ -6,28 +6,28 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use WP_Post;
+use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use WP_Post;
 
-class Post_Selections_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+class Selection_Meta_Boxes extends Cpt_Meta_Boxes {
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 	private Public_Cpt $public_cpt;
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Public_Cpt $public_cpt,
 		Plugin_Cpt $plugin_cpt
 	) {

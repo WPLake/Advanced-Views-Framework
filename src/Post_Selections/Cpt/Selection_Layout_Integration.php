@@ -4,32 +4,32 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
-class Post_Selections_View_Integration extends Cpt_Settings_Creator implements Hooks_Interface {
+class Selection_Layout_Integration extends Cpt_Settings_Creator implements Hooks_Interface {
 
 	const ARGUMENT_FROM  = '_from';
 	const NONCE_MAKE_NEW = 'av-make-card';
 
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Save_Actions $post_selections_cpt_save_actions;
 
 	public function __construct(
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Layouts_Settings_Storage $layouts_settings_storage,
-		Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
+		Selection_Save_Actions $post_selections_cpt_save_actions,
 		Settings $settings
 	) {
 		parent::__construct( $settings );

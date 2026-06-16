@@ -9,8 +9,8 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Settings_Creator;
@@ -32,9 +32,9 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 	const ARGUMENT_FROM = '_from-group';
 
 	private Item_Settings $item_settings;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 	private Data_Vendors $data_vendors;
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
+	private Layout_Save_Actions $layouts_cpt_save_actions;
 	private Layout_Factory $layout_factory;
 	private Data_Vendor_Interface $data_vendor;
 	private Layout_Shortcode $layout_shortcode;
@@ -42,9 +42,9 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 
 	public function __construct(
 		Item_Settings $item_settings,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
-		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
+		Layout_Save_Actions $layouts_cpt_save_actions,
 		Layout_Factory $layout_factory,
 		Data_Vendor_Interface $data_vendor,
 		Layout_Shortcode $layout_shortcode,
@@ -342,7 +342,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		return $this->data_vendor->get_group_key( $wp_post->post_name );
 	}
 
-	public function get_views_data_storage(): Layouts_Settings_Storage {
+	public function get_views_data_storage(): Layout_Settings_Storage {
 		return $this->layouts_settings_storage;
 	}
 

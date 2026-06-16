@@ -5,20 +5,20 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Automated_Reports;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
+use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,8 +31,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	private array $values;
 	private Plugin_Settings $plugin_settings;
 	private Settings $settings;
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
 	private Automated_Reports $automated_reports;
@@ -41,8 +41,8 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		Logger $logger,
 		Plugin_Settings $plugin_settings,
 		Settings $settings,
-		Layouts_Settings_Storage $layouts_settings_storage,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
 		Git_Repository $git_repository,
 		Automated_Reports $automated_reports
 	) {

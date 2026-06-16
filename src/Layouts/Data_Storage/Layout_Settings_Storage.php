@@ -4,21 +4,21 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Data_Storage;
 
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Fs_Fields;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use WP_Post;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
-class Layouts_Settings_Storage extends Cpt_Settings_Storage {
+class Layout_Settings_Storage extends Cpt_Settings_Storage {
 	private Layout_Settings $layout_settings;
 	/**
 	 * @var array<string,Layout_Settings>

@@ -6,19 +6,19 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
 
 final class Migration_2_2_3 extends Version_Migration_Base {
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
-	private Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions;
+	private Layout_Save_Actions $layouts_cpt_save_actions;
+	private Selection_Save_Actions $post_selections_cpt_save_actions;
 
 	public function __construct(
 		Logger $logger,
-		Layouts_Cpt_Save_Actions $layouts_cpt_save_actions,
-		Post_Selections_Cpt_Save_Actions $post_selections_cpt_save_actions
+		Layout_Save_Actions $layouts_cpt_save_actions,
+		Selection_Save_Actions $post_selections_cpt_save_actions
 	) {
 		parent::__construct( $logger );
 

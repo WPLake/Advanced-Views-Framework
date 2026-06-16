@@ -7,19 +7,19 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 
 final class Migration_2_4_0 extends Version_Migration_Base {
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layout_Save_Actions $layouts_cpt_save_actions;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Logger $logger, Layouts_Cpt_Save_Actions $layouts_cpt_save_actions, Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+	public function __construct( Logger $logger, Layout_Save_Actions $layouts_cpt_save_actions, Layout_Settings_Storage $layouts_settings_storage, Selection_Settings_Storage $post_selections_settings_storage ) {
 		parent::__construct( $logger );
 
 		$this->layouts_cpt_save_actions         = $layouts_cpt_save_actions;

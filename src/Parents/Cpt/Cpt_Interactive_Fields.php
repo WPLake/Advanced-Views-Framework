@@ -15,13 +15,15 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt_Save_Actions;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
 use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
@@ -32,9 +34,13 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	const REST_REFRESH_ROUTE = '';
 
 	protected Public_Cpt $public_cpt;
+	protected Html $html;
+	protected Plugin $plugin;
 
-	public function __construct( Public_Cpt $public_cpt ) {
+	public function __construct( Public_Cpt $public_cpt, Html $html, Plugin $plugin ) {
 		$this->public_cpt = $public_cpt;
+		$this->html       = $html;
+		$this->plugin     = $plugin;
 	}
 
 	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
@@ -83,14 +89,59 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	/**
 	 * @return array<string,mixed>
 	 */
+	abstract protected function get_textarea_items(): array;
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	abstract protected function get_markup_textareas(): array;
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	abstract protected function get_select_fields(): array;
+
+	/**
+	 * @return array<string,mixed>
+	 */
 	protected function get_js_data_for_cpt_item_page(): array {
+		$screen = get_current_screen();
+
+		$is_our_add_screen = null !== $screen &&
+							'post' === $screen->base &&
+							'add' === $screen->action &&
+								$screen->post_type === $this->public_cpt->cpt_name();
+
+		// if permalink structure isn't set (?id=x), then the first postbox request is required
+		// (otherwise the post status will left 'auto-draft').
+		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
+										$is_our_add_screen;
+
+		return array(
+			'textareaItemsToRefresh'   => $this->get_textarea_items(),
+			'refreshRoute'             => static::REST_REFRESH_ROUTE,
+			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
+			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
+			'mods'                     => ACE_Mods::get_all(),
+			'markupTextarea'           => $this->get_markup_textareas(),
+			'fieldSelect'              => $this->get_select_fields(),
+			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
+			'isPostboxRequestRequired' => $is_post_box_request_required,
+		);
+	}
+
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_js_data_for_cpt_item_page_old(): array {
 		global $post;
 
 		$is_layout    = Hard_Layout_Cpt::cpt_name() === $post->post_type;
 		$is_published = 'publish' === $post->post_status;
 
 		$settings_storage = $is_layout ?
-			$this->layouts_settings_storage :
+			$this->layout_settings_storage :
 			$this->post_selections_settings_storage;
 		$settings         = $is_published ?
 			$settings_storage->get( $post->post_name ) :
@@ -106,7 +157,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 				'acf-local_acf_views_view__css-code',
 				'acf-local_acf_views_view__js-code',
 			);
-			$refresh_route             = Layouts_Cpt_Save_Actions::REST_REFRESH_ROUTE;
+			$refresh_route             = Layout_Save_Actions::REST_REFRESH_ROUTE;
 		} else {
 			$autocomplete_variables    = $is_published ?
 				$this->post_selection_factory->get_autocomplete_variables( $post->post_name ) :
@@ -117,7 +168,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 				'acf-local_acf_views_acf-card-data__js-code',
 				'acf-local_acf_views_acf-card-data__query-preview',
 			);
-			$refresh_route             = Post_Selections_Cpt_Save_Actions::REST_REFRESH_ROUTE;
+			$refresh_route             = Selection_Save_Actions::REST_REFRESH_ROUTE;
 		}
 
 		$screen = get_current_screen();

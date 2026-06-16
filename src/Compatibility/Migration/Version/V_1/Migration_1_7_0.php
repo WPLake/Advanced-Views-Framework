@@ -7,19 +7,19 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_1;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use WP_Post;
 use WP_Query;
 
 final class Migration_1_7_0 extends Version_Migration_Base {
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Layouts_Cpt_Save_Actions $layouts_cpt_save_actions;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Layout_Save_Actions $layouts_cpt_save_actions;
 
-	public function __construct( Logger $logger, Layouts_Settings_Storage $layouts_settings_storage, Layouts_Cpt_Save_Actions $layouts_cpt_save_actions ) {
+	public function __construct( Logger $logger, Layout_Settings_Storage $layouts_settings_storage, Layout_Save_Actions $layouts_cpt_save_actions ) {
 		parent::__construct( $logger );
 
 		$this->layouts_settings_storage = $layouts_settings_storage;

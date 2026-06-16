@@ -9,26 +9,26 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_View_Integration;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
 use WP_Post;
 
-class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
+class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Data_Vendors $data_vendors;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 	private Public_Cpt $public_cpt;
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Html $html,
 		Plugin $plugin,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,
 		Public_Cpt $public_cpt,
 		Plugin_Cpt $plugin_cpt
@@ -221,8 +221,8 @@ class Layouts_Cpt_Meta_Boxes extends Cpt_Meta_Boxes {
 			$url = add_query_arg(
 				array(
 					'post_type' => $this->plugin_cpt->cpt_name(),
-					Post_Selections_View_Integration::ARGUMENT_FROM => $post_id,
-					'_wpnonce'  => wp_create_nonce( Post_Selections_View_Integration::NONCE_MAKE_NEW ),
+					Selection_Layout_Integration::ARGUMENT_FROM => $post_id,
+					'_wpnonce'  => wp_create_nonce( Selection_Layout_Integration::NONCE_MAKE_NEW ),
 				),
 				admin_url( '/post-new.php' )
 			);

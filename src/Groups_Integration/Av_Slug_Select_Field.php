@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 use acf_field_select;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 if ( class_exists( 'acf_field_select' ) ) {
 	/**
@@ -21,9 +21,9 @@ if ( class_exists( 'acf_field_select' ) ) {
 	class Av_Slug_Select_Field extends acf_field_select {
 		use Safe_Array_Arguments;
 
-		private Layouts_Settings_Storage $layouts_settings_storage;
+		private Layout_Settings_Storage $layouts_settings_storage;
 
-		public function __construct( Layouts_Settings_Storage $layouts_settings_storage ) {
+		public function __construct( Layout_Settings_Storage $layouts_settings_storage ) {
 			// @phpstan-ignore-next-line
 			$this->public                   = false;
 			$this->layouts_settings_storage = $layouts_settings_storage;

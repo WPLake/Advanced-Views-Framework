@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
@@ -26,7 +26,7 @@ final class Layout_Shortcode extends Shortcode {
 	use Safe_Array_Arguments;
 
 	private Layout_Factory $layout_factory;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 	/**
 	 * Used to avoid recursion with post_object/relationship fields
 	 *
@@ -38,7 +38,7 @@ final class Layout_Shortcode extends Shortcode {
 	public function __construct(
 		Public_Cpt $public_cpt,
 		Settings $settings,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
 		Layout_Factory $layout_factory,

@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -16,7 +16,7 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
@@ -29,8 +29,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	 * @var Plugin
 	 */
 	private $plugin;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
-	private Layouts_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
 	private Layout_Factory $layout_factory;
 	private Post_Selection_Factory $post_selection_factory;
 	private Data_Vendors $data_vendors;
@@ -39,8 +39,8 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 
 	public function __construct(
 		Plugin $plugin,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
-		Layouts_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
 		Layout_Factory $layout_factory,
 		Post_Selection_Factory $post_selection_factory,
 		Data_Vendors $data_vendors,

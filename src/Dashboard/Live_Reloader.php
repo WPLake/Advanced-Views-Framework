@@ -8,10 +8,10 @@ use Exception;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -23,15 +23,15 @@ defined( 'ABSPATH' ) || exit;
 class Live_Reloader extends Hookable implements Hooks_Interface {
 	use Safe_Array_Arguments;
 
-	private Layouts_Settings_Storage $layouts_settings_storage;
-	private Post_Selections_Settings_Storage $post_selections_settings_storage;
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
 	private Layout_Shortcode $layout_shortcode;
 	private Post_Selection_Shortcode $post_selection_shortcode;
 	private int $request_post_id;
 
 	public function __construct(
-		Layouts_Settings_Storage $layouts_settings_storage,
-		Post_Selections_Settings_Storage $post_selections_settings_storage,
+		Layout_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
 		Layout_Shortcode $layout_shortcode,
 		Post_Selection_Shortcode $post_selection_shortcode
 	) {

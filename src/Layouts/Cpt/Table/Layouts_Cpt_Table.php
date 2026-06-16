@@ -4,15 +4,15 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Layouts\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -25,14 +25,14 @@ class Layouts_Cpt_Table extends Cpt_Table {
 	const COLUMN_RELATED_POST_SELECTIONS = self::COLUMN_PREFIX . 'relatedPostSelections';
 
 	private Html $html;
-	private Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes;
+	private Layout_Meta_Boxes $layouts_cpt_meta_boxes;
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Public_Cpt $public_cpt,
 		Html $html,
-		Layouts_Cpt_Meta_Boxes $layouts_cpt_meta_boxes,
+		Layout_Meta_Boxes $layouts_cpt_meta_boxes,
 		Plugin_Cpt $plugin_cpt
 	) {
 		parent::__construct( $cpt_settings_storage, $public_cpt );
@@ -42,7 +42,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		$this->plugin_cpt             = $plugin_cpt;
 	}
 
-	protected function get_views_meta_boxes(): Layouts_Cpt_Meta_Boxes {
+	protected function get_views_meta_boxes(): Layout_Meta_Boxes {
 		return $this->layouts_cpt_meta_boxes;
 	}
 

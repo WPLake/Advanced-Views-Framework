@@ -6,22 +6,22 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layouts_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selections_Settings_Storage;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use WP_Post;
 use WP_Query;
 
 class Migration_2_2_0 extends Version_Migration_Base {
-	protected Layouts_Settings_Storage $layouts_settings_storage;
-	protected Post_Selections_Settings_Storage $post_selections_settings_storage;
+	protected Layout_Settings_Storage $layouts_settings_storage;
+	protected Selection_Settings_Storage $post_selections_settings_storage;
 
-	public function __construct( Logger $logger, Layouts_Settings_Storage $layouts_settings_storage, Post_Selections_Settings_Storage $post_selections_settings_storage ) {
+	public function __construct( Logger $logger, Layout_Settings_Storage $layouts_settings_storage, Selection_Settings_Storage $post_selections_settings_storage ) {
 		parent::__construct( $logger );
 
 		$this->layouts_settings_storage         = $layouts_settings_storage;
