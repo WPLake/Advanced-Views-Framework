@@ -100,9 +100,9 @@ class Light_Gallery_Front_Asset extends View_Front_Asset {
 		$asset_url_base          = $this->get_asset_url( '' );
 		$relative_asset_url_base = Plugin::make_url_relative( $asset_url_base );
 
-		$relative_assets_url = sprintf( 'url("%s', $relative_asset_url_base );
+		$relative_assets_url = sprintf( 'url(%s', $relative_asset_url_base );
 
-		return str_replace( 'url("../', $relative_assets_url, $css_code );
+		return str_replace( 'url(../', $relative_assets_url, $css_code );
 	}
 
 	protected function print_js_code( string $var_name, Field_Settings $field_settings, Layout_Settings $layout_settings ): void {
