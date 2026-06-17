@@ -36,25 +36,11 @@ use Org\Wplake\Advanced_Views\Groups_Integration\Post_Selection_Settings_Integra
 use Org\Wplake\Advanced_Views\Groups_Integration\Tax_Field_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Box;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Tabs;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Cpt_Table;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Fs_Fields;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
-use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Options;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -64,8 +50,6 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selection_Fs_Fie
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
@@ -169,125 +153,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	}
 
 	protected function layouts(): void {
-		$field_markup  = new Field_Markup(
-			$this->data_vendors,
-			$this->front_assets,
-			$this->engines_storage
-		);
-		$layout_markup = new Layout_Markup(
-			$field_markup,
-			$this->data_vendors,
-			$this->engines_storage
-		);
-
-		$this->layout_factory          = new Layout_Factory(
-			$this->front_assets,
-			$this->layouts_settings_storage,
-			$layout_markup,
-			$this->engines_storage,
-			$field_markup,
-			$this->data_vendors
-		);
-		$this->layouts_cpt_meta_boxes  = new Layout_Meta_Boxes(
-			$this->html,
-			$this->plugin,
-			$this->layouts_settings_storage,
-			$this->data_vendors,
-			$this->layout_cpt,
-			$this->post_selection_cpt
-		);
-		$this->layouts_shortcode_block = new Shortcode_Block( $this->layout_cpt->shortcodes() );
-
-		$this->layouts_cpt_save_actions = new Layout_Save_Actions(
-			$this->logger,
-			$this->layouts_settings_storage,
-			$this->plugin,
-			$this->layout_settings,
-			$this->front_assets,
-			$layout_markup,
-			$this->layout_factory,
-			$this->layout_cpt,
-			$this->engines_storage
-		);
-
-		$this->layout_shortcode = new Layout_Shortcode(
-			$this->layout_cpt,
-			$this->settings,
-			$this->layouts_settings_storage,
-			$this->front_assets,
-			$this->live_reloader_component,
-			$this->layout_factory,
-			$this->layouts_shortcode_block
-		);
-
-		$this->layouts_cpt                 = new Layouts_Cpt( $this->layout_cpt, $this->layouts_settings_storage );
-		$this->layouts_cpt_table           = new Layouts_Cpt_Table(
-			$this->layouts_settings_storage,
-			$this->layout_cpt,
-			$this->html,
-			$this->layouts_cpt_meta_boxes,
-			$this->post_selection_cpt
-		);
-		$this->layouts_fs_only_tab         = new Fs_Only_Tab( $this->layouts_cpt_table, $this->layouts_settings_storage );
-		$this->layouts_bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
-			$this->layouts_cpt_table,
-			$this->layouts_settings_storage,
-			$this->layouts_fs_only_tab,
-			$this->layout_factory
-		);
-
-		$file_system                 = new File_System(
-			$this->logger,
-			$this->layout_cpt->folder_name(),
-			$this->plugin->get_plugin_path( 'src/pre_built' )
-		);
-		$db_management               = new Db_Management(
-			$this->logger,
-			$file_system,
-			$this->layout_cpt,
-			true
-		);
-		$layouts_settings_storage    = new Layout_Settings_Storage(
-			$this->logger,
-			$file_system,
-			new Layout_Fs_Fields(),
-			$db_management,
-			$this->layout_settings
-		);
-		$this->layouts_pre_built_tab = new Layouts_Pre_Built_Tab(
-			$this->layouts_cpt_table,
-			$this->layouts_settings_storage,
-			$layouts_settings_storage,
-			$this->data_vendors,
-			$this->version_migrator,
-			$this->logger
-		);
-
-		$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer(
-			$this->settings,
-			$this->plugin,
-			$this->layout_cpt->cpt_name()
-		);
-		$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $this->layout_cpt->cpt_name() );
-
-		$this->layouts_git_cpt_table_tabs = new Layout_Git_Tabs(
-			$this->layouts_cpt_table,
-			$this->settings,
-			$this->git_lab_api,
-			$this->group_creator->create( Layout_Settings::class ),
-			$this->layouts_settings_storage,
-			$this->version_migrator,
-			$this->data_vendors,
-			$this->logger
-		);
-		$this->layouts_git_meta_box       = new Layout_Git_Box(
-			$this->layout_cpt->cpt_name(),
-			$this->settings,
-			$this->layouts_settings_storage,
-			$this->git_lab_api,
-			$this->data_vendors,
-			$this->plugin
-		);
+		$this->layouts_loader = new Lite_Layouts_Loader( $this );
 
 		parent::layouts();
 	}
@@ -344,8 +210,8 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 
 	protected function others(): void {
 		$this->demo_import = new Demo_Import(
-			$this->selections_loader->post_selections_cpt_save_actions,
-			$this->layouts_cpt_save_actions,
+			$this->selections_loader->save_actions,
+			$this->layouts_loader->layouts_cpt_save_actions,
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
 			$this->settings,
@@ -405,13 +271,13 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->live_reloader = new Live_Reloader(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage,
-			$this->layout_shortcode,
-			$this->selections_loader->post_selection_shortcode
+			$this->layouts_loader->layout_shortcode,
+			$this->selections_loader->shortcode
 		);
 
 		$this->admin_bar = new Admin_Bar(
-			$this->layout_shortcode,
-			$this->selections_loader->post_selection_shortcode,
+			$this->layouts_loader->layout_shortcode,
+			$this->selections_loader->shortcode,
 			$this->live_reloader_component,
 			$this->settings
 		);

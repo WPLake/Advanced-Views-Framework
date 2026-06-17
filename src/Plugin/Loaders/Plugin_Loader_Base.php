@@ -48,21 +48,9 @@ use Org\Wplake\Advanced_Views\Groups_Integration\Mount_Point_Settings_Integratio
 use Org\Wplake\Advanced_Views\Groups_Integration\Post_Selection_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tax_Field_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Box;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Tabs;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Cpt_Table;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
@@ -73,8 +61,6 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 use Org\Wplake\Advanced_Views\Tools\Demo_Import;
@@ -91,8 +77,6 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	public Logger $logger;
 	public Layout_Settings_Storage $layouts_settings_storage;
 
-	public Layout_Save_Actions $layouts_cpt_save_actions;
-
 	public Templates_Environment $templates_environment;
 	public Public_Cpt $layout_cpt;
 	public Public_Cpt $post_selection_cpt;
@@ -103,21 +87,6 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	 * @var File_System[]
 	 */
 	public array $file_systems = array();
-	public Layout_Meta_Boxes $layouts_cpt_meta_boxes;
-	public Layouts_Cpt $layouts_cpt;
-	public Layouts_Cpt_Table $layouts_cpt_table;
-	public Layout_Git_Tabs $layouts_git_cpt_table_tabs;
-	public Layout_Git_Box $layouts_git_meta_box;
-	public Fs_Only_Tab $layouts_fs_only_tab;
-	public Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
-	public Layouts_Pre_Built_Tab $layouts_pre_built_tab;
-	public Cpt_Gutenberg_Editor_Settings $layout_cpt_gutenberg_editor_settings;
-
-	public Cpt_Assets_Reducer $layouts_cpt_assets_reducer;
-
-	public Layout_Shortcode $layout_shortcode;
-	public Shortcode_Block $layouts_shortcode_block;
-
 
 	public Acf_Dependency $acf_dependency;
 	public Layout_Settings_Integration $layout_settings_integration;
@@ -131,7 +100,6 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	public Tools_Settings_Integration $tools_settings_integration;
 	public Custom_Acf_Field_Types $custom_acf_field_types;
 	public Item_Settings $item_settings;
-	public Layout_Factory $layout_factory;
 	public Settings $settings;
 	public Creator $group_creator;
 	public Dashboard $dashboard;
@@ -149,12 +117,13 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 
 	public Engines_Storage $engines_storage;
 	public Selection_Settings_Storage $post_selections_settings_storage;
+	public Post_Selections_Loader_Base $selections_loader;
+	public Layouts_Loader_Base $layouts_loader;
 
 	/**
 	 * @var Plugin_Cpt[]
 	 */
 	protected array $plugin_cpts = array();
-	protected Post_Selections_Loader_Base $selections_loader;
 
 	public function load(): void {
 		$start_timestamp = microtime( true );
@@ -251,23 +220,7 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	}
 
 	protected function layouts(): void {
-		$this->add_hookable(
-			array(
-				$this->layouts_cpt_meta_boxes,
-				$this->layouts_cpt,
-				$this->layouts_cpt_table,
-				$this->layouts_fs_only_tab,
-				$this->layouts_bulk_validation_tab,
-				$this->layouts_pre_built_tab,
-				$this->layout_cpt_gutenberg_editor_settings,
-				$this->layouts_cpt_assets_reducer,
-				$this->layouts_cpt_save_actions,
-				$this->layout_shortcode,
-				$this->layouts_shortcode_block,
-				$this->layouts_git_meta_box,
-				$this->layouts_git_cpt_table_tabs,
-			)
-		);
+		$this->layouts_loader->load();
 	}
 
 	protected function post_selections(): void {
@@ -296,10 +249,10 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 			$route_detector,
 			$this->item_settings,
 			$this->layouts_settings_storage,
-			$this->layouts_cpt_save_actions,
-			$this->layout_factory,
+			$this->layouts_loader->layouts_cpt_save_actions,
+			$this->layouts_loader->layout_factory,
 			$this->group_creator->create( Repeater_Field_Settings::class ),
-			$this->layout_shortcode,
+			$this->layouts_loader->layout_shortcode,
 			$this->settings,
 			$this->layout_cpt,
 		);
@@ -324,8 +277,8 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	}
 
 	protected function bridge(): void {
-		Advanced_Views::$layout_renderer         = $this->layout_shortcode;
-		Advanced_Views::$post_selection_renderer = $this->selections_loader->post_selection_shortcode;
+		Advanced_Views::$layout_renderer         = $this->layouts_loader->layout_shortcode;
+		Advanced_Views::$post_selection_renderer = $this->selections_loader->shortcode;
 	}
 
 	protected function version_migrations(): void {
@@ -333,17 +286,37 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 			array(
 				// v1.
 				new Migration_1_6_0( $this->logger ),
-				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
+				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_loader->layouts_cpt_save_actions ),
 				// v2.
-				new Migration_2_0_0( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
-				new Migration_2_1_0( $this->logger, $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
-				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_3( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
+				new Migration_2_0_0(
+					$this->logger,
+					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->selections_loader->save_actions
+				),
+				new Migration_2_1_0(
+					$this->logger,
+					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->layouts_settings_storage
+				),
+				new Migration_2_2_0(
+					$this->logger,
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage
+				),
+				new Migration_2_2_2(
+					$this->logger,
+					$this->layouts_settings_storage,
+					$this->post_selections_settings_storage
+				),
+				new Migration_2_2_3(
+					$this->logger,
+					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->selections_loader->save_actions
+				),
 				new Migration_2_3_0( $this->logger, $this->templates_environment ),
 				new Migration_2_4_0(
 					$this->logger,
-					$this->layouts_cpt_save_actions,
+					$this->layouts_loader->layouts_cpt_save_actions,
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage
 				),

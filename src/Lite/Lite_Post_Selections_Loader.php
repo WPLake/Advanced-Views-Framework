@@ -34,21 +34,21 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 	public function __construct( Lite_Plugin_Loader $base ) {
 		parent::__construct();
 
-		$query_builder                          = new Selection_Query_Builder( $base->data_vendors );
-		$post_query                             = new Post_Query( $query_builder, $base->logger );
-		$post_selection_markup                  = new Post_Selection_Markup(
+		$query_builder         = new Selection_Query_Builder( $base->data_vendors );
+		$post_query            = new Post_Query( $query_builder, $base->logger );
+		$post_selection_markup = new Post_Selection_Markup(
 			$base->front_assets,
 			$base->engines_storage,
 			$base->layout_cpt
 		);
-		$this->post_selection_factory           = new Post_Selection_Factory(
+		$this->factory         = new Post_Selection_Factory(
 			$base->front_assets,
 			$post_query,
 			$post_selection_markup,
 			$base->engines_storage,
 			$base->post_selections_settings_storage
 		);
-		$this->post_selections_cpt_meta_boxes   = new Selection_Meta_Boxes(
+		$this->meta_boxes      = new Selection_Meta_Boxes(
 			$base->html,
 			$base->plugin,
 			$base->post_selections_settings_storage,
@@ -56,7 +56,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->post_selection_cpt,
 			$base->layout_cpt
 		);
-		$this->post_selections_cpt_save_actions = new Selection_Save_Actions(
+		$this->save_actions    = new Selection_Save_Actions(
 			$base->logger,
 			$base->post_selections_settings_storage,
 			$base->plugin,
@@ -69,93 +69,93 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->engines_storage
 		);
 
-		$this->post_selections_cpt                 = new Post_Selections_Cpt(
+		$this->cpt                 = new Post_Selections_Cpt(
 			$base->post_selection_cpt,
 			$base->post_selections_settings_storage
 		);
-		$this->post_selections_cpt_table           = new Post_Selections_Table(
+		$this->cpt_table           = new Post_Selections_Table(
 			$base->post_selections_settings_storage,
 			$base->post_selection_cpt,
 			$base->html,
-			$this->post_selections_cpt_meta_boxes,
+			$this->meta_boxes,
 			$base->layout_cpt
 		);
-		$this->post_selections_fs_only_tab         = new Fs_Only_Tab(
-			$this->post_selections_cpt_table,
+		$this->fs_only_tab         = new Fs_Only_Tab(
+			$this->cpt_table,
 			$base->post_selections_settings_storage
 		);
-		$this->post_selections_bulk_validation_tab = new Post_Selections_Bulk_Validation_Tab(
-			$this->post_selections_cpt_table,
+		$this->bulk_validation_tab = new Post_Selections_Bulk_Validation_Tab(
+			$this->cpt_table,
 			$base->post_selections_settings_storage,
-			$this->post_selections_fs_only_tab,
+			$this->fs_only_tab,
 			$base->post_selection_factory
 		);
 
-		$file_system                         = new File_System(
+		$file_system                      = new File_System(
 			$base->logger,
 			$base->post_selection_cpt->folder_name(),
 			$base->plugin->get_plugin_path( 'src/pre_built' )
 		);
-		$db_management                       = new Db_Management(
+		$db_management                    = new Db_Management(
 			$base->logger,
 			$file_system,
 			$base->post_selection_cpt,
 			true
 		);
-		$post_selections_settings_storage    = new Selection_Settings_Storage(
+		$post_selections_settings_storage = new Selection_Settings_Storage(
 			$base->logger,
 			$file_system,
 			new Post_Selection_Fs_Fields(),
 			$db_management,
 			$base->post_selection_settings
 		);
-		$this->post_selections_pre_built_tab = new Post_Selections_Pre_Built_Tab(
-			$this->post_selections_cpt_table,
+		$this->pre_built_tab              = new Post_Selections_Pre_Built_Tab(
+			$this->cpt_table,
 			$base->post_selections_settings_storage,
 			$post_selections_settings_storage,
 			$base->data_vendors,
 			$base->version_migrator,
 			$base->logger,
-			$base->layouts_pre_built_tab
+			$base->layouts_loader->layouts_pre_built_tab
 		);
 
-		$this->post_selection_git_tabs     = new Selection_Git_Tabs(
-			$this->post_selections_cpt_table,
+		$this->git_tabs = new Selection_Git_Tabs(
+			$this->cpt_table,
 			$base->settings,
 			$base->git_lab_api,
 			$base->group_creator->create( Post_Selection_Settings::class ),
 			$base->post_selections_settings_storage,
 			$base->version_migrator,
-			$base->layouts_git_cpt_table_tabs,
+			$base->layouts_loader->layouts_git_cpt_table_tabs,
 			$base->data_vendors,
 			$base->logger
 		);
-		$this->post_selection_git_meta_box = new Selection_Git_Box(
+		$this->git_box  = new Selection_Git_Box(
 			$base->post_selection_cpt->cpt_name(),
 			$base->settings,
 			$base->post_selections_settings_storage,
 			$base->git_lab_api,
 			$base->layouts_settings_storage,
-			$base->layouts_git_meta_box,
+			$base->layouts_loader->layouts_git_meta_box,
 			$base->plugin
 		);
 
-		$this->post_selections_cpt_assets_reducer           = new Cpt_Assets_Reducer(
+		$this->cpt_assets_reducer            = new Cpt_Assets_Reducer(
 			$base->settings,
 			$base->plugin,
 			$base->post_selection_cpt->cpt_name()
 		);
-		$this->post_selection_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings(
+		$this->cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings(
 			$base->post_selection_cpt->cpt_name()
 		);
 
-		$this->post_selections_view_integration = new Selection_Layout_Integration(
+		$this->layout_integration = new Selection_Layout_Integration(
 			$base->post_selections_settings_storage,
 			$base->layouts_settings_storage,
-			$this->post_selections_cpt_save_actions,
+			$this->save_actions,
 			$base->settings
 		);
-		$this->post_selection_shortcode         = new Post_Selection_Shortcode(
+		$this->shortcode          = new Post_Selection_Shortcode(
 			$base->post_selection_cpt,
 			$base->settings,
 			$base->post_selections_settings_storage,

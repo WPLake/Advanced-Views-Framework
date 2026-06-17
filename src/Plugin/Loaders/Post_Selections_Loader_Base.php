@@ -27,21 +27,20 @@ use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 abstract class Post_Selections_Loader_Base extends Module_Loader {
-	// fixme rename me to shorter
-	public Cpt_Assets_Reducer $post_selections_cpt_assets_reducer;
-	public Cpt_Gutenberg_Editor_Settings $post_selection_cpt_gutenberg_editor_settings;
-	public Post_Selections_Table $post_selections_cpt_table;
-	public Post_Selections_Cpt $post_selections_cpt;
-	public Fs_Only_Tab $post_selections_fs_only_tab;
-	public Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
-	public Post_Selections_Bulk_Validation_Tab $post_selections_bulk_validation_tab;
-	public Post_Selections_Pre_Built_Tab $post_selections_pre_built_tab;
-	public Selection_Layout_Integration $post_selections_view_integration;
-	public Post_Selection_Shortcode $post_selection_shortcode;
-	public Selection_Save_Actions $post_selections_cpt_save_actions;
-	public Selection_Git_Tabs $post_selection_git_tabs;
-	public Selection_Git_Box $post_selection_git_meta_box;
-	public Post_Selection_Factory $post_selection_factory;
+	public Cpt_Assets_Reducer $cpt_assets_reducer;
+	public Cpt_Gutenberg_Editor_Settings $cpt_gutenberg_editor_settings;
+	public Post_Selections_Table $cpt_table;
+	public Post_Selections_Cpt $cpt;
+	public Fs_Only_Tab $fs_only_tab;
+	public Selection_Meta_Boxes $meta_boxes;
+	public Post_Selections_Bulk_Validation_Tab $bulk_validation_tab;
+	public Post_Selections_Pre_Built_Tab $pre_built_tab;
+	public Selection_Layout_Integration $layout_integration;
+	public Post_Selection_Shortcode $shortcode;
+	public Selection_Save_Actions $save_actions;
+	public Selection_Git_Tabs $git_tabs;
+	public Selection_Git_Box $git_box;
+	public Post_Selection_Factory $factory;
 
 	public static function make_post_selection_cpt(): Public_Cpt {
 		$public_cpt_base = new Public_Cpt_Base();
@@ -70,19 +69,19 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public function load(): void {
 		$this->add_hookable(
 			array(
-				$this->post_selections_cpt,
-				$this->post_selections_cpt_table,
-				$this->post_selections_fs_only_tab,
-				$this->post_selections_bulk_validation_tab,
-				$this->post_selections_pre_built_tab,
-				$this->post_selections_cpt_assets_reducer,
-				$this->post_selection_cpt_gutenberg_editor_settings,
-				$this->post_selections_cpt_meta_boxes,
-				$this->post_selections_cpt_save_actions,
-				$this->post_selections_view_integration,
-				$this->post_selection_shortcode,
-				$this->post_selection_git_tabs,
-				$this->post_selection_git_meta_box,
+				$this->cpt,
+				$this->cpt_table,
+				$this->fs_only_tab,
+				$this->bulk_validation_tab,
+				$this->pre_built_tab,
+				$this->cpt_assets_reducer,
+				$this->cpt_gutenberg_editor_settings,
+				$this->meta_boxes,
+				$this->save_actions,
+				$this->layout_integration,
+				$this->shortcode,
+				$this->git_tabs,
+				$this->git_box,
 			)
 		);
 
