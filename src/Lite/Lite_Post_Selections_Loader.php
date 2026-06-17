@@ -46,26 +46,24 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$post_query,
 			$post_selection_markup,
 			$base->engines_storage,
-			$this->post_selections_settings_storage
+			$base->post_selections_settings_storage
 		);
 		$this->post_selections_cpt_meta_boxes   = new Selection_Meta_Boxes(
 			$base->html,
 			$base->plugin,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->layouts_settings_storage,
 			$base->post_selection_cpt,
 			$base->layout_cpt
 		);
 		$this->post_selections_cpt_save_actions = new Selection_Save_Actions(
 			$base->logger,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->plugin,
 			$base->post_selection_settings,
 			$base->front_assets,
 			$post_selection_markup,
 			$query_builder,
-			$base->html,
-			$this->post_selections_cpt_meta_boxes,
 			$base->post_selection_factory,
 			$base->post_selection_cpt,
 			$base->engines_storage
@@ -73,10 +71,10 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 
 		$this->post_selections_cpt                 = new Post_Selections_Cpt(
 			$base->post_selection_cpt,
-			$this->post_selections_settings_storage
+			$base->post_selections_settings_storage
 		);
 		$this->post_selections_cpt_table           = new Post_Selections_Table(
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->post_selection_cpt,
 			$base->html,
 			$this->post_selections_cpt_meta_boxes,
@@ -84,11 +82,11 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		);
 		$this->post_selections_fs_only_tab         = new Fs_Only_Tab(
 			$this->post_selections_cpt_table,
-			$this->post_selections_settings_storage
+			$base->post_selections_settings_storage
 		);
 		$this->post_selections_bulk_validation_tab = new Post_Selections_Bulk_Validation_Tab(
 			$this->post_selections_cpt_table,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$this->post_selections_fs_only_tab,
 			$base->post_selection_factory
 		);
@@ -113,7 +111,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		);
 		$this->post_selections_pre_built_tab = new Post_Selections_Pre_Built_Tab(
 			$this->post_selections_cpt_table,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$post_selections_settings_storage,
 			$base->data_vendors,
 			$base->version_migrator,
@@ -126,7 +124,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->settings,
 			$base->git_lab_api,
 			$base->group_creator->create( Post_Selection_Settings::class ),
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->version_migrator,
 			$base->layouts_git_cpt_table_tabs,
 			$base->data_vendors,
@@ -135,7 +133,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		$this->post_selection_git_meta_box = new Selection_Git_Box(
 			$base->post_selection_cpt->cpt_name(),
 			$base->settings,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->git_lab_api,
 			$base->layouts_settings_storage,
 			$base->layouts_git_meta_box,
@@ -152,7 +150,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		);
 
 		$this->post_selections_view_integration = new Selection_Layout_Integration(
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->layouts_settings_storage,
 			$this->post_selections_cpt_save_actions,
 			$base->settings
@@ -160,7 +158,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		$this->post_selection_shortcode         = new Post_Selection_Shortcode(
 			$base->post_selection_cpt,
 			$base->settings,
-			$this->post_selections_settings_storage,
+			$base->post_selections_settings_storage,
 			$base->front_assets,
 			$base->live_reloader_component,
 			$base->post_selection_factory

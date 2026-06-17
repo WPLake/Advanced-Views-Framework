@@ -10,7 +10,6 @@ use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
@@ -24,11 +23,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 
 class Layout_Save_Actions extends Cpt_Save_Actions {
-
-
 	private Layout_Markup $layout_markup;
-	private Layout_Meta_Boxes $layouts_cpt_meta_boxes;
-	private Html $html;
 	private Layout_Settings $layout_settings;
 	private Layout_Factory $layout_factory;
 	private Layout_Settings_Storage $layouts_settings_storage;
@@ -40,8 +35,6 @@ class Layout_Save_Actions extends Cpt_Save_Actions {
 		Layout_Settings $layout_settings,
 		Front_Assets $front_assets,
 		Layout_Markup $layout_markup,
-		Layout_Meta_Boxes $layouts_cpt_meta_boxes,
-		Html $html,
 		Layout_Factory $layout_factory,
 		Public_Cpt $public_cpt,
 		Engines_Storage $engines_storage
@@ -62,8 +55,6 @@ class Layout_Save_Actions extends Cpt_Save_Actions {
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->layout_settings          = $layout_settings;
 		$this->layout_markup            = $layout_markup;
-		$this->layouts_cpt_meta_boxes   = $layouts_cpt_meta_boxes;
-		$this->html                     = $html;
 		$this->layout_factory           = $layout_factory;
 	}
 

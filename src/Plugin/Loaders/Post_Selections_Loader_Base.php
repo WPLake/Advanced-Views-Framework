@@ -23,11 +23,11 @@ use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Table;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 abstract class Post_Selections_Loader_Base extends Module_Loader {
+	// fixme rename me to shorter
 	public Cpt_Assets_Reducer $post_selections_cpt_assets_reducer;
 	public Cpt_Gutenberg_Editor_Settings $post_selection_cpt_gutenberg_editor_settings;
 	public Post_Selections_Table $post_selections_cpt_table;
@@ -38,7 +38,6 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Post_Selections_Pre_Built_Tab $post_selections_pre_built_tab;
 	public Selection_Layout_Integration $post_selections_view_integration;
 	public Post_Selection_Shortcode $post_selection_shortcode;
-	public Selection_Settings_Storage $post_selections_settings_storage;
 	public Selection_Save_Actions $post_selections_cpt_save_actions;
 	public Selection_Git_Tabs $post_selection_git_tabs;
 	public Selection_Git_Box $post_selection_git_meta_box;

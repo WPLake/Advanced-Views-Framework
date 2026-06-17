@@ -6,18 +6,12 @@ namespace Org\Wplake\Advanced_Views\Assets;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 class Admin_Assets extends Hookable implements Hooks_Interface {
@@ -25,32 +19,14 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	 * @var Plugin
 	 */
 	private $plugin;
-	private Selection_Settings_Storage $post_selections_settings_storage;
-	private Layout_Settings_Storage $layouts_settings_storage;
-	private Layout_Factory $layout_factory;
-	private Post_Selection_Factory $post_selection_factory;
-	private Data_Vendors $data_vendors;
-	private Settings $settings;
-	private Engines_Storage $engines_storage;
+	private Cpt_Interactive_Fields $interactive_fields;
 
 	public function __construct(
 		Plugin $plugin,
-		Selection_Settings_Storage $post_selections_settings_storage,
-		Layout_Settings_Storage $layouts_settings_storage,
-		Layout_Factory $layout_factory,
-		Post_Selection_Factory $post_selection_factory,
-		Data_Vendors $data_vendors,
-		Settings $settings,
-		Engines_Storage $engines_storage
+		Cpt_Interactive_Fields $cpt_interactive_fields
 	) {
-		$this->plugin                           = $plugin;
-		$this->post_selections_settings_storage = $post_selections_settings_storage;
-		$this->layouts_settings_storage         = $layouts_settings_storage;
-		$this->layout_factory                   = $layout_factory;
-		$this->post_selection_factory           = $post_selection_factory;
-		$this->data_vendors                     = $data_vendors;
-		$this->settings                         = $settings;
-		$this->engines_storage                  = $engines_storage;
+		$this->plugin             = $plugin;
+		$this->interactive_fields = $cpt_interactive_fields;
 	}
 
 	public function enqueue_admin_scripts(): void {
@@ -85,9 +61,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		self::add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
 	}
-
-
-
 
 
 	protected function enqueue_code_editor(): void {
@@ -132,7 +105,7 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		switch ( $current_base ) {
 			// add, edit pages.
 			case 'post':
-				$js_data = array_merge_recursive( $js_data, $this->get_js_data_for_cpt_item_page() );
+				$js_data = array_merge_recursive( $js_data, $this->interactive_fields->get_page_js_data() );
 
 				$this->enqueue_code_editor();
 

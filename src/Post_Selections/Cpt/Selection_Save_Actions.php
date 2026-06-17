@@ -10,7 +10,6 @@ use Exception;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Save_Actions;
 use Org\Wplake\Advanced_Views\Parents\Instance;
@@ -27,8 +26,6 @@ class Selection_Save_Actions extends Cpt_Save_Actions {
 
 	private Post_Selection_Markup $post_selection_markup;
 	private Post_Query_Builder $query_builder;
-	private Html $html;
-	private Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
 	private Post_Selection_Factory $post_selection_factory;
 	/**
 	 * @var Post_Selection_Settings
@@ -44,8 +41,6 @@ class Selection_Save_Actions extends Cpt_Save_Actions {
 		Front_Assets $front_assets,
 		Post_Selection_Markup $post_selection_markup,
 		Post_Query_Builder $query_builder,
-		Html $html,
-		Selection_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Post_Selection_Factory $post_selection_factory,
 		Public_Cpt $public_cpt,
 		Engines_Storage $engines_storage
@@ -63,13 +58,11 @@ class Selection_Save_Actions extends Cpt_Save_Actions {
 			$engines_storage
 		);
 
-		$this->selection_settings_storage     = $post_selections_settings_storage;
-		$this->post_selection_settings        = $post_selection_settings;
-		$this->post_selection_markup          = $post_selection_markup;
-		$this->query_builder                  = $query_builder;
-		$this->html                           = $html;
-		$this->post_selections_cpt_meta_boxes = $post_selections_cpt_meta_boxes;
-		$this->post_selection_factory         = $post_selection_factory;
+		$this->selection_settings_storage = $post_selections_settings_storage;
+		$this->post_selection_settings    = $post_selection_settings;
+		$this->post_selection_markup      = $post_selection_markup;
+		$this->query_builder              = $query_builder;
+		$this->post_selection_factory     = $post_selection_factory;
 	}
 
 	protected function get_cpt_name(): string {

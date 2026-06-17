@@ -71,6 +71,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
+use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
@@ -147,6 +148,7 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	public Git_Lab_Api $git_lab_api;
 
 	public Engines_Storage $engines_storage;
+	public Selection_Settings_Storage $post_selections_settings_storage;
 
 	/**
 	 * @var Plugin_Cpt[]
@@ -335,36 +337,36 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 				// v2.
 				new Migration_2_0_0( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
 				new Migration_2_1_0( $this->logger, $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
-				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
-				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
+				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_2_2_3( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
 				new Migration_2_3_0( $this->logger, $this->templates_environment ),
 				new Migration_2_4_0(
 					$this->logger,
 					$this->layouts_cpt_save_actions,
 					$this->layouts_settings_storage,
-					$this->selections_loader->post_selections_settings_storage
+					$this->post_selections_settings_storage
 				),
 				new Migration_2_4_2( $this->logger, $this->layouts_settings_storage ),
 				new Migration_2_4_5( $this->logger, $this->layouts_settings_storage ),
 				// v3.
-				new Migration_3_0_0( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
+				new Migration_3_0_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
 				new Migration_3_3_0(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->selections_loader->post_selections_settings_storage,
+					$this->post_selections_settings_storage,
 				),
 				new Migration_3_8_0(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->selections_loader->post_selections_settings_storage,
+					$this->post_selections_settings_storage,
 					$this->layout_cpt,
 					$this->post_selection_cpt
 				),
 				new Migration_3_8_9(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->selections_loader->post_selections_settings_storage,
+					$this->post_selections_settings_storage,
 				),
 			)
 		);

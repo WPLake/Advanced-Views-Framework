@@ -205,8 +205,6 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->layout_settings,
 			$this->front_assets,
 			$layout_markup,
-			$this->layouts_cpt_meta_boxes,
-			$this->html,
 			$this->layout_factory,
 			$this->layout_cpt,
 			$this->engines_storage
@@ -295,7 +293,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	}
 
 	protected function post_selections(): void {
-		$this->selection_loader = new Lite_Post_Selections_Loader( $this );
+		$this->selections_loader = new Lite_Post_Selections_Loader( $this );
 
 		parent::post_selections();
 	}
@@ -337,7 +335,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		);
 		$this->tools_settings_integration             = new Tools_Settings_Integration(
 			$this->layouts_settings_storage,
-			$this->selections_loader->post_selections_settings_storage
+			$this->post_selections_settings_storage
 		);
 		$this->custom_acf_field_types                 = new Custom_Acf_Field_Types( $this->layouts_settings_storage );
 
@@ -348,7 +346,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->demo_import = new Demo_Import(
 			$this->selections_loader->post_selections_cpt_save_actions,
 			$this->layouts_cpt_save_actions,
-			$this->selections_loader->post_selections_settings_storage,
+			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
 			$this->settings,
 			$this->item_settings
@@ -367,11 +365,11 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$tools_settings,
 			$this->logger,
 			$this->layouts_settings_storage,
-			$this->selections_loader->post_selections_settings_storage
+			$this->post_selections_settings_storage
 		);
 		$this->tools        = new Tools(
 			$tools_settings,
-			$this->selections_loader->post_selections_settings_storage,
+			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
 			$this->plugin,
 			$this->logger,
@@ -394,25 +392,19 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			new Plugin_Settings( $this->group_creator ),
 			$this->settings,
 			$this->layouts_settings_storage,
-			$this->selections_loader->post_selections_settings_storage,
+			$this->post_selections_settings_storage,
 			$this->group_creator->create( Git_Repository::class ),
 			$this->automatic_reports
 		);
 
 		$this->admin_assets = new Admin_Assets(
 			$this->plugin,
-			$this->selections_loader->post_selections_settings_storage,
-			$this->layouts_settings_storage,
-			$this->layout_factory,
-			$this->post_selection_factory,
-			$this->data_vendors,
-			$this->settings,
-			$this->engines_storage
+			null // fixme
 		);
 
 		$this->live_reloader = new Live_Reloader(
 			$this->layouts_settings_storage,
-			$this->selections_loader->post_selections_settings_storage,
+			$this->post_selections_settings_storage,
 			$this->layout_shortcode,
 			$this->selections_loader->post_selection_shortcode
 		);
@@ -426,7 +418,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 
 		$this->mount_points = new Mount_Points(
 			$this->layouts_settings_storage,
-			$this->selections_loader->post_selections_settings_storage,
+			$this->post_selections_settings_storage,
 			$this->layout_cpt,
 			$this->post_selection_cpt
 		);
@@ -441,7 +433,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->settings,
 			$this->plugin,
 			$this->file_systems,
-			array( $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage )
+			array( $this->layouts_settings_storage, $this->post_selections_settings_storage )
 		);
 
 		parent::environment();

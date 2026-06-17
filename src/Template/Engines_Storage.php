@@ -133,6 +133,9 @@ class Engines_Storage {
 		return $instance;
 	}
 
+	/**
+	 * @return Template_Integration[]
+	 */
 	protected function make_integrations(): array {
 		return array(
 			self::TWIG  => new Twig_Integration(),
