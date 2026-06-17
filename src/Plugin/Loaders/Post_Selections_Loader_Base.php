@@ -17,6 +17,7 @@ use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
@@ -41,6 +42,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Selection_Git_Tabs $git_tabs;
 	public Selection_Git_Box $git_box;
 	public Post_Selection_Factory $factory;
+	public Selection_Interactive_Fields $interactive_fields;
 
 	public static function make_post_selection_cpt(): Public_Cpt {
 		$public_cpt_base = new Public_Cpt_Base();
@@ -82,6 +84,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 				$this->shortcode,
 				$this->git_tabs,
 				$this->git_box,
+				$this->interactive_fields,
 			)
 		);
 

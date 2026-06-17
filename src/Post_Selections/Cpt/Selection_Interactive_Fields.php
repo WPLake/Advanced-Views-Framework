@@ -13,6 +13,7 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
@@ -32,12 +33,13 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 	public function __construct(
 		Public_Cpt $public_cpt,
 		Html $html,
+		Plugin $plugin,
 		Selection_Settings_Storage $selections_settings_storage,
 		Post_Selection_Markup $selection_markup,
 		Post_Selection_Factory $selection_factory,
 		Selection_Meta_Boxes $selection_meta_boxes
 	) {
-		parent::__construct( $public_cpt, $html );
+		parent::__construct( $public_cpt, $html, $plugin, $selection_factory );
 
 		$this->selection_settings_storage = $selections_settings_storage;
 		$this->selection_markup           = $selection_markup;

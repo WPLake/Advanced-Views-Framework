@@ -16,6 +16,7 @@ use Org\Wplake\Advanced_Views\Plugin\Loaders\Post_Selections_Loader_Base;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
@@ -116,7 +117,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->data_vendors,
 			$base->version_migrator,
 			$base->logger,
-			$base->layouts_loader->layouts_pre_built_tab
+			$base->layouts_loader->pre_built_tab
 		);
 
 		$this->git_tabs = new Selection_Git_Tabs(
@@ -126,7 +127,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->group_creator->create( Post_Selection_Settings::class ),
 			$base->post_selections_settings_storage,
 			$base->version_migrator,
-			$base->layouts_loader->layouts_git_cpt_table_tabs,
+			$base->layouts_loader->git_tabs,
 			$base->data_vendors,
 			$base->logger
 		);
@@ -136,7 +137,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->post_selections_settings_storage,
 			$base->git_lab_api,
 			$base->layouts_settings_storage,
-			$base->layouts_loader->layouts_git_meta_box,
+			$base->layouts_loader->git_box,
 			$base->plugin
 		);
 
@@ -162,6 +163,16 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->front_assets,
 			$base->live_reloader_component,
 			$base->post_selection_factory
+		);
+
+		$this->interactive_fields = new Selection_Interactive_Fields(
+			$base->post_selection_cpt,
+			$base->html,
+			$base->plugin,
+			$base->post_selections_settings_storage,
+			$post_selection_markup,
+			$this->factory,
+			$this->meta_boxes
 		);
 	}
 }

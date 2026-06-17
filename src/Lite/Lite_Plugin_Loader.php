@@ -211,7 +211,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	protected function others(): void {
 		$this->demo_import = new Demo_Import(
 			$this->selections_loader->save_actions,
-			$this->layouts_loader->layouts_cpt_save_actions,
+			$this->layouts_loader->save_actions,
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
 			$this->settings,
@@ -271,12 +271,12 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->live_reloader = new Live_Reloader(
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage,
-			$this->layouts_loader->layout_shortcode,
+			$this->layouts_loader->shortcode,
 			$this->selections_loader->shortcode
 		);
 
 		$this->admin_bar = new Admin_Bar(
-			$this->layouts_loader->layout_shortcode,
+			$this->layouts_loader->shortcode,
 			$this->selections_loader->shortcode,
 			$this->live_reloader_component,
 			$this->settings

@@ -249,10 +249,10 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 			$route_detector,
 			$this->item_settings,
 			$this->layouts_settings_storage,
-			$this->layouts_loader->layouts_cpt_save_actions,
-			$this->layouts_loader->layout_factory,
+			$this->layouts_loader->save_actions,
+			$this->layouts_loader->factory,
 			$this->group_creator->create( Repeater_Field_Settings::class ),
-			$this->layouts_loader->layout_shortcode,
+			$this->layouts_loader->shortcode,
 			$this->settings,
 			$this->layout_cpt,
 		);
@@ -277,7 +277,7 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 	}
 
 	protected function bridge(): void {
-		Advanced_Views::$layout_renderer         = $this->layouts_loader->layout_shortcode;
+		Advanced_Views::$layout_renderer         = $this->layouts_loader->shortcode;
 		Advanced_Views::$post_selection_renderer = $this->selections_loader->shortcode;
 	}
 
@@ -286,16 +286,16 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 			array(
 				// v1.
 				new Migration_1_6_0( $this->logger ),
-				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_loader->layouts_cpt_save_actions ),
+				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_loader->save_actions ),
 				// v2.
 				new Migration_2_0_0(
 					$this->logger,
-					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->layouts_loader->save_actions,
 					$this->selections_loader->save_actions
 				),
 				new Migration_2_1_0(
 					$this->logger,
-					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->layouts_loader->save_actions,
 					$this->layouts_settings_storage
 				),
 				new Migration_2_2_0(
@@ -310,13 +310,13 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 				),
 				new Migration_2_2_3(
 					$this->logger,
-					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->layouts_loader->save_actions,
 					$this->selections_loader->save_actions
 				),
 				new Migration_2_3_0( $this->logger, $this->templates_environment ),
 				new Migration_2_4_0(
 					$this->logger,
-					$this->layouts_loader->layouts_cpt_save_actions,
+					$this->layouts_loader->save_actions,
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage
 				),

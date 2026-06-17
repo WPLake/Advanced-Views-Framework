@@ -17,6 +17,7 @@ use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Markup;
 use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use WP_Post;
@@ -32,12 +33,13 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 	public function __construct(
 		Public_Cpt $public_cpt,
 		Html $html,
+		Plugin $plugin,
 		Layout_Settings_Storage $layout_settings_storage,
 		Layout_Factory $layout_factory,
 		Layout_Markup $layout_markup,
 		Layout_Meta_Boxes $layout_meta_boxes
 	) {
-		parent::__construct( $public_cpt, $html );
+		parent::__construct( $public_cpt, $html, $plugin, $layout_factory );
 
 		$this->layout_settings_storage = $layout_settings_storage;
 		$this->layout_factory          = $layout_factory;
@@ -209,7 +211,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 			return $js_data;
 		}
 
-		$view_data       = $this->layouts_settings_storage->get( $post->post_name );
+		$view_data       = $this->layout_settings_storage->get( $post->post_name );
 		$preview_post_id = $view_data->preview_post;
 
 		if ( 0 !== $preview_post_id ) {

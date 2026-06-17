@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Box;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Git_Tabs;
+use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
 use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
@@ -44,7 +45,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->engines_storage
 		);
 
-		$this->layout_factory          = new Layout_Factory(
+		$this->factory         = new Layout_Factory(
 			$base->front_assets,
 			$base->layouts_settings_storage,
 			$layout_markup,
@@ -52,7 +53,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$field_markup,
 			$base->data_vendors
 		);
-		$this->layouts_cpt_meta_boxes  = new Layout_Meta_Boxes(
+		$this->cpt_meta_boxes  = new Layout_Meta_Boxes(
 			$base->html,
 			$base->plugin,
 			$base->layouts_settings_storage,
@@ -60,66 +61,66 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->layout_cpt,
 			$base->post_selection_cpt
 		);
-		$this->layouts_shortcode_block = new Shortcode_Block( $base->layout_cpt->shortcodes() );
+		$this->shortcode_block = new Shortcode_Block( $base->layout_cpt->shortcodes() );
 
-		$this->layouts_cpt_save_actions = new Layout_Save_Actions(
+		$this->save_actions = new Layout_Save_Actions(
 			$base->logger,
 			$base->layouts_settings_storage,
 			$base->plugin,
 			$base->layout_settings,
 			$base->front_assets,
 			$layout_markup,
-			$this->layout_factory,
+			$this->factory,
 			$base->layout_cpt,
 			$base->engines_storage
 		);
 
-		$this->layout_shortcode = new Layout_Shortcode(
+		$this->shortcode = new Layout_Shortcode(
 			$base->layout_cpt,
 			$base->settings,
 			$base->layouts_settings_storage,
 			$base->front_assets,
 			$base->live_reloader_component,
-			$this->layout_factory,
-			$this->layouts_shortcode_block
+			$this->factory,
+			$this->shortcode_block
 		);
 
-		$this->layouts_cpt                 = new Layouts_Cpt( $base->layout_cpt, $base->layouts_settings_storage );
-		$this->layouts_cpt_table           = new Layouts_Cpt_Table(
+		$this->cpt                 = new Layouts_Cpt( $base->layout_cpt, $base->layouts_settings_storage );
+		$this->cpt_table           = new Layouts_Cpt_Table(
 			$base->layouts_settings_storage,
 			$base->layout_cpt,
 			$base->html,
-			$this->layouts_cpt_meta_boxes,
+			$this->cpt_meta_boxes,
 			$base->post_selection_cpt
 		);
-		$this->layouts_fs_only_tab         = new Fs_Only_Tab( $this->layouts_cpt_table, $base->layouts_settings_storage );
-		$this->layouts_bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
-			$this->layouts_cpt_table,
+		$this->fs_only_tab         = new Fs_Only_Tab( $this->cpt_table, $base->layouts_settings_storage );
+		$this->bulk_validation_tab = new Layouts_Bulk_Validation_Tab(
+			$this->cpt_table,
 			$base->layouts_settings_storage,
-			$this->layouts_fs_only_tab,
-			$this->layout_factory
+			$this->fs_only_tab,
+			$this->factory
 		);
 
-		$file_system                 = new File_System(
+		$file_system              = new File_System(
 			$base->logger,
 			$base->layout_cpt->folder_name(),
 			$base->plugin->get_plugin_path( 'src/pre_built' )
 		);
-		$db_management               = new Db_Management(
+		$db_management            = new Db_Management(
 			$base->logger,
 			$file_system,
 			$base->layout_cpt,
 			true
 		);
-		$layouts_settings_storage    = new Layout_Settings_Storage(
+		$layouts_settings_storage = new Layout_Settings_Storage(
 			$base->logger,
 			$file_system,
 			new Layout_Fs_Fields(),
 			$db_management,
 			$base->layout_settings
 		);
-		$this->layouts_pre_built_tab = new Layouts_Pre_Built_Tab(
-			$this->layouts_cpt_table,
+		$this->pre_built_tab      = new Layouts_Pre_Built_Tab(
+			$this->cpt_table,
 			$base->layouts_settings_storage,
 			$layouts_settings_storage,
 			$base->data_vendors,
@@ -127,15 +128,15 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->logger
 		);
 
-		$this->layouts_cpt_assets_reducer           = new Cpt_Assets_Reducer(
+		$this->cpt_assets_reducer            = new Cpt_Assets_Reducer(
 			$base->settings,
 			$base->plugin,
 			$base->layout_cpt->cpt_name()
 		);
-		$this->layout_cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $base->layout_cpt->cpt_name() );
+		$this->cpt_gutenberg_editor_settings = new Cpt_Gutenberg_Editor_Settings( $base->layout_cpt->cpt_name() );
 
-		$this->layouts_git_cpt_table_tabs = new Layout_Git_Tabs(
-			$this->layouts_cpt_table,
+		$this->git_tabs = new Layout_Git_Tabs(
+			$this->cpt_table,
 			$base->settings,
 			$base->git_lab_api,
 			$base->group_creator->create( Layout_Settings::class ),
@@ -144,13 +145,23 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->data_vendors,
 			$base->logger
 		);
-		$this->layouts_git_meta_box       = new Layout_Git_Box(
+		$this->git_box  = new Layout_Git_Box(
 			$base->layout_cpt->cpt_name(),
 			$base->settings,
 			$base->layouts_settings_storage,
 			$base->git_lab_api,
 			$base->data_vendors,
 			$base->plugin
+		);
+
+		$this->interactive_fields = new Layout_Interactive_Fields(
+			$base->layout_cpt,
+			$base->html,
+			$base->plugin,
+			$base->layouts_settings_storage,
+			$this->factory,
+			$layout_markup,
+			$this->cpt_meta_boxes
 		);
 	}
 }
