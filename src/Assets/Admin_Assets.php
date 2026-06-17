@@ -7,10 +7,8 @@ namespace Org\Wplake\Advanced_Views\Assets;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Layouts\Source;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
@@ -18,11 +16,9 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 class Admin_Assets extends Hookable implements Hooks_Interface {
 	/**
@@ -90,96 +86,9 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_styles' ) );
 	}
 
-	/**
-	 * @return array<string,string>
-	 */
-	protected function get_layout_preview_js_data(): array {
-		$js_data = array(
-			'HTML' => '',
-			'CSS'  => '',
-		);
 
-		global $post;
 
-		if ( ! $this->plugin->is_cpt_screen( Hard_Layout_Cpt::cpt_name() ) ||
-			'publish' !== $post->post_status ) {
-			return $js_data;
-		}
 
-		$view_data       = $this->layouts_settings_storage->get( $post->post_name );
-		$preview_post_id = $view_data->preview_post;
-
-		if ( 0 !== $preview_post_id ) {
-			$source = new Source();
-
-			$source->set_id( $preview_post_id );
-			$source->set_user_id( get_current_user_id() );
-
-			ob_start();
-			// without minify, it's a preview.
-			$this->layout_factory->make_and_print_html(
-				$source,
-				$post->post_name,
-				0,
-				false,
-			);
-			$view_html = (string) ob_get_clean();
-		} else {
-			// $this->viewMarkup->getMarkup give TWIG, there is no sense to show it
-			// so the HTML is empty until the preview Post ID is selected
-			$view_html = '';
-		}
-
-		// amend to allow work the '#view' alias.
-		$view_html       = str_replace( 'class="acf-view ', 'id="view" class="acf-view ', $view_html );
-		$js_data['HTML'] = htmlentities( $view_html, ENT_QUOTES );
-
-		$js_data['CSS']  = htmlentities( $view_data->get_css_code( Layout_Settings::CODE_MODE_PREVIEW ), ENT_QUOTES );
-		$js_data['HOME'] = get_site_url();
-
-		return $js_data;
-	}
-
-	/**
-	 * @return array<string,string>
-	 */
-	protected function get_post_selection_preview_js_data(): array {
-		$js_data = array(
-			'HTML' => '',
-			'CSS'  => '',
-		);
-
-		global $post;
-
-		if ( ! $this->plugin->is_cpt_screen( Hard_Post_Selection_Cpt::cpt_name() ) ||
-			'publish' !== $post->post_status ) {
-			return $js_data;
-		}
-
-		$card_data = $this->post_selections_settings_storage->get( $post->post_name );
-		ob_start();
-		$this->post_selection_factory->make_and_print_html(
-			$card_data,
-			Query_Context::new_instance(),
-			false
-		);
-		$card_html = (string) ob_get_clean();
-		$view_data = $this->layouts_settings_storage->get( $card_data->acf_view_id );
-
-		// amend to allow work the '#card' alias.
-		$view_html       = str_replace(
-			'class="acf-card ',
-			'id="card" class="acf-card ',
-			$card_html
-		);
-		$js_data['HTML'] = htmlentities( $view_html, ENT_QUOTES );
-		// Card CSS without minification as it's for views' purposes.
-		$js_data['CSS']      = htmlentities( $card_data->get_css_code( Layout_Settings::CODE_MODE_PREVIEW ), ENT_QUOTES );
-		$js_data['VIEW_CSS'] = htmlentities( $view_data->get_css_code( Layout_Settings::CODE_MODE_DISPLAY ), ENT_QUOTES );
-		$js_data['HOME']     = get_site_url();
-
-		return $js_data;
-	}
 
 	protected function enqueue_code_editor(): void {
 		wp_enqueue_script(
@@ -236,45 +145,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			'replace'     => '({"search":"replace"}):string',
 			'random'      => '(from[,max]):mixed',
 		);
-	}
-
-	/**
-	 * For field is generation. Unlike the select option labels it:
-	 * a) Uses field name as a source, not a label.
-	 * b) Converts non-english strings, like 'як справи' to 'jak spravi' (if available).
-	 *
-	 * The 'b' part is useful only for ACF, as MetaBox and Pods don't allow non-English field names.
-	 *
-	 * @return array<string, string>
-	 */
-	protected function get_all_field_choices_in_english(): array {
-		// with flag to use field names instead of labels, it's more logical,
-		// especially for ML websites, which may have non-English labels, while English names.
-		/**
-		 * @var array<string, string> $field_choices
-		 */
-		$field_choices = array_merge(
-			$this->data_vendors->get_field_choices(
-				false,
-				false,
-				true
-			),
-			$this->data_vendors->get_sub_field_choices( false, true )
-		);
-
-		// optionally: convert all non-English pieces in names to English:
-		// this function is part of the Intl extension, and can be missing in some environments.
-		if ( ! function_exists( 'transliterator_transliterate' ) ) {
-			return $field_choices;
-		}
-
-		foreach ( $field_choices as &$value ) {
-			// converts non-english strings, like 'як справи' to 'jak spravi'.
-			$transliterated = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $value );
-			$value          = string( $transliterated );
-		}
-
-		return $field_choices;
 	}
 
 

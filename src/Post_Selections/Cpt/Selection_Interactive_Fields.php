@@ -6,13 +6,19 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
+use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
 use WP_Post;
 
 final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -39,18 +45,36 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 		$this->selection_meta_boxes       = $selection_meta_boxes;
 	}
 
+	public function get_page_js_data(): array {
+		return array_merge(
+			parent::get_page_js_data(),
+			array(
+				'cardPreview' => $this->get_preview_js_data(),
+			)
+		);
+	}
+
 	protected function get_interactive_response( WP_Post $post ): array {
 		$unique_id          = $post->post_name;
 		$selection_settings = $this->selection_settings_storage->get( $unique_id );
 
 		return array(
-			'textareaItems'    => $this->get_textarea_items_response( $selection_settings ),
+			'textareaItems'    => $this->get_editor_field_values( $selection_settings ),
 			'elements'         => $this->get_html_elements_response( $selection_settings ),
 			'autocompleteData' => $this->selection_factory->get_autocomplete_variables( $unique_id ),
 		);
 	}
 
-	protected function get_textarea_items_response( Post_Selection_Settings $selection_settings ): array {
+	protected function get_editor_fields(): array {
+		return array(
+			'acf-local_acf_views_acf-card-data__markup',
+			'acf-local_acf_views_acf-card-data__css-code',
+			'acf-local_acf_views_acf-card-data__js-code',
+			'acf-local_acf_views_acf-card-data__query-preview',
+		);
+	}
+
+	protected function get_editor_field_values( Post_Selection_Settings $selection_settings ): array {
 		ob_start();
 		// ignore customMarkup (we need the preview).
 		$this->selection_markup->print_markup( $selection_settings, false, true );
@@ -87,5 +111,129 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			'#acf-cards_shortcode_cpt .inside' => $shortcodes,
 			'#acf-cards_related_view .inside'  => $related_view_meta_box,
 		);
+	}
+
+	protected function get_editors_js_data(): array {
+		return array(
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::CSS,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'CSS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
+				'isReadOnly'                 => false,
+				'mode'                       => ACE_Mods::JAVASCRIPT,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'JS Code', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'isReadOnly'                 => true,
+				'mode'                       => ACE_Mods::TWIG,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'Query Preview', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => true,
+				// this field mode depends on the instance settings.
+				'mode'                       => null,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'Default Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
+				'isReadOnly'                 => false,
+				// this field mode depends on the instance settings.
+				'mode'                       => null,
+				'isWithVariableAutocomplete' => true,
+				'linkTitle'                  => __( 'Custom Template', 'acf-views' ),
+			),
+			array(
+				'idSelector'                 => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
+				'tabIdSelector'              => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'isReadOnly'                 => false,
+				// this field mode depends on the instance settings.
+				'mode'                       => null,
+				'isWithVariableAutocomplete' => false,
+				'linkTitle'                  => __( 'PHP Controller', 'acf-views' ),
+			),
+		);
+	}
+
+	protected function get_select_fields(): array {
+		return array(
+			array(
+				'mainSelectId'      => Post_Selection_Settings::getAcfFieldName(
+					Post_Selection_Settings::FIELD_ORDER_BY_META_FIELD_GROUP
+				),
+				'subSelectId'       => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ORDER_BY_META_FIELD_KEY ),
+				'identifierInputId' => '',
+			),
+			array(
+				'mainSelectId'      => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_GROUP ),
+				'subSelectId'       => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_FIELD_KEY ),
+				'identifierInputId' => '',
+			),
+			array(
+				'mainSelectId'      => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TAXONOMY ),
+				'subSelectId'       => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TERM ),
+				'identifierInputId' => '',
+			),
+			array(
+				'mainSelectId'      => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_META_GROUP ),
+				'subSelectId'       => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_META_FIELD ),
+				'identifierInputId' => '',
+			),
+		);
+	}
+
+	/**
+	 * @return array<string,string>
+	 */
+	protected function get_preview_js_data(): array {
+		$js_data = array(
+			'HTML' => '',
+			'CSS'  => '',
+		);
+
+		global $post;
+
+		if ( ! $this->plugin->is_cpt_screen( Hard_Post_Selection_Cpt::cpt_name() ) ||
+			'publish' !== $post->post_status ) {
+			return $js_data;
+		}
+
+		$card_data = $this->post_selections_settings_storage->get( $post->post_name );
+		ob_start();
+		$this->post_selection_factory->make_and_print_html(
+			$card_data,
+			Query_Context::new_instance(),
+			false
+		);
+		$card_html = (string) ob_get_clean();
+		$view_data = $this->layouts_settings_storage->get( $card_data->acf_view_id );
+
+		// amend to allow work the '#card' alias.
+		$view_html       = str_replace(
+			'class="acf-card ',
+			'id="card" class="acf-card ',
+			$card_html
+		);
+		$js_data['HTML'] = htmlentities( $view_html, ENT_QUOTES );
+		// Card CSS without minification as it's for views' purposes.
+		$js_data['CSS']      = htmlentities( $card_data->get_css_code( Layout_Settings::CODE_MODE_PREVIEW ), ENT_QUOTES );
+		$js_data['VIEW_CSS'] = htmlentities( $view_data->get_css_code( Layout_Settings::CODE_MODE_DISPLAY ), ENT_QUOTES );
+		$js_data['HOME']     = get_site_url();
+
+		return $js_data;
 	}
 }
