@@ -7,20 +7,22 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interface {
 	const REST_REFRESH_ROUTE = '';
@@ -29,17 +31,26 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	protected Html $html;
 	protected Plugin $plugin;
 	protected Instance_Factory $instance_factory;
+	protected Engines_Storage $engines_storage;
+	protected Data_Vendors $data_vendors;
+	protected Settings $settings;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
 		Html $html,
 		Plugin $plugin,
-		Instance_Factory $instance_factory
+		Instance_Factory $instance_factory,
+		Engines_Storage $engines_storage,
+		Data_Vendors $data_vendors,
+		Settings $settings
 	) {
 		$this->public_cpt       = $public_cpt;
 		$this->html             = $html;
 		$this->plugin           = $plugin;
 		$this->instance_factory = $instance_factory;
+		$this->engines_storage  = $engines_storage;
+		$this->data_vendors     = $data_vendors;
+		$this->settings         = $settings;
 	}
 
 	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
@@ -80,6 +91,10 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		);
 	}
 
+	public function get_cpt(): Public_Cpt {
+		return $this->public_cpt;
+	}
+
 	/**
 	 * @return array<string,mixed>
 	 */
@@ -103,6 +118,15 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
 			array();
 
+		$engine_data = array_map(
+			fn ( Template_Integration $integration )=>array(
+				'autocompleteFunctions' => $integration->get_autocomplete_functions(),
+				'autocompleteFilters'   => $integration->get_autocomplete_filters(),
+				'provocativeSymbolsMap' => $integration->get_provocative_symbols_map(),
+			),
+			$this->engines_storage->get_integrations()
+		);
+
 		return array(
 			'autocompleteVariables'    => $autocomplete_variables,
 			'textareaItemsToRefresh'   => $this->get_editor_fields(),
@@ -115,6 +139,8 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
+			// todo implement in JS, but keep in mind it has Engines as keys, not Mods
+			'engineData'               => $engine_data,
 		);
 	}
 
@@ -137,48 +163,6 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	 * @return array<string,mixed>
 	 */
 	abstract protected function get_select_fields(): array;
-
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	protected function get_js_data_for_cpt_item_page_old(): array {
-		global $post;
-
-		$is_layout = Hard_Layout_Cpt::cpt_name() === $post->post_type;
-
-		$settings_storage = $is_layout ?
-			$this->layout_settings_storage :
-			$this->post_selections_settings_storage;
-		$settings         = $is_published ?
-			$settings_storage->get( $post->post_name ) :
-			null;
-
-		if ( $is_layout ) {
-			$autocomplete_variables = $is_published ?
-				$this->layout_factory->get_autocomplete_variables( $post->post_name ) :
-				array();
-
-		} else {
-
-		}
-
-		$screen = get_current_screen();
-
-		$is_our_add_screen = null !== $screen &&
-							'post' === $screen->base &&
-							'add' === $screen->action &&
-							in_array( $screen->post_type, array( Hard_Layout_Cpt::cpt_name(), Hard_Post_Selection_Cpt::cpt_name() ), true );
-
-		// if permalink structure isn't set (?id=x), then the first postbox request is required
-		// (otherwise the post status will left 'auto-draft').
-		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
-										$is_our_add_screen;
-		return array(
-			'autocompleteFunctions' => $this->get_autocomplete_functions(),
-			'autocompleteFilters'   => $this->get_autocomplete_filters(),
-		);
-	}
 
 	/**
 	 * @return array<string,mixed>

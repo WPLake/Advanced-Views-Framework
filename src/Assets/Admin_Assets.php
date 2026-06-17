@@ -15,18 +15,21 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 class Admin_Assets extends Hookable implements Hooks_Interface {
+	private Plugin $plugin;
 	/**
-	 * @var Plugin
+	 * @var Cpt_Interactive_Fields[]
 	 */
-	private $plugin;
-	private Cpt_Interactive_Fields $interactive_fields;
+	private array $interactive_fields;
 
+	/**
+	 * @param Cpt_Interactive_Fields[] $interactive_fields
+	 */
 	public function __construct(
 		Plugin $plugin,
-		Cpt_Interactive_Fields $cpt_interactive_fields
+		array $interactive_fields
 	) {
 		$this->plugin             = $plugin;
-		$this->interactive_fields = $cpt_interactive_fields;
+		$this->interactive_fields = $interactive_fields;
 	}
 
 	public function enqueue_admin_scripts(): void {
@@ -102,10 +105,16 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	protected function enqueue_admin_assets( string $current_base, array $js_data = array() ): void {
 		$plugin_prefix = Hard_Layout_Cpt::cpt_name();
 
+		global $post;
+		$post_type = $post->post_type;
+
 		switch ( $current_base ) {
 			// add, edit pages.
 			case 'post':
-				$js_data = array_merge_recursive( $js_data, $this->interactive_fields->get_page_js_data() );
+				$js_data = array_merge_recursive(
+					$js_data,
+					$this->resolve_page_js_data( $post_type )
+				);
 
 				$this->enqueue_code_editor();
 
@@ -168,6 +177,16 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 			array(),
 			$this->plugin->get_version()
 		);
+	}
+
+	protected function resolve_page_js_data( string $post_type ): array {
+		foreach ( $this->interactive_fields as $interactive_fields ) {
+			if ( $post_type === $interactive_fields->get_cpt()->cpt_name() ) {
+				return $interactive_fields->get_page_js_data();
+			}
+		}
+
+		return array();
 	}
 
 	protected function is_target_screen(): bool {

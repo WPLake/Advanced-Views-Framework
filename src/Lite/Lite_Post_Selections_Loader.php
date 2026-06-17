@@ -172,7 +172,11 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->post_selections_settings_storage,
 			$post_selection_markup,
 			$this->factory,
-			$this->meta_boxes
+			$base->engines_storage,
+			$base->data_vendors,
+			$base->settings,
+			$this->meta_boxes,
+			$base->layouts_settings_storage
 		);
 	}
 }

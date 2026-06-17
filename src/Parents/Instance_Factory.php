@@ -4,11 +4,11 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Parents;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use WP_REST_Request;
-
-defined( 'ABSPATH' ) || exit;
 
 abstract class Instance_Factory {
 	private Front_Assets $front_assets;
@@ -27,24 +27,24 @@ abstract class Instance_Factory {
 	}
 
 	/**
-	 * @param mixed[]|null $twig_variables
+	 * @param mixed[]|null $variables
 	 *
 	 * @return mixed[]
 	 */
-	public function get_autocomplete_variables( string $unique_id, ?array $twig_variables = null ): array {
-		$twig_variables_for_validation = $twig_variables ?? $this->get_template_variables_for_validation( $unique_id );
+	public function get_autocomplete_variables( string $unique_id, ?array $variables = null ): array {
+		$variables_for_validation = $variables ?? $this->get_template_variables_for_validation( $unique_id );
 
-		foreach ( $twig_variables_for_validation as $key => $value ) {
+		foreach ( $variables_for_validation as $key => $value ) {
 			if ( is_array( $value ) ) {
-				$twig_variables_for_validation[ $key ] = $this->get_autocomplete_variables( $unique_id, $value );
+				$variables_for_validation[ $key ] = $this->get_autocomplete_variables( $unique_id, $value );
 				continue;
 			}
 
 			// override the default value, we don't need to transfer 'fake' data to the front.
-			$twig_variables_for_validation[ $key ] = 'value';
+			$variables_for_validation[ $key ] = 'value';
 		}
 
-		return $twig_variables_for_validation;
+		return $variables_for_validation;
 	}
 
 	/**

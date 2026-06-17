@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Layouts\Cpt;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
@@ -20,6 +21,8 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_Post;
 
 final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -36,10 +39,21 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 		Plugin $plugin,
 		Layout_Settings_Storage $layout_settings_storage,
 		Layout_Factory $layout_factory,
+		Engines_Storage $engines_storage,
+		Data_Vendors $data_vendors,
+		Settings $settings,
 		Layout_Markup $layout_markup,
 		Layout_Meta_Boxes $layout_meta_boxes
 	) {
-		parent::__construct( $public_cpt, $html, $plugin, $layout_factory );
+		parent::__construct(
+			$public_cpt,
+			$html,
+			$plugin,
+			$layout_factory,
+			$engines_storage,
+			$data_vendors,
+			$settings
+		);
 
 		$this->layout_settings_storage = $layout_settings_storage;
 		$this->layout_factory          = $layout_factory;

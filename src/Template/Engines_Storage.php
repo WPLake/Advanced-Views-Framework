@@ -98,6 +98,13 @@ class Engines_Storage {
 		return null;
 	}
 
+	/**
+	 * @return array<string,Template_Integration[]>
+	 */
+	public function get_integrations(): array {
+		return $this->integrations;
+	}
+
 	protected function make_renderer( string $name ): ?Template_Renderer {
 		$instance = null;
 

@@ -265,7 +265,10 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 
 		$this->admin_assets = new Admin_Assets(
 			$this->plugin,
-			null // fixme
+			array(
+				$this->layouts_loader->interactive_fields,
+				$this->selections_loader->interactive_fields,
+			)
 		);
 
 		$this->live_reloader = new Live_Reloader(

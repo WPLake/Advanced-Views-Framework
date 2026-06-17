@@ -7,11 +7,13 @@ namespace Org\Wplake\Advanced_Views\Post_Selections\Cpt;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
+use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
@@ -20,6 +22,8 @@ use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_St
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Post_Selections\Query\Context\Query_Context;
+use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use WP_Post;
 
 final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -29,6 +33,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 	protected Post_Selection_Markup $selection_markup;
 	protected Post_Selection_Factory $selection_factory;
 	protected Selection_Meta_Boxes $selection_meta_boxes;
+	protected Layout_Settings_Storage $layout_settings_storage;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
@@ -37,14 +42,27 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 		Selection_Settings_Storage $selections_settings_storage,
 		Post_Selection_Markup $selection_markup,
 		Post_Selection_Factory $selection_factory,
-		Selection_Meta_Boxes $selection_meta_boxes
+		Engines_Storage $engines_storage,
+		Data_Vendors $data_vendors,
+		Settings $settings,
+		Selection_Meta_Boxes $selection_meta_boxes,
+		Layout_Settings_Storage $layout_settings_storage
 	) {
-		parent::__construct( $public_cpt, $html, $plugin, $selection_factory );
+		parent::__construct(
+			$public_cpt,
+			$html,
+			$plugin,
+			$selection_factory,
+			$engines_storage,
+			$data_vendors,
+			$settings
+		);
 
 		$this->selection_settings_storage = $selections_settings_storage;
 		$this->selection_markup           = $selection_markup;
 		$this->selection_factory          = $selection_factory;
 		$this->selection_meta_boxes       = $selection_meta_boxes;
+		$this->layout_settings_storage    = $layout_settings_storage;
 	}
 
 	public function get_page_js_data(): array {
@@ -214,15 +232,15 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			return $js_data;
 		}
 
-		$card_data = $this->post_selections_settings_storage->get( $post->post_name );
+		$card_data = $this->selection_settings_storage->get( $post->post_name );
 		ob_start();
-		$this->post_selection_factory->make_and_print_html(
+		$this->selection_factory->make_and_print_html(
 			$card_data,
 			Query_Context::new_instance(),
 			false
 		);
 		$card_html = (string) ob_get_clean();
-		$view_data = $this->layouts_settings_storage->get( $card_data->acf_view_id );
+		$view_data = $this->layout_settings_storage->get( $card_data->acf_view_id );
 
 		// amend to allow work the '#card' alias.
 		$view_html       = str_replace(

@@ -160,6 +160,9 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->plugin,
 			$base->layouts_settings_storage,
 			$this->factory,
+			$base->engines_storage,
+			$base->data_vendors,
+			$base->settings,
 			$layout_markup,
 			$this->cpt_meta_boxes
 		);
