@@ -55,11 +55,7 @@ class Engines_Storage {
 			self::BLADE => new Blade_Tokens(),
 			self::PHP   => new PHP_Tokens(),
 		);
-		$this->integrations          = array(
-			self::TWIG  => new Twig_Integration(),
-			self::BLADE => new Blade_Integration(),
-			self::PHP   => new PHP_Integration(),
-		);
+		$this->integrations          = $this->make_integrations();
 
 		$this->uploads_folder = $uploads_folder;
 		$this->logger         = $logger;
@@ -135,5 +131,13 @@ class Engines_Storage {
 		}
 
 		return $instance;
+	}
+
+	protected function make_integrations(): array {
+		return array(
+			self::TWIG  => new Twig_Integration(),
+			self::BLADE => new Blade_Integration(),
+			self::PHP   => new PHP_Integration(),
+		);
 	}
 }

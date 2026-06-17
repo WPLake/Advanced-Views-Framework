@@ -6,8 +6,10 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Rendering\File_Template_Renderer_Base;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Environment;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Loader\FilesystemLoader;
 use Org\Wplake\Advanced_Views\Vendors\Twig\TwigFilter;
@@ -96,6 +98,40 @@ class Twig_Renderer extends File_Template_Renderer_Base {
 					print_r( $data );
 				},
 			),
+			array(
+				'_query_argument',
+				function ( string $arg_name = '' ) {
+					$arg_value = Query_Arguments::get_string_for_non_action( $arg_name );
+
+					return sanitize_text_field( $arg_value );
+				},
+			),
+			array(
+				'_site_url',
+				fn( string $path = '', $scheme = null ) => site_url( $path, $scheme ),
+			),
+			array(
+				'_home_url',
+				fn( string $path = '', $scheme = null ) => home_url( $path, $scheme ),
+			),
+			array(
+				'_is_user_logged_in',
+				fn() => is_user_logged_in(),
+			),
+			array(
+				'_is_user_with_role',
+				function ( string $role, string $user_id = '' ) {
+					$user = '' !== $user_id ?
+						get_user_by( 'id', $user_id ) :
+						wp_get_current_user();
+
+					return false !== $user && in_array( $role, $user->roles, true );
+				},
+			),
+			array(
+				'__',
+				fn( string $label, string $text_domain = '' ) => Plugin::get_label_translation( $label, $text_domain ),
+			),
 		);
 	}
 
@@ -103,7 +139,12 @@ class Twig_Renderer extends File_Template_Renderer_Base {
 	 * @return mixed[]
 	 */
 	protected function get_custom_filters(): array {
-		return array();
+		return array(
+			array(
+				'translate',
+				fn( string $label, string $text_domain = '' ) => Plugin::get_label_translation( $label, $text_domain ),
+			),
+		);
 	}
 
 	// @phpstan-ignore-next-line
@@ -124,8 +165,23 @@ class Twig_Renderer extends File_Template_Renderer_Base {
 		// reminder: TwigFunctions automatically escape the output
 		// (as long you not pass ['is_safe' => ['html']] to the constructor).
 
-		$custom_functions = $this->get_custom_functions();
-		$custom_filters   = $this->get_custom_filters();
+		$custom_functions = Plugin::apply_filters(
+			array(
+				'advanced_views/twig/custom_functions',
+				'acf_views/twig/custom_functions',
+			),
+			$this->get_custom_functions()
+		);
+		$custom_functions = arr( $custom_functions );
+
+		$custom_filters = Plugin::apply_filters(
+			array(
+				'advanced_views/twig/custom_filters',
+				'acf_views/twig/custom_filters',
+			),
+			$this->get_custom_filters()
+		);
+		$custom_filters = arr( $custom_filters );
 
 		foreach ( $custom_functions as $custom_function ) {
 			$custom_function = arr( $custom_function );

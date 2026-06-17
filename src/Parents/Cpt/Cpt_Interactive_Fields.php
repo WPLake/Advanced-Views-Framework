@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
@@ -27,11 +28,18 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	protected Public_Cpt $public_cpt;
 	protected Html $html;
 	protected Plugin $plugin;
+	protected Instance_Factory $instance_factory;
 
-	public function __construct( Public_Cpt $public_cpt, Html $html, Plugin $plugin ) {
-		$this->public_cpt = $public_cpt;
-		$this->html       = $html;
-		$this->plugin     = $plugin;
+	public function __construct(
+		Public_Cpt $public_cpt,
+		Html $html,
+		Plugin $plugin,
+		Instance_Factory $instance_factory
+	) {
+		$this->public_cpt       = $public_cpt;
+		$this->html             = $html;
+		$this->plugin           = $plugin;
+		$this->instance_factory = $instance_factory;
 	}
 
 	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
@@ -77,6 +85,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	 */
 	public function get_page_js_data(): array {
 		$screen = get_current_screen();
+		global $post;
 
 		$is_our_add_screen = null !== $screen &&
 							'post' === $screen->base &&
@@ -88,9 +97,14 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
 
-		$editors_js_data = $this->get_editors_js_data();
+		$is_published           = 'publish' === $post->post_status;
+		$editors_js_data        = $this->get_editors_js_data();
+		$autocomplete_variables = $is_published ?
+			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
+			array();
 
 		return array(
+			'autocompleteVariables'    => $autocomplete_variables,
 			'textareaItemsToRefresh'   => $this->get_editor_fields(),
 			'refreshRoute'             => static::REST_REFRESH_ROUTE,
 			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
@@ -131,8 +145,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	protected function get_js_data_for_cpt_item_page_old(): array {
 		global $post;
 
-		$is_layout    = Hard_Layout_Cpt::cpt_name() === $post->post_type;
-		$is_published = 'publish' === $post->post_status;
+		$is_layout = Hard_Layout_Cpt::cpt_name() === $post->post_type;
 
 		$settings_storage = $is_layout ?
 			$this->layout_settings_storage :
@@ -147,9 +160,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 				array();
 
 		} else {
-			$autocomplete_variables = $is_published ?
-				$this->post_selection_factory->get_autocomplete_variables( $post->post_name ) :
-				array();
+
 		}
 
 		$screen = get_current_screen();
@@ -164,7 +175,6 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
 		return array(
-			'autocompleteVariables' => $autocomplete_variables,
 			'autocompleteFunctions' => $this->get_autocomplete_functions(),
 			'autocompleteFilters'   => $this->get_autocomplete_filters(),
 		);

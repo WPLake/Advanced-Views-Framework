@@ -17,4 +17,14 @@ interface Template_Integration {
 	public function mock_provocative_symbols( string $template ): string;
 
 	public function unmock_provocative_symbols( string $template ): string;
+
+	/**
+	 * @return array<string,string>
+	 */
+	public function get_autocomplete_functions(): array;
+
+	/**
+	 * @return array<string,string>
+	 */
+	public function get_autocomplete_filters(): array;
 }

@@ -118,35 +118,6 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		}
 	}
 
-	/**
-	 * @return array<string,string>
-	 */
-	protected function get_autocomplete_functions(): array {
-		return array(
-			'date' => '(format[,timezone]):string',
-		);
-	}
-
-	/**
-	 * @return array<string,string>
-	 */
-	protected function get_autocomplete_filters(): array {
-		return array(
-			'abs'         => ':number',
-			'capitalize'  => ':string',
-			'raw'         => ':string',
-			'upper'       => ':string',
-			'lower'       => ':string',
-			'round'       => '([precision, method]):int',
-			'range'       => '(low,high[,step]):array',
-			'date'        => '(format):string',
-			'date_modify' => '(modify):Date',
-			'default'     => '(default):string',
-			'replace'     => '({"search":"replace"}):string',
-			'random'      => '(from[,max]):mixed',
-		);
-	}
-
 
 	protected function get_cpt_item_js_file_url(): string {
 		return $this->plugin->get_assets_url( 'admin/js/cpt-item.min.js' );
