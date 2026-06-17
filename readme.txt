@@ -198,6 +198,10 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.9.0 (2026-) =
+- Enhance: vanilla PHP as a template engine option
+- Feature adoption: Pro Twig functions and filters
+
 = 3.8.10 (2026-06-16) =
 - Fix: Layout & Selection loading optimizer message - old settings page url
 

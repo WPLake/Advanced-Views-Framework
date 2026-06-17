@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Plugin;
+namespace Org\Wplake\Advanced_Views\Plugin\Loaders;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -64,27 +64,15 @@ use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Table;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
@@ -95,98 +83,85 @@ use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
-abstract class Plugin_Loader_Base {
-	protected Plugin $plugin;
-	protected Plugin_Environment $plugin_environment;
-	protected Version_Migrator $version_migrator;
-	protected Logger $logger;
-	protected Layout_Settings_Storage $layouts_settings_storage;
-	protected Selection_Settings_Storage $post_selections_settings_storage;
-	protected Layout_Save_Actions $layouts_cpt_save_actions;
-	protected Selection_Save_Actions $post_selections_cpt_save_actions;
-	protected Templates_Environment $templates_environment;
-	protected Public_Cpt $layout_cpt;
-	protected Public_Cpt $post_selection_cpt;
-	protected Data_Vendors $data_vendors;
-	protected Front_Assets $front_assets;
-	protected Live_Reloader_Component $live_reloader_component;
+abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
+	public Plugin $plugin;
+	public Plugin_Environment $plugin_environment;
+	public Version_Migrator $version_migrator;
+	public Logger $logger;
+	public Layout_Settings_Storage $layouts_settings_storage;
+
+	public Layout_Save_Actions $layouts_cpt_save_actions;
+
+	public Templates_Environment $templates_environment;
+	public Public_Cpt $layout_cpt;
+	public Public_Cpt $post_selection_cpt;
+	public Data_Vendors $data_vendors;
+	public Front_Assets $front_assets;
+	public Live_Reloader_Component $live_reloader_component;
 	/**
 	 * @var File_System[]
 	 */
-	protected array $file_systems = array();
-	protected Layout_Meta_Boxes $layouts_cpt_meta_boxes;
-	protected Layouts_Cpt $layouts_cpt;
-	protected Layouts_Cpt_Table $layouts_cpt_table;
-	protected Layout_Git_Tabs $layouts_git_cpt_table_tabs;
-	protected Layout_Git_Box $layouts_git_meta_box;
-	protected Fs_Only_Tab $layouts_fs_only_tab;
-	protected Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
-	protected Layouts_Pre_Built_Tab $layouts_pre_built_tab;
-	protected Cpt_Gutenberg_Editor_Settings $layout_cpt_gutenberg_editor_settings;
-	protected Cpt_Gutenberg_Editor_Settings $post_selection_cpt_gutenberg_editor_settings;
-	protected Cpt_Assets_Reducer $layouts_cpt_assets_reducer;
-	protected Cpt_Assets_Reducer $post_selections_cpt_assets_reducer;
-	protected Layout_Shortcode $layout_shortcode;
-	protected Shortcode_Block $layouts_shortcode_block;
-	protected Post_Selections_Table $post_selections_cpt_table;
-	protected Post_Selections_Cpt $post_selections_cpt;
-	protected Fs_Only_Tab $post_selections_fs_only_tab;
-	protected Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
-	protected Post_Selections_Bulk_Validation_Tab $post_selections_bulk_validation_tab;
-	protected Post_Selections_Pre_Built_Tab $post_selections_pre_built_tab;
-	protected Selection_Layout_Integration $post_selections_view_integration;
-	protected Post_Selection_Shortcode $post_selection_shortcode;
+	public array $file_systems = array();
+	public Layout_Meta_Boxes $layouts_cpt_meta_boxes;
+	public Layouts_Cpt $layouts_cpt;
+	public Layouts_Cpt_Table $layouts_cpt_table;
+	public Layout_Git_Tabs $layouts_git_cpt_table_tabs;
+	public Layout_Git_Box $layouts_git_meta_box;
+	public Fs_Only_Tab $layouts_fs_only_tab;
+	public Layouts_Bulk_Validation_Tab $layouts_bulk_validation_tab;
+	public Layouts_Pre_Built_Tab $layouts_pre_built_tab;
+	public Cpt_Gutenberg_Editor_Settings $layout_cpt_gutenberg_editor_settings;
 
-	protected Acf_Dependency $acf_dependency;
-	protected Layout_Settings_Integration $layout_settings_integration;
-	protected Field_Settings_Integration $field_settings_integration;
-	protected Post_Selection_Settings_Integration $post_selection_settings_integration;
-	protected Item_Settings_Integration $item_settings_integration;
-	protected Meta_Field_Settings_Integration $meta_field_settings_integration;
-	protected Mount_Point_Settings_Integration $layout_mount_point_integration;
-	protected Mount_Point_Settings_Integration $post_selection_mount_point_integration;
-	protected Tax_Field_Settings_Integration $tax_field_settings_integration;
-	protected Tools_Settings_Integration $tools_settings_integration;
-	protected Custom_Acf_Field_Types $custom_acf_field_types;
-	protected Item_Settings $item_settings;
-	protected Layout_Factory $layout_factory;
-	protected Settings $settings;
-	protected Creator $group_creator;
-	protected Dashboard $dashboard;
-	protected Demo_Import $demo_import;
-	protected Acf_Internal_Features $acf_internal_features;
-	protected Automated_Reports $automatic_reports;
-	protected Tools $tools;
-	protected Admin_Assets $admin_assets;
-	protected Settings_Page $settings_page;
-	protected Live_Reloader $live_reloader;
-	protected Admin_Bar $admin_bar;
-	protected Upgrade_Notice $upgrade_notice;
-	protected Mount_Points $mount_points;
-	protected Git_Lab_Api $git_lab_api;
-	protected Selection_Git_Tabs $post_selection_git_tabs;
-	protected Selection_Git_Box $post_selection_git_meta_box;
-	protected Engines_Storage $engines_storage;
+	public Cpt_Assets_Reducer $layouts_cpt_assets_reducer;
 
-	/**
-	 * @var Hooks_Interface[]
-	 */
-	protected array $hookable = array();
+	public Layout_Shortcode $layout_shortcode;
+	public Shortcode_Block $layouts_shortcode_block;
+
+
+	public Acf_Dependency $acf_dependency;
+	public Layout_Settings_Integration $layout_settings_integration;
+	public Field_Settings_Integration $field_settings_integration;
+	public Post_Selection_Settings_Integration $post_selection_settings_integration;
+	public Item_Settings_Integration $item_settings_integration;
+	public Meta_Field_Settings_Integration $meta_field_settings_integration;
+	public Mount_Point_Settings_Integration $layout_mount_point_integration;
+	public Mount_Point_Settings_Integration $post_selection_mount_point_integration;
+	public Tax_Field_Settings_Integration $tax_field_settings_integration;
+	public Tools_Settings_Integration $tools_settings_integration;
+	public Custom_Acf_Field_Types $custom_acf_field_types;
+	public Item_Settings $item_settings;
+	public Layout_Factory $layout_factory;
+	public Settings $settings;
+	public Creator $group_creator;
+	public Dashboard $dashboard;
+	public Demo_Import $demo_import;
+	public Acf_Internal_Features $acf_internal_features;
+	public Automated_Reports $automatic_reports;
+	public Tools $tools;
+	public Admin_Assets $admin_assets;
+	public Settings_Page $settings_page;
+	public Live_Reloader $live_reloader;
+	public Admin_Bar $admin_bar;
+	public Upgrade_Notice $upgrade_notice;
+	public Mount_Points $mount_points;
+	public Git_Lab_Api $git_lab_api;
+
+	public Engines_Storage $engines_storage;
+
 	/**
 	 * @var Plugin_Cpt[]
 	 */
 	protected array $plugin_cpts = array();
+	protected Post_Selections_Loader_Base $selections_loader;
 
-	public function load_plugin(): void {
+	public function load(): void {
 		$start_timestamp = microtime( true );
 
 		$route_detector = new Route_Detector();
 
 		$this->load_modules( $route_detector );
 
-		foreach ( $this->hookable as $hookable ) {
-			$hookable->set_hooks( $route_detector );
-		}
+		$this->load_hookable();
 
 		Profiler::plugin_loaded( $start_timestamp );
 	}
@@ -294,23 +269,7 @@ abstract class Plugin_Loader_Base {
 	}
 
 	protected function post_selections(): void {
-		$this->add_hookable(
-			array(
-				$this->post_selections_cpt,
-				$this->post_selections_cpt_table,
-				$this->post_selections_fs_only_tab,
-				$this->post_selections_bulk_validation_tab,
-				$this->post_selections_pre_built_tab,
-				$this->post_selections_cpt_assets_reducer,
-				$this->post_selection_cpt_gutenberg_editor_settings,
-				$this->post_selections_cpt_meta_boxes,
-				$this->post_selections_cpt_save_actions,
-				$this->post_selections_view_integration,
-				$this->post_selection_shortcode,
-				$this->post_selection_git_tabs,
-				$this->post_selection_git_meta_box,
-			)
-		);
+		$this->selections_loader->load();
 	}
 
 	protected function integration( Route_Detector $route_detector ): void {
@@ -364,7 +323,7 @@ abstract class Plugin_Loader_Base {
 
 	protected function bridge(): void {
 		Advanced_Views::$layout_renderer         = $this->layout_shortcode;
-		Advanced_Views::$post_selection_renderer = $this->post_selection_shortcode;
+		Advanced_Views::$post_selection_renderer = $this->selections_loader->post_selection_shortcode;
 	}
 
 	protected function version_migrations(): void {
@@ -374,38 +333,38 @@ abstract class Plugin_Loader_Base {
 				new Migration_1_6_0( $this->logger ),
 				new Migration_1_7_0( $this->logger, $this->layouts_settings_storage, $this->layouts_cpt_save_actions ),
 				// v2.
-				new Migration_2_0_0( $this->logger, $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_0_0( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
 				new Migration_2_1_0( $this->logger, $this->layouts_cpt_save_actions, $this->layouts_settings_storage ),
-				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
-				new Migration_2_2_3( $this->logger, $this->layouts_cpt_save_actions, $this->post_selections_cpt_save_actions ),
+				new Migration_2_2_0( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
+				new Migration_2_2_2( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
+				new Migration_2_2_3( $this->logger, $this->layouts_cpt_save_actions, $this->selections_loader->post_selections_cpt_save_actions ),
 				new Migration_2_3_0( $this->logger, $this->templates_environment ),
 				new Migration_2_4_0(
 					$this->logger,
 					$this->layouts_cpt_save_actions,
 					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage
+					$this->selections_loader->post_selections_settings_storage
 				),
 				new Migration_2_4_2( $this->logger, $this->layouts_settings_storage ),
 				new Migration_2_4_5( $this->logger, $this->layouts_settings_storage ),
 				// v3.
-				new Migration_3_0_0( $this->logger, $this->layouts_settings_storage, $this->post_selections_settings_storage ),
+				new Migration_3_0_0( $this->logger, $this->layouts_settings_storage, $this->selections_loader->post_selections_settings_storage ),
 				new Migration_3_3_0(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage,
+					$this->selections_loader->post_selections_settings_storage,
 				),
 				new Migration_3_8_0(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage,
+					$this->selections_loader->post_selections_settings_storage,
 					$this->layout_cpt,
 					$this->post_selection_cpt
 				),
 				new Migration_3_8_9(
 					$this->logger,
 					$this->layouts_settings_storage,
-					$this->post_selections_settings_storage,
+					$this->selections_loader->post_selections_settings_storage,
 				),
 			)
 		);
@@ -421,13 +380,6 @@ abstract class Plugin_Loader_Base {
 			$this->plugin->get_slug(),
 			array( $this->plugin_environment, 'clean_environment' )
 		);
-	}
-
-	/**
-	 * @param Hooks_Interface[] $hookable
-	 */
-	protected function add_hookable( array $hookable ): void {
-		$this->hookable = array_merge( $this->hookable, $hookable );
 	}
 
 	/**
@@ -456,30 +408,6 @@ abstract class Plugin_Loader_Base {
 
 			public function plural_name(): string {
 				return esc_html__( 'Layouts', 'acf-views' );
-			}
-		};
-
-		return $public_cpt_base;
-	}
-
-	protected static function make_post_selection_cpt(): Public_Cpt {
-		$public_cpt_base = new Public_Cpt_Base();
-
-		$public_cpt_base->cpt_name    = Hard_Post_Selection_Cpt::cpt_name();
-		$public_cpt_base->slug_prefix = 'card_';
-		$public_cpt_base->folder_name = 'post-selections';
-
-		$public_cpt_base->shortcode        = 'avf-post-selection';
-		$public_cpt_base->shortcodes       = array( $public_cpt_base->shortcode, 'avf_card', 'acf_cards' );
-		$public_cpt_base->rest_route_names = array( 'post-selection', 'card' );
-
-		$public_cpt_base->labels = new class() extends Cpt_Labels_Base {
-			public function singular_name(): string {
-				return esc_html__( 'Post Selection', 'acf-views' );
-			}
-
-			public function plural_name(): string {
-				return esc_html__( 'Post Selections', 'acf-views' );
 			}
 		};
 

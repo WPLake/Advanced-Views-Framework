@@ -318,7 +318,7 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors {
 		'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Pub/Public_Cpt.php',
 		'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt_Base' => __DIR__ . '/../..' . '/../src/Plugin/Cpt/Pub/Public_Cpt_Base.php',
 		'Org\\Wplake\\Advanced_Views\\Plugin\\Plugin_Environment' => __DIR__ . '/../..' . '/../src/Plugin/Plugin_Environment.php',
-		'Org\\Wplake\\Advanced_Views\\Plugin\\Plugin_Loader_Base' => __DIR__ . '/../..' . '/../src/Plugin/Plugin_Loader_Base.php',
+		'Org\\Wplake\\Advanced_Views\\Plugin\\Loaders\\Plugin_Loader_Base' => __DIR__ . '/../..' . '/../src/Plugin/Plugin_Loader_Base.php',
 		'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Post_Selections_Cpt' => __DIR__ . '/../..' . '/../src/Post_Selections/Cpt/Post_Selections_Cpt.php',
 		'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Selection_Git_Box' => __DIR__ . '/../..' . '/../src/Post_Selections/Cpt/Selection_Git_Box.php',
 		'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Selection_Git_Tabs' => __DIR__ . '/../..' . '/../src/Post_Selections/Cpt/Selection_Git_Tabs.php',

@@ -267,7 +267,7 @@ return array(
 	'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt' => $baseDir . '/../src/Plugin/Cpt/Pub/Public_Cpt.php',
 	'Org\\Wplake\\Advanced_Views\\Plugin\\Cpt\\Pub\\Public_Cpt_Base' => $baseDir . '/../src/Plugin/Cpt/Pub/Public_Cpt_Base.php',
 	'Org\\Wplake\\Advanced_Views\\Plugin\\Plugin_Environment' => $baseDir . '/../src/Plugin/Plugin_Environment.php',
-	'Org\\Wplake\\Advanced_Views\\Plugin\\Plugin_Loader_Base' => $baseDir . '/../src/Plugin/Plugin_Loader_Base.php',
+	'Org\\Wplake\\Advanced_Views\\Plugin\\Loaders\\Plugin_Loader_Base' => $baseDir . '/../src/Plugin/Plugin_Loader_Base.php',
 	'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Post_Selections_Cpt' => $baseDir . '/../src/Post_Selections/Cpt/Post_Selections_Cpt.php',
 	'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Selection_Git_Box' => $baseDir . '/../src/Post_Selections/Cpt/Selection_Git_Box.php',
 	'Org\\Wplake\\Advanced_Views\\Post_Selections\\Cpt\\Selection_Git_Tabs' => $baseDir . '/../src/Post_Selections/Cpt/Selection_Git_Tabs.php',

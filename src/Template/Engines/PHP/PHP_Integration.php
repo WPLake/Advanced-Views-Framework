@@ -21,4 +21,12 @@ final class PHP_Integration extends Template_Integration_Base {
 	public function get_ace_mode(): string {
 		return ACE_Mods::PHP;
 	}
+
+	public function get_autocomplete_functions(): array {
+		return array();
+	}
+
+	public function get_autocomplete_filters(): array {
+		return array();
+	}
 }
