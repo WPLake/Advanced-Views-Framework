@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use WP_REST_Request;
 
 abstract class Instance_Factory {
@@ -15,6 +16,21 @@ abstract class Instance_Factory {
 
 	public function __construct( Front_Assets $front_assets ) {
 		$this->front_assets = $front_assets;
+	}
+
+	/**
+	 * @return array<string,string>
+	 */
+	abstract public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array;
+
+	public static function resolve_template_field_engine( string $field_name, Cpt_Theme_Settings $theme_settings ): string {
+		$template_fields = static::get_template_fields( $theme_settings );
+
+		if ( key_exists( $field_name, $template_fields ) ) {
+			return $template_fields[ $field_name ];
+		}
+
+		return '';
 	}
 
 	/**

@@ -52,7 +52,8 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 			$layout_factory,
 			$engines_storage,
 			$data_vendors,
-			$settings
+			$settings,
+			$layout_settings_storage
 		);
 
 		$this->layout_settings_storage = $layout_settings_storage;
@@ -90,6 +91,9 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 		);
 	}
 
+	/**
+	 * @return array<string,mixed>
+	 */
 	protected function get_editor_field_values( Layout_Settings $layout_settings ): array {
 		ob_start();
 		// ignore customMarkup (we need the preview).

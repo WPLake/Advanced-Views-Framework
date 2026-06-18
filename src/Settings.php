@@ -6,14 +6,15 @@ namespace Org\Wplake\Advanced_Views;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
-class Settings {
+class Settings implements Cpt_Theme_Settings {
 	const QUERY_ARG_PAGE_DEV_MODE = 'avf_page-dev-mode';
 
 	use Safe_Array_Arguments;
@@ -128,7 +129,7 @@ class Settings {
 		$this->web_components_type = $web_components_type;
 	}
 
-	public function get_web_components_type(): string {
+	public function get_web_component_type(): string {
 		return $this->web_components_type;
 	}
 
@@ -236,7 +237,7 @@ class Settings {
 		$this->is_cpt_admin_optimization_enabled = $is_cpt_admin_optimization_enabled;
 	}
 
-	public function get_ts_template(): string {
+	public function get_ts_code(): string {
 		return $this->ts_template;
 	}
 
@@ -244,7 +245,7 @@ class Settings {
 		$this->ts_template = $ts_template;
 	}
 
-	public function get_sass_template(): string {
+	public function get_sass_code(): string {
 		return $this->sass_template;
 	}
 

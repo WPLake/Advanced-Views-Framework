@@ -228,7 +228,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 						$value = $this->settings->get_template_engine();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_WEB_COMPONENTS_TYPE ):
-						$value = $this->settings->get_web_components_type();
+						$value = $this->settings->get_web_component_type();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_CLASSES_GENERATION ):
 						$value = $this->settings->get_classes_generation();
@@ -237,10 +237,10 @@ final class Settings_Page extends Action implements Hooks_Interface {
 						$value = $this->settings->is_cpt_admin_optimization_enabled();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_SASS_TEMPLATE ):
-						$value = $this->settings->get_sass_template();
+						$value = $this->settings->get_sass_code();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_TS_TEMPLATE ):
-						$value = $this->settings->get_ts_template();
+						$value = $this->settings->get_ts_code();
 						break;
 					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_LIVE_RELOAD_INTERVAL_SECONDS ):
 						$value = $this->settings->get_live_reload_interval_seconds();

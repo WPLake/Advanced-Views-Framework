@@ -18,9 +18,9 @@ class Cpt_Settings_Creator extends Hookable {
 
 	protected function set_defaults_from_settings( Cpt_Settings $cpt_settings ): void {
 		$cpt_settings->template_engine    = $this->settings->get_template_engine();
-		$cpt_settings->web_component      = $this->settings->get_web_components_type();
+		$cpt_settings->web_component      = $this->settings->get_web_component_type();
 		$cpt_settings->classes_generation = $this->settings->get_classes_generation();
-		$cpt_settings->sass_code          = $this->settings->get_sass_template();
-		$cpt_settings->ts_code            = $this->settings->get_ts_template();
+		$cpt_settings->sass_code          = $this->settings->get_sass_code();
+		$cpt_settings->ts_code            = $this->settings->get_ts_code();
 	}
 }

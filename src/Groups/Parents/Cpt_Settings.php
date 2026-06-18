@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class Cpt_Settings extends Group {
+abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	const FIELD_TEMPLATE_ENGINE    = 'template_engine';
 	const FIELD_WEB_COMPONENT      = 'web_component';
 	const FIELD_UNIQUE_ID          = 'uniqueId';
@@ -116,10 +116,6 @@ abstract class Cpt_Settings extends Group {
 
 	abstract public function get_bem_name(): string;
 
-	/**
-	 * @return array<string,string>
-	 */
-	abstract public function get_template_fields(): array;
 
 	protected function resolved_css_code( string $css_code, string $mode, string $alias ): string {
 		if ( self::CODE_MODE_DISPLAY === $mode ) {
@@ -404,5 +400,25 @@ abstract class Cpt_Settings extends Group {
 		return ( $has_unique_bem_name && $is_dashed_bem_name ) ?
 			$prepared_bem_name :
 			sprintf( '%s-%s', $prepared_prefix, $this->get_unique_id( true ) );
+	}
+
+	public function get_classes_generation(): string {
+		return $this->classes_generation;
+	}
+
+	public function get_template_engine(): string {
+		return $this->template_engine;
+	}
+
+	public function get_sass_code(): string {
+		return $this->sass_code;
+	}
+
+	public function get_ts_code(): string {
+		return $this->ts_code;
+	}
+
+	public function get_web_component_type(): string {
+		return $this->web_component;
 	}
 }

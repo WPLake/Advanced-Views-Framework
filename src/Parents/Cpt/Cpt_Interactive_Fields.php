@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
@@ -25,6 +26,9 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
+/**
+ * @phpstan-type FieldsList array<int,array<string,mixed>>
+ */
 abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interface {
 	const REST_REFRESH_ROUTE = '';
 
@@ -35,6 +39,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	protected Engines_Storage $engines_storage;
 	protected Data_Vendors $data_vendors;
 	protected Settings $settings;
+	protected Cpt_Settings_Storage $cpt_settings_storage;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
@@ -43,15 +48,17 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		Instance_Factory $instance_factory,
 		Engines_Storage $engines_storage,
 		Data_Vendors $data_vendors,
-		Settings $settings
+		Settings $settings,
+		Cpt_Settings_Storage $cpt_settings_storage
 	) {
-		$this->public_cpt       = $public_cpt;
-		$this->html             = $html;
-		$this->plugin           = $plugin;
-		$this->instance_factory = $instance_factory;
-		$this->engines_storage  = $engines_storage;
-		$this->data_vendors     = $data_vendors;
-		$this->settings         = $settings;
+		$this->public_cpt           = $public_cpt;
+		$this->html                 = $html;
+		$this->plugin               = $plugin;
+		$this->instance_factory     = $instance_factory;
+		$this->engines_storage      = $engines_storage;
+		$this->data_vendors         = $data_vendors;
+		$this->settings             = $settings;
+		$this->cpt_settings_storage = $cpt_settings_storage;
 	}
 
 	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
@@ -113,13 +120,20 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
 
-		$is_published           = 'publish' === $post->post_status;
-		$editors_js_data        = $this->get_editors_js_data();
+		$is_published   = 'publish' === $post->post_status;
+		$cpt_settings   = $is_published ?
+			$this->cpt_settings_storage->get( $post->post_name ) :
+			null;
+		$theme_settings = $cpt_settings instanceof Cpt_Theme_Settings ?
+			$cpt_settings :
+			$this->settings;
+
 		$autocomplete_variables = $is_published ?
 			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
 			array();
 
-		$engines_meta = array_map(
+		$editors_js_data = $this->get_editors_js_data();
+		$engines_meta    = array_map(
 			fn ( Template_Integration $integration )=>array(
 				'autocompleteFunctions' => $integration->get_autocomplete_functions(),
 				'autocompleteFilters'   => $integration->get_autocomplete_filters(),
@@ -135,12 +149,12 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
 			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
 			'mods'                     => ACE_Mods::get_all(),
-			'markupTextarea'           => $this->define_editor_mods( $editors_js_data ),
+			'markupTextarea'           => $this->define_editor_mods( $editors_js_data, $theme_settings ),
 			'fieldSelect'              => $this->get_select_fields(),
 			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
-			// todo implement in JS, but keep in mind it has Engines as keys, not Mods
+			// todo implement in JS, but keep in mind it has Engines as keys, not Mods.
 			'enginesMeta'              => $engines_meta,
 		);
 	}
@@ -151,7 +165,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	abstract protected function get_interactive_response( WP_Post $post ): array;
 
 	/**
-	 * @return array<int,array<string,mixed>>
+	 * @return FieldsList
 	 */
 	abstract protected function get_editors_js_data(): array;
 
@@ -161,44 +175,33 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	abstract protected function get_editor_fields(): array;
 
 	/**
-	 * @return array<int,array<string,mixed>>
+	 * @return FieldsList
 	 */
 	abstract protected function get_select_fields(): array;
 
 	/**
-	 * @template T of array<int,array<string,mixed>>
+	 * @param FieldsList $textareas
 	 *
-	 * @param T $textareas
-	 *
-	 * @return T
+	 * @return FieldsList
 	 */
-	protected function define_editor_mods( array $textareas, ?Cpt_Settings $cpt_settings ): array {
-		$template_engine     = $this->settings->get_template_engine();
-		$default_integration = $this->engines_storage->resolve_integration( $template_engine );
-
+	protected function define_editor_mods( array $textareas, Cpt_Theme_Settings $theme_settings ): array {
 		foreach ( $textareas as &$field ) {
-			$mode = any($field,'mode');
+			$mode = any( $field, 'mode' );
 
-			if(is_string($mode)){
+			if ( is_string( $mode ) ) {
 				continue;
 			}
 
-			$field_name = string($field,'idSelector');
+			$field_name        = string( $field, 'idSelector' );
+			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_name, $theme_settings );
+			$field_integration = $this->engines_storage->resolve_integration( $template_engine );
 
-			if ( $cpt_settings instanceof Cpt_Settings ) {
-				$field_integration = $this->engines_storage->resolve_field_integration( $field_name, $cpt_settings );
-
-				if ( $field_integration instanceof Template_Integration ) {
-					$field['mode']=$field_integration->get_ace_mode();
-
-					continue;
-				}
-			}
-
-			// fixme refer the code above
+			$field['mode'] = $field_integration instanceof Template_Integration ?
+				$field_integration->get_ace_mode() :
+				'_unknown';
 		}
 
-		return $fields;
+		return $textareas;
 	}
 
 	/**

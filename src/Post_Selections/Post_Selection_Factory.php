@@ -7,6 +7,7 @@ namespace Org\Wplake\Advanced_Views\Post_Selections;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
@@ -33,6 +34,14 @@ class Post_Selection_Factory extends Instance_Factory {
 		$this->post_selection_markup            = $post_selection_markup;
 		$this->engines_storage                  = $engines_storage;
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
+	}
+
+	public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array {
+		return array(
+			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ) => Engines_Storage::PHP,
+			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
+			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
+		);
 	}
 
 	public function make( Post_Selection_Settings $post_selection_settings, string $classes = '' ): Post_Selection {

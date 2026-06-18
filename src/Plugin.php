@@ -396,7 +396,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 				break;
 			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_WEB_COMPONENT ):
 			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_WEB_COMPONENT ):
-				$web_components_type = $this->settings->get_web_components_type();
+				$web_components_type = $this->settings->get_web_component_type();
 
 				if ( '' !== $web_components_type ) {
 					$field['value'] = $web_components_type;
@@ -408,11 +408,11 @@ class Plugin extends Hookable implements Hooks_Interface {
 				break;
 			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_SASS_CODE ):
 			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_SASS_CODE ):
-				$field['value'] = $this->settings->get_sass_template();
+				$field['value'] = $this->settings->get_sass_code();
 				break;
 			case Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TS_CODE ):
 			case Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TS_CODE ):
-				$field['value'] = $this->settings->get_ts_template();
+				$field['value'] = $this->settings->get_ts_code();
 				break;
 		}
 

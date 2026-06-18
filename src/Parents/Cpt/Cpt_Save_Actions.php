@@ -15,6 +15,7 @@ use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Parents\Instance;
+use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
 use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
@@ -47,6 +48,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	private Front_Assets $front_assets;
 	protected Public_Cpt $public_plugin_cpt;
 	protected Engines_Storage $engines_storage;
+	protected Instance_Factory $instance_factory;
 
 	public function __construct(
 		Logger $logger,
@@ -55,7 +57,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		Cpt_Settings $cpt_settings,
 		Front_Assets $front_assets,
 		Public_Cpt $public_cpt,
-		Engines_Storage $engines_storage
+		Engines_Storage $engines_storage,
+		Instance_Factory $instance_factory
 	) {
 		parent::__construct( $logger );
 
@@ -70,6 +73,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->validated_input_names = array();
 		$this->public_plugin_cpt     = $public_cpt;
 		$this->engines_storage       = $engines_storage;
+		$this->instance_factory      = $instance_factory;
 	}
 
 	abstract protected function get_cpt_name(): string;
@@ -281,7 +285,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			'';
 		$validation_instance = $this->cpt_settings;
 
-		$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $validation_instance );
+		$template_engine      = $this->instance_factory::resolve_template_field_engine( $field_name, $validation_instance );
+		$template_integration = $this->engines_storage->resolve_integration( $template_engine );
 
 		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
 		if ( $template_integration instanceof Template_Integration ) {
@@ -388,7 +393,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			break;
 		}
 
-		$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $instance_data );
+		$template_engine      = $this->instance_factory::resolve_template_field_engine( $field_name, $instance_data );
+		$template_integration = $this->engines_storage->resolve_integration( $template_engine );
 
 		// to avoid issues with security plugins, like WordFence.
 		if ( $template_integration instanceof Template_Integration ) {

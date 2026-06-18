@@ -55,7 +55,8 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			$selection_factory,
 			$engines_storage,
 			$data_vendors,
-			$settings
+			$settings,
+			$selections_settings_storage
 		);
 
 		$this->selection_settings_storage = $selections_settings_storage;
@@ -94,6 +95,9 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 		);
 	}
 
+	/**
+	 * @return array<string,mixed>
+	 */
 	protected function get_editor_field_values( Post_Selection_Settings $selection_settings ): array {
 		ob_start();
 		// ignore customMarkup (we need the preview).

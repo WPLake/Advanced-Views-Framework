@@ -48,7 +48,6 @@ use Org\Wplake\Advanced_Views\Plugin\Loaders\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
@@ -63,7 +62,6 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	public Html $html;
 	public Layout_Settings $layout_settings;
 	public Post_Selection_Settings $post_selection_settings;
-	public Post_Selection_Factory $post_selection_factory;
 	public Options $options;
 	public Cache_Flusher $cache_flusher;
 

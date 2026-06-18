@@ -65,7 +65,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->front_assets,
 			$post_selection_markup,
 			$query_builder,
-			$base->post_selection_factory,
+			$this->factory,
 			$base->post_selection_cpt,
 			$base->engines_storage
 		);
@@ -89,7 +89,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$this->cpt_table,
 			$base->post_selections_settings_storage,
 			$this->fs_only_tab,
-			$base->post_selection_factory
+			$this->factory
 		);
 
 		$file_system                      = new File_System(
@@ -162,7 +162,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->post_selections_settings_storage,
 			$base->front_assets,
 			$base->live_reloader_component,
-			$base->post_selection_factory
+			$this->factory
 		);
 
 		$this->interactive_fields = new Selection_Interactive_Fields(
@@ -176,7 +176,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->data_vendors,
 			$base->settings,
 			$this->meta_boxes,
-			$base->layouts_settings_storage
+			$base->layouts_settings_storage,
 		);
 	}
 }

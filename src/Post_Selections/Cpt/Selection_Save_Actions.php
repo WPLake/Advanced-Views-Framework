@@ -55,7 +55,8 @@ class Selection_Save_Actions extends Cpt_Save_Actions {
 			$post_selection_settings,
 			$front_assets,
 			$public_cpt,
-			$engines_storage
+			$engines_storage,
+			$post_selection_factory
 		);
 
 		$this->selection_settings_storage = $post_selections_settings_storage;

@@ -49,7 +49,8 @@ class Layout_Save_Actions extends Cpt_Save_Actions {
 			$layout_settings,
 			$front_assets,
 			$public_cpt,
-			$engines_storage
+			$engines_storage,
+			$layout_factory
 		);
 
 		$this->layouts_settings_storage = $layouts_settings_storage;

@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Parents\Instance_Factory;
@@ -37,6 +38,14 @@ class Layout_Factory extends Instance_Factory {
 		$this->engines_storage          = $engines_storage;
 		$this->field_markup             = $field_markup;
 		$this->data_vendors             = $data_vendors;
+	}
+
+	public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array {
+		return array(
+			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ) => Engines_Storage::PHP,
+			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
+			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
+		);
 	}
 
 	public function make(
