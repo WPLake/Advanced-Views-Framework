@@ -99,7 +99,7 @@ class Engines_Storage {
 	}
 
 	/**
-	 * @return array<string,Template_Integration[]>
+	 * @return array<string,Template_Integration>
 	 */
 	public function get_integrations(): array {
 		return $this->integrations;

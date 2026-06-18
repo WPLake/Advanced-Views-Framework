@@ -179,6 +179,9 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 		);
 	}
 
+	/**
+	 * @return array<string,mixed>
+	 */
 	protected function resolve_page_js_data( string $post_type ): array {
 		foreach ( $this->interactive_fields as $interactive_fields ) {
 			if ( $post_type === $interactive_fields->get_cpt()->cpt_name() ) {

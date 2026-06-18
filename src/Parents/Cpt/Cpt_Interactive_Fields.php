@@ -21,6 +21,7 @@ use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -118,7 +119,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
 			array();
 
-		$engine_data = array_map(
+		$engines_meta = array_map(
 			fn ( Template_Integration $integration )=>array(
 				'autocompleteFunctions' => $integration->get_autocomplete_functions(),
 				'autocompleteFilters'   => $integration->get_autocomplete_filters(),
@@ -140,7 +141,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
 			// todo implement in JS, but keep in mind it has Engines as keys, not Mods
-			'engineData'               => $engine_data,
+			'enginesMeta'              => $engines_meta,
 		);
 	}
 
@@ -150,7 +151,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	abstract protected function get_interactive_response( WP_Post $post ): array;
 
 	/**
-	 * @return array<string,mixed>
+	 * @return array<int,array<string,mixed>>
 	 */
 	abstract protected function get_editors_js_data(): array;
 
@@ -160,35 +161,39 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	abstract protected function get_editor_fields(): array;
 
 	/**
-	 * @return array<string,mixed>
+	 * @return array<int,array<string,mixed>>
 	 */
 	abstract protected function get_select_fields(): array;
 
 	/**
-	 * @return array<string,mixed>
+	 * @template T of array<int,array<string,mixed>>
+	 *
+	 * @param T $textareas
+	 *
+	 * @return T
 	 */
 	protected function define_editor_mods( array $textareas, ?Cpt_Settings $cpt_settings ): array {
-		foreach ( $fields as &$field ) {
-			$field_name = $field['idSelector'];
+		$template_engine     = $this->settings->get_template_engine();
+		$default_integration = $this->engines_storage->resolve_integration( $template_engine );
+
+		foreach ( $textareas as &$field ) {
+			$mode = any($field,'mode');
+
+			if(is_string($mode)){
+				continue;
+			}
+
+			$field_name = string($field,'idSelector');
 
 			if ( $cpt_settings instanceof Cpt_Settings ) {
-				$template_integration = $this->engines_storage->resolve_field_integration( $field_name, $cpt_settings );
+				$field_integration = $this->engines_storage->resolve_field_integration( $field_name, $cpt_settings );
 
-				if ( $template_integration instanceof Template_Integration ) {
-					$field = array_merge(
-						$field,
-						array(
-							'mode'                    => $template_integration->get_ace_mode(),
-							'provocative_symbols_map' => $template_integration->get_provocative_symbols_map(),
-						)
-					);
+				if ( $field_integration instanceof Template_Integration ) {
+					$field['mode']=$field_integration->get_ace_mode();
 
 					continue;
 				}
 			}
-
-			$template_engine     = $this->settings->get_template_engine();
-			$default_integration = $this->engines_storage->resolve_integration( $template_engine );
 
 			// fixme refer the code above
 		}
