@@ -196,7 +196,8 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_name, $theme_settings );
 			$field_integration = $this->engines_storage->resolve_integration( $template_engine );
 
-			$field['mode'] = $field_integration instanceof Template_Integration ?
+			$field['engine'] = $template_engine;
+			$field['mode']   = $field_integration instanceof Template_Integration ?
 				$field_integration->get_ace_mode() :
 				'_unknown';
 		}
