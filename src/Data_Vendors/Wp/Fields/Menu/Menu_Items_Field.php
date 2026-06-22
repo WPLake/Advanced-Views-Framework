@@ -224,18 +224,18 @@ class Menu_Items_Field extends Markup_Field {
 	}
 
 	protected function print_conditional_class(
-		string $class,
+		string $classes,
 		Template_Token $comparison,
 		Markup_Field_Data $markup_field_data
 	): void {
 		$token_factory = $markup_field_data->get_token_factory();
 
 		$active_body = $token_factory->html(
-			function () use ( $class, $markup_field_data ) {
+			function () use ( $classes, $markup_field_data ) {
 				echo ' ';
 				echo esc_html(
 					$this->get_item_class(
-						$class,
+						$classes,
 						$markup_field_data->get_view_data(),
 						$markup_field_data->get_field_data()
 					)

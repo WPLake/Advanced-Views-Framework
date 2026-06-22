@@ -13,8 +13,8 @@ final class Twig_Assignnment extends Assignment_Token {
 	public function print(): void {
 		echo '{% set ';
 
-		if ( $this->var instanceof Template_Token ) {
-			$this->var->print();
+		if ( $this->variable instanceof Template_Token ) {
+			$this->variable->print();
 		}
 
 		echo ' = ';
