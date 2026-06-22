@@ -105,12 +105,12 @@ class Admin_Assets extends Hookable implements Hooks_Interface {
 	protected function enqueue_admin_assets( string $current_base, array $js_data = array() ): void {
 		$plugin_prefix = Hard_Layout_Cpt::cpt_name();
 
-		global $post;
-		$post_type = $post->post_type;
-
 		switch ( $current_base ) {
 			// add, edit pages.
 			case 'post':
+				global $post;
+				$post_type = $post->post_type;
+
 				$js_data = array_merge_recursive(
 					$js_data,
 					$this->resolve_page_js_data( $post_type )

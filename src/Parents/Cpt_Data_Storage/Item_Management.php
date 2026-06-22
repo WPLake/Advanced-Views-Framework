@@ -81,7 +81,7 @@ abstract class Item_Management extends Action {
 		}
 
 		// $isForceFromDb used in the activation method
-		if ( false === $this->file_system->is_active() ||
+		if ( ! $this->file_system->is_active() ||
 			$is_force_from_db ) {
 			if ( 0 === $post_id ) {
 				return;
@@ -98,7 +98,7 @@ abstract class Item_Management extends Action {
 			$this->fs_fields->get_fs_field_file_names()
 		);
 
-		if ( array() === $fs_field_values ) {
+		if ( 0 === count( $fs_field_values ) ) {
 			// do not mark loaded, as item is missing in the FS.
 			return;
 		}
