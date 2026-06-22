@@ -24,6 +24,6 @@ use Org\Wplake\Advanced_Views\Lite\Lite_Plugin_Loader;
 
 	require_once __DIR__ . '/src/autoloader.php';
 
-	$plugin_loader = new Lite_Plugin_Loader();
+	$plugin_loader = new Lite_Plugin_Loader( __FILE__ );
 	$plugin_loader->load();
 } )();

@@ -65,6 +65,14 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	public Options $options;
 	public Cache_Flusher $cache_flusher;
 
+	public string $plugin_file;
+
+	public function __construct( string $plugin_file ) {
+		parent::__construct();
+
+		$this->plugin_file = $plugin_file;
+	}
+
 	protected function primary(): void {
 		$this->layout_cpt         = self::make_layout_cpt();
 		$this->post_selection_cpt = Lite_Post_Selections_Loader::make_post_selection_cpt();
@@ -107,7 +115,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->layout_settings
 		);
 
-		$this->plugin                = new Plugin( __FILE__, $this->options, $this->settings );
+		$this->plugin                = new Plugin( $this->plugin_file, $this->options, $this->settings );
 		$this->templates_environment = new Templates_Environment(
 			$uploads_folder,
 			$this->logger,
