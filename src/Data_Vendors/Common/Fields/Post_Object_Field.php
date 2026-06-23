@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,24 +27,24 @@ class Post_Object_Field extends List_Field {
 	/**
 	 * @return array{url: string, title: string}
 	 */
-	protected function get_post_info( int $id ): array {
-		$post_info = array(
-			'url'   => '',
-			'title' => '',
-		);
+	protected function get_post_info( ?int $id ): array {
+		$post = is_int( $id ) ?
+			get_post( $id ) :
+		null;
 
-		$post = get_post( $id );
+		if ( $post instanceof WP_Post ) {
+			$title = get_the_title( $post );
 
-		if ( null === $post ) {
-			return $post_info;
+			return array(
+				'url'   => (string) get_permalink( $post->ID ),
+				// avoid double encoding in the template.
+				'title' => html_entity_decode( $title, ENT_QUOTES ),
+			);
 		}
 
-		$title = get_the_title( $post );
-
 		return array(
-			'url'   => (string) get_permalink( $post->ID ),
-			// avoid double encoding in Twig.
-			'title' => html_entity_decode( $title, ENT_QUOTES ),
+			'url'   => '',
+			'title' => '',
 		);
 	}
 
@@ -109,7 +110,10 @@ class Post_Object_Field extends List_Field {
 			);
 		}
 
-		$value = int( $variable_field_data->get_value() );
+		$value = $variable_field_data->get_value();
+		$value = is_numeric( $value ) ?
+			int( $value ) :
+			null;
 
 		$link_args = $this->get_post_info( $value );
 
