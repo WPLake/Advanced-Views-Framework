@@ -4,7 +4,7 @@ Tags: post grid, wp_query, meta fields, custom post types, taxonomy, shortcodes,
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.8.10
+Stable tag: 3.8.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -197,6 +197,9 @@ Yes, we maintain an [official Git repository](https://github.com/wplake/advanced
 You're welcome to open issues or PRs there.
 
 == Changelog ==
+
+= 3.8.11 (2026-06-23) =
+- Fix: ACF support - empty single Post Object field with the Null option - displayed the current page title
 
 = 3.8.10 (2026-06-16) =
 - Fix: Layout & Selection loading optimizer message - old settings page url
