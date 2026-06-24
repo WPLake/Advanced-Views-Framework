@@ -412,8 +412,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 			case self::FIELD_EXTRA_QUERY_ARGUMENTS:
 				$field_info->setArgument(
 					'default_value',
-					// do not add 'PHP' to avoid issue with security plugins like WordFence.
-					'
+					'<?php
 
 declare(strict_types=1);
 
