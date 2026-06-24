@@ -88,9 +88,9 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 
 	protected function get_editor_fields(): array {
 		return array(
-			'acf-local_acf_views_view__markup',
-			'acf-local_acf_views_view__css-code',
-			'acf-local_acf_views_view__js-code',
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP ),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CSS_CODE ),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_JS_CODE ),
 		);
 	}
 
@@ -111,9 +111,9 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 
 		return array(
 			// id => value.
-			'acf-local_acf_views_view__markup'   => $markup,
-			'acf-local_acf_views_view__css-code' => $layout_settings->get_css_code( Layout_Settings::CODE_MODE_EDIT ),
-			'acf-local_acf_views_view__js-code'  => $layout_settings->get_js_code(),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP )   => $markup,
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CSS_CODE ) => $layout_settings->get_css_code( Layout_Settings::CODE_MODE_EDIT ),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_JS_CODE )  => $layout_settings->get_js_code(),
 		);
 	}
 
@@ -155,21 +155,21 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 	protected function get_editors_js_data(): array {
 		return array(
 			array(
-				'idSelector'    => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_CODE ),
+				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CSS_CODE ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
 				'isReadOnly'    => false,
 				'mode'          => ACE_Mods::CSS,
 				'linkTitle'     => __( 'CSS Code', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_JS_CODE ),
+				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_JS_CODE ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CSS_AND_JS_TAB ),
 				'isReadOnly'    => false,
 				'mode'          => ACE_Mods::JAVASCRIPT,
 				'linkTitle'     => __( 'JS Code', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ),
+				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => true,
 				// this field mode depends on the instance settings.
@@ -177,7 +177,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 				'linkTitle'     => __( 'Default Template', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ),
+				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CUSTOM_MARKUP ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => false,
 				// this field mode depends on the instance settings.
@@ -185,7 +185,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 				'linkTitle'     => __( 'Custom Template', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ),
+				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_PHP_VARIABLES ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => false,
 				// this field mode depends on the instance settings.

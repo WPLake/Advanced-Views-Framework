@@ -120,15 +120,12 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		$is_post_box_request_required = '' === get_option( 'permalink_structure' ) &&
 										$is_our_add_screen;
 
-		$is_published   = 'publish' === $post->post_status;
-		$theme_settings = $this->resolve_theme_settings( $post );
-
+		$is_published           = 'publish' === $post->post_status;
 		$autocomplete_variables = $is_published ?
 			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
 			array();
 
-		$editors_js_data = $this->get_editors_js_data();
-		$engines_meta    = array_map(
+		$engines_meta = array_map(
 			fn ( Template_Integration $integration )=>array(
 				'autocompleteFunctions' => $integration->get_autocomplete_functions(),
 				'autocompleteFilters'   => $integration->get_autocomplete_filters(),
@@ -144,7 +141,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'ajaxUrl'                  => admin_url( 'admin-ajax.php' ),
 			'refreshNonce'             => wp_create_nonce( 'wp_rest' ),
 			'mods'                     => ACE_Mods::get_all(),
-			'markupTextarea'           => $this->define_editor_mods( $editors_js_data, $theme_settings ),
+			'markupTextarea'           => $this->resolve_editor_data( $post ),
 			'fieldSelect'              => $this->get_select_fields(),
 			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
 			'isPostboxRequestRequired' => $is_post_box_request_required,
@@ -157,12 +154,19 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	 * @return array<string,mixed>
 	 */
 	protected function get_interactive_response( WP_Post $post ): array {
+		return array(
+			'editorsData' => $this->resolve_editor_data( $post ),
+		);
+	}
+
+	/**
+	 * @return FieldsList
+	 */
+	protected function resolve_editor_data( WP_Post $post ): array {
 		$editors_js_data = $this->get_editors_js_data();
 		$theme_settings  = $this->resolve_theme_settings( $post );
 
-		return array(
-			'editorsData' => $this->define_editor_mods( $editors_js_data, $theme_settings ),
-		);
+		return $this->define_editor_mods( $editors_js_data, $theme_settings );
 	}
 
 	/**
@@ -203,8 +207,8 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 				continue;
 			}
 
-			$field_name        = string( $field, 'idSelector' );
-			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_name, $theme_settings );
+			$field_id          = string( $field, 'idSelector' );
+			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_id, $theme_settings );
 			$field_integration = $this->engines_storage->resolve_integration( $template_engine );
 
 			$field['engine'] = $template_engine;

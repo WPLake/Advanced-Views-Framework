@@ -42,9 +42,9 @@ class Layout_Factory extends Instance_Factory {
 
 	public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array {
 		return array(
-			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_PHP_VARIABLES ) => Engines_Storage::PHP,
-			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
-			Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_PHP_VARIABLES ) => Engines_Storage::PHP,
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
 		);
 	}
 

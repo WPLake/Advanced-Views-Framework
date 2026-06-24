@@ -91,10 +91,10 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 
 	protected function get_editor_fields(): array {
 		return array(
-			'acf-local_acf_views_acf-card-data__markup',
-			'acf-local_acf_views_acf-card-data__css-code',
-			'acf-local_acf_views_acf-card-data__js-code',
-			'acf-local_acf_views_acf-card-data__query-preview',
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP ),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CSS_CODE ),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_JS_CODE ),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
 		);
 	}
 
@@ -109,10 +109,14 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 
 		return array(
 			// id => value.
-			'acf-local_acf_views_acf-card-data__markup'   => $markup,
-			'acf-local_acf_views_acf-card-data__css-code' => $selection_settings->get_css_code( Post_Selection_Settings::CODE_MODE_EDIT ),
-			'acf-local_acf_views_acf-card-data__js-code'  => $selection_settings->get_js_code(),
-			'acf-local_acf_views_acf-card-data__query-preview' => $selection_settings->query_preview,
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP )   =>
+				$markup,
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CSS_CODE ) =>
+				$selection_settings->get_css_code( Post_Selection_Settings::CODE_MODE_EDIT ),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_JS_CODE )  =>
+				$selection_settings->get_js_code(),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_QUERY_PREVIEW ) =>
+				$selection_settings->query_preview,
 		);
 	}
 
@@ -143,28 +147,28 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 	protected function get_editors_js_data(): array {
 		return array(
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_CODE ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CSS_CODE ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
 				'isReadOnly'    => false,
 				'mode'          => ACE_Mods::CSS,
 				'linkTitle'     => __( 'CSS Code', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_JS_CODE ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_JS_CODE ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CSS_AND_JS_TAB ),
 				'isReadOnly'    => false,
 				'mode'          => ACE_Mods::JAVASCRIPT,
 				'linkTitle'     => __( 'JS Code', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
 				'isReadOnly'    => true,
 				'mode'          => ACE_Mods::TWIG,
 				'linkTitle'     => __( 'Query Preview', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => true,
 				// this field mode depends on the instance settings.
@@ -172,7 +176,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 				'linkTitle'     => __( 'Default Template', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => false,
 				// this field mode depends on the instance settings.
@@ -180,7 +184,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 				'linkTitle'     => __( 'Custom Template', 'acf-views' ),
 			),
 			array(
-				'idSelector'    => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
+				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
 				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
 				'isReadOnly'    => false,
 				// this field mode depends on the instance settings.

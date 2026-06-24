@@ -38,9 +38,9 @@ class Post_Selection_Factory extends Instance_Factory {
 
 	public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array {
 		return array(
-			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ) => Engines_Storage::PHP,
-			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
-			Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ) => Engines_Storage::PHP,
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP ) => $theme_settings->get_template_engine(),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ) => $theme_settings->get_template_engine(),
 		);
 	}
 
