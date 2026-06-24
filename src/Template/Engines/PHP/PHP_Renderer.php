@@ -24,8 +24,9 @@ final class PHP_Renderer extends Template_Renderer_Base {
 
 	protected function replace_short_tags( string $template ): string {
 		$short_tags = array(
-			'<?=' => '<?php echo',
-			'<?'  => '<?php',
+			'<?'     => '<?php',
+			// "<?=" - its modified version, since it was already partially processed by the prev item.
+			'<?php=' => '<?php echo',
 		);
 
 		foreach ( $short_tags as $short_tag => $replacement ) {

@@ -93,6 +93,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
 
 		$this->html = new Html();
+		$this->engines_storage       = new Engines_Storage( $uploads_folder, $this->logger, $this->settings );
 
 		$post_selections_file_system            = new File_System(
 			$this->logger,
@@ -101,7 +102,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->post_selections_settings_storage = new Selection_Settings_Storage(
 			$this->logger,
 			$post_selections_file_system,
-			new Post_Selection_Fs_Fields(),
+			new Post_Selection_Fs_Fields($this->engines_storage),
 			new Db_Management( $this->logger, $post_selections_file_system, $this->post_selection_cpt ),
 			$this->post_selection_settings
 		);
@@ -110,7 +111,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->layouts_settings_storage = new Layout_Settings_Storage(
 			$this->logger,
 			$layouts_file_system,
-			new Layout_Fs_Fields(),
+			new Layout_Fs_Fields($this->engines_storage),
 			new Db_Management( $this->logger, $layouts_file_system, $this->layout_cpt ),
 			$this->layout_settings
 		);
@@ -121,7 +122,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->logger,
 			$this->plugin,
 		);
-		$this->engines_storage       = new Engines_Storage( $uploads_folder, $this->logger, $this->settings );
+
 		$this->item_settings         = $this->group_creator->create( Item_Settings::class );
 
 		$this->data_vendors            = new Data_Vendors( $this->logger );

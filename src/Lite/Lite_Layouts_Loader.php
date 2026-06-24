@@ -115,7 +115,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 		$layouts_settings_storage = new Layout_Settings_Storage(
 			$base->logger,
 			$file_system,
-			new Layout_Fs_Fields(),
+			new Layout_Fs_Fields($base->engines_storage),
 			$db_management,
 			$base->layout_settings
 		);

@@ -106,7 +106,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		$post_selections_settings_storage = new Selection_Settings_Storage(
 			$base->logger,
 			$file_system,
-			new Post_Selection_Fs_Fields(),
+			new Post_Selection_Fs_Fields($base->engines_storage),
 			$db_management,
 			$base->post_selection_settings
 		);
