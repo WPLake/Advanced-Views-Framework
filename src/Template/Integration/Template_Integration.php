@@ -27,4 +27,6 @@ interface Template_Integration {
 	 * @return array<string,string>
 	 */
 	public function get_autocomplete_filters(): array;
+
+	public function get_file_extension(): string;
 }

@@ -18,6 +18,10 @@ class Twig_Integration extends Template_Integration_Base {
 		return ACE_Mods::TWIG;
 	}
 
+	public function get_file_extension(): string {
+		return '.twig';
+	}
+
 	/**
 	 * @return array<string,string>
 	 */

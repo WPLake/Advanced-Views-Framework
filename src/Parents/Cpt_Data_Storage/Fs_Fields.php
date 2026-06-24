@@ -6,10 +6,17 @@ namespace Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage;
 
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
 class Fs_Fields {
+	protected Engines_Storage $engines_storage;
+
+	public function __construct( Engines_Storage $engines_storage ) {
+		$this->engines_storage = $engines_storage;
+	}
+
 	/**
 	 * @return string[]
 	 */
@@ -80,11 +87,8 @@ class Fs_Fields {
 	 * @return string[]
 	 */
 	public function get_fs_field_file_names( bool $is_without_auto_generated = false ): array {
-		$file_names = array(
-			'default.twig',
-			'default.blade.php',
-			'custom.twig',
-			'custom.blade.php',
+		$template_integrations = $this->engines_storage->get_integrations();
+		$file_names            = array(
 			'style.css',
 			'style.scss',
 			'script.js',
@@ -92,7 +96,12 @@ class Fs_Fields {
 			'data.json',
 		);
 
-		if ( false === $is_without_auto_generated ) {
+		foreach ( $template_integrations as $template_integration ) {
+			$file_names[] = 'default' . $template_integration->get_file_extension();
+			$file_names[] = 'custom' . $template_integration->get_file_extension();
+		}
+
+		if ( ! $is_without_auto_generated ) {
 			$file_names = array_merge(
 				$file_names,
 				array(
@@ -125,22 +134,17 @@ class Fs_Fields {
 			'links.md'         => $this->get_links_md_content( $cpt_settings ),
 		);
 
+		$integration             = $this->engines_storage->resolve_integration( $cpt_settings->template_engine );
+		$template_file_extension = $integration instanceof Template_Integration ?
+			$integration->get_file_extension() :
+			'';
+
 		$std_fields = array(
-			'style.css' => $cpt_settings->css_code,
-			'script.js' => $cpt_settings->js_code,
-			'data.json' => $this->get_data_json( $cpt_settings ),
-		);
-
-		$template_extension = Engines_Storage::TWIG === $cpt_settings->template_engine ?
-			'twig' :
-			'blade.php';
-
-		$std_fields = array_merge(
-			$std_fields,
-			array(
-				sprintf( 'default.%s', $template_extension ) => $cpt_settings->markup,
-				sprintf( 'custom.%s', $template_extension )  => $cpt_settings->custom_markup,
-			)
+			'style.css'                          => $cpt_settings->css_code,
+			'script.js'                          => $cpt_settings->js_code,
+			'data.json'                          => $this->get_data_json( $cpt_settings ),
+			'default' . $template_file_extension => $cpt_settings->markup,
+			'custom' . $template_file_extension  => $cpt_settings->custom_markup,
 		);
 
 		if ( '' !== $cpt_settings->sass_code ) {
@@ -172,27 +176,20 @@ class Fs_Fields {
 	}
 
 	public function set_fs_field( Cpt_Settings $cpt_settings, string $field_file, string $field_value ): void {
+		$integration = $this->engines_storage->resolve_integration( $cpt_settings->template_engine );
+
+		$is_template_field = fn( string $test_name ) => $integration instanceof Template_Integration &&
+				$test_name . $integration->get_file_extension() === $field_file;
+
+		if ( $is_template_field( 'default' ) ) {
+			$cpt_settings->markup = $field_value;
+		}
+
+		if ( $is_template_field( 'custom' ) ) {
+			$cpt_settings->custom_markup = $field_value;
+		}
+
 		switch ( $field_file ) {
-			case 'default.twig':
-				if ( Engines_Storage::TWIG === $cpt_settings->template_engine ) {
-					$cpt_settings->markup = $field_value;
-				}
-				break;
-			case 'default.blade.php':
-				if ( Engines_Storage::BLADE === $cpt_settings->template_engine ) {
-					$cpt_settings->markup = $field_value;
-				}
-				break;
-			case 'custom.twig':
-				if ( Engines_Storage::TWIG === $cpt_settings->template_engine ) {
-					$cpt_settings->custom_markup = $field_value;
-				}
-				break;
-			case 'custom.blade.php':
-				if ( Engines_Storage::BLADE === $cpt_settings->template_engine ) {
-					$cpt_settings->custom_markup = $field_value;
-				}
-				break;
 			case 'style.css':
 				$cpt_settings->css_code = $field_value;
 				break;

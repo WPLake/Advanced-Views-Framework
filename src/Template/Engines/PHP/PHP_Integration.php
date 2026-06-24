@@ -29,4 +29,8 @@ final class PHP_Integration extends Template_Integration_Base {
 	public function get_autocomplete_filters(): array {
 		return array();
 	}
+
+	public function get_file_extension(): string {
+		return '.php';
+	}
 }
