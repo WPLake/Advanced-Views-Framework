@@ -121,12 +121,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 										$is_our_add_screen;
 
 		$is_published   = 'publish' === $post->post_status;
-		$cpt_settings   = $is_published ?
-			$this->cpt_settings_storage->get( $post->post_name ) :
-			null;
-		$theme_settings = $cpt_settings instanceof Cpt_Theme_Settings ?
-			$cpt_settings :
-			$this->settings;
+		$theme_settings = $this->resolve_theme_settings( $post );
 
 		$autocomplete_variables = $is_published ?
 			$this->instance_factory->get_autocomplete_variables( $post->post_name ) :
@@ -161,7 +156,14 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	/**
 	 * @return array<string,mixed>
 	 */
-	abstract protected function get_interactive_response( WP_Post $post ): array;
+	protected function get_interactive_response( WP_Post $post ): array {
+		$editors_js_data = $this->get_editors_js_data();
+		$theme_settings  = $this->resolve_theme_settings( $post );
+
+		return array(
+			'editorsData' => $this->define_editor_mods( $editors_js_data, $theme_settings ),
+		);
+	}
 
 	/**
 	 * @return FieldsList
@@ -177,6 +179,16 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	 * @return FieldsList
 	 */
 	abstract protected function get_select_fields(): array;
+
+	protected function resolve_theme_settings( WP_Post $post ): Cpt_Theme_Settings {
+		$cpt_settings = 'publish' === $post->post_status ?
+			$this->cpt_settings_storage->get( $post->post_name ) :
+			null;
+
+		return $cpt_settings instanceof Cpt_Theme_Settings ?
+			$cpt_settings :
+			$this->settings;
+	}
 
 	/**
 	 * @param FieldsList $textareas

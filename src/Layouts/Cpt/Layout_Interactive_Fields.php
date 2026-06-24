@@ -76,10 +76,13 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 
 		$layout_settings = $this->layout_settings_storage->get( $layout_unique_id );
 
-		return array(
-			'textareaItems'         => $this->get_editor_field_values( $layout_settings ),
-			'elements'              => $this->get_html_elements_response( $post, $layout_settings ),
-			'autocompleteVariables' => $this->layout_factory->get_autocomplete_variables( $layout_unique_id ),
+		return array_merge(
+			parent::get_interactive_response( $post ),
+			array(
+				'textareaItems'         => $this->get_editor_field_values( $layout_settings ),
+				'elements'              => $this->get_html_elements_response( $post, $layout_settings ),
+				'autocompleteVariables' => $this->layout_factory->get_autocomplete_variables( $layout_unique_id ),
+			)
 		);
 	}
 
