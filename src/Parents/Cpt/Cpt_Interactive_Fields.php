@@ -154,7 +154,6 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'isWordpressComHosting'    => $this->plugin->is_wordpress_com_hosting(),
 			'isPostboxRequestRequired' => $is_post_box_request_required,
 			'allFieldChoicesInEnglish' => $this->get_all_field_choices_in_english(),
-			// todo implement in JS, but keep in mind it has Engines as keys, not Mods.
 			'enginesMeta'              => $engines_meta,
 		);
 	}

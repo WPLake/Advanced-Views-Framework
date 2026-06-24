@@ -80,9 +80,9 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 		$selection_settings = $this->selection_settings_storage->get( $unique_id );
 
 		return array(
-			'textareaItems'    => $this->get_editor_field_values( $selection_settings ),
-			'elements'         => $this->get_html_elements_response( $selection_settings ),
-			'autocompleteData' => $this->selection_factory->get_autocomplete_variables( $unique_id ),
+			'textareaItems'         => $this->get_editor_field_values( $selection_settings ),
+			'elements'              => $this->get_html_elements_response( $selection_settings ),
+			'autocompleteVariables' => $this->selection_factory->get_autocomplete_variables( $unique_id ),
 		);
 	}
 
