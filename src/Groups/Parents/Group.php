@@ -4,10 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups\Parents;
 
-use Exception;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\AcfGroup;
-use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layouts_Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,6 +14,14 @@ abstract class Group extends AcfGroup {
 	// to keep back compatibility.
 	const FIELD_NAME_PREFIX = '';
 	const TEXT_DOMAIN       = 'acf-views';
+
+	public static function get_acf_field_id( string $field_name ): string {
+		return 'acf-' . static::getAcfFieldName( $field_name );
+	}
+
+	public static function resolve_field_name_from_id( string $field_id ): string {
+		return str_replace( 'acf-', '', $field_id );
+	}
 
 	public function reset_pro_fields( ?Group $origin_instance ): void {
 		$fields_info = static::getFieldsInfo();

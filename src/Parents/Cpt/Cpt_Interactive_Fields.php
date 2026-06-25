@@ -8,7 +8,9 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
@@ -207,8 +209,10 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 				continue;
 			}
 
-			$field_id          = string( $field, 'idSelector' );
-			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_id, $theme_settings );
+			$field_id   = string( $field, 'idSelector' );
+			$field_name = Group::resolve_field_name_from_id( $field_id );
+
+			$template_engine   = $this->instance_factory::resolve_template_field_engine( $field_name, $theme_settings );
 			$field_integration = $this->engines_storage->resolve_integration( $template_engine );
 
 			$field['engine'] = $template_engine;

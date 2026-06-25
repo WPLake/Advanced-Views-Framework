@@ -23,11 +23,11 @@ abstract class Instance_Factory {
 	 */
 	abstract public static function get_template_fields( Cpt_Theme_Settings $theme_settings ): array;
 
-	public static function resolve_template_field_engine( string $field_id, Cpt_Theme_Settings $theme_settings ): string {
+	public static function resolve_template_field_engine( string $field_name, Cpt_Theme_Settings $theme_settings ): string {
 		$template_fields = static::get_template_fields( $theme_settings );
 
-		if ( key_exists( $field_id, $template_fields ) ) {
-			return $template_fields[ $field_id ];
+		if ( key_exists( $field_name, $template_fields ) ) {
+			return $template_fields[ $field_name ];
 		}
 
 		return '';

@@ -200,9 +200,9 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	}
 
 	protected function validate_custom_markup(): void {
-		$is_with_custom_markup = '' !== trim( $this->cpt_settings->custom_markup );
+		$is_with_custom_markup = strlen( trim( $this->cpt_settings->custom_markup ) ) > 0;
 
-		if ( false === $is_with_custom_markup ) {
+		if ( ! $is_with_custom_markup ) {
 			return;
 		}
 
@@ -211,7 +211,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->update_markup( $this->cpt_settings );
 		$markup_validation_error = $this->make_validation_instance()->get_markup_validation_error();
 
-		if ( '' === $markup_validation_error ) {
+		if ( 0 === strlen( $markup_validation_error ) ) {
 			return;
 		}
 
@@ -265,7 +265,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$is_new    = $unique_id !== $post_unique_id;
 
 		// do not provide origin instance, if the post is just created.
-		$origin_instance = false === $is_new ?
+		$origin_instance = ! $is_new ?
 			$this->cpt_settings_storage->get( $unique_id ) :
 			null;
 

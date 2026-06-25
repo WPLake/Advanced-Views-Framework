@@ -100,10 +100,6 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	 */
 	public bool $is_without_web_component;
 
-	public static function get_acf_field_id( string $field_name ): string {
-		return 'acf-' . static::getAcfFieldName( $field_name );
-	}
-
 	/**
 	 * @return string[]
 	 */
