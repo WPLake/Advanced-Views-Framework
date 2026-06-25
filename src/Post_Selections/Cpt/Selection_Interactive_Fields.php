@@ -92,6 +92,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 	protected function get_editor_fields(): array {
 		return array(
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP ),
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CUSTOM_MARKUP ),
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CSS_CODE ),
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_JS_CODE ),
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
@@ -109,8 +110,9 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 
 		return array(
 			// id => value.
-			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP )   =>
-				$markup,
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_MARKUP )   => $markup,
+			// custom markup value is the same as on the client.
+			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CUSTOM_MARKUP )   => null,
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_CSS_CODE ) =>
 				$selection_settings->get_css_code( Post_Selection_Settings::CODE_MODE_EDIT ),
 			Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_JS_CODE )  =>

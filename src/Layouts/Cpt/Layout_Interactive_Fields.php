@@ -89,6 +89,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 	protected function get_editor_fields(): array {
 		return array(
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP ),
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CUSTOM_MARKUP ),
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CSS_CODE ),
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_JS_CODE ),
 		);
@@ -112,6 +113,8 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 		return array(
 			// id => value.
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_MARKUP )   => $markup,
+			// custom markup value is the same as on the client.
+			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CUSTOM_MARKUP )   => null,
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_CSS_CODE ) => $layout_settings->get_css_code( Layout_Settings::CODE_MODE_EDIT ),
 			Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_JS_CODE )  => $layout_settings->get_js_code(),
 		);
