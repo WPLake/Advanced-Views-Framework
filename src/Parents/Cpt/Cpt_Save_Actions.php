@@ -76,6 +76,28 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->instance_factory      = $instance_factory;
 	}
 
+	// according to the tests, json in post_meta in 13 times quicker than ordinary postMeta way -
+	// (30ms per 10 objects vs 400ms).
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( ! $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		// for some reason, ACF ajax form validation doesn't work on the wordpress.com hosting.
+		if ( ! $this->plugin->is_wordpress_com_hosting() ) {
+			// priority is 20, to make sure it's run after the ACF's code.
+			self::add_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
+			self::add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
+		}
+
+		self::add_action( 'acf/save_post', array( $this, 'skip_saving_to_post_meta' ) );
+		self::add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
+		// we need the built-in wp hook to have the latest title.
+		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
+		self::add_action( 'trashed_post', array( $this, 'trash' ) );
+		self::add_action( 'untrashed_post', array( $this, 'unTrash' ) );
+	}
+
 	abstract protected function get_cpt_name(): string;
 
 	abstract protected function get_custom_markup_acf_field_name(): string;
@@ -132,7 +154,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @throws Exception
 	 */
 	public function perform_save_actions( $post_id, bool $is_skip_save = false ): ?Cpt_Settings {
-		if ( false === $this->is_my_post( $post_id ) ) {
+		if ( ! $this->is_my_post( $post_id ) ) {
 			return null;
 		}
 
@@ -184,94 +206,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		foreach ( $posts as $post ) {
 			$this->perform_save_actions( $post->ID );
 		}
-	}
-
-	protected function get_acf_ajax_post_id(): int {
-		return Query_Arguments::get_int_for_non_action( 'post_id', 'post' );
-	}
-
-	protected function add_validation_error( string $field_key, string $message ): void {
-		if ( ! function_exists( 'acf_add_validation_error' ) ) {
-			return;
-		}
-
-		$input_name = $this->validated_input_names[ $field_key ] ?? '';
-		acf_add_validation_error( $input_name, $message );
-	}
-
-	protected function validate_custom_markup(): void {
-		$is_with_custom_markup = strlen( trim( $this->cpt_settings->custom_markup ) ) > 0;
-
-		if ( ! $is_with_custom_markup ) {
-			return;
-		}
-
-		// it's necessary to update the markupPreview before the validation
-		// as the validation uses the markupPreview as 'canonical' for the 'array' type validation.
-		$this->update_markup( $this->cpt_settings );
-		$markup_validation_error = $this->make_validation_instance()->get_markup_validation_error();
-
-		if ( 0 === strlen( $markup_validation_error ) ) {
-			return;
-		}
-
-		$this->add_validation_error(
-			$this->get_custom_markup_acf_field_name(),
-			$markup_validation_error
-		);
-	}
-
-	protected function validate_submission(): void {
-		$this->validate_custom_markup();
-		// it can be also WordPress interactivity or a custom implementation.
-		// $this->validate_web_component_setting();.
-	}
-
-	protected function load_validation_data_instance_from_current_values( int $post_id ): void {
-		// remove slashes added by WP, as it's wrong to have slashes so early
-		// (corrupts next data processing, like markup generation (will be \&quote; instead of &quote; due to this escaping)
-		// in the 'saveToPostContent()' method using $wpdb that also has 'addslashes()',
-		// it means otherwise \" will be replaced with \\\" and it'll create double slashing issue (every saving amount of slashes before " will be increasing).
-
-		$field_values = array_map( 'stripslashes_deep', $this->field_values );
-
-		// @phpstan-ignore-next-line
-		$this->cpt_settings->load( $post_id, '', $field_values );
-
-		// restore overwritten fields.
-		$this->cpt_settings->unique_id = get_post( $post_id )->post_name ?? '';
-		$this->cpt_settings->title     = get_post( $post_id )->post_title ?? '';
-	}
-
-	protected function save_validation_instance_to_storage( string $unique_id, ?Group $group ): void {
-		// to avoid changing fields for Unlicensed users.
-		if ( $this->plugin->is_pro_field_locked() ) {
-			$this->cpt_settings->reset_pro_fields( $group );
-		}
-
-		$this->cpt_settings_storage->replace( $unique_id, $this->cpt_settings );
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	protected function save_caught_fields( int $post_id ): void {
-		$post_unique_id = get_post( $post_id )->post_name ?? '';
-
-		// here is the right place to assign the uniqueId for new items.
-		$this->cpt_settings_storage->get_db_management()->maybe_assign_unique_id( $post_id, $this->cpt_settings );
-
-		$unique_id = $this->cpt_settings->get_unique_id();
-		$is_new    = $unique_id !== $post_unique_id;
-
-		// do not provide origin instance, if the post is just created.
-		$origin_instance = ! $is_new ?
-			$this->cpt_settings_storage->get( $unique_id ) :
-			null;
-
-		$this->save_validation_instance_to_storage( $unique_id, $origin_instance );
-
-		$this->perform_save_actions( $post_id );
 	}
 
 	/**
@@ -438,7 +372,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	public function catch_field_value( bool $is_valid, $value, array $field, string $input_name ): bool {
 		$post_id = $this->get_acf_ajax_post_id();
 
-		if ( true !== $is_valid ||
+		if ( ! $is_valid ||
 			! in_array( $field['key'], $this->available_acf_fields, true ) ||
 			! $this->is_my_post( $post_id ) ) {
 			return $is_valid;
@@ -455,13 +389,13 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @throws Exception
 	 */
 	public function custom_validation(): void {
-		if ( false === function_exists( 'acf_get_validation_errors' ) ) {
+		if ( ! function_exists( 'acf_get_validation_errors' ) ) {
 			return;
 		}
 
 		$post_id = $this->get_acf_ajax_post_id();
 
-		if ( false === $this->is_my_post( $post_id ) ) {
+		if ( ! $this->is_my_post( $post_id ) ) {
 			return;
 		}
 
@@ -485,14 +419,16 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->validate_submission();
 
 		$acf_validation_errors = acf_get_validation_errors();
+		$validated_fields      = array_keys( $this->validated_input_names );
 
 		if ( false !== $acf_validation_errors &&
 			array() !== $acf_validation_errors ) {
 			$this->get_logger()->debug(
 				'custom save validation found errors',
 				array(
-					'post_id' => $post_id,
-					'errors'  => $acf_validation_errors,
+					'post_id'          => $post_id,
+					'errors'           => $acf_validation_errors,
+					'validated_fields' => $validated_fields,
 				)
 			);
 
@@ -516,7 +452,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @throws Exception
 	 */
 	public function skip_saving_to_post_meta( $post_id ): void {
-		if ( false === $this->is_my_post( $post_id ) ) {
+		if ( ! $this->is_my_post( $post_id ) ) {
 			return;
 		}
 
@@ -539,31 +475,29 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			4
 		);
 
-		if ( false === $this->plugin->is_wordpress_com_hosting() ) {
-			return;
+		if ( $this->plugin->is_wordpress_com_hosting() ) {
+			// priority is 20, as current is with 10.
+			self::add_action(
+				'acf/save_post',
+				function ( $post_id ): void {
+					// check again, as probably it's about another post.
+					if ( ! $this->is_my_post( $post_id ) ) {
+						return;
+					}
+
+					$this->get_logger()->debug(
+						'skipping custom save validation on the wordpress.com hosting',
+						array(
+							'post_id' => $post_id,
+						)
+					);
+
+					$this->load_validation_data_instance_from_current_values( $post_id );
+					$this->save_caught_fields( $post_id );
+				},
+				20
+			);
 		}
-
-		// priority is 20, as current is with 10.
-		self::add_action(
-			'acf/save_post',
-			function ( $post_id ): void {
-				// check again, as probably it's about another post.
-				if ( false === $this->is_my_post( $post_id ) ) {
-					return;
-				}
-
-				$this->get_logger()->debug(
-					'skipping custom save validation on the wordpress.com hosting',
-					array(
-						'post_id' => $post_id,
-					)
-				);
-
-				$this->load_validation_data_instance_from_current_values( $post_id );
-				$this->save_caught_fields( $post_id );
-			},
-			20
-		);
 	}
 
 	public function load_fields_from_json(): void {
@@ -649,24 +583,102 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->cpt_settings_storage->un_trash( $post_id );
 	}
 
-	// by tests, json in post_meta in 13 times quicker than ordinary postMeta way (30ms per 10 objects vs 400ms).
-	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( false === $route_detector->is_admin_route() ) {
+	protected function get_acf_ajax_post_id(): int {
+		return Query_Arguments::get_int_for_non_action( 'post_id', 'post' );
+	}
+
+	protected function add_validation_error( string $field_key, string $message ): void {
+		if ( ! function_exists( 'acf_add_validation_error' ) ) {
 			return;
 		}
 
-		// for some reason, ACF ajax form validation doesn't work on the wordpress.com hosting.
-		if ( false === $this->plugin->is_wordpress_com_hosting() ) {
-			// priority is 20, to make sure it's run after the ACF's code.
-			self::add_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
-			self::add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
+		$input_name = $this->validated_input_names[ $field_key ] ?? '';
+		acf_add_validation_error( $input_name, $message );
+	}
+
+	protected function validate_custom_markup(): void {
+		$is_with_custom_markup = strlen( trim( $this->cpt_settings->custom_markup ) ) > 0;
+
+		if ( ! $is_with_custom_markup ) {
+			$this->logger->debug( 'Validation: no custom markup to check' );
+
+			return;
 		}
 
-		self::add_action( 'acf/save_post', array( $this, 'skip_saving_to_post_meta' ) );
-		self::add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
-		// we need the built-in wp hook to have the latest title.
-		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
-		self::add_action( 'trashed_post', array( $this, 'trash' ) );
-		self::add_action( 'untrashed_post', array( $this, 'unTrash' ) );
+		// it's necessary to update the markupPreview before the validation
+		// as the validation uses the markupPreview as 'canonical' for the 'array' type validation.
+		$this->update_markup( $this->cpt_settings );
+		$markup_validation_error = $this->make_validation_instance()->get_markup_validation_error();
+
+		if ( 0 === strlen( $markup_validation_error ) ) {
+			$this->logger->debug( 'Validation: custom markup is valid' );
+
+			return;
+		}
+
+		$this->logger->debug(
+			'Validation: custom markup is invalid',
+			array(
+				'error' => $markup_validation_error,
+			)
+		);
+
+		$this->add_validation_error(
+			$this->get_custom_markup_acf_field_name(),
+			$markup_validation_error
+		);
+	}
+
+	protected function validate_submission(): void {
+		$this->validate_custom_markup();
+		// it can be also WordPress interactivity or a custom implementation.
+		// $this->validate_web_component_setting();.
+	}
+
+	protected function load_validation_data_instance_from_current_values( int $post_id ): void {
+		// remove slashes added by WP, as it's wrong to have slashes so early
+		// (corrupts next data processing, like markup generation (will be \&quote; instead of &quote; due to this escaping)
+		// in the 'saveToPostContent()' method using $wpdb that also has 'addslashes()',
+		// it means otherwise \" will be replaced with \\\" and it'll create double slashing issue (every saving amount of slashes before " will be increasing).
+
+		$field_values = array_map( 'stripslashes_deep', $this->field_values );
+
+		// @phpstan-ignore-next-line
+		$this->cpt_settings->load( $post_id, '', $field_values );
+
+		// restore overwritten fields.
+		$this->cpt_settings->unique_id = get_post( $post_id )->post_name ?? '';
+		$this->cpt_settings->title     = get_post( $post_id )->post_title ?? '';
+	}
+
+	protected function save_validation_instance_to_storage( string $unique_id, ?Group $group ): void {
+		// to avoid changing fields for Unlicensed users.
+		if ( $this->plugin->is_pro_field_locked() ) {
+			$this->cpt_settings->reset_pro_fields( $group );
+		}
+
+		$this->cpt_settings_storage->replace( $unique_id, $this->cpt_settings );
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	protected function save_caught_fields( int $post_id ): void {
+		$post_unique_id = get_post( $post_id )->post_name ?? '';
+
+		// here is the right place to assign the uniqueId for new items.
+		$this->cpt_settings_storage->get_db_management()->maybe_assign_unique_id( $post_id, $this->cpt_settings );
+
+		$unique_id = $this->cpt_settings->get_unique_id();
+		$is_new    = $unique_id !== $post_unique_id;
+
+		// do not provide origin instance, if the post is just created.
+		$origin_instance = ! $is_new ?
+			$this->cpt_settings_storage->get( $unique_id ) :
+			null;
+
+		$this->save_validation_instance_to_storage( $unique_id, $origin_instance );
+
+		$this->perform_save_actions( $post_id );
 	}
 }

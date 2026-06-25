@@ -9,22 +9,27 @@ use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
 class Logger extends Hookable implements Hooks_Interface {
-	const MAX_MESSAGES = 500;
+	const MAX_MESSAGES    = 500;
+	const BACKTRACE_LIMIT = 4;
 
 	private string $log_file;
 	private string $error_file;
 	private Settings $settings;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
+	private string $request_id;
 
 	public function __construct( string $folder, Settings $settings ) {
 		$this->log_file           = $folder . '/log.txt';
 		$this->error_file         = $folder . '/error_log.txt';
 		$this->settings           = $settings;
 		$this->wp_filesystem_base = null;
+		// uniqueID to distinguish requests.
+		$this->request_id = uniqid( '', true );
 	}
 
 	protected function get_wp_filesystem(): WP_Filesystem_Base {
@@ -136,7 +141,7 @@ class Logger extends Hookable implements Hooks_Interface {
 		$back_trace_limit = defined( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) &&
 							is_numeric( constant( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) ) ?
 			(int) constant( 'ACF_VIEWS_LOGGER_BACK_TRACE_LIMIT' ) :
-			4;
+			self::BACKTRACE_LIMIT;
 		$back_trace_info  = $this->get_back_trace( $back_trace_limit, 3 );
 
 		// 3. make first log line (LEVEL : Message [Class_Name->method])
@@ -167,11 +172,11 @@ class Logger extends Hookable implements Hooks_Interface {
 
 		// 5. make third log line (optional, args)
 
-		if ( array() !== $debug_args ) {
-			// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
-			$debug_args_string = print_r( $debug_args, true );
-			$message_parts[]   = rtrim( $debug_args_string, "\n" );
-		}
+		$debug_args['_request_id'] = $this->get_request_id();
+
+		// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
+		$debug_args_string = print_r( $debug_args, true );
+		$message_parts[]   = rtrim( $debug_args_string, "\n" );
 
 		// 6. write to the log file
 
@@ -179,6 +184,14 @@ class Logger extends Hookable implements Hooks_Interface {
 		array_unshift( $messages, implode( "\n", $message_parts ) );
 
 		$this->put_contents( $this->log_file, implode( "\n\n", $messages ) );
+	}
+
+	protected function get_request_id(): string {
+		// format is "base.extra".
+		$parts = explode( '.', $this->request_id );
+
+		// put extra first, so it's eye-catching.
+		return implode( '_', array( string( $parts, 1 ), string( $parts, 0 ) ) );
 	}
 
 	protected function error_level_to_string( int $level ): string {

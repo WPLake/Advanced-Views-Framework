@@ -150,7 +150,7 @@ class Layout_Save_Actions extends Cpt_Save_Actions {
 	}
 
 	public function perform_save_actions( $post_id, bool $is_skip_save = false ): ?Layout_Settings {
-		if ( false === $this->is_my_post( $post_id ) ) {
+		if ( ! $this->is_my_post( $post_id ) ) {
 			return null;
 		}
 
@@ -165,7 +165,7 @@ class Layout_Save_Actions extends Cpt_Save_Actions {
 		$this->update_identifiers( $view_data );
 		$this->update_markup( $view_data );
 
-		if ( false === $is_skip_save ) {
+		if ( ! $is_skip_save ) {
 			// it'll also update post fields, like 'comment_count'.
 			$this->layouts_settings_storage->save( $view_data );
 		}
