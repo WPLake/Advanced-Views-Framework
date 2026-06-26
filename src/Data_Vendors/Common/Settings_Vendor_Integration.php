@@ -113,7 +113,6 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 			$source,
 			$layout_settings->get_unique_id(),
 			$post_id,
-			true,
 			'',
 			array(),
 			$local_data

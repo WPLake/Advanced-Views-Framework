@@ -90,7 +90,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			self::add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
 		}
 
-		self::add_action( 'acf/save_post', array( $this, 'skip_saving_to_post_meta' ) );
+		$this->mock_acf_saving();
+
 		self::add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
 		// we need the built-in wp hook to have the latest title.
 		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
@@ -105,6 +106,39 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function make_validation_instance(): Instance;
 
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
+
+	protected function mock_acf_saving(): void {
+		self::add_action(
+			'acf/save_post',
+			/**
+			 * @param int|string $post_id
+			 */
+			function ( $post_id ) {
+				if ( $this->is_my_post( $post_id ) ) {
+					$this->mock_saving_to_postmeta();
+				}
+			}
+		);
+
+		// this hook is introduced since ACF 6.8.1 as part of their custom post-revision.
+		self::add_filter(
+			'acf/form-post/skip_save',
+			/**
+			 * @param bool|mixed $skip_save
+			 *
+			 * return bool|mixed
+			 */
+			function ( $skip_save, int $post_id ) {
+				if ( $this->is_my_post( $post_id ) ) {
+					return true;
+				}
+
+				return $skip_save;
+			},
+			10,
+			2
+		);
+	}
 
 	/**
 	 * @param array<string,string> $actual_pieces
@@ -218,15 +252,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			(string) $field['name'] :
 			'';
 		$validation_instance = $this->cpt_settings;
-
-		$template_engine      = $this->instance_factory::resolve_template_field_engine( $field_name, $validation_instance );
-		$template_integration = $this->engines_storage->resolve_integration( $template_engine );
-
-		// add <?php to the value dynamically, to avoid issues with security plugins, like Wordfence.
-		if ( $template_integration instanceof Template_Integration ) {
-			$value = string( $value );
-			$value = $template_integration->unmock_provocative_symbols( $value );
-		}
 
 		// convert repeater format. don't check simply 'is_array(value)' as not every array is a repeater
 		// also check to make sure it's array (can be empty string).
@@ -414,21 +439,19 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			return;
 		}
 
-		$this->load_validation_data_instance_from_current_values( $post_id );
+		$this->load_validation_instance( $post_id );
 
 		$this->validate_submission();
 
 		$acf_validation_errors = acf_get_validation_errors();
-		$validated_fields      = array_keys( $this->validated_input_names );
 
 		if ( false !== $acf_validation_errors &&
 			array() !== $acf_validation_errors ) {
 			$this->get_logger()->debug(
 				'custom save validation found errors',
 				array(
-					'post_id'          => $post_id,
-					'errors'           => $acf_validation_errors,
-					'validated_fields' => $validated_fields,
+					'post_id' => $post_id,
+					'errors'  => $acf_validation_errors,
 				)
 			);
 
@@ -446,16 +469,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->save_caught_fields( $post_id );
 	}
 
-	/**
-	 * @param int|string $post_id
-	 *
-	 * @throws Exception
-	 */
-	public function skip_saving_to_post_meta( $post_id ): void {
-		if ( ! $this->is_my_post( $post_id ) ) {
-			return;
-		}
-
+	protected function mock_saving_to_postmeta(): void {
 		self::add_filter(
 			'acf/pre_update_value',
 			function ( $is_updated, $value, int $post_id, array $field ): bool {
@@ -492,7 +506,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 						)
 					);
 
-					$this->load_validation_data_instance_from_current_values( $post_id );
+					$this->load_validation_instance( $post_id );
 					$this->save_caught_fields( $post_id );
 				},
 				20
@@ -635,20 +649,47 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// $this->validate_web_component_setting();.
 	}
 
-	protected function load_validation_data_instance_from_current_values( int $post_id ): void {
+	protected function load_validation_instance( int $post_id ): void {
 		// remove slashes added by WP, as it's wrong to have slashes so early
 		// (corrupts next data processing, like markup generation (will be \&quote; instead of &quote; due to this escaping)
 		// in the 'saveToPostContent()' method using $wpdb that also has 'addslashes()',
 		// it means otherwise \" will be replaced with \\\" and it'll create double slashing issue (every saving amount of slashes before " will be increasing).
 
+		/**
+		 * @var array<string,mixed> $field_values
+		 */
 		$field_values = array_map( 'stripslashes_deep', $this->field_values );
 
-		// @phpstan-ignore-next-line
-		$this->cpt_settings->load( $post_id, '', $field_values );
+		$this->load_validation_fields( $post_id, $field_values );
 
 		// restore overwritten fields.
 		$this->cpt_settings->unique_id = get_post( $post_id )->post_name ?? '';
 		$this->cpt_settings->title     = get_post( $post_id )->post_title ?? '';
+	}
+
+	/**
+	 * @param array<string,mixed> $field_values
+	 */
+	protected function load_validation_fields( int $post_id, array $field_values ): void {
+		// 1. load all the values, including mocked template fields.
+		$this->cpt_settings->load( $post_id, '', $field_values );
+
+		// 2. unmock template fields using the loaded instance settings (e.g. chosen template engine)
+		$template_fields = $this->instance_factory::get_template_fields( $this->cpt_settings );
+
+		foreach ( $template_fields as $field_name => $template_engine ) {
+			$template_integration = $this->engines_storage->resolve_integration( $template_engine );
+
+			// mocking avoids issues with security plugins, like Wordfence.
+			if ( $template_integration instanceof Template_Integration ) {
+				$value                       = string( $field_values, $field_name );
+				$value                       = $template_integration->unmock_provocative_symbols( $value );
+				$field_values[ $field_name ] = $value;
+			}
+		}
+
+		// 3. load the final values.
+		$this->cpt_settings->load( $post_id, '', $field_values );
 	}
 
 	protected function save_validation_instance_to_storage( string $unique_id, ?Group $group ): void {

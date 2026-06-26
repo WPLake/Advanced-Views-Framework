@@ -188,30 +188,9 @@ class Layout extends Instance {
 	 * @param array<string,mixed> $custom_arguments
 	 */
 	public function insert_fields_and_print_html(
-		bool $is_minify_markup = true,
 		array $custom_arguments = array()
 	): bool {
 		$template = $this->get_template();
-
-		if ( $is_minify_markup ) {
-			$unnecessary_symbols = array(
-				"\n",
-				"\r",
-			);
-
-			// Blade requires at least some spacing between its tokens.
-			if ( in_array(
-				$this->layout_settings->template_engine,
-				array( Engines_Storage::TWIG, '' ),
-				true
-			) ) {
-				$unnecessary_symbols[] = "\t";
-			}
-
-			// remove special symbols that used in the markup for a preview
-			// exactly here, before the fields are inserted, to avoid affecting them.
-			$template = str_replace( $unnecessary_symbols, '', $template );
-		}
 
 		$twig_variables = $this->get_template_variables( false, $custom_arguments );
 

@@ -5,9 +5,7 @@ namespace Org\Wplake\Advanced_Views\Template\Rendering;
 
 defined( 'ABSPATH' ) || exit;
 
-use Error;
 use Exception;
-use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Settings;
 use WP_Filesystem_Base;
@@ -90,7 +88,7 @@ abstract class File_Template_Renderer_Base extends Template_Renderer_Base {
 			// @phpcs:ignore
 			echo $html;
 		} catch ( Exception $e ) {
-			$this->handle_error( $e, $args, $unique_id, $is_validation );
+			$this->handle_error( $e, $template, $args, $unique_id, $is_validation );
 		}
 
 		$wp_filesystem->delete( $template_file );

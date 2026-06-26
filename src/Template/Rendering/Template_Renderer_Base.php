@@ -44,6 +44,7 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 	 */
 	protected function handle_error(
 		Throwable $error,
+		string $template,
 		array $args,
 		string $unique_id,
 		bool $is_validation
@@ -74,7 +75,15 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 		if ( $is_debug_mode &&
 			! $is_validation ) {
 			// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
-			echo '<pre>' . esc_html( print_r( $args, true ) ) . '</pre>';
+			echo '<pre>' . esc_html(
+				print_r(
+					array(
+						'template' => $template,
+						'args'     => $args,
+					),
+					true
+				)
+			) . '</pre>';
 		}
 	}
 }

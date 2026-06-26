@@ -220,7 +220,6 @@ final class Layout_Shortcode extends Shortcode {
 			$source,
 			$view_unique_id,
 			$current_page_id,
-			true,
 			$classes,
 			$custom_arguments,
 			$local_data

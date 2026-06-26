@@ -72,7 +72,6 @@ class Layout_Factory extends Instance_Factory {
 		Source $source,
 		string $view_unique_id,
 		int $page_id,
-		bool $is_minify_markup = true,
 		string $classes = '',
 		array $custom_arguments = array(),
 		?array $local_data = null
@@ -81,7 +80,7 @@ class Layout_Factory extends Instance_Factory {
 
 		$view->set_local_data( $local_data );
 
-		$is_not_empty = $view->insert_fields_and_print_html( $is_minify_markup, $custom_arguments );
+		$is_not_empty = $view->insert_fields_and_print_html( $custom_arguments );
 
 		// mark as rendered, only if is not empty
 		// 'makeAndGetHtml' used as the primary. 'make' used for the specific cases, like validationInstance.

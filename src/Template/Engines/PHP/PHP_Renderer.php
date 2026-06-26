@@ -18,7 +18,7 @@ final class PHP_Renderer extends Template_Renderer_Base {
 		eval_with_context( $php_code, $args, $error );
 
 		if ( $error instanceof Throwable ) {
-			$this->handle_error( $error, $args, $unique_id, $is_validation );
+			$this->handle_error( $error, $template, $args, $unique_id, $is_validation );
 		}
 	}
 

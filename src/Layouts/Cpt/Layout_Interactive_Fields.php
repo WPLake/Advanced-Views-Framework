@@ -244,8 +244,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 			$this->layout_factory->make_and_print_html(
 				$source,
 				$post->post_name,
-				0,
-				false,
+				0
 			);
 			$view_html = (string) ob_get_clean();
 		} else {
