@@ -7,13 +7,13 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use WP_Post;
 use WP_Query;
 

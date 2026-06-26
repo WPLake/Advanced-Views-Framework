@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Taxonomy_Terms;
 
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Taxonomy_Field;
-use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 
 defined( 'ABSPATH' ) || exit;
 

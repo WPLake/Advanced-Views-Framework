@@ -6,12 +6,12 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Wp\Fields\Post;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Custom_Field;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Image_Field;
 use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Lightbox_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
 
 class Post_Thumbnail_Field extends Image_Field {
 	use Custom_Field;

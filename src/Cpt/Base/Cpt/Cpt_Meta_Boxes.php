@@ -1,0 +1,110 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt;
+
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+
+defined( 'ABSPATH' ) || exit;
+
+abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
+	private Html $html;
+	private Plugin $plugin;
+
+	public function __construct( Html $html, Plugin $plugin ) {
+		$this->html   = $html;
+		$this->plugin = $plugin;
+	}
+
+	abstract protected function get_cpt_name(): string;
+
+	protected function get_html(): Html {
+		return $this->html;
+	}
+
+	public function add_meta_boxes(): void {
+		add_meta_box(
+			'acf-views_support',
+			__( 'Having issues?', 'acf-views' ),
+			function (): void {
+				$this->html->print_postbox_support();
+			},
+			array(
+				$this->get_cpt_name(),
+			),
+			'side',
+			'low'
+		);
+
+		if ( ! $this->plugin->is_pro_version() ) {
+			add_meta_box(
+				'acf-views_upgrade',
+				__( 'Unlock with Pro', 'acf-views' ),
+				function (): void {
+					$this->html->print_postbox_upgrade();
+				},
+				array(
+					$this->get_cpt_name(),
+				),
+				'side',
+				'low'
+			);
+		}
+	}
+
+	public function print_mount_points( Cpt_Settings $cpt_settings ): void {
+		$post_types      = array();
+		$safe_post_links = array();
+
+		foreach ( $cpt_settings->mount_points as $mount_point ) {
+			$post_types      = array_merge( $post_types, $mount_point->post_types );
+			$safe_post_links = array_merge( $safe_post_links, $mount_point->posts );
+		}
+
+		$post_types      = array_unique( $post_types );
+		$safe_post_links = array_unique( $safe_post_links );
+
+		foreach ( $safe_post_links as $index => $post ) {
+			$post_url  = get_the_permalink( $post );
+			$post_url  = false !== $post_url ?
+				$post_url :
+				'';
+			$post_info = sprintf(
+				'<a target="_blank" href="%s">%s</a>',
+				esc_url( $post_url ),
+				esc_html( get_the_title( $post ) )
+			);
+
+			$safe_post_links[ $index ] = $post_info;
+		}
+
+		if ( array() !== $post_types ) {
+			echo esc_html(
+				__( 'Post Types:', 'acf-views' ) . ' ' . join( ', ', $post_types )
+			);
+		}
+
+		if ( array() !== $safe_post_links ) {
+			if ( array() !== $post_types ) {
+				echo '<br>';
+			}
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo __( 'Pages:', 'acf-views' ) . ' ' . join( ', ', $safe_post_links );
+		}
+	}
+
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		self::add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+	}
+}

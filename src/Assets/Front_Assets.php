@@ -14,10 +14,10 @@ use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;

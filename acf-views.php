@@ -15,6 +15,7 @@ namespace Org\Wplake\Advanced_Views;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Lite\Lite_Plugin_Loader;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
 ( function (): void {
 	// omit loading if the Pro version is already loaded.

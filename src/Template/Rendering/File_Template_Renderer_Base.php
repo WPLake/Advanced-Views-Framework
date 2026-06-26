@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
 use WP_Filesystem_Base;
 
 abstract class File_Template_Renderer_Base extends Template_Renderer_Base {

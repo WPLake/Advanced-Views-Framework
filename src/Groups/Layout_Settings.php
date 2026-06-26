@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
 
 class Layout_Settings extends Cpt_Settings {

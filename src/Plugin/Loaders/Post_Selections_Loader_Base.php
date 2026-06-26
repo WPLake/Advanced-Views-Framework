@@ -6,25 +6,25 @@ namespace Org\Wplake\Advanced_Views\Plugin\Loaders;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Git_Box;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Layout_Integration;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Interactive_Fields;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Table;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 abstract class Post_Selections_Loader_Base extends Module_Loader {

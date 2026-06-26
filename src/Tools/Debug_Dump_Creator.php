@@ -6,13 +6,13 @@ namespace Org\Wplake\Advanced_Views\Tools;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use WP_Post;
 use WP_Query;
 

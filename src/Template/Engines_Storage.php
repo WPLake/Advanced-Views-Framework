@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Template;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Integration;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Renderer;
 use Org\Wplake\Advanced_Views\Template\Engines\Blade\Blade_Tokens;

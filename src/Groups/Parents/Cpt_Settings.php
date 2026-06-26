@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Groups\Parents;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Groups\Mount_Point_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
-use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 

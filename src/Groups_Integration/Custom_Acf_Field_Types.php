@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;

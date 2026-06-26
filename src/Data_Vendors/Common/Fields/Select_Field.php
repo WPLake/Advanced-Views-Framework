@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Layouts\Fields\Markup_Field_Data;
-use Org\Wplake\Advanced_Views\Layouts\Fields\Variable_Field_Data;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
 
 class Select_Field extends List_Field {
 	const LOOP_ITEM_NAME = 'choice_item';

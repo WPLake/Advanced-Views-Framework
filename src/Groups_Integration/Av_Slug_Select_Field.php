@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use acf_field_select;
 use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 

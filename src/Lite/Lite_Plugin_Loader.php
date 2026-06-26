@@ -11,9 +11,14 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Db_Management;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Fs_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
 use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
@@ -36,19 +41,14 @@ use Org\Wplake\Advanced_Views\Groups_Integration\Post_Selection_Settings_Integra
 use Org\Wplake\Advanced_Views\Groups_Integration\Tax_Field_Settings_Integration;
 use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Fs_Fields;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
-use Org\Wplake\Advanced_Views\Options;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Plugin_Loader_Base;
+use Org\Wplake\Advanced_Views\Plugin\Options;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
 use Org\Wplake\Advanced_Views\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
@@ -92,8 +92,8 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->layout_settings         = $this->group_creator->create( Layout_Settings::class );
 		$this->post_selection_settings = $this->group_creator->create( Post_Selection_Settings::class );
 
-		$this->html = new Html();
-		$this->engines_storage       = new Engines_Storage( $uploads_folder, $this->logger, $this->settings );
+		$this->html            = new Html();
+		$this->engines_storage = new Engines_Storage( $uploads_folder, $this->logger, $this->settings );
 
 		$post_selections_file_system            = new File_System(
 			$this->logger,
@@ -102,7 +102,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->post_selections_settings_storage = new Selection_Settings_Storage(
 			$this->logger,
 			$post_selections_file_system,
-			new Post_Selection_Fs_Fields($this->engines_storage),
+			new Post_Selection_Fs_Fields( $this->engines_storage ),
 			new Db_Management( $this->logger, $post_selections_file_system, $this->post_selection_cpt ),
 			$this->post_selection_settings
 		);
@@ -111,7 +111,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		$this->layouts_settings_storage = new Layout_Settings_Storage(
 			$this->logger,
 			$layouts_file_system,
-			new Layout_Fs_Fields($this->engines_storage),
+			new Layout_Fs_Fields( $this->engines_storage ),
 			new Db_Management( $this->logger, $layouts_file_system, $this->layout_cpt ),
 			$this->layout_settings
 		);
@@ -123,7 +123,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->plugin,
 		);
 
-		$this->item_settings         = $this->group_creator->create( Item_Settings::class );
+		$this->item_settings = $this->group_creator->create( Item_Settings::class );
 
 		$this->data_vendors            = new Data_Vendors( $this->logger );
 		$this->live_reloader_component = new Live_Reloader_Component( $this->plugin, $this->settings );

@@ -1,0 +1,35 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table;
+
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Bulk_Validation_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Base\Instance;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
+
+defined( 'ABSPATH' ) || exit;
+
+class Post_Selections_Bulk_Validation_Tab extends Bulk_Validation_Tab {
+	protected Post_Selection_Factory $card_factory;
+	protected Selection_Settings_Storage $cards_data_storage;
+
+	public function __construct(
+		Cpt_Table $cpt_table,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Fs_Only_Tab $fs_only_tab,
+		Post_Selection_Factory $post_selection_factory
+	) {
+		parent::__construct( $cpt_table, $post_selections_settings_storage, $fs_only_tab );
+
+		$this->card_factory       = $post_selection_factory;
+		$this->cards_data_storage = $post_selections_settings_storage;
+	}
+
+	protected function make_validation_instance( string $unique_id ): Instance {
+		return $this->card_factory->make( $this->cards_data_storage->get( $unique_id ) );
+	}
+}

@@ -6,29 +6,29 @@ namespace Org\Wplake\Advanced_Views\Lite;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Db_Management;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Post_Selections_Cpt;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Git_Box;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Git_Tabs;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Layout_Integration;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Query;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Assets_Reducer;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Gutenberg_Editor_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt\Table\Fs_Only_Tab;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Db_Management;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Post_Selections_Loader_Base;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Post_Selections_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Box;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Git_Tabs;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Interactive_Fields;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Layout_Integration;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Table\Post_Selections_Table;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Query;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Factory;
-use Org\Wplake\Advanced_Views\Post_Selections\Post_Selection_Markup;
-use Org\Wplake\Advanced_Views\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
@@ -106,7 +106,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		$post_selections_settings_storage = new Selection_Settings_Storage(
 			$base->logger,
 			$file_system,
-			new Post_Selection_Fs_Fields($base->engines_storage),
+			new Post_Selection_Fs_Fields( $base->engines_storage ),
 			$db_management,
 			$base->post_selection_settings
 		);

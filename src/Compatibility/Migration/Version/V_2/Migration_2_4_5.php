@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_2;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 
 final class Migration_2_4_5 extends Version_Migration_Base {

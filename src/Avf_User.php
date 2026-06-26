@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\bool;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 

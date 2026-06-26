@@ -7,16 +7,16 @@ namespace Org\Wplake\Advanced_Views;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Mount_Point_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;

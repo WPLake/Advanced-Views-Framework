@@ -6,17 +6,17 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Automated_Reports;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Groups\Plugin_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 

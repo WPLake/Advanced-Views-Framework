@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Git_Api;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Options;
+use Org\Wplake\Advanced_Views\Plugin\Options;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 class Git_Lab_Api extends Git_Api {

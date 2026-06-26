@@ -9,8 +9,8 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Fs_Field;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Use_Case\Migration_Post_Type;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt_Base;
 

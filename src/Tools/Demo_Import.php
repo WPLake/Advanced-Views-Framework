@@ -14,13 +14,13 @@ use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Cpt\Layout_Save_Actions;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Save_Actions;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Post_Selections\Cpt\Selection_Save_Actions;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 

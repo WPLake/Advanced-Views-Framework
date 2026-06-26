@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Plugin;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
 class Light_Gallery_Front_Asset extends View_Front_Asset {
 	const NAME = 'light-gallery';

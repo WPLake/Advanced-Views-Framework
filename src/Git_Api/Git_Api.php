@@ -7,10 +7,10 @@ namespace Org\Wplake\Advanced_Views\Git_Api;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Options;
 
 abstract class Git_Api extends Action implements Git_Api_Interface {
 	protected Options $options;

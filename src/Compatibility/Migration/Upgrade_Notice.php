@@ -8,12 +8,12 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
-use Org\Wplake\Advanced_Views\Options;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Options;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 final class Upgrade_Notice extends Hookable implements Hooks_Interface {

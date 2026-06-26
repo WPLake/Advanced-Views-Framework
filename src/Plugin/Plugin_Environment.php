@@ -6,11 +6,8 @@ namespace Org\Wplake\Advanced_Views\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Automated_Reports;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\Cpt_Settings_Storage;
-use Org\Wplake\Advanced_Views\Parents\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Template\Templates_Environment;
 
 final class Plugin_Environment {

@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Template\Engines\Twig;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Plugin;
-use Org\Wplake\Advanced_Views\Settings;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Settings;
 use Org\Wplake\Advanced_Views\Template\Rendering\File_Template_Renderer_Base;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Vendors\Twig\Environment;

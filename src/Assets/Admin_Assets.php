@@ -6,12 +6,12 @@ namespace Org\Wplake\Advanced_Views\Assets;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 class Admin_Assets extends Hookable implements Hooks_Interface {

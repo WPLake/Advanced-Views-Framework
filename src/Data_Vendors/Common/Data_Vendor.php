@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Data_Vendors\Common;
 
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Pro_Stub_Field;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
@@ -11,7 +12,6 @@ use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
-use Org\Wplake\Advanced_Views\Layouts\Field_Meta_Interface;
 
 defined( 'ABSPATH' ) || exit;
 

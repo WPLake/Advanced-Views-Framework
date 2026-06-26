@@ -4,9 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Groups_Integration;
 
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Groups\Tools_Settings;
-use Org\Wplake\Advanced_Views\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 
 defined( 'ABSPATH' ) || exit;
 
