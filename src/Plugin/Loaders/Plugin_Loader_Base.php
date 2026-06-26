@@ -53,9 +53,9 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
@@ -159,7 +159,7 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 			return;
 		}
 
-		$paths[] = 'src/lang';
+		$paths[] = 'lang';
 
 		add_action(
 			'init',

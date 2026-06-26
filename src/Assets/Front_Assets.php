@@ -16,8 +16,8 @@ use Org\Wplake\Advanced_Views\Cpt\View_Assets\Light_Gallery_Asset;
 use Org\Wplake\Advanced_Views\Cpt\View_Assets\Lightbox_Asset;
 use Org\Wplake\Advanced_Views\Cpt\View_Assets\Maps_Asset;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 

@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Save_Actions;
-use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 
 final class Migration_2_2_3 extends Version_Migration_Base {
 	private Layout_Save_Actions $layouts_cpt_save_actions;

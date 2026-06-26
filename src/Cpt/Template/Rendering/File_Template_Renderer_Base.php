@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views\Cpt\Template\Rendering;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use WP_Filesystem_Base;
 

@@ -2,9 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Parents;
-
-use Org\Wplake\Advanced_Views\Logger;
+namespace Org\Wplake\Advanced_Views\Plugin\Base;
 
 defined( 'ABSPATH' ) || exit;
 

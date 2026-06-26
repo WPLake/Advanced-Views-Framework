@@ -5,9 +5,9 @@ namespace Org\Wplake\Advanced_Views\Cpt\Template\Rendering;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Avf_User;
-use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Action;
+use Org\Wplake\Advanced_Views\Plugin\Base\Action;
+use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Throwable;
 

@@ -95,7 +95,7 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 		$file_system                      = new File_System(
 			$base->logger,
 			$base->post_selection_cpt->folder_name(),
-			$base->plugin->get_plugin_path( 'src/pre_built' )
+			$base->plugin->get_plugin_path( 'pre_built' )
 		);
 		$db_management                    = new Db_Management(
 			$base->logger,

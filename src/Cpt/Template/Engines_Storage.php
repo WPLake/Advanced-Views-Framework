@@ -18,7 +18,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Engines\Twig\Twig_Tokens;
 use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Template\Rendering\Template_Renderer;
-use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\WP_Filesystem_Factory;
 

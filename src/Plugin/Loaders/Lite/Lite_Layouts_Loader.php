@@ -104,7 +104,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 		$file_system              = new File_System(
 			$base->logger,
 			$base->layout_cpt->folder_name(),
-			$base->plugin->get_plugin_path( 'src/pre_built' )
+			$base->plugin->get_plugin_path( 'pre_built' )
 		);
 		$db_management            = new Db_Management(
 			$base->logger,

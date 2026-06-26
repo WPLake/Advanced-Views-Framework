@@ -2,10 +2,8 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views;
+namespace Org\Wplake\Advanced_Views\Plugin\Base;
 
-use Org\Wplake\Advanced_Views\Parents\Hookable;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Plugin\Utils\WP_Filesystem_Factory;

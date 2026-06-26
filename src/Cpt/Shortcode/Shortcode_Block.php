@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Parents\Hookable;
-use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Block;
 use WP_Block_Template;

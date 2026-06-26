@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
 use Org\Wplake\Advanced_Views\Cpt\Template\Templates_Environment;
-use Org\Wplake\Advanced_Views\Logger;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 
 final class Migration_2_3_0 extends Version_Migration_Base {
 	private Templates_Environment $templates_environment;

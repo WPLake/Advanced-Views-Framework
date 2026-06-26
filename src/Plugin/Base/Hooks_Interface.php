@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Parents;
+namespace Org\Wplake\Advanced_Views\Plugin\Base;
 
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 

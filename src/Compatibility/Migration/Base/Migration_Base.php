@@ -7,8 +7,8 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Base;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
+use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 
 abstract class Migration_Base extends Hookable implements Migration {
 	protected Logger $logger;
