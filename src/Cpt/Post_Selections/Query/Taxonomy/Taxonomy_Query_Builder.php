@@ -8,10 +8,10 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Query_Utils;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Tax_Filter_Settings;
-use Org\Wplake\Advanced_Views\Groups\Tax_Rule_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Filter_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Rule_Settings;
 
 final class Taxonomy_Query_Builder implements Post_Query_Builder {
 	private Term_Query_Builder $term_query_builder;

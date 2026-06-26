@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base;
 use Error;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Rendering\Template_Renderer_Base;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
 

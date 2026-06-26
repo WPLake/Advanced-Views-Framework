@@ -6,16 +6,16 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Git_Tabs;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Import_Result;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 
 class Layout_Git_Tabs extends Git_Tabs {
 	private Data_Vendors $data_vendors;

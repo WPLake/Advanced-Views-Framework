@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Throwable;
 
 abstract class Template_Renderer_Base extends Action implements Template_Renderer {

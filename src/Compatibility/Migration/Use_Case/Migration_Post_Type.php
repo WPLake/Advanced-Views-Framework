@@ -10,7 +10,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration_Base;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Utils\WP_Filesystem_Factory;
 
 final class Migration_Post_Type extends Migration_Base {
 	private Plugin_Cpt $from_cpt;

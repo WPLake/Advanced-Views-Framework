@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use WP_REST_Request;
 
 abstract class Instance_Factory {

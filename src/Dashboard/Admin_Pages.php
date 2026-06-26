@@ -6,16 +6,15 @@ namespace Org\Wplake\Advanced_Views\Dashboard;
 
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
-use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Settings\Settings_Page;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Page;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Screen;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -30,7 +29,7 @@ class Admin_Pages extends Hookable implements Hooks_Interface {
 	const URL_SUPPORT = 'https://wordpress.org/support/plugin/acf-views/';
 
 	private Plugin $plugin;
-	private Html $html;
+	private Html_Printer $html;
 	private Demo_Importer $demo_import;
 	/**
 	 * @var Plugin_Cpt[]
@@ -42,7 +41,7 @@ class Admin_Pages extends Hookable implements Hooks_Interface {
 	 */
 	public function __construct(
 		Plugin $plugin,
-		Html $html,
+		Html_Printer $html,
 		Demo_Importer $demo_import,
 		array $plugin_cpts
 	) {

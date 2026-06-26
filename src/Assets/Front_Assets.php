@@ -4,22 +4,22 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Assets;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Base\View_Asset_Base;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Base\View_Front_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Common_Front_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Html_Wrapper;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Light_Gallery_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Lightbox_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Maps_Asset;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Lightbox_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Common_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
-use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,7 +32,7 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	private ?int $buffer_level;
 	private bool $is_custom_interactivity_api_import_map_required;
 	/**
-	 * @var Front_Asset_Interface[]
+	 * @var View_Asset_Base[]
 	 */
 	private array $assets;
 	/**
@@ -69,13 +69,13 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	}
 
 	/**
-	 * @return Front_Asset_Interface[]
+	 * @return View_Asset_Base[]
 	 */
 	protected function get_assets(): array {
 		return array(
-			new Acf_Views_Maps_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
-			new Light_Gallery_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
-			new Acf_Views_Lightbox_Front_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
+			new Maps_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
+			new Light_Gallery_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
+			new Lightbox_Asset( $this->plugin, $this->file_system, $this->data_vendors ),
 		);
 	}
 
@@ -486,14 +486,14 @@ class Front_Assets extends Hookable implements Hooks_Interface {
 	/**
 	 * @param string[] $names
 	 *
-	 * @return View_Front_Asset_Interface[]
+	 * @return View_Front_Asset[]
 	 */
 	public function get_view_assets_by_names( array $names ): array {
 		$front_assets_by_name = array_intersect_key( $this->assets, array_flip( $names ) );
 
 		return array_filter(
 			$front_assets_by_name,
-			fn( $asset ) => $asset instanceof View_Front_Asset_Interface
+			fn( $asset ) => $asset instanceof View_Front_Asset
 		);
 	}
 

@@ -6,12 +6,12 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Layout_Integration;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
@@ -26,7 +26,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
-		Html $html,
+		Html_Printer $html,
 		Plugin $plugin,
 		Layout_Settings_Storage $layouts_settings_storage,
 		Data_Vendors $data_vendors,

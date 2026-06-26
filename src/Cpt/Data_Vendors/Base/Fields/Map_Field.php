@@ -6,15 +6,14 @@ namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field;
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Acf\Acf_Data_Vendor;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Meta_Box\Meta_Box_Data_Vendor;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Acf\Acf_Data_Vendor;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Meta_Box\Meta_Box_Data_Vendor;
-use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Maps_Front_Asset;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Maps_Asset;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -416,7 +415,7 @@ class Map_Field extends Markup_Field {
 
 		if ( Acf_Data_Vendor::NAME === $field_settings->get_field_meta()->get_vendor_name() &&
 			false === $field_settings->is_map_without_google_map ) {
-			$front_assets[] = Acf_Views_Maps_Front_Asset::NAME;
+			$front_assets[] = Maps_Asset::NAME;
 		}
 
 		return array_merge( parent::get_front_assets( $field_settings ), $front_assets );

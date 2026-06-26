@@ -6,24 +6,24 @@ namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Meta_Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Field_Settings;
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use WP_Post;
 
 final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -37,7 +37,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 
 	public function __construct(
 		Public_Cpt $public_cpt,
-		Html $html,
+		Html_Printer $html,
 		Plugin $plugin,
 		Selection_Settings_Storage $selections_settings_storage,
 		Post_Selection_Markup $selection_markup,

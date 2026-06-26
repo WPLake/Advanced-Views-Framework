@@ -11,8 +11,8 @@ use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\File_Field;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Gallery_Field;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Image_Field;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 
 defined( 'ABSPATH' ) || exit;
 

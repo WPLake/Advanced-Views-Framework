@@ -4,15 +4,15 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table;
 
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Meta_Boxes;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -24,14 +24,14 @@ class Layouts_Cpt_Table extends Cpt_Table {
 	const COLUMN_RELATED_GROUPS          = self::COLUMN_PREFIX . 'relatedGroups';
 	const COLUMN_RELATED_POST_SELECTIONS = self::COLUMN_PREFIX . 'relatedPostSelections';
 
-	private Html $html;
+	private Html_Printer $html;
 	private Layout_Meta_Boxes $layouts_cpt_meta_boxes;
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Public_Cpt $public_cpt,
-		Html $html,
+		Html_Printer $html,
 		Layout_Meta_Boxes $layouts_cpt_meta_boxes,
 		Plugin_Cpt $plugin_cpt
 	) {

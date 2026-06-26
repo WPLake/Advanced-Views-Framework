@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -4,27 +4,27 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt;
 
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
 abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
-	private Html $html;
+	private Html_Printer $html;
 	private Plugin $plugin;
 
-	public function __construct( Html $html, Plugin $plugin ) {
+	public function __construct( Html_Printer $html, Plugin $plugin ) {
 		$this->html   = $html;
 		$this->plugin = $plugin;
 	}
 
 	abstract protected function get_cpt_name(): string;
 
-	protected function get_html(): Html {
+	protected function get_html(): Html_Printer {
 		return $this->html;
 	}
 

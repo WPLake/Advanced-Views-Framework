@@ -8,6 +8,18 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Acf\Acf_Dependency;
 use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Custom_Acf_Field_Types;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Field_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Item_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Layout_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Meta_Field_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Mount_Point_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Post_Selection_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Tax_Field_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Group_Integrations\Tools_Settings_Integration;
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Bridge\Advanced_Views;
@@ -29,6 +41,8 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_9;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
@@ -39,20 +53,6 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Item_Settings;
-use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
-use Org\Wplake\Advanced_Views\Groups_Integration\Custom_Acf_Field_Types;
-use Org\Wplake\Advanced_Views\Groups_Integration\Field_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Item_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Layout_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Meta_Field_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Mount_Point_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Post_Selection_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Tax_Field_Settings_Integration;
-use Org\Wplake\Advanced_Views\Groups_Integration\Tools_Settings_Integration;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
@@ -63,10 +63,10 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
-use Org\Wplake\Advanced_Views\Settings\Settings_Page;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Profiler;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Page;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Profiler;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
@@ -210,8 +210,8 @@ abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
 				$loader = new Loader();
 
 				$loader->signUpGroups(
-					'Org\Wplake\Advanced_Views\Groups',
-					$this->plugin->get_plugin_path( 'src/Groups' )
+					'Org\Wplake\Advanced_Views\Acf\Groups',
+					$this->plugin->get_plugin_path( 'src/Acf/Groups' )
 				);
 			},
 			// make sure it's after translations.

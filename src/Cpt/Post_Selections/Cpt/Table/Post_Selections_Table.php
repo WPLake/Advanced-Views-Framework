@@ -4,15 +4,15 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Meta_Boxes;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -23,14 +23,14 @@ class Post_Selections_Table extends Cpt_Table {
 	const COLUMN_RELATED_VIEW  = self::COLUMN_PREFIX . 'relatedView';
 	const COLUMN_LAST_MODIFIED = self::COLUMN_PREFIX . 'lastModified';
 
-	private Html $html;
+	private Html_Printer $html;
 	private Selection_Meta_Boxes $post_selections_cpt_meta_boxes;
 	private Plugin_Cpt $plugin_cpt;
 
 	public function __construct(
 		Selection_Settings_Storage $post_selections_settings_storage,
 		Public_Cpt $public_cpt,
-		Html $html,
+		Html_Printer $html,
 		Selection_Meta_Boxes $post_selections_cpt_meta_boxes,
 		Plugin_Cpt $plugin_cpt
 	) {

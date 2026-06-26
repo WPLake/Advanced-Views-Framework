@@ -13,7 +13,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Taxonomy\Taxonomy_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Taxonomy\Term_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use function Org\Wplake\Advanced_Views\Utils\flat_map;
 
 class Selection_Query_Builder implements Post_Query_Builder, Query_Context_Container {

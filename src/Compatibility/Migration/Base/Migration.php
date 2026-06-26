@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Base;
 
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Builders\Selection_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\WP_Selection_Query;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 

@@ -20,12 +20,12 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
-use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Cpt_Assets_Reducer $cpt_assets_reducer;

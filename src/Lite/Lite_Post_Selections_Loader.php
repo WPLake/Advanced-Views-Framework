@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Lite;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
@@ -27,9 +28,8 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Query;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Builders\Selection_Query_Builder;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Post_Selections_Loader_Base;
-use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 
 final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 	public function __construct( Lite_Plugin_Loader $base ) {

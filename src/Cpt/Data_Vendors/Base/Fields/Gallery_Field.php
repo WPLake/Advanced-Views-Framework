@@ -4,17 +4,15 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields;
 
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Image_Field;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field;
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Front_Asset\Acf_Views_Masonry_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Light_Gallery_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Macy_Front_Asset;
-use Org\Wplake\Advanced_Views\Front_Asset\Splide_Front_Asset;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Light_Gallery_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Macy_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Masonry_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Splide_Asset;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -138,18 +136,18 @@ class Gallery_Field extends Markup_Field {
 
 		switch ( $field_settings->gallery_type ) {
 			case 'masonry':
-				$front_assets[] = Acf_Views_Masonry_Front_Asset::NAME;
+				$front_assets[] = Masonry_Asset::NAME;
 				break;
 			case 'lightgallery_v2':
-				$front_assets[] = Light_Gallery_Front_Asset::NAME;
+				$front_assets[] = Light_Gallery_Asset::NAME;
 				break;
 			case 'macy_v2':
-				$front_assets[] = Macy_Front_Asset::NAME;
+				$front_assets[] = Macy_Asset::NAME;
 				break;
 		}
 
 		if ( 'splide_v4' === $field_settings->slider_type ) {
-			$front_assets[] = Splide_Front_Asset::NAME;
+			$front_assets[] = Splide_Asset::NAME;
 		}
 
 		return array_merge( parent::get_front_assets( $field_settings ), $front_assets );

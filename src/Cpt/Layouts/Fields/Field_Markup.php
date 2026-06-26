@@ -6,25 +6,23 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Fields;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Woo\Woo_Data_Vendor;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Wp\Wp_Data_Vendor;
-use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
-use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Item_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
-use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Token_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Tokens\Format_Token;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Base\View_Front_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Html_Wrapper;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Field_Markup {
@@ -118,7 +116,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 * @param string $row_type
 	 *
 	 * @return string
@@ -174,7 +172,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 *
 	 * @return bool
 	 */
@@ -228,7 +226,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 *
 	 * @return Html_Wrapper[]
 	 */
@@ -302,7 +300,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 * @param Field_Settings $field_settings
 	 * @param string $row_type
 	 *
@@ -325,7 +323,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 */
 	protected function print_field_wrapper(
 		array $field_assets,
@@ -391,7 +389,7 @@ class Field_Markup {
 	// public, as used in Upgrades.
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 */
 	public function print_field_markup(
 		array $field_assets,
@@ -592,7 +590,7 @@ class Field_Markup {
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 * @param Layout_Settings $layout_settings
 	 * @param Field_Settings $field_settings
 	 * @param Field_Meta_Interface $field_meta

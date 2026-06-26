@@ -7,7 +7,7 @@ namespace Org\Wplake\Advanced_Views\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
 abstract class Module_Loader {
 	/**

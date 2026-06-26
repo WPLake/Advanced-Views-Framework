@@ -6,9 +6,9 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 
 class Cpt_Settings_Creator extends Hookable {
 	private Settings_Storage $settings;

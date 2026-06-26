@@ -5,20 +5,20 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Fields;
 
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field_Interface;
-use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
-use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
-use Org\Wplake\Advanced_Views\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Groups\Item_Settings;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Base\View_Front_Asset;
+use Org\Wplake\Advanced_Views\Cpt\View_Assets\Html_Wrapper;
 
 defined( 'ABSPATH' ) || exit;
 
 class Markup_Field_Data extends Template_Field_Data {
 	/**
-	 * @var View_Front_Asset_Interface[]
+	 * @var View_Front_Asset[]
 	 */
 	private array $field_assets;
 	private int $tabs_number;
@@ -160,14 +160,14 @@ class Markup_Field_Data extends Template_Field_Data {
 	}
 
 	/**
-	 * @return  View_Front_Asset_Interface[]
+	 * @return  View_Front_Asset[]
 	 */
 	public function get_field_assets(): array {
 		return $this->field_assets;
 	}
 
 	/**
-	 * @param View_Front_Asset_Interface[] $field_assets
+	 * @param View_Front_Asset[] $field_assets
 	 */
 	public function set_field_assets( array $field_assets ): void {
 		$this->field_assets = $field_assets;

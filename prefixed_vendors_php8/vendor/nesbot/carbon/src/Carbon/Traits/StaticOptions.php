@@ -12,7 +12,7 @@ declare (strict_types=1);
 namespace Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\Traits;
 
 use Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\FactoryImmutable;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 
 /**
  * Options related to a static variable.

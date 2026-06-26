@@ -6,21 +6,21 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Theme_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Base\Instance_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
-use Org\Wplake\Advanced_Views\Groups\Parents\Group;
-use Org\Wplake\Advanced_Views\Html;
+use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
-use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Post;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
@@ -34,7 +34,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	const REST_REFRESH_ROUTE = '';
 
 	protected Public_Cpt $public_cpt;
-	protected Html $html;
+	protected Html_Printer $html;
 	protected Plugin $plugin;
 	protected Instance_Factory $instance_factory;
 	protected Engines_Storage $engines_storage;
@@ -44,7 +44,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 
 	public function __construct(
 		Public_Cpt $public_cpt,
-		Html $html,
+		Html_Printer $html,
 		Plugin $plugin,
 		Instance_Factory $instance_factory,
 		Engines_Storage $engines_storage,

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Query_Utils;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 
 final class Order_Query_Builder implements Post_Query_Builder {
 	private Data_Vendors $data_vendors;

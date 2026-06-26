@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration_Base;
-use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 
 abstract class Version_Migration_Base extends Migration_Base implements Version_Migration {
 	const ORDER_BEFORE_ALL = 1;
