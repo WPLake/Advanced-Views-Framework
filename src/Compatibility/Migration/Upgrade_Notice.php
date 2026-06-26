@@ -10,8 +10,8 @@ use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin\Options;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -64,7 +64,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 				if ( count( $upgrade_notices ) > 0 ) {
 					$upgrade_notice = implode( "\n", $upgrade_notices );
 
-					Options::set_transient( Options::TRANSIENT_UPGRADE_NOTICE, $upgrade_notice, WEEK_IN_SECONDS );
+					Options_Storage::set_transient( Options_Storage::TRANSIENT_UPGRADE_NOTICE, $upgrade_notice, WEEK_IN_SECONDS );
 				}
 			}
 		);
@@ -110,7 +110,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 
 		if ( strlen( $dismiss_value ) > 0 &&
 			Avf_User::can_manage() ) {
-			Options::delete_transient( Options::TRANSIENT_UPGRADE_NOTICE );
+			Options_Storage::delete_transient( Options_Storage::TRANSIENT_UPGRADE_NOTICE );
 
 			return true;
 		}
@@ -119,7 +119,7 @@ final class Upgrade_Notice extends Hookable implements Hooks_Interface {
 	}
 
 	protected function get_upgrade_notice(): string {
-		$upgrade_transient = Options::get_transient( Options::TRANSIENT_UPGRADE_NOTICE );
+		$upgrade_transient = Options_Storage::get_transient( Options_Storage::TRANSIENT_UPGRADE_NOTICE );
 
 		return string( $upgrade_transient );
 	}

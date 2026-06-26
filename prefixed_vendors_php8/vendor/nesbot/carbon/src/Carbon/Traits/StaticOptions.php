@@ -12,7 +12,7 @@ declare (strict_types=1);
 namespace Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\Traits;
 
 use Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\FactoryImmutable;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 /**
  * Options related to a static variable.
@@ -44,13 +44,14 @@ trait StaticOptions {
 	// Use default factory for static options //////////////
 	//
 	/**
-	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
-	 *             You should rather use the ->settings() method.
-	 * @see settings
+	 * @param bool $strictModeEnabled
+	 *
+	 * @see Settings_Storage
 	 *
 	 * Enable the strict mode (or disable with passing false).
 	 *
-	 * @param bool $strictModeEnabled
+	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
+	 *             You should rather use the ->settings() method.
 	 */
 	public static function useStrictMode( bool $strictModeEnabled = \true ): void {
 		FactoryImmutable::getDefaultInstance()->useStrictMode( $strictModeEnabled );
@@ -65,31 +66,30 @@ trait StaticOptions {
 		return FactoryImmutable::getInstance()->isStrictModeEnabled();
 	}
 	/**
+	 * @param bool $monthsOverflow
+	 *
+	 * @return void
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
 	 *             Or you can use method variants: addMonthsWithOverflow/addMonthsNoOverflow, same variants
 	 *             are available for quarters, years, decade, centuries, millennia (singular and plural forms).
-	 * @see settings
+	 * @see Settings_Storage
 	 *
 	 * Indicates if months should be calculated with overflow.
-	 *
-	 * @param bool $monthsOverflow
-	 *
-	 * @return void
 	 */
 	public static function useMonthsOverflow( bool $monthsOverflow = \true ): void {
 		FactoryImmutable::getDefaultInstance()->useMonthsOverflow( $monthsOverflow );
 	}
 	/**
+	 * @return void
+	 * @see Settings_Storage
+	 *
+	 * Reset the month overflow behavior.
+	 *
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
 	 *             Or you can use method variants: addMonthsWithOverflow/addMonthsNoOverflow, same variants
 	 *             are available for quarters, years, decade, centuries, millennia (singular and plural forms).
-	 * @see settings
-	 *
-	 * Reset the month overflow behavior.
-	 *
-	 * @return void
 	 */
 	public static function resetMonthsOverflow(): void {
 		FactoryImmutable::getDefaultInstance()->resetMonthsOverflow();
@@ -103,31 +103,30 @@ trait StaticOptions {
 		return FactoryImmutable::getInstance()->shouldOverflowMonths();
 	}
 	/**
+	 * @param bool $yearsOverflow
+	 *
+	 * @return void
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
 	 *             Or you can use method variants: addYearsWithOverflow/addYearsNoOverflow, same variants
 	 *             are available for quarters, years, decade, centuries, millennia (singular and plural forms).
-	 * @see settings
+	 * @see Settings_Storage
 	 *
 	 * Indicates if years should be calculated with overflow.
-	 *
-	 * @param bool $yearsOverflow
-	 *
-	 * @return void
 	 */
 	public static function useYearsOverflow( bool $yearsOverflow = \true ): void {
 		FactoryImmutable::getDefaultInstance()->useYearsOverflow( $yearsOverflow );
 	}
 	/**
+	 * @return void
+	 * @see Settings_Storage
+	 *
+	 * Reset the month overflow behavior.
+	 *
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
 	 *             Or you can use method variants: addYearsWithOverflow/addYearsNoOverflow, same variants
 	 *             are available for quarters, years, decade, centuries, millennia (singular and plural forms).
-	 * @see settings
-	 *
-	 * Reset the month overflow behavior.
-	 *
-	 * @return void
 	 */
 	public static function resetYearsOverflow(): void {
 		FactoryImmutable::getDefaultInstance()->resetYearsOverflow();

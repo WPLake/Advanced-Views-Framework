@@ -7,23 +7,22 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Meta_Boxes;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Interactive_Fields;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Markup;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings;
 use Org\Wplake\Advanced_Views\Html;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Markup;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
-use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Interactive_Fields;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use WP_Post;
 
 final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -42,7 +41,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 		Layout_Factory $layout_factory,
 		Engines_Storage $engines_storage,
 		Data_Vendors $data_vendors,
-		Settings $settings,
+		Settings_Storage $settings,
 		Layout_Markup $layout_markup,
 		Layout_Meta_Boxes $layout_meta_boxes
 	) {

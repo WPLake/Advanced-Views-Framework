@@ -11,6 +11,8 @@ use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Profiler;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -30,15 +32,15 @@ class Automated_Reports extends Action implements Hooks_Interface {
 	const REQUEST_URL   = 'https://wplake.org/wp-json/wplake/v1/plugin_analytics';
 
 	private Plugin $plugin;
-	private Settings $settings;
-	private Options $options;
+	private Settings_Storage $settings;
+	private Options_Storage $options;
 	private Layout_Settings_Storage $layouts_settings_storage;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
-		Settings $settings,
-		Options $options,
+		Settings_Storage $settings,
+		Options_Storage $options,
 		Layout_Settings_Storage $layouts_settings_storage
 	) {
 		parent::__construct( $logger );
@@ -101,7 +103,7 @@ class Automated_Reports extends Action implements Hooks_Interface {
 		// alternative way to send the request, in case of usage of the 'another instance was deactivated' feature
 		// as only old one was loaded that time, and new one skipped code execution (see the main plugin file).
 		$is_activated_after_another_deactivation = $this->options::get_transient(
-			Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
+			Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
 		);
 
 		$is_activated_after_another_deactivation = is_numeric( $is_activated_after_another_deactivation ) ?

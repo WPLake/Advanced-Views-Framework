@@ -8,20 +8,20 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 final class Version_Migrator extends Hookable implements Hooks_Interface {
 	private Plugin $plugin;
-	private Settings $settings;
+	private Settings_Storage $settings;
 	/**
 	 * @var array<string,Version_Migration> version => migrationInstance
 	 */
@@ -32,7 +32,7 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 
 	public function __construct(
 		Plugin $plugin,
-		Settings $settings,
+		Settings_Storage $settings,
 		Logger $logger,
 		Upgrade_Notice $upgrade_notice,
 		Cache_Flusher $cache_flusher

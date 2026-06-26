@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Dashboard;
 
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
@@ -22,13 +22,13 @@ class Admin_Bar extends Hookable implements Hooks_Interface {
 	private Layout_Shortcode $layout_shortcode;
 	private Post_Selection_Shortcode $post_selection_shortcode;
 	private Live_Reloader_Component $live_reloader_component;
-	private Settings $settings;
+	private Settings_Storage $settings;
 
 	public function __construct(
 		Layout_Shortcode $layout_shortcode,
 		Post_Selection_Shortcode $post_selection_shortcode,
 		Live_Reloader_Component $live_reloader_component,
-		Settings $settings
+		Settings_Storage $settings
 	) {
 		$this->layout_shortcode         = $layout_shortcode;
 		$this->post_selection_shortcode = $post_selection_shortcode;

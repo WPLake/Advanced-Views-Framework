@@ -5,8 +5,8 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Groups;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
+use Org\Wplake\Advanced_Views\Settings\Settings_Page;
 
 defined( 'ABSPATH' ) || exit;
 

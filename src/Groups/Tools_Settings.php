@@ -5,7 +5,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Groups;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Tools\Tools;
+use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 
 defined( 'ABSPATH' ) || exit;
@@ -147,7 +147,7 @@ class Tools_Settings extends Group {
 	protected static function getLocationRules(): array {
 		return array(
 			array(
-				'options_page == ' . Tools::SLUG,
+				'options_page == ' . Tools_Page::SLUG,
 			),
 		);
 	}

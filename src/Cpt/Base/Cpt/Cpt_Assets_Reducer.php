@@ -4,21 +4,21 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt;
 
-use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Page;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
 defined( 'ABSPATH' ) || exit;
 
 class Cpt_Assets_Reducer extends Hookable implements Hooks_Interface {
-	private Settings $settings;
+	private Settings_Storage $settings;
 	private string $cpt_name;
 	protected Plugin $plugin;
 
-	public function __construct( Settings $settings, Plugin $plugin, string $cpt_name ) {
+	public function __construct( Settings_Storage $settings, Plugin $plugin, string $cpt_name ) {
 		$this->settings = $settings;
 		$this->cpt_name = $cpt_name;
 		$this->plugin   = $plugin;

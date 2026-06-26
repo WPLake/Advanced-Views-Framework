@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Setting
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
@@ -30,7 +30,7 @@ class Selection_Layout_Integration extends Cpt_Settings_Creator implements Hooks
 		Selection_Settings_Storage $post_selections_settings_storage,
 		Layout_Settings_Storage $layouts_settings_storage,
 		Selection_Save_Actions $post_selections_cpt_save_actions,
-		Settings $settings
+		Settings_Storage $settings
 	) {
 		parent::__construct( $settings );
 

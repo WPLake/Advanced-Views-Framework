@@ -1,0 +1,173 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
+
+use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
+use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use WP_Post;
+
+defined( 'ABSPATH' ) || exit;
+
+class Live_Reloader_Component extends Hookable implements Hooks_Interface {
+	const QUERY_ARG = 'avf_live-reload';
+
+	private bool $is_active;
+	private bool $is_present;
+	private string $parent_card_id;
+	/**
+	 * @var string[]
+	 */
+	private array $view_ids_inside_card;
+	private int $cards_inner_counter;
+	private Plugin $plugin;
+	private Settings_Storage $settings;
+
+	public function __construct( Plugin $plugin, Settings_Storage $settings ) {
+		$this->plugin               = $plugin;
+		$this->settings             = $settings;
+		$this->is_active            = false;
+		$this->is_present           = false;
+		$this->parent_card_id       = '';
+		$this->cards_inner_counter  = 0;
+		$this->view_ids_inside_card = array();
+	}
+
+	public function set_is_active(): void {
+		$this->is_active = Avf_User::can_manage() &&
+							'' !== Query_Arguments::get_string_for_non_action( self::QUERY_ARG );
+	}
+
+	public function set_parent_card_id( string $unique_id ): void {
+		if ( '' !== $unique_id ) {
+			// we store the top level card, as to update inner we still need to update the top level card.
+			if ( 0 === $this->cards_inner_counter ) {
+				$this->parent_card_id = $unique_id;
+			}
+
+			++$this->cards_inner_counter;
+			return;
+		}
+
+		--$this->cards_inner_counter;
+
+		if ( 0 !== $this->cards_inner_counter ) {
+			return;
+		}
+
+		$this->parent_card_id       = '';
+		$this->view_ids_inside_card = array();
+	}
+
+	/**
+	 * @param array<string,mixed> $shortcode_arguments
+	 */
+	public function get_reloading_component( Cpt_Settings $cpt_settings, array $shortcode_arguments, bool $is_gutenberg_block ): string {
+		if ( false === $this->is_active ) {
+			return '';
+		}
+
+		$unique_id = $cpt_settings->get_unique_id();
+
+		if ( '' !== $this->parent_card_id ) {
+			// we need to keep View reloaders unique inside the Card (to avoid unnecessary duplications).
+			if ( in_array( $unique_id, $this->view_ids_inside_card, true ) ) {
+				return '';
+			}
+
+			$this->view_ids_inside_card[] = $unique_id;
+		}
+
+		$this->is_present = true;
+
+		return sprintf(
+			'<avf-live-reloader hidden data-element="%s"></avf-live-reloader>',
+			esc_attr(
+				(string) wp_json_encode(
+					array(
+						'uniqueId'           => $unique_id,
+						'codeHashes'         => $cpt_settings->get_code_hashes(),
+						'parentCardId'       => $this->parent_card_id,
+						'shortcodeArguments' => $shortcode_arguments,
+						'isGutenbergBlock'   => $is_gutenberg_block,
+					)
+				)
+			)
+		);
+	}
+
+	public function maybe_enqueue_reloading_js(): void {
+		if ( false === $this->is_present ) {
+			return;
+		}
+
+		global $wp_query;
+
+		// currently live reloading is available only for post/page/CPT requests.
+		$is_post_related_request = $wp_query->queried_object instanceof WP_Post;
+
+		$queried_object_id = $is_post_related_request ?
+			get_queried_object_id() :
+		0;
+		$page_hash         = $is_post_related_request ?
+			hash( 'md5', get_post( $queried_object_id )->post_modified ?? '' ) :
+		'';
+
+		wp_enqueue_script(
+			'avf-live-reloading',
+			$this->plugin->get_assets_url( 'front/js/live-reloader.min.js' ),
+			array(),
+			$this->plugin->get_version(),
+			array(
+				'in_footer' => true,
+			)
+		);
+
+		wp_localize_script(
+			'avf-live-reloading',
+			'avfLiveReloading',
+			array(
+				'nonce'         => wp_create_nonce( 'wp_rest' ),
+				'postId'        => $queried_object_id,
+				'postHash'      => $page_hash,
+				'interval'      => $this->settings->get_live_reload_interval_seconds(),
+				'inactiveDelay' => $this->settings->get_live_reload_inactive_delay_seconds(),
+				// only when onPage dev mode is enabled, we don't need extensive console logging
+				// if the common dev mode is enabled.
+				'isDevMode'     => $this->settings->is_page_dev_mode(),
+			)
+		);
+	}
+
+	public function is_active(): bool {
+		return $this->is_active;
+	}
+
+	public function get_manage_link( bool $is_activate ): string {
+		if ( $is_activate ) {
+			return add_query_arg(
+				array(
+					self::QUERY_ARG => '1',
+				)
+			);
+		}
+
+		return remove_query_arg( self::QUERY_ARG, );
+	}
+
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		self::add_action( 'init', array( $this, 'set_is_active' ) );
+		self::add_action( 'wp_footer', array( $this, 'maybe_enqueue_reloading_js' ) );
+	}
+}

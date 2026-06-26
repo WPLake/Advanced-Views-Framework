@@ -12,8 +12,8 @@ use Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Token_Factory;
 
 class Post_Selection_Markup {
 	private Front_Assets $front_assets;

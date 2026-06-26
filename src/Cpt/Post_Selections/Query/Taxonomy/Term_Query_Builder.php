@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Context_Container_Base;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context_Container;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Query_Utils;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Tax_Field_Settings;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;

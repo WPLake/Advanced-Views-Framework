@@ -5,13 +5,13 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
@@ -37,7 +37,7 @@ final class Layout_Shortcode extends Shortcode {
 
 	public function __construct(
 		Public_Cpt $public_cpt,
-		Settings $settings,
+		Settings_Storage $settings,
 		Layout_Settings_Storage $layouts_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,

@@ -10,6 +10,8 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
@@ -35,10 +37,10 @@ class Plugin extends Hookable implements Hooks_Interface {
 	private string $plugin_url;
 	private string $plugin_path;
 
-	private Options $options;
-	private Settings $settings;
+	private Options_Storage $options;
+	private Settings_Storage $settings;
 
-	public function __construct( string $main_file, Options $options, Settings $settings ) {
+	public function __construct( string $main_file, Options_Storage $options, Settings_Storage $settings ) {
 		$this->plugin_url            = plugin_dir_url( $main_file );
 		$this->plugin_path           = plugin_dir_path( $main_file );
 		$this->version               = $this->detect_plugin_version_number( $main_file );
@@ -325,7 +327,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 			}
 
 			$this->options::set_transient(
-				Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES,
+				Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES,
 				$deactivated_notice_id,
 				1 * HOUR_IN_SECONDS
 			);
@@ -340,7 +342,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	// notice when either Basic or Pro was automatically deactivated.
 	public function show_plugin_deactivated_notice(): void {
-		$deactivate_notice_id = $this->options::get_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
+		$deactivate_notice_id = $this->options::get_transient( Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
 		$deactivate_notice_id = int( $deactivate_notice_id );
 
 		// not set = false = 0.
@@ -359,7 +361,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 				__( 'Advanced Views Pro', 'acf-views' )
 		);
 
-		$this->options::delete_transient( Options::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
+		$this->options::delete_transient( Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
 
 		printf(
 			'<div class="notice notice-warning">' .

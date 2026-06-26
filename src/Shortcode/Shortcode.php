@@ -7,15 +7,15 @@ namespace Org\Wplake\Advanced_Views\Shortcode;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Avf_User;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Base\Instance_Factory;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
@@ -23,7 +23,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
 	private Instance_Factory $instance_factory;
-	private Settings $settings;
+	private Settings_Storage $settings;
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Front_Assets $front_assets;
 	private Live_Reloader_Component $live_reloader_component;
@@ -35,7 +35,7 @@ abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_I
 
 	public function __construct(
 		Public_Cpt $public_cpt,
-		Settings $settings,
+		Settings_Storage $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Instance_Factory $instance_factory,
 		Front_Assets $front_assets,

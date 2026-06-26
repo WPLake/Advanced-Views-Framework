@@ -6,14 +6,14 @@ namespace Org\Wplake\Advanced_Views\Git_Api;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Plugin\Options;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
 
 class Git_Lab_Api extends Git_Api {
 	use Safe_Array_Arguments;
 
 	protected function get_transient_prefix(): string {
-		return Options::PREFIX . 'gitlab_';
+		return Options_Storage::PREFIX . 'gitlab_';
 	}
 
 	/**

@@ -6,14 +6,14 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Git_Meta_Box;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
-use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Git_Meta_Box;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 class Layout_Git_Box extends Git_Meta_Box {
 	private Data_Vendors $data_vendors;
@@ -21,7 +21,7 @@ class Layout_Git_Box extends Git_Meta_Box {
 
 	public function __construct(
 		string $cpt_name,
-		Settings $settings,
+		Settings_Storage $settings,
 		Layout_Settings_Storage $layouts_settings_storage,
 		Git_Lab_Api $git_lab_api,
 		Data_Vendors $data_vendors,

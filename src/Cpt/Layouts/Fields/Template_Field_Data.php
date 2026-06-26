@@ -6,7 +6,7 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Fields;
 
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
-use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field_Interface;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;

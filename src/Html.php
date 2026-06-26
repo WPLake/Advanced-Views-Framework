@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Tools\Demo_Import;
+use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
 
@@ -102,7 +102,7 @@ class Html {
 		bool $is_has_demo_objects,
 		string $form_nonce,
 		bool $is_with_form_message,
-		Demo_Import $demo_import
+		Demo_Importer $demo_import
 	): void {
 		$this->print(
 			'dashboard/import',

@@ -9,10 +9,10 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\Markup_Field_Interface;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Data_Vendors\Woo\Woo_Data_Vendor;
-use Org\Wplake\Advanced_Views\Data_Vendors\Wp\Wp_Data_Vendor;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field_Interface;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Woo\Woo_Data_Vendor;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Wp\Wp_Data_Vendor;
 use Org\Wplake\Advanced_Views\Front_Asset\Html_Wrapper;
 use Org\Wplake\Advanced_Views\Front_Asset\View_Front_Asset_Interface;
 use Org\Wplake\Advanced_Views\Groups\Field_Settings;
@@ -22,9 +22,9 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Template\Generation\Token_Factory;
-use Org\Wplake\Advanced_Views\Template\Generation\Tokens\Format_Token;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Token_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Tokens\Format_Token;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Field_Markup {

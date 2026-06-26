@@ -1,0 +1,485 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
+
+use Exception;
+use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Parents\Hookable;
+use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Shortcode\Layout_Shortcode;
+use Org\Wplake\Advanced_Views\Shortcode\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Utils\Route_Detector;
+use Org\Wplake\Advanced_Views\Utils\Safe_Array_Arguments;
+use WP_REST_Request;
+
+defined( 'ABSPATH' ) || exit;
+
+class Live_Reloader extends Hookable implements Hooks_Interface {
+	use Safe_Array_Arguments;
+
+	private Layout_Settings_Storage $layouts_settings_storage;
+	private Selection_Settings_Storage $post_selections_settings_storage;
+	private Layout_Shortcode $layout_shortcode;
+	private Post_Selection_Shortcode $post_selection_shortcode;
+	private int $request_post_id;
+
+	public function __construct(
+		Layout_Settings_Storage $layouts_settings_storage,
+		Selection_Settings_Storage $post_selections_settings_storage,
+		Layout_Shortcode $layout_shortcode,
+		Post_Selection_Shortcode $post_selection_shortcode
+	) {
+		$this->layouts_settings_storage         = $layouts_settings_storage;
+		$this->post_selections_settings_storage = $post_selections_settings_storage;
+		$this->layout_shortcode                 = $layout_shortcode;
+		$this->post_selection_shortcode         = $post_selection_shortcode;
+		$this->request_post_id                  = 0;
+	}
+
+	/**
+	 * @param array<string,mixed> $request_args
+	 *
+	 * @return array<string,mixed>|null
+	 */
+	protected function maybe_get_page_changed_response( array $request_args ): ?array {
+		$post_id   = $this->get_int_arg( 'post_id', $request_args );
+		$post_hash = $this->get_string_arg( 'post_hash', $request_args );
+
+		// post_id is 0 e.g. on archive pages.
+		if ( 0 === $post_id ) {
+			return null;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( null === $post ) {
+			return array(
+				'error' => 'Invalid post ID',
+			);
+		}
+
+		$this->request_post_id = $post_id;
+
+		$actual_post_hash = hash( 'md5', $post->post_modified );
+
+		if ( $actual_post_hash !== $post_hash ) {
+			return array(
+				'isPageChanged' => true,
+			);
+		}
+
+		return null;
+	}
+
+	protected function get_css_code( Cpt_Settings $cpt_settings ): string {
+		$css = $cpt_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY );
+
+		// remove all the whitespaces.
+		$css = str_replace( array( "\t", "\n", "\r" ), '', $css );
+
+		// for tailwind, while Live reloading we don't have the 'merge' feature anymore,
+		// so we must add !important to all the media rules,
+		// otherwise we may have a case when css rule without @media placed below will override the above,
+		// e.g. @media{.lg:flex-row} and flex-col.
+		if ( false === strpos( $css, 'advanced-views:tailwind' ) ) {
+			return $css;
+		}
+
+		// 1. get all the media queries.
+		preg_match_all( '/(@media[^{]*)\{((?:[^{}]*\{[^{}]*\})*[^{}]*)\}/', $css, $media_queries, PREG_SET_ORDER );
+
+		// 2. remove all the media queries from the css.
+		$css = (string) preg_replace( '/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/', '', $css );
+
+		$media_rules = array();
+		foreach ( $media_queries as $media_query ) {
+			$media_condition = trim( $media_query[1] );
+			$media_content   = trim( $media_query[2] );
+
+			$media_rules[ $media_condition ] ??= '';
+			$media_rules[ $media_condition ]  .= $media_content;
+		}
+
+		foreach ( $media_rules as $media_condition => $media_content ) {
+			$media_content = str_replace( '}', '!important}', $media_content );
+			$css          .= $media_condition . '{' . $media_content . '}';
+		}
+
+		return $css;
+	}
+
+	/**
+	 * @param array<string,mixed> $shortcode_arguments
+	 * @param array<string,string> $old_code_hashes
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected function get_item_response_arguments(
+		Cpt_Settings $cpt_settings,
+		array $shortcode_arguments,
+		array $old_code_hashes,
+		bool $is_assets_only
+	): array {
+		$renderer = ( $cpt_settings instanceof Layout_Settings ) ?
+			$this->layout_shortcode :
+			$this->post_selection_shortcode;
+
+		$new_code_hashes = $cpt_settings->get_code_hashes();
+		$is_css_changed  = $this->get_string_arg( Cpt_Settings::HASH_CSS, $old_code_hashes ) !==
+							$new_code_hashes[ Cpt_Settings::HASH_CSS ];
+		$is_js_changed   = $this->get_string_arg( Cpt_Settings::HASH_JS, $old_code_hashes ) !==
+							$new_code_hashes[ Cpt_Settings::HASH_JS ];
+		$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $old_code_hashes ) !==
+							$new_code_hashes[ Cpt_Settings::HASH_HTML ];
+
+		$response = array(
+			'codeHashes' => $new_code_hashes,
+		);
+
+		if ( $is_css_changed &&
+			false === $cpt_settings->is_with_shadow_dom() ) {
+			$response['css'] = $this->get_css_code( $cpt_settings );
+		}
+
+		if ( $is_js_changed ) {
+			// js code isn't put inside the shadow root (it works on the global level),
+			// so it's always available.
+			$response['js'] = $cpt_settings->get_js_code();
+		}
+
+		if ( $is_html_changed &&
+			false === $is_assets_only ) {
+			// we don't have the right queried_object_id anymore,
+			// so must define it obviously if it's missing,
+			// but only if it's set (e.g. post_id is 0 for archive pages).
+			if ( ! key_exists( 'object-id', $shortcode_arguments ) &&
+				0 !== $this->request_post_id ) {
+				$shortcode_arguments['object-id'] = $this->request_post_id;
+			}
+
+			$response['html'] = $renderer->render_shortcode( $shortcode_arguments );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @param array<string,mixed> $code_hashes
+	 */
+	protected function is_page_reload_required( Cpt_Settings $cpt_settings, array $code_hashes, bool $is_gutenberg_block ): bool {
+		$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $code_hashes ) !==
+							$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_HTML ];
+
+		// 1. HTML changed for gutenberg blocks or on non-post related pages
+		if ( $is_html_changed &&
+			( $is_gutenberg_block || 0 === $this->request_post_id ) ) {
+			return true;
+		}
+
+		$is_declarative_shadow_dom = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM_DECLARATIVE === $cpt_settings->web_component;
+
+		// Declarative Shadow DOM currently is only processed during DOMContentLoaded event,
+		// so if it's added later dynamically, it's just hidden. Confirmed by local tests and also by others:
+		// see https://stackoverflow.com/questions/67932949/html-template-shadow-dom-not-rendering-within-handlebars-template.
+		$is_css_changed = $this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
+							$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
+
+		// 2. Html or CSS changed for elements with the Declarative Shadow DOM.
+		return $is_declarative_shadow_dom &&
+				( $is_html_changed || $is_css_changed );
+	}
+
+	/**
+	 * @param array<string,string> $code_hashes
+	 */
+	protected function is_html_force_change_required( Cpt_Settings $cpt_settings, array $code_hashes ): bool {
+		// 1. JS change required HTML update (so web component will be created and processed by the new JS).
+		$is_js_changed = $this->get_string_arg( Cpt_Settings::HASH_JS, $code_hashes ) !==
+						$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_JS ];
+
+		// 2. CSS changes when JS shadow root is enabled require HTML update (as CSS is inside HTML in that case).
+		// (Declarative shadow root requires full page reloading, so that in the other place).
+		$is_css_in_js_shadow_dom_changed = Cpt_Settings::WEB_COMPONENT_SHADOW_DOM === $cpt_settings->web_component &&
+											$this->get_string_arg( Cpt_Settings::HASH_CSS, $code_hashes ) !==
+											$cpt_settings->get_code_hashes()[ Cpt_Settings::HASH_CSS ];
+
+		return $is_js_changed ||
+				$is_css_in_js_shadow_dom_changed;
+	}
+
+	/**
+	 * @param array<string,mixed> $request_args
+	 * @param array<string,Cpt_Settings> $changed_instances
+	 *
+	 * @return array<string,mixed>
+	 * @throws Exception
+	 */
+	protected function get_response_for_changed_instances(
+		array $request_args,
+		array $changed_instances,
+		bool &$is_page_reload_required
+	): array {
+		$items = $this->get_array_arg( 'items', $request_args );
+
+		$response = array();
+
+		foreach ( $items as $markup_element_id => $item_data ) {
+			if ( false === is_array( $item_data ) ) {
+				continue;
+			}
+
+			$parent_card_id = sanitize_text_field( $this->get_string_arg( 'parent_card_id', $item_data ) );
+
+			$markup_element_id = sanitize_text_field( (string) $markup_element_id );
+			$unique_id         = sanitize_text_field( $this->get_string_arg( 'unique_id', $item_data ) );
+			/**
+			 * @var array<string,string> $code_hashes
+			 */
+			$code_hashes = $this->get_array_arg( 'code_hashes', $item_data );
+
+			$is_view_item = 0 === strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX );
+
+			$cpt_data = $is_view_item ?
+				$this->layouts_settings_storage->get( $unique_id ) :
+				$this->post_selections_settings_storage->get( $unique_id );
+
+			if ( false === $cpt_data->isLoaded() ||
+				$code_hashes === $cpt_data->get_code_hashes() ) {
+				continue;
+			}
+
+			if ( $this->is_html_force_change_required( $cpt_data, $code_hashes ) ) {
+				$code_hashes[ Cpt_Settings::HASH_HTML ] = '';
+			}
+
+			/**
+			 * @var array<string,mixed> $shortcode_arguments
+			 */
+			$shortcode_arguments = $this->get_array_arg( 'shortcode_arguments', $item_data );
+			$is_gutenberg_block  = $this->get_bool_arg( 'is_gutenberg_block', $item_data );
+
+			$is_page_reload_required = $this->is_page_reload_required( $cpt_data, $code_hashes, $is_gutenberg_block );
+
+			if ( $is_page_reload_required ) {
+				return array();
+			}
+
+			// we don't need to update Html if it's an item inside a Card.
+			$is_assets_only = '' !== $parent_card_id;
+
+			$response[ $markup_element_id ] = $this->get_item_response_arguments(
+				$cpt_data,
+				$shortcode_arguments,
+				$code_hashes,
+				$is_assets_only
+			);
+
+			$changed_instances[ $unique_id ] = $cpt_data;
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @param array<string,mixed> $request_args
+	 *
+	 * @return string[]
+	 * @throws Exception
+	 */
+	protected function get_card_ids_on_top_level_with_children_that_changed_html( array $request_args ): array {
+		$items               = $this->get_array_arg( 'items', $request_args );
+		$card_ids_to_refresh = array();
+
+		foreach ( $items as $item_data ) {
+			if ( false === is_array( $item_data ) ) {
+				continue;
+			}
+
+			$unique_id      = sanitize_text_field( $this->get_string_arg( 'unique_id', $item_data ) );
+			$parent_card_id = sanitize_text_field( $this->get_string_arg( 'parent_card_id', $item_data ) );
+			/**
+			 * @var array<string,string> $code_hashes
+			 */
+			$code_hashes = $this->get_array_arg( 'code_hashes', $item_data );
+
+			// process only child level at this point.
+			if ( '' === $parent_card_id ) {
+				continue;
+			}
+
+			$is_view_item = 0 === strpos( $unique_id, Layout_Settings::UNIQUE_ID_PREFIX );
+
+			$cpt_data = $is_view_item ?
+				$this->layouts_settings_storage->get( $unique_id ) :
+				$this->post_selections_settings_storage->get( $unique_id );
+
+			$is_html_changed = $this->get_string_arg( Cpt_Settings::HASH_HTML, $code_hashes ) !==
+								$cpt_data->get_code_hashes()[ Cpt_Settings::HASH_HTML ] ||
+			$this->is_html_force_change_required( $cpt_data, $code_hashes );
+
+			if ( false === $cpt_data->isLoaded() ||
+				false === $is_html_changed ) {
+				continue;
+			}
+
+			$card_ids_to_refresh[] = $parent_card_id;
+		}
+
+		return $card_ids_to_refresh;
+	}
+
+	/**
+	 * @param array<string,mixed> $request_args
+	 * @param string[] $card_ids_on_top_level_to_refresh
+	 *
+	 * @return array<string,mixed>
+	 * @throws Exception
+	 */
+	protected function get_response_for_specific_card_ids(
+		array $request_args,
+		array $card_ids_on_top_level_to_refresh,
+		bool &$is_page_reload_required
+	): array {
+		$items = $this->get_array_arg( 'items', $request_args );
+
+		$response = array();
+
+		foreach ( $items as $markup_element_id => $item_data ) {
+			if ( false === is_array( $item_data ) ) {
+				continue;
+			}
+
+			$markup_element_id = sanitize_text_field( (string) $markup_element_id );
+			$unique_id         = sanitize_text_field( $this->get_string_arg( 'unique_id', $item_data ) );
+
+			if ( ! in_array( $unique_id, $card_ids_on_top_level_to_refresh, true ) ) {
+				continue;
+			}
+
+			$card_data = $this->post_selections_settings_storage->get( $unique_id );
+
+			if ( false === $card_data->isLoaded() ) {
+				continue;
+			}
+
+			/**
+			 * @var array<string,mixed> $shortcode_arguments
+			 */
+			$shortcode_arguments = $this->get_array_arg( 'shortcode_arguments', $item_data );
+			/**
+			 * @var array<string,string> $code_hashes
+			 */
+			$code_hashes        = $this->get_array_arg( 'code_hashes', $item_data );
+			$is_gutenberg_block = $this->get_bool_arg( 'is_gutenberg_block', $item_data );
+
+			// force HTML update, as children have been changed.
+			$code_hashes[ Cpt_Settings::HASH_HTML ] = '';
+
+			$is_page_reload_required = $this->is_page_reload_required( $card_data, $code_hashes, $is_gutenberg_block );
+
+			if ( $is_page_reload_required ) {
+				return array();
+			}
+
+			$response[ $markup_element_id ] = $this->get_item_response_arguments(
+				$card_data,
+				$shortcode_arguments,
+				$code_hashes,
+				false
+			);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @param array<string,mixed> $request_args
+	 *
+	 * @return array<string,mixed>
+	 * @throws Exception
+	 */
+	protected function get_changed_instances_response( array $request_args ): array {
+		$changed_instances     = array();
+		$page_changed_response = array(
+			'isPageChanged' => true,
+		);
+
+		$is_page_reload_required = false;
+		$response                = $this->get_response_for_changed_instances(
+			$request_args,
+			$changed_instances,
+			$is_page_reload_required
+		);
+
+		if ( $is_page_reload_required ) {
+			return $page_changed_response;
+		}
+
+		$card_ids_on_top_level_with_changed_children = $this->get_card_ids_on_top_level_with_children_that_changed_html( $request_args );
+
+		$card_ids_on_top_level_to_refresh = array_diff(
+			$card_ids_on_top_level_with_changed_children,
+			array_keys( $changed_instances )
+		);
+
+		$response = array_merge(
+			$response,
+			$this->get_response_for_specific_card_ids(
+				$request_args,
+				$card_ids_on_top_level_to_refresh,
+				$is_page_reload_required
+			)
+		);
+
+		if ( $is_page_reload_required ) {
+			return $page_changed_response;
+		}
+
+		return array(
+			'changedItems' => $response,
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 * @throws Exception
+	 */
+	public function get_live_reloader_data( WP_REST_Request $wprest_request ): array {
+		$request_args = $wprest_request->get_json_params();
+
+		$page_changed_args = $this->maybe_get_page_changed_response( $request_args );
+
+		if ( null !== $page_changed_args ) {
+			return $page_changed_args;
+		}
+
+		return $this->get_changed_instances_response( $request_args );
+	}
+
+	public function register_rest_routes(): void {
+		register_rest_route(
+			// todo replace to 'advanced-views' (here and in JS).
+			'acf_views/v1',
+			'/live-reloader',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'get_live_reloader_data' ),
+				'permission_callback' => fn(): bool => Avf_User::can_manage(),
+			)
+		);
+	}
+
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( false === $route_detector->is_admin_route() ) {
+			return;
+		}
+
+		self::add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+	}
+}

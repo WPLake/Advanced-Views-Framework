@@ -13,7 +13,8 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Setting
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Meta_Field_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
@@ -22,8 +23,7 @@ use Org\Wplake\Advanced_Views\Html;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use WP_Post;
 
 final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
@@ -44,7 +44,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 		Post_Selection_Factory $selection_factory,
 		Engines_Storage $engines_storage,
 		Data_Vendors $data_vendors,
-		Settings $settings,
+		Settings_Storage $settings,
 		Selection_Meta_Boxes $selection_meta_boxes,
 		Layout_Settings_Storage $layout_settings_storage
 	) {

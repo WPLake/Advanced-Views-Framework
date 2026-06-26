@@ -10,14 +10,14 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Git_Tabs;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Import_Result;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Git_Tabs;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Logger;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 
 class Selection_Git_Tabs extends Git_Tabs {
@@ -26,7 +26,7 @@ class Selection_Git_Tabs extends Git_Tabs {
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Settings $settings,
+		Settings_Storage $settings,
 		Git_Lab_Api $git_lab_api,
 		Cpt_Settings $cpt_settings,
 		Selection_Settings_Storage $post_selections_settings_storage,

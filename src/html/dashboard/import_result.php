@@ -2,13 +2,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Tools\Demo_Import;
+use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 
 $view ??= array();
 
 $demo_import = $view['demoImport'] ?? null;
 
-if ( false === ( $demo_import instanceof Demo_Import ) ) {
+if ( false === ( $demo_import instanceof Demo_Importer ) ) {
 	return;
 }
 

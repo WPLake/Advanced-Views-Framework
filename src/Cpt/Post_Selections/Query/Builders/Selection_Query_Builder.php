@@ -12,7 +12,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context_Co
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Post_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Taxonomy\Taxonomy_Query_Builder;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Taxonomy\Term_Query_Builder;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use function Org\Wplake\Advanced_Views\Utils\flat_map;
 

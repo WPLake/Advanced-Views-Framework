@@ -9,7 +9,9 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Base\Instance_Factory;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Theme_Settings;
 use Org\Wplake\Advanced_Views\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Html;
@@ -17,9 +19,7 @@ use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Template\Integration\Template_Integration;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use WP_Post;
 use WP_REST_Request;
@@ -39,7 +39,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 	protected Instance_Factory $instance_factory;
 	protected Engines_Storage $engines_storage;
 	protected Data_Vendors $data_vendors;
-	protected Settings $settings;
+	protected Settings_Storage $settings;
 	protected Cpt_Settings_Storage $cpt_settings_storage;
 
 	public function __construct(
@@ -49,7 +49,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		Instance_Factory $instance_factory,
 		Engines_Storage $engines_storage,
 		Data_Vendors $data_vendors,
-		Settings $settings,
+		Settings_Storage $settings,
 		Cpt_Settings_Storage $cpt_settings_storage
 	) {
 		$this->public_cpt           = $public_cpt;

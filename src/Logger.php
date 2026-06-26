@@ -6,7 +6,7 @@ namespace Org\Wplake\Advanced_Views;
 
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Utils\WP_Filesystem_Factory;
 use WP_Filesystem_Base;
@@ -20,11 +20,11 @@ class Logger extends Hookable implements Hooks_Interface {
 
 	private string $log_file;
 	private string $error_file;
-	private Settings $settings;
+	private Settings_Storage $settings;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 	private string $request_id;
 
-	public function __construct( string $folder, Settings $settings ) {
+	public function __construct( string $folder, Settings_Storage $settings ) {
 		$this->log_file           = $folder . '/log.txt';
 		$this->error_file         = $folder . '/error_log.txt';
 		$this->settings           = $settings;

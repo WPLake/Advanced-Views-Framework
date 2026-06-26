@@ -1,0 +1,26 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base;
+
+use Org\Wplake\Advanced_Views\Groups\Layout_Settings;
+
+defined( 'ABSPATH' ) || exit;
+
+interface Data_Vendor_Integration_Interface {
+	public function add_tab_to_meta_group(): void;
+
+	public function add_column_to_list_table(): void;
+
+	public function maybe_create_view_for_group(): void;
+
+	public function validate_related_views_on_group_change(): void;
+
+	/**
+	 * @param Layout_Settings[] $view_data_items
+	 */
+	public function signup_gutenberg_blocks( array $view_data_items ): void;
+
+	public function get_vendor_name(): string;
+}

@@ -10,14 +10,14 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Parents\Action;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Options;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
 
 abstract class Git_Api extends Action implements Git_Api_Interface {
-	protected Options $options;
+	protected Options_Storage $options;
 	protected Public_Cpt $layout_public_cpt;
 	protected Public_Cpt $post_selection_public_cpt;
 
-	public function __construct( Logger $logger, Options $options, Public_Cpt $layout_public_cpt, Public_Cpt $post_selection_public_cpt ) {
+	public function __construct( Logger $logger, Options_Storage $options, Public_Cpt $layout_public_cpt, Public_Cpt $post_selection_public_cpt ) {
 		parent::__construct( $logger );
 
 		$this->options                   = $options;

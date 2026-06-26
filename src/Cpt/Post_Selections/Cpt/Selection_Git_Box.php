@@ -14,7 +14,7 @@ use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 class Selection_Git_Box extends Git_Meta_Box {
 
@@ -23,7 +23,7 @@ class Selection_Git_Box extends Git_Meta_Box {
 
 	public function __construct(
 		string $cpt_name,
-		Settings $settings,
+		Settings_Storage $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Git_Lab_Api $git_lab_api,
 		Layout_Settings_Storage $layouts_settings_storage,

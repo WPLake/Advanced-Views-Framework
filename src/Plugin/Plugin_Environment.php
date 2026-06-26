@@ -8,12 +8,13 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
-use Org\Wplake\Advanced_Views\Template\Templates_Environment;
+use Org\Wplake\Advanced_Views\Cpt\Template\Templates_Environment;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 final class Plugin_Environment {
 	private Templates_Environment $template_engines;
 	private Automated_Reports $automated_reports;
-	private Settings $settings;
+	private Settings_Storage $settings;
 	private Plugin $plugin;
 	/**
 	 * @var File_System[]
@@ -31,7 +32,7 @@ final class Plugin_Environment {
 	public function __construct(
 		Templates_Environment $template_engines,
 		Automated_Reports $automated_reports,
-		Settings $settings,
+		Settings_Storage $settings,
 		Plugin $plugin,
 		array $file_systems,
 		array $storages

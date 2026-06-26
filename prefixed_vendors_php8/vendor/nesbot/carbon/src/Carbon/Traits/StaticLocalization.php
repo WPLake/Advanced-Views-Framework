@@ -13,7 +13,7 @@ namespace Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\Traits;
 
 use Org\Wplake\Advanced_Views\Optional_Vendors\Carbon\FactoryImmutable;
 use Org\Wplake\Advanced_Views\Optional_Vendors\Symfony\Contracts\Translation\TranslatorInterface;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 
 /**
  * Static config for localization.
@@ -23,7 +23,7 @@ trait StaticLocalization {
 	/**
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
-	 * @see settings
+	 * @see Settings_Storage
 	 */
 	public static function setHumanDiffOptions( int $humanDiffOptions ): void {
 		FactoryImmutable::getDefaultInstance()->setHumanDiffOptions( $humanDiffOptions );
@@ -31,7 +31,7 @@ trait StaticLocalization {
 	/**
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
-	 * @see settings
+	 * @see Settings_Storage
 	 */
 	public static function enableHumanDiffOption( int $humanDiffOption ): void {
 		FactoryImmutable::getDefaultInstance()->enableHumanDiffOption( $humanDiffOption );
@@ -39,7 +39,7 @@ trait StaticLocalization {
 	/**
 	 * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
 	 *             You should rather use the ->settings() method.
-	 * @see settings
+	 * @see Settings_Storage
 	 */
 	public static function disableHumanDiffOption( int $humanDiffOption ): void {
 		FactoryImmutable::getDefaultInstance()->disableHumanDiffOption( $humanDiffOption );

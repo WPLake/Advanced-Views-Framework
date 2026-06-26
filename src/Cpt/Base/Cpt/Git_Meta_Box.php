@@ -7,13 +7,13 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Avf_User;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Parents\Hookable;
 use Org\Wplake\Advanced_Views\Parents\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 
@@ -21,7 +21,7 @@ abstract class Git_Meta_Box extends Hookable implements Hooks_Interface {
 
 	const NONCE_PUSH = 'av-git-item-push';
 
-	private Settings $settings;
+	private Settings_Storage $settings;
 	private string $cpt_name;
 	private Cpt_Settings_Storage $cpt_settings_storage;
 	private Git_Lab_Api $git_lab_api;
@@ -35,7 +35,7 @@ abstract class Git_Meta_Box extends Hookable implements Hooks_Interface {
 
 	public function __construct(
 		string $cpt_name,
-		Settings $settings,
+		Settings_Storage $settings,
 		Cpt_Settings_Storage $cpt_settings_storage,
 		Git_Lab_Api $git_lab_api,
 		Plugin $plugin

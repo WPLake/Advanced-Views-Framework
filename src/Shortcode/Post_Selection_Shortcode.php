@@ -5,13 +5,13 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Shortcode;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
-use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
-use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Groups\Post_Selection_Settings;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -24,7 +24,7 @@ final class Post_Selection_Shortcode extends Shortcode {
 
 	public function __construct(
 		Public_Cpt $public_cpt,
-		Settings $settings,
+		Settings_Storage $settings,
 		Selection_Settings_Storage $post_selections_settings_storage,
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,

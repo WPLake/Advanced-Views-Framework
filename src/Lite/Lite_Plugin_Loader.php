@@ -10,7 +10,6 @@ use Org\Wplake\Advanced_Views\Acf\Acf_Dependency;
 use Org\Wplake\Advanced_Views\Acf\Acf_Internal_Features;
 use Org\Wplake\Advanced_Views\Assets\Admin_Assets;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
-use Org\Wplake\Advanced_Views\Assets\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Upgrade_Notice;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Db_Management;
@@ -19,11 +18,16 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Template\Templates_Environment;
 use Org\Wplake\Advanced_Views\Dashboard\Admin_Bar;
-use Org\Wplake\Advanced_Views\Dashboard\Dashboard;
-use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader;
-use Org\Wplake\Advanced_Views\Dashboard\Settings_Page;
-use Org\Wplake\Advanced_Views\Data_Vendors\Data_Vendors;
+use Org\Wplake\Advanced_Views\Dashboard\Admin_Pages;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
+use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
+use Org\Wplake\Advanced_Views\Dashboard\Tools\Debug_Dump_Creator;
+use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
+use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Groups\Git_Repository;
 use Org\Wplake\Advanced_Views\Groups\Item_Settings;
@@ -45,15 +49,10 @@ use Org\Wplake\Advanced_Views\Logger;
 use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Plugin_Loader_Base;
-use Org\Wplake\Advanced_Views\Plugin\Options;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
-use Org\Wplake\Advanced_Views\Plugin\Settings;
-use Org\Wplake\Advanced_Views\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Template\Templates_Environment;
-use Org\Wplake\Advanced_Views\Tools\Debug_Dump_Creator;
-use Org\Wplake\Advanced_Views\Tools\Demo_Import;
-use Org\Wplake\Advanced_Views\Tools\Tools;
+use Org\Wplake\Advanced_Views\Settings\Options_Storage;
+use Org\Wplake\Advanced_Views\Settings\Settings_Page;
 use Org\Wplake\Advanced_Views\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
@@ -62,7 +61,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	public Html $html;
 	public Layout_Settings $layout_settings;
 	public Post_Selection_Settings $post_selection_settings;
-	public Options $options;
+	public Options_Storage $options;
 	public Cache_Flusher $cache_flusher;
 
 	public string $plugin_file;
@@ -82,8 +81,8 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->post_selection_cpt,
 		);
 
-		$this->options  = new Options();
-		$this->settings = new Settings( $this->options );
+		$this->options  = new Options_Storage();
+		$this->settings = new Plugin_Settings( $this->options );
 
 		$uploads_folder = self::uploads_folder();
 		$this->logger   = new Logger( $uploads_folder, $this->settings );
@@ -216,7 +215,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	}
 
 	protected function others(): void {
-		$this->demo_import = new Demo_Import(
+		$this->demo_import = new Demo_Importer(
 			$this->selections_loader->save_actions,
 			$this->layouts_loader->save_actions,
 			$this->post_selections_settings_storage,
@@ -225,7 +224,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->item_settings
 		);
 
-		$this->dashboard             = new Dashboard(
+		$this->dashboard             = new Admin_Pages(
 			$this->plugin,
 			$this->html,
 			$this->demo_import,
@@ -240,7 +239,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage
 		);
-		$this->tools        = new Tools(
+		$this->tools        = new Tools_Page(
 			$tools_settings,
 			$this->post_selections_settings_storage,
 			$this->layouts_settings_storage,
