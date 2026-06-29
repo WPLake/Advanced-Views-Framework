@@ -20,7 +20,7 @@ class Acf_Internal_Features extends Hookable implements Hooks_Interface {
 	}
 
 	public function include_field_types(): void {
-		$internal_features_path = __DIR__ . '/../../vendor/acf-internal-features';
+		$internal_features_path = __DIR__ . '/../../vendor/standalone/acf-internal-features';
 
 		include_once $internal_features_path . '/inc/class-acf-field-clone.php';
 		include_once $internal_features_path . '/inc/class-acf-repeater-table.php';
