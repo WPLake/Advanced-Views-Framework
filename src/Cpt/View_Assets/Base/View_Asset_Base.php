@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\View_Assets\Base;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
-defined( 'ABSPATH' ) || exit;
-
-abstract class View_Asset_Base implements View_Asset_Base {
+abstract class View_Asset_Base implements View_Asset {
 	const NAME = '';
 
 	/**

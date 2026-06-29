@@ -40,9 +40,8 @@ class Format_Token {
 		echo esc_html( $tabs );
 	}
 
-
 	/**
-	 * @param Variable_Token $value
+	 * @param Variable_Token|string $value
 	 */
 	public function attribute(
 		string $name,
@@ -63,9 +62,7 @@ class Format_Token {
 	}
 
 	/**
-	 * @param Variable_Token $attributes
-	 *
-	 * @return self
+	 * @param array<string,Variable_Token|string> $attributes
 	 */
 	public function attributes( array $attributes ): self {
 		foreach ( $attributes as $name => $value ) {

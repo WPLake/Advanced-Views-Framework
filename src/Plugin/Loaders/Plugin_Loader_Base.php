@@ -61,6 +61,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt_Base;
+use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Page;
@@ -70,7 +71,7 @@ use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Loader;
 
-abstract class Plugin_Loader_Base extends Plugin\Module_Loader {
+abstract class Plugin_Loader_Base extends Module_Loader {
 	public Plugin $plugin;
 	public Plugin_Environment $plugin_environment;
 	public Version_Migrator $version_migrator;

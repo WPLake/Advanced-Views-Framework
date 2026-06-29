@@ -53,6 +53,7 @@ use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Page;
+use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Cache_Flusher;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Creator;
@@ -82,7 +83,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 		);
 
 		$this->options  = new Options_Storage();
-		$this->settings = new Plugin_Settings( $this->options );
+		$this->settings = new Settings_Storage( $this->options );
 
 		$uploads_folder = self::uploads_folder();
 		$this->logger   = new Logger( $uploads_folder, $this->settings );
