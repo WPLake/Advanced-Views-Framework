@@ -11,6 +11,6 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Vendors\\Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Org\\Wplake\\Advanced_Views\\Vendors\\Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Org\\Wplake\\Advanced_Views\\Vendors\\LightSource\\AcfGroups\\' => array($vendorDir . '/lightsource/acf-groups/src'),
-    'Org\\Wplake\\Advanced_Views\\Pro\\' => array($baseDir . '/../pro'),
-    'Org\\Wplake\\Advanced_Views\\' => array($baseDir . '/../src'),
+    'Org\\Wplake\\Advanced_Views\\Pro\\' => array($baseDir . '/../../pro'),
+    'Org\\Wplake\\Advanced_Views\\' => array($baseDir . '/../../src'),
 );
