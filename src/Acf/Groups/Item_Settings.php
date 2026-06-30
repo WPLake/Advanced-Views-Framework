@@ -47,7 +47,7 @@ class Item_Settings extends Group {
 	 */
 	public bool $repeater_fields_tab;
 	/**
-	 * @item \Org\Wplake\Advanced_Views\Groups\Repeater_Field_Settings
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Repeater_Field_Settings
 	 * @var Repeater_Field_Settings[]
 	 * @label Sub fields
 	 * @instructions Setup sub fields here

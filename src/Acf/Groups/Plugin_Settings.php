@@ -116,7 +116,7 @@ class Plugin_Settings extends Group {
 
 	/**
 	 * @var Git_Repository[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Git_Repository
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Git_Repository
 	 * @label Git Repositories
 	 * @instructions By saving Layouts and Post Selections in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>
 	 * @button_label Add Repository

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Lite;
+namespace Org\Wplake\Advanced_Views\Plugin\Loaders\Lite;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,6 +33,7 @@ use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Mount_Points;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
@@ -45,7 +46,6 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Plugin_Loader_Base;

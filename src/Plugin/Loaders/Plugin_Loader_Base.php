@@ -53,7 +53,7 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Mount_Points;
+use Org\Wplake\Advanced_Views\Cpt\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;

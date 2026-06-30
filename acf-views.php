@@ -14,7 +14,7 @@ namespace Org\Wplake\Advanced_Views;
 
 defined( 'ABSPATH' ) || exit;
 
-use Org\Wplake\Advanced_Views\Lite\Lite_Plugin_Loader;
+use Org\Wplake\Advanced_Views\Plugin\Loaders\Lite\Lite_Plugin_Loader;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
 ( function (): void {

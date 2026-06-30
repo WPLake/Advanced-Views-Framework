@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Lite;
+namespace Org\Wplake\Advanced_Views\Plugin\Loaders\Lite;
 
 defined( 'ABSPATH' ) || exit;
 

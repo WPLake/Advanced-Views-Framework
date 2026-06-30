@@ -5,8 +5,6 @@ declare( strict_types=1 );
 namespace Org\Wplake\Advanced_Views\Acf\Groups\Parents;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Theme_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Acf\Groups\Mount_Point_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
@@ -52,7 +50,7 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	 */
 	public bool $mount_points_tab;
 	/**
-	 * @item \Org\Wplake\Advanced_Views\Groups\Mount_Point_Settings
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Mount_Point_Settings
 	 * @var Mount_Point_Settings[]
 	 * @label Mount Points
 	 * @instructions 'Mount' this item to a location that doesn't support shortcodes. Mounting uses 'the_content' theme hook. <a target="_blank" href="https://docs.advanced-views.com/display-content/mount-points-pro">Read more</a>

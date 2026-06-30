@@ -7,8 +7,6 @@ namespace Org\Wplake\Advanced_Views\Acf\Groups;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
@@ -44,7 +42,7 @@ class Layout_Settings extends Cpt_Settings {
 	public bool $fields_tab;
 
 	/**
-	 * @item \Org\Wplake\Advanced_Views\Groups\Item_Settings
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings
 	 * @var Item_Settings[]
 	 * @label Assign Fields
 	 * @instructions Assign fields to your Layout. <br> Tip: hover mouse on the field number column and drag to reorder.

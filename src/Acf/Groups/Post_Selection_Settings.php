@@ -7,11 +7,7 @@ namespace Org\Wplake\Advanced_Views\Acf\Groups;
 defined( 'ABSPATH' ) || exit;
 
 use Exception;
-use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Meta_Filter_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Filter_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
@@ -298,7 +294,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public bool $is_use_layout_css;
 	/**
 	 * @var Post_Selection_Layout_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Groups\Post_Selection_Layout_Settings
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings
 	 * @label Responsive Rules
 	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
 	 * @button_label Add Rule
