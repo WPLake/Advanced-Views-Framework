@@ -14,19 +14,19 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
  */
 abstract class Literal_Token implements Template_Token {
 	/**
-	 * @var Template_Token
+	 * @var Literal_Value
 	 */
 	public $value;
 
 	/**
-	 * @param Template_Token $value
+	 * @param Literal_Value $value
 	 */
 	public function __construct( $value ) {
 		$this->value = $value;
 	}
 
 	/**
-	 * @param Template_Token $value
+	 * @param Literal_Value $value
 	 */
 	public function set_value( $value ): self {
 		$this->value = $value;

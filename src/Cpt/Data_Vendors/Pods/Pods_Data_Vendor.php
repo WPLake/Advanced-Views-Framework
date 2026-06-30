@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Pods;
 
+defined( 'ABSPATH' ) || exit;
+
 use DateTime;
 use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
@@ -37,12 +39,7 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Pods_Migrate_Packages;
-use function Org\Wplake\Advanced_Views\Data_Vendors\Pods\pods;
-use function Org\Wplake\Advanced_Views\Data_Vendors\Pods\pods_api;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-use const Org\Wplake\Advanced_Views\Data_Vendors\Pods\PODS_DIR;
-
-defined( 'ABSPATH' ) || exit;
 
 class Pods_Data_Vendor extends Data_Vendor {
 	const NAME = 'pods';
@@ -870,9 +867,9 @@ class Pods_Data_Vendor extends Data_Vendor {
 	 * @param mixed[] $meta_data
 	 */
 	public function import_group( array $group_data, array $meta_data ): ?string {
-		if ( false === class_exists( 'Pods_Migrate_Packages' ) ||
-			false === defined( 'PODS_DIR' ) ||
-			false === is_callable( array( 'Pods_Migrate_Packages', 'import_pod' ) ) ) {
+		if ( ! class_exists( 'Pods_Migrate_Packages' ) ||
+			! defined( 'PODS_DIR' ) ||
+			! is_callable( array( 'Pods_Migrate_Packages', 'import_pod' ) ) ) {
 			return null;
 		}
 

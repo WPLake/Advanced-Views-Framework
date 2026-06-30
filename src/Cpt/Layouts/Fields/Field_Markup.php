@@ -29,7 +29,9 @@ class Field_Markup {
 	private Data_Vendors $data_vendors;
 	private Front_Assets $front_assets;
 	/**
-	 * @var Markup_Field_Interface
+	 * Vendor => field_type => ?Markup_Field_Interface.
+	 *
+	 * @var array<string,array<string,Markup_Field_Interface|null>>
 	 */
 	private array $cache;
 	private Engines_Storage $engines_storage;

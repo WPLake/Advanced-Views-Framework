@@ -50,7 +50,9 @@ class Data_Vendors extends Action implements Hooks_Interface {
 	 */
 	private array $data_vendors;
 	/**
-	 * @var Field_Meta_Interface
+	 * Vendor => field_id => Field_Meta_Interface.
+	 *
+	 * @var array<string,array<string,Field_Meta_Interface>>
 	 */
 	private array $field_meta_cache;
 

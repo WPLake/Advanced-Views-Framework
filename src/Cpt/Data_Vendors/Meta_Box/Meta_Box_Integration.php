@@ -4,13 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Meta_Box;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Settings_Vendor_Integration;
 use WP_Post;
-use function Org\Wplake\Advanced_Views\Data_Vendors\Meta_Box\rwmb_get_registry;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
-
-defined( 'ABSPATH' ) || exit;
 
 class Meta_Box_Integration extends Settings_Vendor_Integration {
 	protected function get_vendor_post_type(): string {

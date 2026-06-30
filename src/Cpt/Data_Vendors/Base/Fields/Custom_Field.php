@@ -4,13 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields;
 
+defined( 'ABSPATH' ) || exit;
+
 use WP_Comment;
 use WP_Post;
 use WP_Term;
 use WP_User;
-use function Org\Wplake\Advanced_Views\Data_Vendors\Common\Fields\wc_get_product;
-
-defined( 'ABSPATH' ) || exit;
 
 trait Custom_Field {
 	/**

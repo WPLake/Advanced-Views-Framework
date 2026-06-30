@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Pods;
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Settings_Vendor_Integration;
@@ -16,9 +18,6 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use WP_Post;
-use function Org\Wplake\Advanced_Views\Data_Vendors\Pods\pods_api;
-
-defined( 'ABSPATH' ) || exit;
 
 class Pods_Integration extends Settings_Vendor_Integration {
 
@@ -58,7 +57,7 @@ class Pods_Integration extends Settings_Vendor_Integration {
 	 * @return mixed[]
 	 */
 	protected function get_group_fields( WP_Post $wp_post ): array {
-		if ( false === function_exists( 'pods_api' ) ) {
+		if ( ! function_exists( 'pods_api' ) ) {
 			return array();
 		}
 
