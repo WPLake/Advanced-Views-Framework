@@ -10,28 +10,12 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 defined( 'ABSPATH' ) || exit;
 
 abstract class Template_Integration_Base implements Template_Integration {
-	public function mock_provocative_symbols( string $template ): string {
-		$provocative_symbols_map = $this->get_provocative_symbols_map();
-
-		return str_replace(
-			array_keys( $provocative_symbols_map ),
-			array_values( $provocative_symbols_map ),
-			$template
-		);
-	}
-
-	public function unmock_provocative_symbols( string $template ): string {
-		$provocative_symbols_map = $this->get_provocative_symbols_map();
-
-		return str_replace(
-			array_values( $provocative_symbols_map ),
-			array_keys( $provocative_symbols_map ),
-			$template
-		);
-	}
-
-	// this code is common for all the template engines.
-	public function extract_multilingual_strings( string $template ): array {
+	/**
+	 * This code is common for all the template engines.
+	 *
+	 * @return array<string,string[]>
+	 */
+	public static function parse_translation_calls( string $template, string $default_domain ): array {
 		// extract ml string data from: __("Some data") or __("Some data", "my-theme").
 		preg_match_all(
 			'/__\([ ]*["]([^"]+)["]([, ]+["]([^"]+)["])*[ ]*\)/',
@@ -53,7 +37,7 @@ abstract class Template_Integration_Base implements Template_Integration {
 
 		foreach ( $functions as $match ) {
 			$label       = $match[1];
-			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
+			$text_domain = $match[3] ?? $default_domain;
 
 			/**
 			 * @var string[] $labels
@@ -69,5 +53,31 @@ abstract class Template_Integration_Base implements Template_Integration {
 		}
 
 		return $strings;
+	}
+
+	public function mock_provocative_symbols( string $template ): string {
+		$provocative_symbols_map = $this->get_provocative_symbols_map();
+
+		return str_replace(
+			array_keys( $provocative_symbols_map ),
+			array_values( $provocative_symbols_map ),
+			$template
+		);
+	}
+
+	public function unmock_provocative_symbols( string $template ): string {
+		$provocative_symbols_map = $this->get_provocative_symbols_map();
+
+		return str_replace(
+			array_values( $provocative_symbols_map ),
+			array_keys( $provocative_symbols_map ),
+			$template
+		);
+	}
+
+	public function extract_multilingual_strings( string $template ): array {
+		$default_domain = Plugin::get_theme_text_domain();
+
+		return self::parse_translation_calls( $template, $default_domain );
 	}
 }

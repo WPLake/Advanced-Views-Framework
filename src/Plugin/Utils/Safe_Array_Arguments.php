@@ -86,7 +86,7 @@ trait Safe_Array_Arguments {
 	 *
 	 * @return array<int|string,mixed>
 	 */
-	protected function apply_array_pagination( array $full_array, int $per_page, int $page_number ): array {
+	public static function apply_array_pagination( array $full_array, int $per_page, int $page_number ): array {
 		$count_of_items = count( $full_array );
 
 		$from_index = ( $page_number - 1 ) * $per_page;

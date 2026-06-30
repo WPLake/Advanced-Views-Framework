@@ -12,6 +12,52 @@ use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Twig_Integration extends Template_Integration_Base {
+	/**
+	 * This code is common for all the template engines.
+	 *
+	 * @return array<string,string[]>
+	 */
+	public static function parse_translation_calls( string $template, string $default_domain ): array {
+		$strings = parent::parse_translation_calls( $template, $default_domain );
+
+		// extract ml string data from: "Some data"|translate or "Some data"|translate("my-theme").
+		preg_match_all(
+			'/["]([^"]+)["]\|translate(\([ ]*["]([^"]+)["][ ]*\))*/',
+			$template,
+			$filters_with_double_quotes,
+			PREG_SET_ORDER
+		);
+
+		// extract ml string data from: 'Some data'|translate or 'Some data'|translate('my-theme').
+		preg_match_all(
+			"/[']([^']+)[']\|translate(\([ ]*[']([^']+)['][ ]*\))*/",
+			$template,
+			$filters_with_single_quotes,
+			PREG_SET_ORDER
+		);
+
+		$filters = array_merge( $filters_with_double_quotes, $filters_with_single_quotes );
+
+		foreach ( $filters as $match ) {
+			$label       = $match[1];
+			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
+
+			/**
+			 * @var string[] $labels
+			 */
+			$labels   = arr( $strings, $text_domain );
+			$labels[] = $label;
+
+			$strings[ $text_domain ] = $labels;
+		}
+
+		foreach ( $strings as $text_domain => $labels ) {
+			$strings[ $text_domain ] = array_unique( $labels );
+		}
+
+		return $strings;
+	}
+
 	public function get_provocative_symbols_map(): array {
 		return array();
 	}
@@ -58,46 +104,5 @@ class Twig_Integration extends Template_Integration_Base {
 			'random'      => '(from[,max]):mixed',
 			'translate'   => '([domain]):string',
 		);
-	}
-
-	public function extract_multilingual_strings( string $template ): array {
-		$strings = parent::extract_multilingual_strings( $template );
-
-		// extract ml string data from: "Some data"|translate or "Some data"|translate("my-theme").
-		preg_match_all(
-			'/["]([^"]+)["]\|translate(\([ ]*["]([^"]+)["][ ]*\))*/',
-			$template,
-			$filters_with_double_quotes,
-			PREG_SET_ORDER
-		);
-
-		// extract ml string data from: 'Some data'|translate or 'Some data'|translate('my-theme').
-		preg_match_all(
-			"/[']([^']+)[']\|translate(\([ ]*[']([^']+)['][ ]*\))*/",
-			$template,
-			$filters_with_single_quotes,
-			PREG_SET_ORDER
-		);
-
-		$filters = array_merge( $filters_with_double_quotes, $filters_with_single_quotes );
-
-		foreach ( $filters as $match ) {
-			$label       = $match[1];
-			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
-
-			/**
-			 * @var string[] $labels
-			 */
-			$labels   = arr( $strings, $text_domain );
-			$labels[] = $label;
-
-			$strings[ $text_domain ] = $labels;
-		}
-
-		foreach ( $strings as $text_domain => $labels ) {
-			$strings[ $text_domain ] = array_unique( $labels );
-		}
-
-		return $strings;
 	}
 }
