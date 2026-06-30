@@ -18,6 +18,21 @@ class Fs_Fields {
 	}
 
 	/**
+	 * @return array<string,string[]>
+	 */
+	public function extract_markup_multilingual_strings( Cpt_Settings $cpt_settings ): array {
+		$integration   = $this->engines_storage->resolve_integration( $cpt_settings->template_engine );
+		$custom_markup = trim( $cpt_settings->custom_markup );
+
+		if ( strlen( $custom_markup ) > 0 &&
+			$integration instanceof Template_Integration ) {
+			return $integration->extract_multilingual_strings( $custom_markup );
+		}
+
+		return array();
+	}
+
+	/**
 	 * @return string[]
 	 */
 	protected function get_template_fs_field_names_without_json(): array {
@@ -55,10 +70,26 @@ class Fs_Fields {
 		return $data_json;
 	}
 
+	/**
+	 * @return array<string,string[]>
+	 */
+	protected function extract_multilingual_strings( Cpt_Settings $cpt_settings ): array {
+		$labels         = $cpt_settings->get_multilingual_strings();
+		$markup_strings = $this->extract_markup_multilingual_strings( $cpt_settings );
+
+		$strings = array_merge_recursive( $labels, $markup_strings );
+
+		foreach ( $strings as $domain => $labels ) {
+			$strings[ $domain ] = array_unique( $labels );
+		}
+
+		return $strings;
+	}
+
 	protected function get_multilingual_strings_file_content( Cpt_Settings $cpt_settings ): string {
 		$file_lines = array();
 
-		foreach ( $cpt_settings->get_multilingual_strings() as $text_domain => $labels ) {
+		foreach ( $this->extract_multilingual_strings( $cpt_settings ) as $text_domain => $labels ) {
 			foreach ( $labels as $label ) {
 				// to avoid breaking the PHP string.
 				$label = str_replace( "'", '&#039;', $label );

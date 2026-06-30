@@ -4,6 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Template\Integration;
 
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
+
 defined( 'ABSPATH' ) || exit;
 
 abstract class Template_Integration_Base implements Template_Integration {
@@ -25,5 +28,46 @@ abstract class Template_Integration_Base implements Template_Integration {
 			array_keys( $provocative_symbols_map ),
 			$template
 		);
+	}
+
+	// this code is common for all the template engines.
+	public function extract_multilingual_strings( string $template ): array {
+		// extract ml string data from: __("Some data") or __("Some data", "my-theme").
+		preg_match_all(
+			'/__\([ ]*["]([^"]+)["]([, ]+["]([^"]+)["])*[ ]*\)/',
+			$template,
+			$functions_with_double_quotes,
+			PREG_SET_ORDER
+		);
+
+		// extract ml string data from: __('Some data') or __('Some data', 'my-theme').
+		preg_match_all(
+			"/__\([ ]*[']([^']+)[']([, ]+[']([^']+)['])*[ ]*\)/",
+			$template,
+			$functions_with_single_quotes,
+			PREG_SET_ORDER
+		);
+
+		$functions = array_merge( $functions_with_double_quotes, $functions_with_single_quotes );
+		$strings   = array();
+
+		foreach ( $functions as $match ) {
+			$label       = $match[1];
+			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
+
+			/**
+			 * @var string[] $labels
+			 */
+			$labels   = arr( $strings, $text_domain );
+			$labels[] = $label;
+
+			$strings[ $text_domain ] = $labels;
+		}
+
+		foreach ( $strings as $text_domain => $labels ) {
+			$strings[ $text_domain ] = array_unique( $labels );
+		}
+
+		return $strings;
 	}
 }

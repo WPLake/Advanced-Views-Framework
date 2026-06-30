@@ -29,4 +29,9 @@ interface Template_Integration {
 	public function get_autocomplete_filters(): array;
 
 	public function get_file_extension(): string;
+
+	/**
+	 * @return array<string,string[]>
+	 */
+	public function extract_multilingual_strings( string $template ): array;
 }

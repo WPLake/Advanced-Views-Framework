@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Acf\Groups\Parents;
 use Exception;
 use Org\Wplake\Advanced_Views\Acf\Groups\Mount_Point_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
-use Org\Wplake\Advanced_Views\Plugin\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -171,69 +170,6 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 		return $this->has_unique_bem_name() ?
 			sprintf( '.%s', $bem_name ) :
 			sprintf( '.%s--id--%s', $bem_name, $markup_id );
-	}
-
-	/**
-	 * @param array<string,string[]> $ml_strings
-	 *
-	 * @return array<string,string[]>
-	 */
-	protected function get_multilingual_strings_from_custom_markup( array $ml_strings ): array {
-		$text_domains = array();
-
-		// extract ml string data from: __("Some data") or __("Some data", "my-theme").
-		preg_match_all(
-			'/__\([ ]*["]([^"]+)["]([, ]+["]([^"]+)["])*[ ]*\)/',
-			$this->custom_markup,
-			$functions_with_double_quotes,
-			PREG_SET_ORDER
-		);
-
-		// extract ml string data from: __('Some data') or __('Some data', 'my-theme').
-		preg_match_all(
-			"/__\([ ]*[']([^']+)[']([, ]+[']([^']+)['])*[ ]*\)/",
-			$this->custom_markup,
-			$functions_with_single_quotes,
-			PREG_SET_ORDER
-		);
-
-		// extract ml string data from: "Some data"|translate or "Some data"|translate("my-theme").
-		preg_match_all(
-			'/["]([^"]+)["]\|translate(\([ ]*["]([^"]+)["][ ]*\))*/',
-			$this->custom_markup,
-			$filters_with_double_quotes,
-			PREG_SET_ORDER
-		);
-
-		// extract ml string data from: 'Some data'|translate or 'Some data'|translate('my-theme').
-		preg_match_all(
-			"/[']([^']+)[']\|translate(\([ ]*[']([^']+)['][ ]*\))*/",
-			$this->custom_markup,
-			$filters_with_single_quotes,
-			PREG_SET_ORDER
-		);
-
-		$functions = array_merge( $functions_with_double_quotes, $functions_with_single_quotes );
-		$filters   = array_merge( $filters_with_double_quotes, $filters_with_single_quotes );
-		$matches   = array_merge( $functions, $filters );
-
-		foreach ( $matches as $match ) {
-			$label       = $match[1];
-			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
-
-			$ml_strings[ $text_domain ]   = $ml_strings[ $text_domain ] ?? array();
-			$ml_strings[ $text_domain ][] = $label;
-
-			$text_domains[] = $text_domain;
-		}
-
-		$text_domains = array_unique( $text_domains );
-
-		foreach ( $text_domains as $text_domain ) {
-			$ml_strings[ $text_domain ] = array_unique( $ml_strings[ $text_domain ] );
-		}
-
-		return $ml_strings;
 	}
 
 	/**

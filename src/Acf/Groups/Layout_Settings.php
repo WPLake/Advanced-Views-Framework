@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
@@ -363,16 +364,9 @@ return new class extends Layout_Controller_Base {
 	 * @return array<string,string[]>
 	 */
 	public function get_multilingual_strings(): array {
-		$ml_strings = $this->get_multilingual_strings_from_fields();
-		$ml_strings = $this->get_multilingual_strings_from_sub_fields( $ml_strings );
+		$strings = $this->get_multilingual_strings_from_fields();
 
-		$custom_markup = trim( $this->custom_markup );
-
-		if ( '' !== $custom_markup ) {
-			$ml_strings = $this->get_multilingual_strings_from_custom_markup( $ml_strings );
-		}
-
-		return $ml_strings;
+		return $this->get_multilingual_strings_from_sub_fields( $strings );
 	}
 
 	/**

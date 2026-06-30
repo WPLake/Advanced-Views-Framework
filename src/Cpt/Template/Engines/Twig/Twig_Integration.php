@@ -8,6 +8,8 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration_Base;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Twig_Integration extends Template_Integration_Base {
 	public function get_provocative_symbols_map(): array {
@@ -56,5 +58,46 @@ class Twig_Integration extends Template_Integration_Base {
 			'random'      => '(from[,max]):mixed',
 			'translate'   => '([domain]):string',
 		);
+	}
+
+	public function extract_multilingual_strings( string $template ): array {
+		$strings = parent::extract_multilingual_strings( $template );
+
+		// extract ml string data from: "Some data"|translate or "Some data"|translate("my-theme").
+		preg_match_all(
+			'/["]([^"]+)["]\|translate(\([ ]*["]([^"]+)["][ ]*\))*/',
+			$template,
+			$filters_with_double_quotes,
+			PREG_SET_ORDER
+		);
+
+		// extract ml string data from: 'Some data'|translate or 'Some data'|translate('my-theme').
+		preg_match_all(
+			"/[']([^']+)[']\|translate(\([ ]*[']([^']+)['][ ]*\))*/",
+			$template,
+			$filters_with_single_quotes,
+			PREG_SET_ORDER
+		);
+
+		$filters = array_merge( $filters_with_double_quotes, $filters_with_single_quotes );
+
+		foreach ( $filters as $match ) {
+			$label       = $match[1];
+			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
+
+			/**
+			 * @var string[] $labels
+			 */
+			$labels   = arr( $strings, $text_domain );
+			$labels[] = $label;
+
+			$strings[ $text_domain ] = $labels;
+		}
+
+		foreach ( $strings as $text_domain => $labels ) {
+			$strings[ $text_domain ] = array_unique( $labels );
+		}
+
+		return $strings;
 	}
 }

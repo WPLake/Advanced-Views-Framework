@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\CreatorInterface;
@@ -514,15 +515,7 @@ return new class extends Selection_Controller_Base {
 	 * @return array<string,string[]>
 	 */
 	public function get_multilingual_strings(): array {
-		$ml_strings = $this->get_multilingual_strings_from_labels();
-
-		$custom_markup = trim( $this->custom_markup );
-
-		if ( '' !== $custom_markup ) {
-			$ml_strings = $this->get_multilingual_strings_from_custom_markup( $ml_strings );
-		}
-
-		return $ml_strings;
+		return $this->get_multilingual_strings_from_labels();
 	}
 
 	public function get_order_by_meta_acf_field_id(): string {
