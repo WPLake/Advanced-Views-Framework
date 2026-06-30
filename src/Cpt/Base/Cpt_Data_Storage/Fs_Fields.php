@@ -79,8 +79,8 @@ class Fs_Fields {
 
 		$strings = array_merge_recursive( $labels, $markup_strings );
 
-		foreach ( $strings as $domain => $labels ) {
-			$strings[ $domain ] = array_unique( $labels );
+		foreach ( $strings as $domain => $domain_labels ) {
+			$strings[ $domain ] = array_unique( $domain_labels );
 		}
 
 		return $strings;
