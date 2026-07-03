@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\ACE_Mods;
 use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration_Base;
-use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Twig_Integration extends Template_Integration_Base {
@@ -40,7 +39,7 @@ class Twig_Integration extends Template_Integration_Base {
 
 		foreach ( $filters as $match ) {
 			$label       = $match[1];
-			$text_domain = $match[3] ?? Plugin::get_theme_text_domain();
+			$text_domain = $match[3] ?? $default_domain;
 
 			/**
 			 * @var string[] $labels

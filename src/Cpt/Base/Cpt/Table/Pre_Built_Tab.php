@@ -69,7 +69,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		/**
 		 * @var Cpt_Settings[] $current_pre_built_items
 		 */
-		$current_pre_built_items = $this->apply_array_pagination(
+		$current_pre_built_items = self::apply_array_pagination(
 			$all_pre_built_items,
 			$this->get_pagination_per_page(),
 			$this->get_cpt_table()->get_current_page_number()

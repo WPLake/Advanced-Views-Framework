@@ -102,7 +102,7 @@ if ( class_exists( 'acf_field_select' ) ) {
 				) :
 				$this->layouts_settings_storage->get_unique_id_with_name_items_list();
 
-			$paginated_items = $this->apply_array_pagination(
+			$paginated_items = self::apply_array_pagination(
 				$filtered_items,
 				$per_page,
 				$current_page
