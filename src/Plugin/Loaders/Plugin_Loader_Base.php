@@ -44,6 +44,7 @@ use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Mount_Points;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Templates_Environment;
@@ -53,7 +54,6 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Cpt\Mount_Points;
 use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
@@ -156,22 +156,21 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 	 */
 	protected function translations( Route_Detector $route_detector, array $paths = array() ): void {
 		// on the whole admin area, as menu items need translations.
-		if ( false === $route_detector->is_admin_route() ) {
+		if ( ! $route_detector->is_admin_route() ) {
 			return;
 		}
 
-		$paths[] = 'lang';
-
 		add_action(
-			'init',
+			'after_setup_theme',
 			function () use ( $paths ): void {
-				foreach ( $paths as  $path ) {
+				// fixme
+					$relative_plugins_path = $this->plugin->get_relative_plugins_path( 'lang' );
+
 					load_plugin_textdomain(
 						'acf-views',
 						false,
-						$this->plugin->get_plugin_path( $path )
+						$relative_plugins_path
 					);
-				}
 			},
 			// make sure it's before acf_groups.
 			8

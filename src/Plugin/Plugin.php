@@ -29,10 +29,10 @@ class Plugin extends Hookable implements Hooks_Interface {
 	const PROLONG_POINT_URL = 'https://wplake.org';
 	const PRODUCT_SLUG      = 'acf-views';
 
-	private string $slug       = 'acf-views/acf-views.php';
-	private string $short_slug = 'acf-views';
+	protected string $slug         = 'acf-views/acf-views.php';
+	protected string $short_slug   = 'acf-views';
+	protected bool $is_pro_version = false;
 	private string $version;
-	private bool $is_pro_version = false;
 	private bool $is_switching_versions;
 	private string $plugin_url;
 	private string $plugin_path;
@@ -258,6 +258,10 @@ class Plugin extends Hookable implements Hooks_Interface {
 
 	public function get_plugin_path( string $inner_path ): string {
 		return $this->plugin_path . $inner_path;
+	}
+
+	public function get_relative_plugins_path( string $inner_path ): string {
+		return $this->short_slug . '/' . $inner_path;
 	}
 
 	public function get_acf_internal_assets_url( string $file ): string {
