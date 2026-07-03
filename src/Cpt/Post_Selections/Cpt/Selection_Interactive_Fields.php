@@ -187,9 +187,9 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			),
 			array(
 				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
-				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => false,
-				// this field mode depends on the instance settings.
+				// null ensures engine is resolved automatically.
 				'mode'          => null,
 				'linkTitle'     => __( 'PHP Controller', 'acf-views' ),
 			),

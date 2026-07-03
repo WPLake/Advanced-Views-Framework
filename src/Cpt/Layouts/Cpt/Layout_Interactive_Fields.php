@@ -191,7 +191,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_PHP_VARIABLES ),
 				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
 				'isReadOnly'    => false,
-				// this field mode depends on the instance settings.
+				// null ensures engine is resolved automatically.
 				'mode'          => null,
 				'linkTitle'     => __( 'PHP Controller', 'acf-views' ),
 			),
