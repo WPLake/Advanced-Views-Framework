@@ -125,6 +125,16 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 	 * @var Plugin_Cpt[]
 	 */
 	protected array $plugin_cpts = array();
+	/**
+	 * @var array<string, string> domain => relative_path
+	 */
+	protected array $lang_relative_paths = array();
+
+	public function __construct() {
+		parent::__construct();
+
+		$this->lang_relative_paths['acf-views'] = 'lang';
+	}
 
 	public function load(): void {
 		$start_timestamp = microtime( true );
@@ -154,7 +164,7 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 	/**
 	 * @param string[] $paths
 	 */
-	protected function translations( Route_Detector $route_detector, array $paths = array() ): void {
+	protected function translations( Route_Detector $route_detector ): void {
 		// on the whole admin area, as menu items need translations.
 		if ( ! $route_detector->is_admin_route() ) {
 			return;
@@ -162,15 +172,19 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 
 		add_action(
 			'after_setup_theme',
-			function () use ( $paths ): void {
-				// fixme
-					$relative_plugins_path = $this->plugin->get_relative_plugins_path( 'lang' );
+			function (): void {
+				foreach ( $this->lang_relative_paths as $domain => $relative_path ) {
+					$path = $this->plugin->get_relative_plugins_path( $relative_path );
+
+					// fixme
+					var_dump( $path );
 
 					load_plugin_textdomain(
-						'acf-views',
+						$domain,
 						false,
-						$relative_plugins_path
+						$path
 					);
+				}
 			},
 			// make sure it's before acf_groups.
 			8

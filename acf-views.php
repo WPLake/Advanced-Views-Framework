@@ -7,7 +7,7 @@
  * Author: WPLake
  * Author URI: https://advanced-views.com/
  * Text Domain: acf-views
- * Domain Path: /src/lang
+ * Domain Path: /lang
  */
 
 namespace Org\Wplake\Advanced_Views;
