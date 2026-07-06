@@ -199,9 +199,11 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.9.0 (2026-) =
+- Enhance: vanilla PHP as a template engine option
 - Enhance: Layout & Selection - disabled automated markup minification (for better compatibility)
 - Enhance: Layout & Selection - faster saving on ACF 6.8.1+
-- Enhance: vanilla PHP as a template engine option
+- Enhance: Starter Layout/Selection for new installations
+- Fix: Layout/Selection editor working without an active ACF plugin
 - Feature adoption: Pro Twig functions and filters
 
 = 3.8.11 (2026-06-23) =

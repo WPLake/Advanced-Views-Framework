@@ -268,6 +268,14 @@ class Plugin extends Hookable implements Hooks_Interface {
 		return $this->plugin_url . 'vendor/standalone/acf-internal-features/assets/' . $file;
 	}
 
+	public function get_standalone_vendor_dir( string $sub_path ): string {
+		return $this->plugin_path . 'vendor/standalone/' . $sub_path;
+	}
+
+	public function get_standalone_vendor_url( string $sub_path ): string {
+		return $this->plugin_url . 'vendor/standalone/' . $sub_path;
+	}
+
 	public function is_acf_plugin_available( bool $is_pro_only = false ): bool {
 		// don't use 'is_plugin_active()' as the function available lately.
 		return static::is_acf_pro_plugin_available() ||

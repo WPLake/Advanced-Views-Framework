@@ -26,10 +26,15 @@ class Acf_Dependency extends Hookable implements Hooks_Interface {
 			return;
 		}
 
+		$acf_file       = $this->plugin->get_standalone_vendor_dir( 'advanced-custom-fields/acf.php' );
+		$acf_plugin_url = $this->plugin->get_standalone_vendor_url( 'advanced-custom-fields/' );
+
 		// Hide ACF admin menu (as we loaded ACF only for our plugin).
 		self::add_filter( 'acf/settings/show_admin', '__return_false' );
+		// ensure right url, otherwise internal ACF asset paths are incorrect.
+		self::add_filter( 'acf/settings/url', fn() => $acf_plugin_url );
 
-		require_once __DIR__ . '/../../vendor/advanced-custom-fields/acf.php';
+		require_once $acf_file;
 
 		// used in the AcfDataVendor to skip loading if it's inner ACF.
 		define( 'ACF_VIEWS_INNER_ACF', true );

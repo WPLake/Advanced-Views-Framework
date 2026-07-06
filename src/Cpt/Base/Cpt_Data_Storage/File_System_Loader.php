@@ -7,8 +7,10 @@ namespace Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
-final class File_System_Loader extends Hookable {
+final class File_System_Loader extends Hookable implements Hooks_Interface {
 	private static ?self $instance = null;
 
 	/**
@@ -37,7 +39,7 @@ final class File_System_Loader extends Hookable {
 		return self::$instance;
 	}
 
-	public function set_hooks(): void {
+	public function set_hooks( Route_Detector $route_detector ): void {
 		// theme is loaded since this hook.
 		self::add_action(
 			'after_setup_theme',

@@ -143,6 +143,7 @@ function acf_get_url( $filename = '' ) {
 	if ( ! defined( 'ACF_URL' ) ) {
 		define( 'ACF_URL', acf_get_setting( 'url' ) );
 	}
+
 	return ACF_URL . ltrim( $filename, '/' );
 }
 

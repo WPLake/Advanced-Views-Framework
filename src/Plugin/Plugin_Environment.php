@@ -109,6 +109,7 @@ final class Plugin_Environment implements Hooks_Interface {
 	}
 
 	protected function prepare_first_installation(): void {
+		// item is in the 'pre_built' folder.
 		$this->selections_pre_built_tab->import_cpt_data_with_all_related_items( 'card_6a479135a1a81' );
 	}
 

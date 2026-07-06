@@ -42,9 +42,6 @@ class File_System extends Action implements Hooks_Interface {
 		$this->wp_filesystem_base   = null;
 	}
 
-	public static function add() {
-	}
-
 	protected function read_item_folders(): void {
 		$this->is_read_item_folders = true;
 		$this->item_folders         = array();
