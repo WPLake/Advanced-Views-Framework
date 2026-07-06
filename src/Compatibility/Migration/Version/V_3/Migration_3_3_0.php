@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\Base\Version_Migration_Base;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
@@ -33,16 +34,15 @@ final class Migration_3_3_0 extends Version_Migration_Base {
 	}
 
 	public function migrate_previous_version(): void {
-		$this->layouts_settings_storage->add_on_loaded_callback(
-			array( $this, 'move_all_is_without_web_component_to_select' )
-		);
+		File_System_Loader::instance()
+			->add_loaded_callback( fn() => $this->move_all_is_without_web_component_to_select() );
 	}
 
 	public function migrate_previous_cpt_settings( Cpt_Settings $cpt_settings ): void {
 		$this->move_is_without_web_component_to_select( $cpt_settings );
 	}
 
-	public function move_all_is_without_web_component_to_select(): void {
+	protected function move_all_is_without_web_component_to_select(): void {
 		$unique_ids = array();
 
 		foreach ( $this->layouts_settings_storage->get_all() as $view_data ) {

@@ -24,7 +24,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	const KEY_BATCH_ACTION  = self::KEY_PREFIX . 'items';
 	const KEY_SINGLE_ACTION = self::KEY_PREFIX . 'id';
 
-	private Cpt_Settings_Storage $cpt_settings_storage;
+	private Cpt_Settings_Storage $external_cpt_settings_storage;
 	/**
 	 * Used to avoid potential recursion (if user made the recursion setup)
 	 *
@@ -42,8 +42,8 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	) {
 		parent::__construct( $cpt_table, $cpt_data_storage, $data_vendors, $version_migrator, $logger );
 
-		$this->cpt_settings_storage = $external_cpt_data_storage;
-		$this->pulling_unique_ids        = array();
+		$this->external_cpt_settings_storage = $external_cpt_data_storage;
+		$this->pulling_unique_ids            = array();
 	}
 
 	abstract protected function import_related_cpt_data_items( string $unique_id ): ?Import_Result;
@@ -51,7 +51,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 	abstract protected function print_tab_description_middle(): void;
 
 	protected function get_tab(): ?Tab_Data {
-		$all_pre_built_items = $this->cpt_settings_storage->get_all();
+		$all_pre_built_items = $this->external_cpt_settings_storage->get_all();
 
 		$items_count = count( $all_pre_built_items );
 
@@ -108,7 +108,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 		return $tab_data;
 	}
 
-	protected function import_cpt_data_with_all_related_items(
+	public function import_cpt_data_with_all_related_items(
 		string $unique_id
 	): ?Import_Result {
 		// avoid recursion (only if the user made the recursion setup).
@@ -116,16 +116,16 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			return null;
 		}
 
-		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
+		$cpt_data = $this->external_cpt_settings_storage->get( $unique_id );
 
-		if ( false === $cpt_data->isLoaded() ) {
+		if ( ! $cpt_data->isLoaded() ) {
 			$this->get_logger()->warning( 'Pre-built item not found', array( 'unique_id' => $unique_id ) );
 
 			return null;
 		}
 
-		$field_values = $this->cpt_settings_storage->get_fs_fields()
-														->get_fs_field_values(
+		$field_values = $this->external_cpt_settings_storage->get_fs_fields()
+		                                                    ->get_fs_field_values(
 															$cpt_data,
 															false,
 															true
@@ -138,7 +138,7 @@ abstract class Pre_Built_Tab extends External_Storage_Tab {
 			$meta_group_files[] = $meta_vendor_name . '.json';
 		}
 
-		$file_system             = $this->cpt_settings_storage->get_file_system();
+		$file_system             = $this->external_cpt_settings_storage->get_file_system();
 		$vendor_meta_groups_data = $file_system->read_fields_from_fs(
 			$short_unique_id,
 			$meta_group_files

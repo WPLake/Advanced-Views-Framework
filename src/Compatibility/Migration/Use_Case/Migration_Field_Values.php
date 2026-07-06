@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration_Base;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 
 final class Migration_Field_Values extends Migration_Base {
@@ -33,7 +34,8 @@ final class Migration_Field_Values extends Migration_Base {
 	}
 
 	public function migrate(): void {
-		$this->cpt_settings_storage->add_on_loaded_callback( fn() => $this->migrate_field_values() );
+		File_System_Loader::instance()
+			->add_loaded_callback( fn() => $this->migrate_field_values() );
 	}
 
 	protected function migrate_field_values(): void {

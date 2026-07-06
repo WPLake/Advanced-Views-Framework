@@ -308,6 +308,7 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->automatic_reports,
 			$this->settings,
 			$this->plugin,
+			$this->selections_loader->pre_built_tab,
 			$this->file_systems,
 			array( $this->layouts_settings_storage, $this->post_selections_settings_storage )
 		);

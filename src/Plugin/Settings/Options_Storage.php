@@ -13,6 +13,7 @@ class Options_Storage {
 	const TRANSIENT_DEACTIVATED_OTHER_INSTANCES = self::PREFIX . 'deactivated_other_instances';
 	const TRANSIENT_LICENSE_EXPIRATION_DISMISS  = self::PREFIX . 'license_expiration_dismiss';
 	const TRANSIENT_UPGRADE_NOTICE              = self::PREFIX . 'upgrade_notice';
+	const TRANSIENT_FIRST_INSTALLATION          = self::PREFIX . 'first_installation';
 
 	/**
 	 * @return mixed

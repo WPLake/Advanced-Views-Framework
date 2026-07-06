@@ -23,8 +23,8 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 
 	public function __construct(
 		Cpt_Table $cpt_table,
-		Selection_Settings_Storage $cards_data_storage,
-		Selection_Settings_Storage $external_cards_data_storage,
+		Selection_Settings_Storage $settings_storage,
+		Selection_Settings_Storage $external_settings_storage,
 		Data_Vendors $data_vendors,
 		Version_Migrator $version_migrator,
 		Logger $logger,
@@ -32,14 +32,14 @@ class Post_Selections_Pre_Built_Tab extends Pre_Built_Tab {
 	) {
 		parent::__construct(
 			$cpt_table,
-			$cards_data_storage,
-			$external_cards_data_storage,
+			$settings_storage,
+			$external_settings_storage,
 			$data_vendors,
 			$version_migrator,
 			$logger
 		);
 
-		$this->post_selections_settings_storage  = $cards_data_storage;
+		$this->post_selections_settings_storage  = $settings_storage;
 		$this->layouts_pre_built_tab = $layouts_pre_built_tab;
 	}
 

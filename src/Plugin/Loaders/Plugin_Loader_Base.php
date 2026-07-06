@@ -41,6 +41,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_9;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Git_Api\Git_Lab_Api;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
@@ -161,9 +162,6 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 		$this->environment();
 	}
 
-	/**
-	 * @param string[] $paths
-	 */
 	protected function translations( Route_Detector $route_detector ): void {
 		// on the whole admin area, as menu items need translations.
 		if ( ! $route_detector->is_admin_route() ) {
@@ -202,6 +200,7 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 				$this->live_reloader_component,
 				$this->version_migrator,
 				$this->upgrade_notice,
+				File_System_Loader::instance(),
 			)
 		);
 

@@ -100,9 +100,7 @@ final class Version_Migrator extends Hookable implements Hooks_Interface {
 
 	public function set_hooks( Route_Detector $route_detector ): void {
 		// avoid requests with incomplete hooks cycle.
-		if ( wp_doing_ajax() ||
-			wp_doing_cron() ||
-			wp_is_maintenance_mode() ) {
+		if ( ! $route_detector->is_complete_cycle_request() ) {
 			return;
 		}
 

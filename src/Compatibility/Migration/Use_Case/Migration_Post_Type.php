@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Base\Migration_Base;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Utils\WP_Filesystem_Factory;
@@ -33,7 +34,8 @@ final class Migration_Post_Type extends Migration_Base {
 	public function migrate(): void {
 		$this->replace_type_in_posts_table();
 
-		$this->cpt_settings_storage->add_on_loaded_callback( array( $this, 'replace_type_in_file_system' ) );
+		File_System_Loader::instance()
+			->add_loaded_callback( fn() => $this->replace_type_in_file_system() );
 	}
 
 	public function replace_type_in_file_system(): void {

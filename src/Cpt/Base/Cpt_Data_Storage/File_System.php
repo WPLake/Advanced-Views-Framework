@@ -32,12 +32,6 @@ class File_System extends Action implements Hooks_Interface {
 	private string $items_folder_name;
 	private ?WP_Filesystem_Base $wp_filesystem_base;
 
-	/**
-	 * @var array<callable(): void>
-	 */
-	private array $on_loaded_callbacks;
-	private bool $is_loaded;
-
 	public function __construct( Logger $logger, string $items_folder_name, string $external_base_folder = '' ) {
 		parent::__construct( $logger );
 
@@ -46,8 +40,9 @@ class File_System extends Action implements Hooks_Interface {
 		$this->base_folder          = $external_base_folder;
 		$this->is_read_item_folders = false;
 		$this->wp_filesystem_base   = null;
-		$this->on_loaded_callbacks  = array();
-		$this->is_loaded            = false;
+	}
+
+	public static function add() {
 	}
 
 	protected function read_item_folders(): void {
@@ -400,33 +395,9 @@ class File_System extends Action implements Hooks_Interface {
 
 	public function set_hooks( Route_Detector $route_detector ): void {
 		// set only if it isn't an external folder.
-		if ( '' === $this->base_folder ) {
-			// theme is loaded since this hook.
-			self::add_action(
-				'after_setup_theme',
-				function () use ( $route_detector ): void {
-					$this->set_base_folder( $route_detector );
-
-					$this->is_loaded = true;
-
-					foreach ( $this->on_loaded_callbacks as $callback ) {
-						$callback();
-					}
-
-					$this->on_loaded_callbacks = array();
-				}
-			);
-		}
-	}
-
-	/**
-	 * @param callable(): void $callback
-	 */
-	public function add_on_loaded_callback( callable $callback ): void {
-		if ( $this->is_loaded ) {
-			$callback();
-		} else {
-			$this->on_loaded_callbacks[] = $callback;
+		if ( 0 === strlen( $this->base_folder ) ) {
+			File_System_Loader::instance()
+								->add_onload_callback( fn() => $this->set_base_folder( $route_detector ) );
 		}
 	}
 }

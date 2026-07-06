@@ -11,6 +11,7 @@ use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Repeater_Field_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Acf\Acf_Data_Vendor;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Data_Vendor_Integration_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Data_Vendor_Interface;
@@ -380,41 +381,42 @@ class Data_Vendors extends Action implements Hooks_Interface {
 		Plugin_Cpt $plugin_cpt
 	): void {
 		// 1. must on or later 'plugins_load', when meta plugins are loaded
-		// 2. must be on or later 'after_setup_theme', when FS only Views and Cards are available
-		$layouts_settings_storage->add_on_loaded_callback(
-			function () use (
-				$route_detector,
-				$item_settings,
-				$layouts_settings_storage,
-				$layouts_cpt_save_actions,
-				$layout_factory,
-				$repeater_field_settings,
-				$layout_shortcode,
-				$settings,
-				$plugin_cpt
-			): void {
-				foreach ( $this->data_vendors as $vendor ) {
-					$integration_instance = $vendor->make_integration_instance(
-						$item_settings,
-						$layouts_settings_storage,
-						$this,
-						$layouts_cpt_save_actions,
-						$layout_factory,
-						$repeater_field_settings,
-						$layout_shortcode,
-						$settings,
-						$plugin_cpt
-					);
+		// 2. must be on or later 'after_setup_theme', when FS only Layouts and Post Selections are available
+		File_System_Loader::instance()
+							->add_loaded_callback(
+								function () use (
+									$route_detector,
+									$item_settings,
+									$layouts_settings_storage,
+									$layouts_cpt_save_actions,
+									$layout_factory,
+									$repeater_field_settings,
+									$layout_shortcode,
+									$settings,
+									$plugin_cpt
+								): void {
+									foreach ( $this->data_vendors as $vendor ) {
+										$integration_instance = $vendor->make_integration_instance(
+											$item_settings,
+											$layouts_settings_storage,
+											$this,
+											$layouts_cpt_save_actions,
+											$layout_factory,
+											$repeater_field_settings,
+											$layout_shortcode,
+											$settings,
+											$plugin_cpt
+										);
 
-					// integration instance is optional (e.g. Woo and WP don't have).
-					if ( null === $integration_instance ) {
-						continue;
-					}
+										// integration instance is optional (e.g. Woo and WP don't have).
+										if ( null === $integration_instance ) {
+											continue;
+										}
 
-					$this->load_integration_instance( $route_detector, $integration_instance, $layouts_settings_storage );
-				}
-			}
-		);
+										$this->load_integration_instance( $route_detector, $integration_instance, $layouts_settings_storage );
+									}
+								}
+							);
 	}
 
 	/**

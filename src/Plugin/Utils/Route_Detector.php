@@ -50,6 +50,12 @@ final class Route_Detector {
 		return $this->cache['isAdmin'];
 	}
 
+	public function is_complete_cycle_request(): bool {
+		return ! wp_doing_ajax() &&
+				! wp_doing_cron() &&
+				! wp_is_maintenance_mode();
+	}
+
 	// includes cptRelated rest requests.
 	public function is_cpt_admin_route(
 		string $cpt_name,
