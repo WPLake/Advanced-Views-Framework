@@ -1,0 +1,13 @@
+<avf-selection-6a479135a1a81 class="{{ _selection.classes }}avf-selection avf-selection--id--{{ _selection.id }}">
+
+	{% if _selection.post_ids %}
+		<div class="avf-selection__items">
+			{% for post_id in _selection.post_ids %}
+				[avf-layout id="{{ _selection.layout_id }}" object-id="{{ post_id }}"]
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="avf-selection__no-posts-message">{{ _selection.no_posts_found_message }}</div>
+	{% endif %}
+
+</avf-selection-6a479135a1a81>

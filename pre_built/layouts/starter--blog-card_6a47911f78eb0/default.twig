@@ -1,0 +1,35 @@
+<avf-layout-6a47911f78eb0 class="{{ _layout.classes }}avf-layout avf-layout--id--{{ _layout.id }} avf-layout--object-id--{{ _layout.object_id }}">
+
+	{% if post_featured_image_link.value %}
+		<a target="{{ post_featured_image_link.target }}" class="avf-layout__post-featured-image-link" href="{{ post_featured_image_link.href }}">
+			<img class="avf-layout__post-featured-image-link-image" src="{{ post_featured_image_link.value }}" width="{{ post_featured_image_link.width }}" height="{{ post_featured_image_link.height }}" alt="{{ post_featured_image_link.alt }}" decoding="{{ post_featured_image_link.decoding }}" loading="{{ post_featured_image_link.loading }}" srcset="{{ post_featured_image_link.srcset }}" sizes="{{ post_featured_image_link.sizes }}">
+		</a>
+	{% endif %}
+
+
+	{% if post_title_link.value %}
+		<a target="{{ post_title_link.target }}" class="avf-layout__post-title-link" href="{{ post_title_link.value }}">
+			{{ post_title_link.linkLabel|default(post_title_link.title) }}
+		</a>
+	{% endif %}
+
+
+	{% if post_excerpt.value %}
+		<div class="avf-layout__post-excerpt">
+			{{ post_excerpt.value }}
+		</div>
+	{% endif %}
+
+
+	{% if post_date.value %}
+		<div class="avf-layout__post-date">
+			<p class="avf-layout__post-date-label">
+				{{ post_date.label }}
+			</p>
+			<p class="avf-layout__post-date-field">
+				{{ post_date.value }}
+			</p>
+		</div>
+	{% endif %}
+
+</avf-layout-6a47911f78eb0>

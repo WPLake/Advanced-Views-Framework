@@ -1,0 +1,15 @@
+#layout {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #cecece;
+}
+
+#layout__post-title-link {
+    padding: 20px 0px;
+}
+
+#layout__post-date {
+    display: flex;
+    gap: 20px;
+}

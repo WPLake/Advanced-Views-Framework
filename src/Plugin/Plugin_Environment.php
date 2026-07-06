@@ -49,6 +49,8 @@ final class Plugin_Environment {
 	public function prepare_environment(): void {
 		$this->set_initial_plugin_version();
 		$this->template_engines->create_templates_dir();
+		// fixme
+
 		$this->automated_reports->plugin_activated();
 	}
 
