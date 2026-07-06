@@ -176,9 +176,6 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 				foreach ( $this->lang_relative_paths as $domain => $relative_path ) {
 					$path = $this->plugin->get_relative_plugins_path( $relative_path );
 
-					// fixme
-					var_dump( $path );
-
 					load_plugin_textdomain(
 						$domain,
 						false,
