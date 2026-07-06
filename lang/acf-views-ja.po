@@ -16,7 +16,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: acf-views.php
 #: src/Plugin/Plugin.php:232
-#: src/Plugin/Plugin.php:368
+#: src/Plugin/Plugin.php:372
 msgid "Advanced Views Lite"
 msgstr "アドバンスド ビューズ ライト"
 
@@ -601,7 +601,7 @@ msgstr "CSSクラス"
 msgid "CSS & JS"
 msgstr "CSS & JS"
 
-#: src/Plugin/Loaders/Plugin_Loader_Base.php:391
+#: src/Plugin/Loaders/Plugin_Loader_Base.php:393
 msgid "Layout"
 msgstr "レイアウト"
 
@@ -1593,11 +1593,11 @@ msgstr "互換性の問題が検出されました！\"Advanced Views\"プラグ
 msgid "Please change the \"opcache.save_comments\" option in your php.ini file to the default value of \"1\" on your hosting."
 msgstr "ホスティングでのデフォルト値\"1\"に設定するために、php.iniファイルの\"opcache.save_comments\"オプションを変更してください。"
 
-#: src/Plugin/Plugin.php:363
+#: src/Plugin/Plugin.php:367
 msgid "'Advanced Views Lite' and 'Advanced Views Pro' should not be active at the same time. We've automatically deactivated"
 msgstr "'Advanced Views Lite'と'Advanced Views Pro'は同時にアクティブにすべきではありません。自動的に無効化しました"
 
-#: src/Plugin/Plugin.php:369
+#: src/Plugin/Plugin.php:373
 msgid "Advanced Views Pro"
 msgstr "Advanced Views Pro"
 
@@ -2382,7 +2382,7 @@ msgid_plural "Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Plugin/Loaders/Plugin_Loader_Base.php:395
+#: src/Plugin/Loaders/Plugin_Loader_Base.php:397
 msgid "Layouts"
 msgstr ""
 

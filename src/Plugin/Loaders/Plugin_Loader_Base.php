@@ -365,6 +365,8 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 			$this->plugin->get_slug(),
 			array( $this->plugin_environment, 'clean_environment' )
 		);
+
+		$this->add_hookable( array( $this->plugin_environment ) );
 	}
 
 	/**

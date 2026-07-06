@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Tokens\Variable\Assignment
 
 final class PHP_Assignment extends Assignment_Token {
 	public function print(): void {
-		echo '<?';
+		echo '<? ';
 
 		if ( $this->variable instanceof Template_Token ) {
 			$this->variable->print();

@@ -167,7 +167,7 @@ class Db_Management extends Action {
 			$this->post_ids[ $unique_id ] = $post_id;
 		}
 
-		$this->get_logger()->warning(
+		$this->get_logger()->info(
 			'created a new post',
 			array(
 				'args' => $args,
