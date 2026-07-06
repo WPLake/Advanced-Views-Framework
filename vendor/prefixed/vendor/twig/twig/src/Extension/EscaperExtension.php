@@ -41,7 +41,7 @@ final class EscaperExtension extends AbstractExtension
     }
     public function getFilters() : array
     {
-        return [new TwigFilter('escape', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter', ['needs_environment' => \true, 'is_safe_callback' => 'twig_escape_filter_is_safe']), new TwigFilter('e', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter', ['needs_environment' => \true, 'is_safe_callback' => 'twig_escape_filter_is_safe']), new TwigFilter('raw', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_raw_filter', ['is_safe' => ['all']])];
+        return [new TwigFilter('escape', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter', ['needs_environment' => \true, 'is_safe_callback' => '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter_is_safe']), new TwigFilter('e', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter', ['needs_environment' => \true, 'is_safe_callback' => '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_escape_filter_is_safe']), new TwigFilter('raw', '\\Org\\Wplake\\Advanced_Views\\Vendors\\twig_raw_filter', ['is_safe' => ['all']])];
     }
     /**
      * Sets the default strategy to use when not defined by the user.

@@ -204,6 +204,7 @@ You're welcome to open issues or PRs there.
 - Enhance: Layout & Selection - faster saving on ACF 6.8.1+
 - Enhance: Starter Layout/Selection for new installations
 - Fix: Layout/Selection editor working without an active ACF plugin
+- Fix: Twig - escape filter support: |e("html_attr")
 - Feature adoption: Pro Twig functions and filters
 
 = 3.8.11 (2026-06-23) =
