@@ -34,7 +34,7 @@ class Post_Selections_Cpt extends Cpt {
 		$description = sprintf(
 		// translators: %s - singular name of the CPT.
 			__(
-				'Add a %s to display a set of posts or import a ready-made component.',
+				'Add a <a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/how-advanced-views-works#post-selections">%s</a> to display a set of posts or import a ready-made component.',
 				'acf-views'
 			),
 			$singular_name
@@ -43,7 +43,7 @@ class Post_Selections_Cpt extends Cpt {
 		$description .=
 			// translators: %s - singular name of the CPT.
 			__(
-				'<a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches">Attach it</a> where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode">via shortcode</a>).',
+				'Attach it where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode">via shortcode</a>).',
 				'acf-views'
 			) . '<br/>'
 						. __( 'The assigned Layout determines which fields are displayed.', 'acf-views' );
