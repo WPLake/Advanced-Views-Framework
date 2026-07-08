@@ -55,7 +55,8 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\State_Report;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\Usage_Report;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
@@ -107,7 +108,8 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 	public Admin_Pages $dashboard;
 	public Demo_Importer $demo_import;
 	public Acf_Internal_Features $acf_internal_features;
-	public Automated_Reports $automatic_reports;
+	public Usage_Report $usage_report;
+	public State_Report $state_report;
 	public Tools_Page $tools;
 	public Admin_Assets $admin_assets;
 	public Settings_Page $settings_page;
@@ -275,7 +277,8 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 				$this->demo_import,
 				$this->acf_internal_features,
 				// only after late dependencies were set.
-				$this->automatic_reports,
+				$this->usage_report,
+				$this->state_report,
 				$this->tools,
 				$this->admin_assets,
 				$this->settings_page,

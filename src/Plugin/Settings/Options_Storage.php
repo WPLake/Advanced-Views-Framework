@@ -52,4 +52,27 @@ class Options_Storage {
 	public function delete_option( string $name ): void {
 		delete_option( $name );
 	}
+
+	public static function delete_all_options(): void {
+		global $wpdb;
+
+		$delete_query = $wpdb->prepare(
+			"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+			sprintf( '%s%%', $wpdb->esc_like( self::PREFIX ) )
+		);
+
+		$wpdb->query( $delete_query );
+	}
+
+	public static function delete_all_transients(): void {
+		global $wpdb;
+
+		$delete_query = $wpdb->prepare(
+			"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+			// _transient_ or transient_timout_ prefixes are expected.
+			sprintf( '%%_%s%%', $wpdb->esc_like( self::PREFIX ) )
+		);
+
+		$wpdb->query( $delete_query );
+	}
 }

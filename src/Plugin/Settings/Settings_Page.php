@@ -11,7 +11,7 @@ use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Group;
 use Org\Wplake\Advanced_Views\Acf\Groups\Plugin_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\State_Report;
 use Org\Wplake\Advanced_Views\Plugin\Base\Action;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
@@ -34,7 +34,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 	private Selection_Settings_Storage $post_selections_settings_storage;
 	private string $saved_message;
 	private Git_Repository $git_repository;
-	private Automated_Reports $automated_reports;
+	private State_Report $state_report;
 
 	public function __construct(
 		Logger $logger,
@@ -43,7 +43,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		Layout_Settings_Storage $layouts_settings_storage,
 		Selection_Settings_Storage $post_selections_settings_storage,
 		Git_Repository $git_repository,
-		Automated_Reports $automated_reports
+		State_Report $state_report
 	) {
 		parent::__construct( $logger );
 
@@ -54,7 +54,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->post_selections_settings_storage = $post_selections_settings_storage;
 		$this->saved_message                    = '';
 		$this->git_repository                   = $git_repository->getDeepClone();
-		$this->automated_reports                = $automated_reports;
+		$this->state_report                     = $state_report;
 	}
 
 	/**
@@ -298,7 +298,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 		// send only after the setting is updated.
 		if ( $is_do_not_track_request_needed ) {
-			$this->automated_reports->send_do_not_track_request();
+			$this->state_report->send_do_not_track_request();
 		}
 
 		if ( $this->settings->is_file_system_storage &&

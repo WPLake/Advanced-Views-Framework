@@ -46,7 +46,8 @@ use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Debug_Dump_Creator;
 use Org\Wplake\Advanced_Views\Dashboard\Tools\Demo_Importer;
 use Org\Wplake\Advanced_Views\Dashboard\Tools_Page;
-use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\State_Report;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\Usage_Report;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Plugin_Loader_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
@@ -253,21 +254,22 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->cache_flusher
 		);
 
-		$this->automatic_reports = new Automated_Reports(
+		$this->state_report  = new State_Report( $this->logger, $this->plugin, $this->settings );
+		$this->usage_report  = new Usage_Report(
 			$this->logger,
 			$this->plugin,
 			$this->settings,
-			$this->options,
-			$this->layouts_settings_storage
+			$this->layouts_settings_storage,
+			$this->state_report
 		);
-		$this->settings_page     = new Settings_Page(
+		$this->settings_page = new Settings_Page(
 			$this->logger,
 			new Plugin_Settings( $this->group_creator ),
 			$this->settings,
 			$this->layouts_settings_storage,
 			$this->post_selections_settings_storage,
 			$this->group_creator->create( Git_Repository::class ),
-			$this->automatic_reports
+			$this->state_report
 		);
 
 		$this->admin_assets = new Admin_Assets(
@@ -305,7 +307,8 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 	protected function environment(): void {
 		$this->plugin_environment = new Plugin_Environment(
 			$this->templates_environment,
-			$this->automatic_reports,
+			$this->state_report,
+			$this->usage_report,
 			$this->settings,
 			$this->plugin,
 			$this->selections_loader->pre_built_tab,

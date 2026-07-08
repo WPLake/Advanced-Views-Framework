@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Acf\Groups\Tools_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
-use Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\Usage_Report;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
@@ -34,7 +34,7 @@ final class Debug_Dump_Creator {
 			'error_logs'  => $this->logger->get_error_logs(),
 			'logs'        => $this->logger->get_logs(),
 			'cpt_data'    => $this->get_cpt_dump_data(),
-			'environment' => Automated_Reports::get_environment_data(),
+			'environment' => Usage_Report::get_environment_data(),
 		);
 
 		$redirect_url = add_query_arg(

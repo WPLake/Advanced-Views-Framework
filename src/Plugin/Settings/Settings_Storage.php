@@ -269,12 +269,6 @@ class Settings_Storage implements Cpt_Theme_Settings {
 		$this->live_reload_inactive_delay_seconds = $live_reload_inactive_delay_seconds;
 	}
 
-	public function delete_data(): void {
-		$this->options->delete_option( Options_Storage::OPTION_SETTINGS );
-		$this->options::delete_transient( Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES );
-		$this->options::delete_transient( Options_Storage::TRANSIENT_LICENSE_EXPIRATION_DISMISS );
-	}
-
 	protected function load(): void {
 		$option_settings = $this->options->get_option( Options_Storage::OPTION_SETTINGS );
 		$this->settings  = arr( $option_settings );

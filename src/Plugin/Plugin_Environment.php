@@ -11,16 +11,19 @@ use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Template\Templates_Environment;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\State_Report;
+use Org\Wplake\Advanced_Views\Plugin\Automated_Reports\Usage_Report;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
 final class Plugin_Environment implements Hooks_Interface {
-	protected const FIRST_INSTALLATION_VALUE = '1';
+	protected const TRUE_TRANSIENT_VALUE = '1';
 
 	private Templates_Environment $template_engines;
-	private Automated_Reports $automated_reports;
+	private State_Report $state_report;
+	private Usage_Report $usage_report;
 	private Settings_Storage $settings;
 	private Plugin $plugin;
 	private Post_Selections_Pre_Built_Tab $selections_pre_built_tab;
@@ -39,7 +42,8 @@ final class Plugin_Environment implements Hooks_Interface {
 	 */
 	public function __construct(
 		Templates_Environment $template_engines,
-		Automated_Reports $automated_reports,
+		State_Report $state_report,
+		Usage_Report $usage_report,
 		Settings_Storage $settings,
 		Plugin $plugin,
 		Post_Selections_Pre_Built_Tab $selections_pre_built_tab,
@@ -47,7 +51,8 @@ final class Plugin_Environment implements Hooks_Interface {
 		array $storages
 	) {
 		$this->template_engines         = $template_engines;
-		$this->automated_reports        = $automated_reports;
+		$this->state_report             = $state_report;
+		$this->usage_report             = $usage_report;
 		$this->settings                 = $settings;
 		$this->plugin                   = $plugin;
 		$this->selections_pre_built_tab = $selections_pre_built_tab;
@@ -59,18 +64,7 @@ final class Plugin_Environment implements Hooks_Interface {
 	public function set_hooks( Route_Detector $route_detector ): void {
 		if ( $route_detector->is_admin_route() &&
 			$route_detector->is_complete_cycle_request() ) {
-			$first_installation = Options_Storage::get_transient( Options_Storage::TRANSIENT_FIRST_INSTALLATION );
-
-			if ( self::FIRST_INSTALLATION_VALUE === $first_installation ) {
-				File_System_Loader::instance()
-					->add_loaded_callback(
-						function () {
-							$this->prepare_first_installation();
-
-							Options_Storage::delete_transient( Options_Storage::TRANSIENT_FIRST_INSTALLATION );
-						}
-					);
-			}
+			$this->process_transient_jobs();
 		}
 	}
 
@@ -78,21 +72,24 @@ final class Plugin_Environment implements Hooks_Interface {
 		$is_initial_setup = $this->set_initial_plugin_version();
 		$this->template_engines->create_templates_dir();
 
+		$this->state_report->plugin_activated();
+
 		if ( $is_initial_setup ) {
 			// we cannot listen to any hooks right here,
-			// so have to setup a transient - https://developer.wordpress.org/reference/functions/register_activation_hook/.
+			// so have to setup transients - https://developer.wordpress.org/reference/functions/register_activation_hook/.
 			Options_Storage::set_transient(
 				Options_Storage::TRANSIENT_FIRST_INSTALLATION,
-				self::FIRST_INSTALLATION_VALUE,
-				DAY_IN_SECONDS
+				self::TRUE_TRANSIENT_VALUE,
+				WEEK_IN_SECONDS
 			);
 		}
-
-		$this->automated_reports->plugin_activated();
 	}
 
 	public function clean_environment(): void {
-		$this->automated_reports->plugin_deactivated();
+		$this->state_report->plugin_deactivated();
+		// un_schedule in any case, as could be scheduled before disabling the automatic reports.
+		$this->usage_report->unschedule();
+
 		$this->template_engines->remove_templates_dir();
 
 		// do not check for a security token, as the deactivation plugin link contains it,
@@ -106,6 +103,34 @@ final class Plugin_Environment implements Hooks_Interface {
 		if ( $is_delete_data ) {
 			$this->delete_data();
 		}
+	}
+
+	protected function process_transient_jobs(): void {
+		$transient_jobs = $this->get_transient_jobs();
+
+		foreach ( $transient_jobs as $transient_name => $job ) {
+			if ( self::TRUE_TRANSIENT_VALUE === Options_Storage::get_transient( $transient_name ) ) {
+				$job();
+			}
+		}
+	}
+
+	/**
+	 * @return array<string, callable():void>
+	 */
+	protected function get_transient_jobs(): array {
+		return array(
+			Options_Storage::TRANSIENT_FIRST_INSTALLATION => function () {
+				File_System_Loader::instance()
+									->add_loaded_callback(
+										function () {
+											$this->prepare_first_installation();
+
+											Options_Storage::delete_transient( Options_Storage::TRANSIENT_FIRST_INSTALLATION );
+										}
+									);
+			},
+		);
 	}
 
 	protected function prepare_first_installation(): void {
@@ -147,6 +172,7 @@ final class Plugin_Environment implements Hooks_Interface {
 			}
 		}
 
-		$this->settings->delete_data();
+		Options_Storage::delete_all_options();
+		Options_Storage::delete_all_transients();
 	}
 }
