@@ -6,8 +6,8 @@ namespace Org\Wplake\Advanced_Views\Plugin\Automated_Reports;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
@@ -18,6 +18,7 @@ use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Query;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 /**
  * Automated reports send data about plugin errors and usage. It allows to fix issues faster and improve the plugin.
@@ -30,22 +31,25 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 	const DELAY_MAX_HRS      = 48;
 	const USAGE_ENDPOINT_URL = 'https://wplake.org/wp-json/wplake/v1/plugin_usage';
 
-	private Layout_Settings_Storage $layouts_settings_storage;
 	private State_Report $state_report;
+	/**
+	 * @var Cpt_Settings_Storage[]
+	 */
+	private array $cpt_settings_storages;
 
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,
 		Settings_Storage $settings,
-		Layout_Settings_Storage $layouts_settings_storage,
-		State_Report $state_report
+		State_Report $state_report,
+		array $cpt_settings_storages
 	) {
 		parent::__construct( $logger, $plugin, $settings );
 
-		$this->plugin                   = $plugin;
-		$this->settings                 = $settings;
-		$this->layouts_settings_storage = $layouts_settings_storage;
-		$this->state_report             = $state_report;
+		$this->plugin                = $plugin;
+		$this->settings              = $settings;
+		$this->state_report          = $state_report;
+		$this->cpt_settings_storages = $cpt_settings_storages;
 	}
 
 	public static function hook(): string {
@@ -169,6 +173,16 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		}
 	}
 
+	public function unschedule(): void {
+		$check_time = wp_next_scheduled( self::hook() );
+
+		if ( false === $check_time ) {
+			return;
+		}
+
+		wp_unschedule_event( $check_time, self::hook() );
+	}
+
 	protected function calc_count_of_posts( string $post_type ): int {
 		$query_args = array(
 			'fields'         => 'ids',
@@ -183,16 +197,23 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 
 	protected function make_usage_request(): void {
 		File_System_Loader::instance()
-			->add_loaded_callback(
-				function () {
-					$fields = array_merge(
-						$this->state_report->get_basic_installation_data(),
-						$this->get_usage_data(),
-					);
+							->add_loaded_callback(
+								function () {
+									$fields = array_merge(
+										$this->state_report->get_basic_installation_data(),
+										$this->get_usage_data(),
+									);
 
-					$this->send_json_request( self::USAGE_ENDPOINT_URL, $fields );
-				}
-			);
+									$this->send_json_request( self::USAGE_ENDPOINT_URL, $fields );
+								}
+							);
+	}
+
+	protected function schedule_next(): void {
+		// next_check_time in seconds. Randomly to avoid DDOS.
+		$next_check_time = time() + wp_rand( self::DELAY_MIN_HR * 3600, self::DELAY_MAX_HRS * 3600 );
+
+		wp_schedule_single_event( $next_check_time, self::hook() );
 	}
 
 	/**
@@ -216,31 +237,41 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 			'_isWoo'                         => class_exists( 'WooCommerce' ),
 			'_isMetaBox'                     => class_exists( 'RW_Meta_Box' ),
 			'_isPods'                        => class_exists( 'Pods' ),
-			// check only for Layouts, as Post Selections use the same setting.
-			'_isFsStorageActive'             => $this->layouts_settings_storage->get_file_system()->is_active(),
+			'_isFsStorageActive'             => $this->is_fs_storage_active(),
 			'_gitRepositoriesCount'          => count( $this->settings->get_git_repositories() ),
 			'_language'                      => get_bloginfo( 'language' ),
 			'_phpErrors'                     => $error_logs,
 			'_isCptAdminOptimizationEnabled' => $this->settings->is_cpt_admin_optimization_enabled(),
-			'_templateEngines'               => array(), // fixme
+			'_templateEngines'               => $this->calc_template_engines_usage(),
 		);
 	}
 
+	protected function is_fs_storage_active(): bool {
+		$storage = reset( $this->cpt_settings_storages );
 
-	protected function schedule_next(): void {
-		// next_check_time in seconds. Randomly to avoid DDOS.
-		$next_check_time = time() + wp_rand( self::DELAY_MIN_HR * 3600, self::DELAY_MAX_HRS * 3600 );
-
-		wp_schedule_single_event( $next_check_time, self::hook() );
-	}
-
-	public function unschedule(): void {
-		$check_time = wp_next_scheduled( self::hook() );
-
-		if ( false === $check_time ) {
-			return;
+		// check only the first one, as both Layout & Selection use the same setting.
+		if ( $storage instanceof Cpt_Settings_Storage ) {
+			return $storage->get_file_system()->is_active();
 		}
 
-		wp_unschedule_event( $check_time, self::hook() );
+		return false;
+	}
+
+	/**
+	 * @return array<string,int> engine => count
+	 */
+	protected function calc_template_engines_usage(): array {
+		$stat = array();
+
+		foreach ( $this->cpt_settings_storages as $cpt_settings_storage ) {
+			foreach ( $cpt_settings_storage->get_all() as $cpt_settings ) {
+				$engine = $cpt_settings->get_template_engine();
+
+				$stat[ $engine ] = int( $stat, $engine );
+				++$stat[ $engine ];
+			}
+		}
+
+		return $stat;
 	}
 }

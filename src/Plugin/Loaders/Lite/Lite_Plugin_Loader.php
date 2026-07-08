@@ -259,8 +259,11 @@ final class Lite_Plugin_Loader extends Plugin_Loader_Base {
 			$this->logger,
 			$this->plugin,
 			$this->settings,
-			$this->layouts_settings_storage,
-			$this->state_report
+			$this->state_report,
+			array(
+				$this->layouts_settings_storage,
+				$this->post_selections_settings_storage,
+			)
 		);
 		$this->settings_page = new Settings_Page(
 			$this->logger,
