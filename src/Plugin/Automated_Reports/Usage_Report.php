@@ -200,7 +200,7 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 							->add_loaded_callback(
 								function () {
 									$fields = array_merge(
-										$this->state_report->get_basic_installation_data(),
+										$this->state_report->get_core_fields(),
 										$this->get_usage_data(),
 									);
 
@@ -229,20 +229,19 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		return array(
-			'_viewsCount'                    => $this->calc_count_of_posts( Hard_Layout_Cpt::cpt_name() ),
-			'_cardsCount'                    => $this->calc_count_of_posts( Hard_Post_Selection_Cpt::cpt_name() ),
+			'_viewsCount'           => $this->calc_count_of_posts( Hard_Layout_Cpt::cpt_name() ),
+			'_cardsCount'           => $this->calc_count_of_posts( Hard_Post_Selection_Cpt::cpt_name() ),
 			// 'is_plugin_active()' is available only later
-			'_isAcfPro'                      => class_exists( 'acf_pro' ),
-			'_isAcf'                         => class_exists( 'acf' ) && ! defined( 'ACF_VIEWS_INNER_ACF' ),
-			'_isWoo'                         => class_exists( 'WooCommerce' ),
-			'_isMetaBox'                     => class_exists( 'RW_Meta_Box' ),
-			'_isPods'                        => class_exists( 'Pods' ),
-			'_isFsStorageActive'             => $this->is_fs_storage_active(),
-			'_gitRepositoriesCount'          => count( $this->settings->get_git_repositories() ),
-			'_language'                      => get_bloginfo( 'language' ),
-			'_phpErrors'                     => $error_logs,
-			'_isCptAdminOptimizationEnabled' => $this->settings->is_cpt_admin_optimization_enabled(),
-			'_templateEngines'               => $this->calc_template_engines_usage(),
+			'_isAcfPro'             => class_exists( 'acf_pro' ),
+			'_isAcf'                => class_exists( 'acf' ) && ! defined( 'ACF_VIEWS_INNER_ACF' ),
+			'_isWoo'                => class_exists( 'WooCommerce' ),
+			'_isMetaBox'            => class_exists( 'RW_Meta_Box' ),
+			'_isPods'               => class_exists( 'Pods' ),
+			'_isFsStorageActive'    => $this->is_fs_storage_active(),
+			'_gitRepositoriesCount' => count( $this->settings->get_git_repositories() ),
+			'_language'             => get_bloginfo( 'language' ),
+			'_phpErrors'            => $error_logs,
+			'_templateEngines'      => $this->calc_template_engines_usage(),
 		);
 	}
 

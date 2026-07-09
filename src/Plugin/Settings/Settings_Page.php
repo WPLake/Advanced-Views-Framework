@@ -291,7 +291,7 @@ final class Settings_Page extends Action implements Hooks_Interface {
 
 		$this->settings_storage->set_git_repositories( $git_repositories );
 
-		$is_do_not_track_request_needed = false === $this->settings_storage->is_automatic_reports_disabled() &&
+		$is_do_not_track_request_needed = ! $this->settings_storage->is_automatic_reports_disabled() &&
 											$this->settings->is_automatic_reports_disabled;
 
 		$this->settings_storage->set_is_automatic_reports_disabled( $this->settings->is_automatic_reports_disabled );

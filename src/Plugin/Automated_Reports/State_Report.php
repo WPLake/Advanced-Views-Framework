@@ -76,12 +76,11 @@ class State_Report extends Report_Base implements Hooks_Interface {
 	/**
 	 * @return array<string,mixed>
 	 */
-	public function get_basic_installation_data(): array {
+	public function get_core_fields(): array {
 		return array(
-			'_domain'                => wp_parse_url( get_site_url() )['host'] ?? '',
-			'_version'               => $this->plugin->get_version(),
-			'_isPro'                 => $this->plugin->is_pro_version(),
-			'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
+			'_domain'  => wp_parse_url( get_site_url() )['host'] ?? '',
+			'_version' => $this->plugin->get_version(),
+			'_isPro'   => $this->plugin->is_pro_version(),
 		);
 	}
 
@@ -270,9 +269,10 @@ class State_Report extends Report_Base implements Hooks_Interface {
 		array $deactivation_survey_fields = array()
 	): void {
 		$fields = array_merge(
-			$this->get_basic_installation_data(),
+			$this->get_core_fields(),
 			array(
-				'_isActive' => $is_active,
+				'_isActive'              => $is_active,
+				'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
 			),
 			$deactivation_survey_fields
 		);
