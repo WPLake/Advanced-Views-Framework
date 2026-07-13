@@ -266,8 +266,10 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 			foreach ( $cpt_settings_storage->get_all() as $cpt_settings ) {
 				$engine = $cpt_settings->get_template_engine();
 
-				$stat[ $engine ] = int( $stat, $engine );
-				++$stat[ $engine ];
+				if ( strlen( $engine ) > 0 ) {
+					$stat[ $engine ] = int( $stat, $engine );
+					++$stat[ $engine ];
+				}
 			}
 		}
 
