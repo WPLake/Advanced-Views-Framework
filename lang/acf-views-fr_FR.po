@@ -601,7 +601,7 @@ msgstr "Classes CSS"
 msgid "CSS & JS"
 msgstr "CSS & JS"
 
-#: src/Plugin/Loaders/Plugin_Loader_Base.php:393
+#: src/Plugin/Loaders/Plugin_Loader_Base.php:396
 msgid "Layout"
 msgstr "Mise en page"
 
@@ -1717,23 +1717,23 @@ msgstr "Les champs méta et leurs groupes de champs, ainsi que les règles CSS r
 msgid "Hover on the title and click Import."
 msgstr "Survolez le titre et cliquez sur Importer."
 
-#: src/Plugin/Automated_Reports.php:178
+#: src/Plugin/Automated_Reports/Usage_Report.php:138
 msgid "The Advanced Views plugin sends automatic error and usage reports to developers, enabling faster issue resolution and plugin improvement."
 msgstr "Le plugin Advanced Views envoie automatiquement des rapports d'erreurs et d'utilisation aux développeurs, permettant une résolution de problèmes plus rapide et une amélioration du plugin."
 
-#: src/Plugin/Automated_Reports.php:185
+#: src/Plugin/Automated_Reports/Usage_Report.php:145
 msgid "Automatic reports do not include any private or sensitive information and can be disabled in the plugin settings."
 msgstr "Les rapports automatiques n'incluent aucune information privée ou sensible et peuvent être désactivés dans les paramètres du plugin."
 
-#: src/Plugin/Automated_Reports.php:202
+#: src/Plugin/Automated_Reports/Usage_Report.php:162
 msgid "Got it, hide"
 msgstr "Compris, cacher"
 
-#: src/Plugin/Automated_Reports.php:223
+#: src/Plugin/Automated_Reports/State_Report.php:100
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/Plugin/Automated_Reports.php:224
+#: src/Plugin/Automated_Reports/State_Report.php:101
 msgid "Deactivate"
 msgstr "Désactiver"
 
@@ -1769,11 +1769,11 @@ msgstr "ici"
 msgid "See how to load from other sources or limit visibility by roles"
 msgstr "Voir comment charger depuis d'autres sources ou limiter la visibilité par rôles"
 
-#: src/Plugin/Automated_Reports.php:225
+#: src/Plugin/Automated_Reports/State_Report.php:102
 msgid "Delete data and deactivate"
 msgstr "Supprimer les données et désactiver"
 
-#: src/Plugin/Automated_Reports.php:232
+#: src/Plugin/Automated_Reports/State_Report.php:109
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Supprimer toutes les données du plugin (opération irréversible)"
 
@@ -2298,12 +2298,6 @@ msgstr ""
 msgid "displays the %s, chosen fields should be filled at the same object where the shortcode is pasted (post/page)."
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Cpt/Layouts/Cpt/Layouts_Cpt.php:23
-#, php-format
-msgid "Add a %s and select target fields or import a pre-built component."
-msgstr ""
-
 #. translators: %s is the plural name of the CPT.
 #: src/Cpt/Layouts/Cpt/Layout_Meta_Boxes.php:131
 #, php-format
@@ -2382,7 +2376,7 @@ msgid_plural "Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Plugin/Loaders/Plugin_Loader_Base.php:397
+#: src/Plugin/Loaders/Plugin_Loader_Base.php:400
 msgid "Layouts"
 msgstr ""
 
@@ -2543,12 +2537,6 @@ msgstr ""
 msgid "Assigned Field Group"
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:36
-#, php-format
-msgid "Add a %s to display a set of posts or import a ready-made component."
-msgstr ""
-
 #: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:49
 msgid "The assigned Layout determines which fields are displayed."
 msgstr ""
@@ -2603,27 +2591,27 @@ msgstr ""
 msgid "https://advanced-views.com/"
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:215
+#: src/Plugin/Automated_Reports/State_Report.php:92
 msgid "We'd love to know why you're deactivating Advanced Views. Your feedback helps us improve (Optional)"
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:219
+#: src/Plugin/Automated_Reports/State_Report.php:96
 msgid "Tell us a bit more about your situation - what didn't work or what you were hoping to achieve."
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:227
+#: src/Plugin/Automated_Reports/State_Report.php:104
 msgid "Setup was too complex for me"
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:228
+#: src/Plugin/Automated_Reports/State_Report.php:105
 msgid "Plugin conflicted with my theme or another plugin"
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:229
+#: src/Plugin/Automated_Reports/State_Report.php:106
 msgid "Required coding or technical knowledge I don't have"
 msgstr ""
 
-#: src/Plugin/Automated_Reports.php:230
+#: src/Plugin/Automated_Reports/State_Report.php:107
 msgid "Found a plugin that better fits my workflow"
 msgstr ""
 
@@ -2723,12 +2711,6 @@ msgstr ""
 msgid "Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option."
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Cpt/Layouts/Cpt/Layouts_Cpt.php:32
-#, php-format
-msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach the %s</a> to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/layout-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
-msgstr ""
-
 #. translators: %s is the plural name of the CPT.
 #: src/Cpt/Layouts/Cpt/Layout_Meta_Boxes.php:297
 #, php-format
@@ -2804,11 +2786,6 @@ msgstr ""
 msgid "Item successfully cloned."
 msgstr ""
 
-#. translators: %s - singular name of the CPT.
-#: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:45
-msgid "<a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/key-aspects#id-2.-integration-approaches\">Attach it</a> where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode\">via shortcode</a>)."
-msgstr ""
-
 #: src/Cpt/Shortcode/Layout_Shortcode.php:253
 msgid "Layout id is wrong"
 msgstr ""
@@ -2837,4 +2814,27 @@ msgstr ""
 
 #: src/Acf/Groups/translations.php:427
 msgid "Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Cpt/Layouts/Cpt/Layouts_Cpt.php:23
+#, php-format
+msgid "Add a <a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/how-advanced-views-works#layouts\">%s</a> and select target fields or import a pre-built component."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Cpt/Layouts/Cpt/Layouts_Cpt.php:32
+#, php-format
+msgid "Attach the %s to the target place, for example using <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/layout-shortcode\">the shortcode</a>, to display field values of the post, page or CPT item."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:36
+#, php-format
+msgid "Add a <a target=\"_blank\" href=\"https://docs.advanced-views.com/getting-started/introduction/how-advanced-views-works#post-selections\">%s</a> to display a set of posts or import a ready-made component."
+msgstr ""
+
+#. translators: %s - singular name of the CPT.
+#: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:45
+msgid "Attach it where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode\">via shortcode</a>)."
 msgstr ""
