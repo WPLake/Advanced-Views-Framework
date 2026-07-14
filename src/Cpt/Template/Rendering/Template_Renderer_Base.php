@@ -74,8 +74,8 @@ abstract class Template_Renderer_Base extends Action implements Template_Rendere
 		// do not include in case of the validation, it doesn't have sense + breaks the error grep regex.
 		if ( $is_debug_mode &&
 			! $is_validation ) {
-			// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
 			echo '<pre>' . esc_html(
+				// @phpcs:ignore WordPress.PHP.DevelopmentFunctions
 				print_r(
 					array(
 						'template' => $template,

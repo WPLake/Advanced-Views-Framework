@@ -37,6 +37,9 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 	 */
 	private array $cpt_settings_storages;
 
+	/**
+	 * @param Cpt_Settings_Storage[] $cpt_settings_storages
+	 */
 	public function __construct(
 		Logger $logger,
 		Plugin $plugin,

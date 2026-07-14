@@ -61,6 +61,7 @@ class Options_Storage {
 			sprintf( '%s%%', $wpdb->esc_like( self::PREFIX ) )
 		);
 
+		// @phpcs:ignore
 		$wpdb->query( $delete_query );
 	}
 
@@ -73,6 +74,7 @@ class Options_Storage {
 			sprintf( '%%_%s%%', $wpdb->esc_like( self::PREFIX ) )
 		);
 
+		// @phpcs:ignore
 		$wpdb->query( $delete_query );
 	}
 }
