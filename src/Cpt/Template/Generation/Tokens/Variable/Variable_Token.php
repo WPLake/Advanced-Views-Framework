@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Cpt\Template\Generation\Tokens\Variable;
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Cpt\Template\Generation\Tokens\Template_Token;
-use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Variable_Token implements Template_Token {
 	const ITEM_PATH_SEPARATOR = '.';
@@ -20,16 +19,17 @@ abstract class Variable_Token implements Template_Token {
 	protected bool $is_object  = false;
 
 	public function __construct( string $name ) {
-		$this->name = $name;
+		$this->set_name( $name );
 	}
 
 	public function set_name( string $name ): self {
-		$item_path = $this->extract_item_path( $name );
+		$ids        = explode( self::ITEM_PATH_SEPARATOR, $name );
+		$ids_length = count( $ids );
 
-		$this->name = $name;
+		$this->name = $ids[0];
 
-		if ( strlen( $item_path ) > 0 ) {
-			$this->add_item_path( $item_path );
+		for ( $i = 1; $i < $ids_length; $i++ ) {
+			$this->add_item_path( $ids[ $i ] );
 		}
 
 		return $this;
@@ -58,13 +58,5 @@ abstract class Variable_Token implements Template_Token {
 		$this->is_object = $is_object;
 
 		return $this;
-	}
-
-	protected function extract_item_path( string &$field_name ): string {
-		$ids = explode( self::ITEM_PATH_SEPARATOR, $field_name );
-
-		$field_name = $ids[0];
-
-		return string( $ids, 1 );
 	}
 }
