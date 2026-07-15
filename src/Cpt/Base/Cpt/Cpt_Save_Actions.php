@@ -86,8 +86,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		// for some reason, ACF ajax form validation doesn't work on the wordpress.com hosting.
 		if ( ! $this->plugin->is_wordpress_com_hosting() ) {
 			// priority is 20, to make sure it's run after the ACF's code.
-			self::add_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
-			self::add_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
+			self::add_manage_filter( 'acf/validate_value', array( $this, 'catch_field_value' ), 20, 4 );
+			self::add_manage_action( 'acf/validate_save_post', array( $this, 'custom_validation' ), 20 );
 		}
 
 		$this->mock_acf_saving();
@@ -108,7 +108,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	abstract protected function update_markup( Cpt_Settings $cpt_settings ): void;
 
 	protected function mock_acf_saving(): void {
-		self::add_action(
+		self::add_manage_action(
 			'acf/save_post',
 			/**
 			 * @param int|string $post_id
@@ -121,7 +121,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		);
 
 		// this hook is introduced since ACF 6.8.1 as part of their custom post-revision.
-		self::add_filter(
+		self::add_manage_filter(
 			'acf/form-post/skip_save',
 			/**
 			 * @param bool|mixed $skip_save
@@ -372,7 +372,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 */
 	public function is_my_post( $post_id ): bool {
 		// for 'site-settings' and similar.
-		if ( false === is_numeric( $post_id ) ||
+		if ( ! is_numeric( $post_id ) ||
 			0 === $post_id ) {
 			return false;
 		}
@@ -470,7 +470,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	}
 
 	protected function mock_saving_to_postmeta(): void {
-		self::add_filter(
+		self::add_manage_filter(
 			'acf/pre_update_value',
 			function ( $is_updated, $value, int $post_id, array $field ): bool {
 				// extra check, as probably it's about another post.
@@ -491,7 +491,7 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		if ( $this->plugin->is_wordpress_com_hosting() ) {
 			// priority is 20, as current is with 10.
-			self::add_action(
+			self::add_manage_action(
 				'acf/save_post',
 				function ( $post_id ): void {
 					// check again, as probably it's about another post.
