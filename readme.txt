@@ -205,6 +205,7 @@ You're welcome to open issues or PRs there.
 - Enhance: Starter Layout/Selection for new installations
 - Fix: Layout/Selection editor working without an active ACF plugin
 - Fix: Twig - escape filter support: |e("html_attr")
+- Fix: trick allowing users with non-admin roles to update Layout/Selection settings via ACF calls
 - Feature adoption: Pro Twig functions and filters
 
 = 3.8.11 (2026-06-23) =
