@@ -1,6 +1,6 @@
 === Advanced Views - Display Custom Fields (ACF, Pods, MetaBox), Posts, CPT and Woo Products anywhere in Gutenberg, Elementor, Divi, Beaver... ===
 Contributors: wplakeorg
-Tags: post grid, wp_query, meta fields, custom post types, taxonomy, shortcodes, elementor, divi, bricks, layout
+Tags: post grid, wp_query, meta fields, custom post types, taxonomy
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.4
