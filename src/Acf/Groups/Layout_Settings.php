@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Exception;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
-use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Vendors\LightSource\AcfGroups\Interfaces\FieldInfoInterface;
@@ -83,14 +82,14 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-type textarea
 	 * @new_lines br
 	 * @label Default Template
-	 * @instructions Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup.
+	 * @instructions Output preview of the generated template, using the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>chosen template engine</a>. <br> Important! Publish or Update your Layout to see the latest markup.
 	 * @disabled 1
 	 */
 	public string $markup;
 	/**
 	 * @a-type textarea
 	 * @label Custom Template
-	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
 	 */
 	public string $custom_markup;
 	/**
