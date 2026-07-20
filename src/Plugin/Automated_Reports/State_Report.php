@@ -16,7 +16,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 
 	public function set_hooks( Route_Detector $route_detector ): void {
 		if ( $this->is_activated_after_another_deactivation() &&
-		! $this->is_reporting_disabled() ) {
+			! $this->is_reporting_disabled() ) {
 			$this->send_active_installation_request( true );
 		}
 
@@ -66,7 +66,10 @@ class State_Report extends Report_Base implements Hooks_Interface {
 
 			if ( 'compatibility_issues' === $deactivation_survey_fields['_deactivationReason'] ) {
                 // @phpcs:ignore
-                $deactivation_survey_fields['_debugDump'] = print_r( self::get_environment_data(), true );
+                $deactivation_survey_fields['_debugDump'] = print_r(
+					Environment_Detector::get_environment_data(),
+					true
+				);
 			}
 
 			$this->send_active_installation_request( false, $deactivation_survey_fields );
@@ -174,7 +177,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 
 						let popup = document.createElement('div');
 
-						if ( this.data['is_with_survey']) {
+						if (this.data['is_with_survey']) {
 							popup.innerHTML +=
 								'<p>' + this.data['message'] + '</p>';
 
@@ -212,7 +215,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 							let redirectLink = link.href;
 							let isWithDataDelete = popup.querySelector('.advanced-views-survey__delete-option input').checked;
 
-							if ( this.data['is_with_survey']) {
+							if (this.data['is_with_survey']) {
 								let reason = popup.querySelector('input[name="advanced-views-survey__reason"]:checked');
 								reason = null !== reason ?
 									reason.value :
@@ -222,7 +225,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 									'&advanced-views-notes=' + popup.querySelector('textarea[name="advanced-views-survey__notes"]').value;
 							}
 
-							if ( isWithDataDelete) {
+							if (isWithDataDelete) {
 								redirectLink += '&advanced-views-delete-data=yes';
 							}
 
@@ -255,8 +258,8 @@ class State_Report extends Report_Base implements Hooks_Interface {
 			Options_Storage::TRANSIENT_DEACTIVATED_OTHER_INSTANCES
 		);
 		$is_activated_after_another_deactivation = is_numeric( $is_activated_after_another_deactivation ) ?
-			(int) $is_activated_after_another_deactivation :
-			0;
+				(int) $is_activated_after_another_deactivation :
+				0;
 
 		return 0 !== $is_activated_after_another_deactivation;
 	}
@@ -270,6 +273,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 	): void {
 		$fields = array_merge(
 			$this->get_core_fields(),
+			Environment_Detector::get_theme_data(),
 			array(
 				'_isActive'              => $is_active,
 				'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),

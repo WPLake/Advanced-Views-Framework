@@ -24,24 +24,6 @@ abstract class Report_Base extends Action {
 	}
 
 	/**
-	 * @return array<string,mixed>
-	 */
-	public static function get_environment_data(): array {
-		return array(
-			'site_url'          => get_site_url(),
-			'php_version'       => phpversion(),
-			'wordpress_version' => get_bloginfo( 'version' ),
-			'theme_name'        => wp_get_theme()->get( 'Name' ),
-			'theme_author'      => wp_get_theme()->get( 'Author' ),
-			'parent_theme'      => wp_get_theme()->get( 'Template' ),
-			'active_plugins'    => get_option( 'active_plugins' ),
-			'time_limit'        => ini_get( 'max_execution_time' ),
-			'memory_limit'      => ini_get( 'memory_limit' ),
-			'uploads_limit'     => ini_get( 'upload_max_filesize' ),
-		);
-	}
-
-	/**
 	 * @param array<string,mixed> $fields
 	 */
 	protected function send_json_request( string $url, array $fields ): void {
