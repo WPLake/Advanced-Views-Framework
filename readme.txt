@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.9.1 (2026-07-20) =
+- Fix: custom Twig templates - false save-validation alarms
+
 = 3.9.0 (2026-07-16) =
 - Enhance: vanilla PHP as a template engine option
 - Enhance: Layout & Selection - disabled automated markup minification (for better compatibility)
