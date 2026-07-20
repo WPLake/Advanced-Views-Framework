@@ -204,7 +204,6 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 								function () {
 									$fields = array_merge(
 										$this->state_report->get_primary_fields(),
-										Environment_Detector::get_theme_data(),
 										$this->get_usage_data(),
 									);
 

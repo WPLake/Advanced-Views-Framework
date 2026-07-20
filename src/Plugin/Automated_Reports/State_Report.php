@@ -81,10 +81,13 @@ class State_Report extends Report_Base implements Hooks_Interface {
 	 * @return array<string,mixed>
 	 */
 	public function get_primary_fields(): array {
-		return array(
-			'_domain'  => string( wp_parse_url( get_site_url(), PHP_URL_HOST ) ),
-			'_version' => $this->plugin->get_version(),
-			'_isPro'   => $this->plugin->is_pro_version(),
+		return array_merge(
+			array(
+				'_domain'  => string( wp_parse_url( get_site_url(), PHP_URL_HOST ) ),
+				'_version' => $this->plugin->get_version(),
+				'_isPro'   => $this->plugin->is_pro_version(),
+			),
+			Environment_Detector::get_theme_data()
 		);
 	}
 
@@ -274,7 +277,6 @@ class State_Report extends Report_Base implements Hooks_Interface {
 	): void {
 		$fields = array_merge(
 			$this->get_primary_fields(),
-			Environment_Detector::get_theme_data(),
 			array(
 				'_isActive'              => $is_active,
 				'_isDoNotTrackRequested' => $this->settings->is_automatic_reports_disabled(),
