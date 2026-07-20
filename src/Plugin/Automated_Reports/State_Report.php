@@ -10,6 +10,7 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 class State_Report extends Report_Base implements Hooks_Interface {
 	const STATE_ENDPOINT_URL = 'https://wplake.org/wp-json/wplake/v1/plugin_state';
@@ -67,7 +68,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 			if ( 'compatibility_issues' === $deactivation_survey_fields['_deactivationReason'] ) {
                 // @phpcs:ignore
                 $deactivation_survey_fields['_debugDump'] = print_r(
-					Environment_Detector::get_environment_data(),
+					Environment_Detector::get_installation_data(),
 					true
 				);
 			}
@@ -79,9 +80,9 @@ class State_Report extends Report_Base implements Hooks_Interface {
 	/**
 	 * @return array<string,mixed>
 	 */
-	public function get_core_fields(): array {
+	public function get_primary_fields(): array {
 		return array(
-			'_domain'  => wp_parse_url( get_site_url() )['host'] ?? '',
+			'_domain'  => string( wp_parse_url( get_site_url(), PHP_URL_HOST ) ),
 			'_version' => $this->plugin->get_version(),
 			'_isPro'   => $this->plugin->is_pro_version(),
 		);
@@ -272,7 +273,7 @@ class State_Report extends Report_Base implements Hooks_Interface {
 		array $deactivation_survey_fields = array()
 	): void {
 		$fields = array_merge(
-			$this->get_core_fields(),
+			$this->get_primary_fields(),
 			Environment_Detector::get_theme_data(),
 			array(
 				'_isActive'              => $is_active,

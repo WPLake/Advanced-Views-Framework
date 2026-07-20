@@ -13,7 +13,7 @@ abstract class Environment_Detector {
 	/**
 	 * @return array<string,mixed>
 	 */
-	public static function get_environment_data(): array {
+	public static function get_installation_data(): array {
 		return array(
 			'site_url'          => get_site_url(),
 			'php_version'       => phpversion(),

@@ -34,8 +34,10 @@ final class Debug_Dump_Creator {
 			'error_logs'  => $this->logger->get_error_logs(),
 			'logs'        => $this->logger->get_logs(),
 			'cpt_data'    => $this->get_cpt_dump_data(),
-			'theme'       => Environment_Detector::get_theme_data(),
-			'environment' => Environment_Detector::get_environment_data(),
+			'environment' => array(
+				'theme'        => Environment_Detector::get_theme_data(),
+				'installation' => Environment_Detector::get_installation_data(),
+			),
 		);
 
 		$redirect_url = add_query_arg(
