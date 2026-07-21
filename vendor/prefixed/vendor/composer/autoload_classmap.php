@@ -345,6 +345,7 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools\\Debug_Dump_Creator' => $baseDir . '/../../src/Dashboard/Tools/Debug_Dump_Creator.php',
     'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools\\Demo_Importer' => $baseDir . '/../../src/Dashboard/Tools/Demo_Importer.php',
     'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools_Page' => $baseDir . '/../../src/Dashboard/Tools_Page.php',
+    'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Environment_Detector' => $baseDir . '/../../src/Plugin/Automated_Reports/Environment_Detector.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Report_Base' => $baseDir . '/../../src/Plugin/Automated_Reports/Report_Base.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\State_Report' => $baseDir . '/../../src/Plugin/Automated_Reports/State_Report.php',
     'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Usage_Report' => $baseDir . '/../../src/Plugin/Automated_Reports/Usage_Report.php',

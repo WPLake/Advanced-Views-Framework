@@ -396,6 +396,7 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors
         'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools\\Debug_Dump_Creator' => __DIR__ . '/../..' . '/../../src/Dashboard/Tools/Debug_Dump_Creator.php',
         'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools\\Demo_Importer' => __DIR__ . '/../..' . '/../../src/Dashboard/Tools/Demo_Importer.php',
         'Org\\Wplake\\Advanced_Views\\Dashboard\\Tools_Page' => __DIR__ . '/../..' . '/../../src/Dashboard/Tools_Page.php',
+        'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Environment_Detector' => __DIR__ . '/../..' . '/../../src/Plugin/Automated_Reports/Environment_Detector.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Report_Base' => __DIR__ . '/../..' . '/../../src/Plugin/Automated_Reports/Report_Base.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\State_Report' => __DIR__ . '/../..' . '/../../src/Plugin/Automated_Reports/State_Report.php',
         'Org\\Wplake\\Advanced_Views\\Plugin\\Automated_Reports\\Usage_Report' => __DIR__ . '/../..' . '/../../src/Plugin/Automated_Reports/Usage_Report.php',
