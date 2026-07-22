@@ -14,10 +14,10 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
+use Org\Wplake\Advanced_Views\Plugin\Plugin_Environment;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
-use WP_Query;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
 /**
@@ -57,6 +57,32 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 
 	public static function hook(): string {
 		return Hard_Layout_Cpt::cpt_name() . '_refresh';
+	}
+
+	/**
+	 * @param string[] $exclude_post_names
+	 */
+	protected static function calc_count_of_posts( string $post_type, array $exclude_post_names = array() ): int {
+		// native WP_Query doesn't support exclude post_names.
+		global $wpdb;
+
+		// add stub to avoid SQL error due to the empty "IN" statement.
+		if ( 0 === count( $exclude_post_names ) ) {
+			$exclude_post_names[] = '0';
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $exclude_post_names ), '%s' ) );
+
+		$query = $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->posts}
+        WHERE post_type = %s AND post_status = 'publish' AND post_name NOT IN ({$placeholders})
+        ",
+			array_merge( array( $post_type ), $exclude_post_names )
+		);
+
+		$sql_count = $wpdb->get_var( $query );
+
+		return int( $sql_count );
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
@@ -186,18 +212,6 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		wp_unschedule_event( $check_time, self::hook() );
 	}
 
-	protected function calc_count_of_posts( string $post_type ): int {
-		$query_args = array(
-			'fields'         => 'ids',
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-		);
-		$wp_query   = new WP_Query( $query_args );
-
-		return $wp_query->found_posts;
-	}
-
 	protected function make_usage_request(): void {
 		File_System_Loader::instance()
 							->add_loaded_callback(
@@ -232,8 +246,14 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		return array(
-			'_viewsCount'           => $this->calc_count_of_posts( Hard_Layout_Cpt::cpt_name() ),
-			'_cardsCount'           => $this->calc_count_of_posts( Hard_Post_Selection_Cpt::cpt_name() ),
+			'_viewsCount'           => self::calc_count_of_posts(
+				Hard_Layout_Cpt::cpt_name(),
+				array( Plugin_Environment::STARTER_LAYOUT_ID )
+			),
+			'_cardsCount'           => self::calc_count_of_posts(
+				Hard_Post_Selection_Cpt::cpt_name(),
+				array( Plugin_Environment::STARTER_SELECTION_ID )
+			),
 			// 'is_plugin_active()' is available only later
 			'_isAcfPro'             => class_exists( 'acf_pro' ),
 			'_isAcf'                => class_exists( 'acf' ) && ! defined( 'ACF_VIEWS_INNER_ACF' ),

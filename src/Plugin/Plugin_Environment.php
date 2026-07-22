@@ -19,6 +19,9 @@ use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 
 final class Plugin_Environment implements Hooks_Interface {
+	const STARTER_SELECTION_ID = 'card_6a479135a1a81';
+	const STARTER_LAYOUT_ID    = 'view_6a47911f78eb0';
+
 	protected const TRUE_TRANSIENT_VALUE = '1';
 
 	private Templates_Environment $template_engines;
@@ -135,7 +138,7 @@ final class Plugin_Environment implements Hooks_Interface {
 
 	protected function prepare_first_installation(): void {
 		// item is in the 'pre_built' folder.
-		$this->selections_pre_built_tab->import_cpt_data_with_all_related_items( 'card_6a479135a1a81' );
+		$this->selections_pre_built_tab->import_cpt_data_with_all_related_items( self::STARTER_SELECTION_ID );
 	}
 
 	/**
