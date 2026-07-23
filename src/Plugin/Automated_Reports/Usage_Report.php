@@ -59,32 +59,6 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		return Hard_Layout_Cpt::cpt_name() . '_refresh';
 	}
 
-	/**
-	 * @param string[] $exclude_post_names
-	 */
-	protected static function calc_count_of_posts( string $post_type, array $exclude_post_names = array() ): int {
-		// native WP_Query doesn't support exclude post_names.
-		global $wpdb;
-
-		// add stub to avoid SQL error due to the empty "IN" statement.
-		if ( 0 === count( $exclude_post_names ) ) {
-			$exclude_post_names[] = '0';
-		}
-
-		$placeholders = implode( ', ', array_fill( 0, count( $exclude_post_names ), '%s' ) );
-
-		$query = $wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->posts}
-        WHERE post_type = %s AND post_status = 'publish' AND post_name NOT IN ({$placeholders})
-        ",
-			array_merge( array( $post_type ), $exclude_post_names )
-		);
-
-		$sql_count = $wpdb->get_var( $query );
-
-		return int( $sql_count );
-	}
-
 	public function set_hooks( Route_Detector $route_detector ): void {
 		if ( $this->settings->is_automatic_reports_disabled() ) {
 			// still sign-up the CRON job, so if it was scheduled before, then will be called without issues.
@@ -246,11 +220,11 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		// IT DOESN'T SEND ANY PRIVATE DATA, only a DOMAIN.
 		// And the domain is only used to avoid multiple counting from one website.
 		return array(
-			'_viewsCount'           => self::calc_count_of_posts(
+			'_viewsCount'           => $this->count_cpt_entities(
 				Hard_Layout_Cpt::cpt_name(),
 				array( Plugin_Environment::STARTER_LAYOUT_ID )
 			),
-			'_cardsCount'           => self::calc_count_of_posts(
+			'_cardsCount'           => $this->count_cpt_entities(
 				Hard_Post_Selection_Cpt::cpt_name(),
 				array( Plugin_Environment::STARTER_SELECTION_ID )
 			),
@@ -297,5 +271,24 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		}
 
 		return $stat;
+	}
+
+	/**
+	 * @param string[] $exclude_post_names
+	 */
+	protected function count_cpt_entities( string $post_type, array $exclude_post_names = array() ): int {
+		foreach ( $this->cpt_settings_storages as $cpt_settings_storage ) {
+			$db_management     = $cpt_settings_storage->get_db_management();
+			$current_post_type = $db_management->get_post_type();
+
+			if ( $post_type === $current_post_type ) {
+				$unique_ids   = $db_management->get_unique_ids();
+				$ids_to_count = array_diff( $unique_ids, $exclude_post_names );
+
+				return count( $ids_to_count );
+			}
+		}
+
+		return 0;
 	}
 }

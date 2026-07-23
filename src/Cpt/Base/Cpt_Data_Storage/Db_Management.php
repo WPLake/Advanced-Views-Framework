@@ -219,6 +219,13 @@ class Db_Management extends Action {
 	}
 
 	/**
+	 * @return string[]
+	 */
+	public function get_unique_ids(): array {
+		return array_keys( $this->get_post_ids() );
+	}
+
+	/**
 	 * @return array<string,int> uniqueId => postId
 	 */
 	public function get_trashed_post_ids(): array {
