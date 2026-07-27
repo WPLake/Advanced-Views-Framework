@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Utils;
 
-use Error;
+use Throwable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,10 +45,19 @@ function eval_with_context( string $__code, array $__context, &$__error ) {
 	// @phpcs:ignore
 	extract( $__context );
 
+	$__code = trim( $__code );
+	// only this way it's possible to execute code having 'declare(strict_types=1)'.
+	if ( 0 === strpos( $__code, '<?php' ) ) {
+		$__code = substr( $__code, 5 );
+	} else {
+		// brings supports of HTML-containing templates.
+		$__code = '?>' . $__code;
+	}
+
 	try {
 		// @phpcs:ignore
-		$response = @eval( '?>'.$__code );
-	} catch ( Error $error ) {
+		$response = @eval( $__code );
+	} catch ( Throwable $error ) {
 		$__error = $error;
 
 		return null;
