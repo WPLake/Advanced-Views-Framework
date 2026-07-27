@@ -6,17 +6,17 @@ namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections;
 
 defined( 'ABSPATH' ) || exit;
 
-use Error;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Bridge\Controllers\Layout\Template_Controller;
 use Org\Wplake\Advanced_Views\Bridge\Controllers\Request_Controller;
 use Org\Wplake\Advanced_Views\Cpt\Base\Instance;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
-use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -62,18 +62,15 @@ class Post_Selection extends Instance {
 		bool $is_for_validation,
 		$container
 	): array {
-		// defined for back compatibility, as the old code may expect it.
-		$_args = array();
-		// @phpcs:ignore
-		$_pageNumber = 0;
-
-		try {
-			// @phpcs:ignore
-			$template_controller = @eval( $php_code );
-		} catch ( Error $ex ) {
-			// return an empty array in case the code contains syntax errors.
-			return array();
-		}
+		$template_controller = eval_with_context(
+			$php_code,
+			array(
+				// defined for back compatibility, as the old code may expect it.
+				'_args'       => array(),
+				'_pageNumber' => 0,
+			),
+			$error
+		);
 
 		return self::get_custom_controller_variables(
 			$template_controller,
@@ -127,15 +124,11 @@ class Post_Selection extends Instance {
 	 * @return array<string,mixed>
 	 */
 	public function get_ajax_response( string $php_code = '' ): array {
-		$php_code = str_replace( '<?php', '', $this->get_card_data()->extra_query_arguments );
-
-		return parent::get_ajax_response( $php_code );
+		return parent::get_ajax_response( $this->get_card_data()->extra_query_arguments );
 	}
 
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
-		$php_code = str_replace( '<?php', '', $this->get_card_data()->extra_query_arguments );
-
-		return parent::get_rest_api_response( $wprest_request, $php_code );
+		return parent::get_rest_api_response( $wprest_request, $this->get_card_data()->extra_query_arguments );
 	}
 
 	/**
@@ -258,11 +251,10 @@ class Post_Selection extends Instance {
 
 		$short_unique_card_id = $this->get_card_data()->get_unique_id( true );
 
-		$php_code = str_replace( '<?php', '', $this->get_card_data()->extra_query_arguments );
 		// the static function is used to avoid any chance of changing the context (this).
 		$custom_variables = self::get_custom_template_variables(
 			$short_unique_card_id,
-			$php_code,
+			$this->get_card_data()->extra_query_arguments,
 			$twig_variables,
 			$custom_arguments,
 			$is_for_validation,
@@ -335,7 +327,7 @@ class Post_Selection extends Instance {
 		bool $is_for_validation = false
 	): bool {
 		$template_engine = $this->engines_storage
-								->resolve_renderer( $this->settings->template_engine );
+			->resolve_renderer( $this->settings->template_engine );
 
 		ob_start();
 

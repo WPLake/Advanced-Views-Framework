@@ -22,6 +22,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Layout extends Instance {
@@ -78,20 +79,16 @@ class Layout extends Instance {
 		bool $is_for_validation = false,
 		$container = null
 	): array {
-		// declared variables for back compatibility.
-		// @phpcs:ignore
-		$_viewId = $short_unique_view_id;
-		// @phpcs:ignore
-		$_objectId = $object_id;
-		$_fields   = $field_values;
-
-		try {
-			// @phpcs:ignore
-			$template_controller = @eval( $php_code );
-		} catch ( Error $ex ) {
-			// return an empty array in case the code contains syntax errors.
-			return array();
-		}
+		$template_controller = eval_with_context(
+			$php_code,
+			array(
+				// declared variables for back compatibility.
+				'_viewId'   => $short_unique_view_id,
+				'_objectId' => $object_id,
+				'_fields'   => $field_values,
+			),
+			$error
+		);
 
 		return self::get_custom_controller_variables(
 			$template_controller,
@@ -152,9 +149,7 @@ class Layout extends Instance {
 	 * @return array<string,mixed>
 	 */
 	public function get_ajax_response( string $php_code = '' ): array {
-		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
-
-		return parent::get_ajax_response( $php_code );
+		return parent::get_ajax_response( $this->get_view_data()->php_variables );
 	}
 
 	/**
@@ -331,9 +326,7 @@ class Layout extends Instance {
 	}
 
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
-		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
-
-		return parent::get_rest_api_response( $wprest_request, $php_code );
+		return parent::get_rest_api_response( $wprest_request, $this->get_view_data()->php_variables );
 	}
 
 	/**
@@ -352,10 +345,9 @@ class Layout extends Instance {
 			$this->get_source()->get_id() :
 			'0';
 
-		$php_code = str_replace( '<?php', '', $this->get_view_data()->php_variables );
 		// the static function is used to avoid any chance of changing the context (this).
 		$php_variables = self::get_custom_template_variables(
-			$php_code,
+			$this->get_view_data()->php_variables,
 			$short_unique_view_id,
 			$object_id,
 			$template_variables,

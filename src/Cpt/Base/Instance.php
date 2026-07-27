@@ -4,12 +4,12 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Base;
 
-use Error;
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Rendering\Template_Renderer_Base;
-use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
+use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -66,20 +66,6 @@ abstract class Instance {
 		return $classes;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	protected function eval_php_code( string $php_code ) {
-		try {
-			// @phpcs:ignore
-			$custom_args = @eval( $php_code );
-		} catch ( Error $ex ) {
-			return array();
-		}
-
-		return $custom_args;
-	}
-
 	protected function get_template(): string {
 		return $this->template;
 	}
@@ -122,14 +108,18 @@ abstract class Instance {
 	 * @return array<string,mixed>
 	 */
 	public function get_ajax_response( string $php_code = '' ): array {
-		return $this->get_ajax_response_args( $this->eval_php_code( $php_code ) );
+		$controller = eval_with_context( $php_code, array(), $error );
+
+		return $this->get_ajax_response_args( $controller );
 	}
 
 	/**
 	 * @return array<string,mixed>
 	 */
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
-		return $this->get_rest_api_response_args( $wprest_request, $this->eval_php_code( $php_code ) );
+		$controller = eval_with_context( $php_code, array(), $error );
+
+		return $this->get_rest_api_response_args( $wprest_request, $controller );
 	}
 
 	public function get_markup_validation_error(): string {
