@@ -520,7 +520,7 @@ msgstr "Menú (WordPress)"
 msgid "Menu item (WordPress)"
 msgstr "Elemento del menú (WordPress)"
 
-#: src/Acf/Groups/Post_Selection_Settings.php:488
+#: src/Acf/Groups/Post_Selection_Settings.php:487
 msgid "Card settings"
 msgstr "Configuración de la tarjeta"
 
@@ -1370,7 +1370,7 @@ msgstr "Bloque Meta Box"
 msgid "Pods Block"
 msgstr "Bloque Pods"
 
-#: src/Acf/Groups/Layout_Settings.php:243
+#: src/Acf/Groups/Layout_Settings.php:242
 msgid "View settings"
 msgstr "Configuraciones de la vista"
 
@@ -1650,18 +1650,6 @@ msgstr "No hay Grupos ACF asignados."
 msgid "Assigned Groups"
 msgstr "Grupos Asignados"
 
-#. translators: 1: field name, 2: line number.
-#: src/Cpt/Layouts/Layout.php:599
-#, php-format
-msgid "The \"%1$s\" field is incorrectly expected to be an array. Line %2$d"
-msgstr "Se espera incorrectamente que el campo \"%1$s\" sea un arreglo. Línea %2$d"
-
-#. translators: 1: field name, 2: line number.
-#: src/Cpt/Layouts/Layout.php:665
-#, php-format
-msgid "The \"%1$s\" field is incorrectly expected to be a string. Line %2$d"
-msgstr "Se espera incorrectamente que el campo \"%1$s\" sea una cadena. Línea %2$d"
-
 #: src/Cpt/Shortcode/Layout_Shortcode.php:174
 msgid "object-id argument contains the wrong value"
 msgstr "el argumento de object-id contiene un valor incorrecto"
@@ -1729,11 +1717,11 @@ msgstr "Los informes automáticos no incluyen ninguna información privada o sen
 msgid "Got it, hide"
 msgstr "Entendido, ocultar"
 
-#: src/Plugin/Automated_Reports/State_Report.php:100
+#: src/Plugin/Automated_Reports/State_Report.php:107
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/Plugin/Automated_Reports/State_Report.php:101
+#: src/Plugin/Automated_Reports/State_Report.php:108
 msgid "Deactivate"
 msgstr "Desactivar"
 
@@ -1769,11 +1757,11 @@ msgstr "aquí"
 msgid "See how to load from other sources or limit visibility by roles"
 msgstr "Vea cómo cargar desde otras fuentes o limitar la visibilidad por roles"
 
-#: src/Plugin/Automated_Reports/State_Report.php:102
+#: src/Plugin/Automated_Reports/State_Report.php:109
 msgid "Delete data and deactivate"
 msgstr "Eliminar datos y desactivar"
 
-#: src/Plugin/Automated_Reports/State_Report.php:109
+#: src/Plugin/Automated_Reports/State_Report.php:116
 msgid "Delete all the plugin data (cannot be undone)"
 msgstr "Eliminar todos los datos del plugin (no se puede deshacer)"
 
@@ -1941,10 +1929,6 @@ msgstr "Edita estas reglas manualmente desactivando las Reglas de Diseño, de lo
 msgid "Template Engine"
 msgstr "Motor de plantillas"
 
-#: src/Acf/Groups/translations.php:428
-msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work."
-msgstr "Escribe tu propia plantilla con control total sobre el marcado HTML. <br> Copia el código de la Plantilla Predeterminada y haz tus cambios. <br><br> Consulta nuestra documentación para aprender más sobre <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> o <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a>. <br><br> Presiona Ctrl (Cmd) + Alt + L para formatear el código. Presiona Ctrl + F para buscar (o reemplazar). <br><br> Asegúrate de haber conservado todas las clases predeterminadas; de lo contrario, la paginación no funcionará."
-
 #: src/Acf/Groups/translations.php:181
 #: src/Acf/Groups/translations.php:323
 #: src/Acf/Groups/translations.php:478
@@ -1962,7 +1946,7 @@ msgid "Template engine"
 msgstr "motor de plantillas"
 
 #. translators: %s is the template engine name.
-#: src/Cpt/Base/Instance.php:114
+#: src/Cpt/Base/Instance.php:100
 #, php-format
 msgid "%s template engine is not available (PHP >= 8.2.0 is required)."
 msgstr "%s motor de plantillas no está disponible (se requiere PHP >= 8.2.0)."
@@ -2591,27 +2575,27 @@ msgstr "Define una forma en la que el usuario puede cargar más. Para los casos 
 msgid "https://advanced-views.com/"
 msgstr "https://advanced-views.com/"
 
-#: src/Plugin/Automated_Reports/State_Report.php:92
+#: src/Plugin/Automated_Reports/State_Report.php:99
 msgid "We'd love to know why you're deactivating Advanced Views. Your feedback helps us improve (Optional)"
 msgstr "Nos encantaría saber por qué está desactivando Advanced Views. Su opinión nos ayuda a mejorar (Opcional)"
 
-#: src/Plugin/Automated_Reports/State_Report.php:96
+#: src/Plugin/Automated_Reports/State_Report.php:103
 msgid "Tell us a bit more about your situation - what didn't work or what you were hoping to achieve."
 msgstr "Cuéntanos un poco más sobre tu situación: ¿qué no funcionó o qué esperabas lograr?"
 
-#: src/Plugin/Automated_Reports/State_Report.php:104
+#: src/Plugin/Automated_Reports/State_Report.php:111
 msgid "Setup was too complex for me"
 msgstr "La configuración fue demasiado compleja para mí"
 
-#: src/Plugin/Automated_Reports/State_Report.php:105
+#: src/Plugin/Automated_Reports/State_Report.php:112
 msgid "Plugin conflicted with my theme or another plugin"
 msgstr "El plugin tuvo conflictos con mi tema u otro plugin"
 
-#: src/Plugin/Automated_Reports/State_Report.php:106
+#: src/Plugin/Automated_Reports/State_Report.php:113
 msgid "Required coding or technical knowledge I don't have"
 msgstr "Requirió conocimientos de codificación o técnicos que no tengo"
 
-#: src/Plugin/Automated_Reports/State_Report.php:107
+#: src/Plugin/Automated_Reports/State_Report.php:114
 msgid "Found a plugin that better fits my workflow"
 msgstr "Encontré un plugin que se adapta mejor a mi flujo de trabajo"
 
@@ -2794,26 +2778,8 @@ msgstr "El id del diseño es incorrecto"
 msgid "Post Selection ID is wrong"
 msgstr "El ID de selección de publicación es incorrecto"
 
-#: src/Acf/Groups/translations.php:153
-msgid "Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Layout to see the latest markup."
-msgstr ""
-
-#: src/Acf/Groups/translations.php:154
-msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> features. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
-msgstr ""
-
 #: src/Acf/Groups/translations.php:155
 msgid "Choose one of the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>supported template engines</a>, which will be used for this Layout."
-msgstr ""
-
-#: src/Acf/Groups/translations.php:180
-#: src/Acf/Groups/translations.php:322
-#: src/Acf/Groups/translations.php:477
-msgid "Vanilla PHP"
-msgstr ""
-
-#: src/Acf/Groups/translations.php:427
-msgid "Output preview of the generated PHP, <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/twig'>Twig</a> or <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/blade'>Blade</a> template. <br> Important! Publish or Update your Post Selection to see the latest markup."
 msgstr ""
 
 #. translators: %s - singular name of the CPT.
@@ -2837,4 +2803,26 @@ msgstr ""
 #. translators: %s - singular name of the CPT.
 #: src/Cpt/Post_Selections/Cpt/Post_Selections_Cpt.php:45
 msgid "Attach it where you want to show the results (e.g. <a target=\"_blank\" href=\"https://docs.advanced-views.com/shortcode-attributes/post-selection-shortcode\">via shortcode</a>)."
+msgstr ""
+
+#: src/Acf/Groups/translations.php:153
+msgid "Output preview of the generated template, using the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>chosen template engine</a>. <br> Important! Publish or Update your Layout to see the latest markup."
+msgstr ""
+
+#: src/Acf/Groups/translations.php:154
+msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace)."
+msgstr ""
+
+#: src/Acf/Groups/translations.php:180
+#: src/Acf/Groups/translations.php:322
+#: src/Acf/Groups/translations.php:477
+msgid "vanilla PHP"
+msgstr ""
+
+#: src/Acf/Groups/translations.php:427
+msgid "Output preview of the generated template using the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>chosen template engine</a>. <br> Important! Publish or Update your Post Selection to see the latest markup."
+msgstr ""
+
+#: src/Acf/Groups/translations.php:428
+msgid "Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines/'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work."
 msgstr ""
