@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.9.2 (2026-07-) =
+- Fix: make Layout/Selection preview rest-api endpoints unavailable to subscribers
+
 = 3.9.1 (2026-07-20) =
 - UX improvements
 - Fix: custom Twig templates - false save-validation alarms
