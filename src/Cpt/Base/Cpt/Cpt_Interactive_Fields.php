@@ -15,6 +15,7 @@ use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Integration\Template_Integration;
 use Org\Wplake\Advanced_Views\Dashboard\Html_Printer;
+use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
@@ -69,33 +70,15 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 		}
 	}
 
-	/**
-	 * @param WP_REST_Request $wprest_request
-	 *
-	 * @return array<string,mixed>
-	 */
-	public function refresh_request( WP_REST_Request $wprest_request ): array {
-		$request_args = $wprest_request->get_json_params();
-		$post_id      = int( $request_args, '_postId' );
-
-		$post = get_post( $post_id );
-
-		if ( is_null( $post ) ||
-			$post->post_type !== $this->public_cpt->cpt_name() ) {
-			return array( 'error' => 'Post id is wrong' );
-		}
-
-		return $this->get_interactive_response( $post );
-	}
-
 	public function register_rest_routes(): void {
 		register_rest_route(
 			'acf_views/v1',
 			static::REST_REFRESH_ROUTE,
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( $this, 'refresh_request' ),
-				'permission_callback' => fn(): bool => is_user_logged_in(),
+				'callback'            => fn( WP_REST_Request $request ): array =>
+				$this->process_refresh_request( $request->get_json_params() ),
+				'permission_callback' => fn(): bool => Avf_User::can_manage(),
 			)
 		);
 	}
@@ -150,6 +133,25 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 			'enginesMeta'              => $engines_meta,
 		);
 	}
+
+	/**
+	 * @param array<string,mixed> $args
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected function process_refresh_request( array $args ): array {
+		$post_id = int( $args, '_postId' );
+
+		$post = get_post( $post_id );
+
+		if ( is_null( $post ) ||
+			$post->post_type !== $this->public_cpt->cpt_name() ) {
+			return array( 'error' => 'Post id is wrong' );
+		}
+
+		return $this->get_interactive_response( $post );
+	}
+
 
 	/**
 	 * @return array<string,mixed>
