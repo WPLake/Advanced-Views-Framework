@@ -199,6 +199,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.9.2 (2026-07-) =
+- Enhance: Layout - "render template when it's empty" option - not required anymore for custom-data Layouts
 - Fix: make Layout/Selection preview rest-api endpoints unavailable to subscribers
 
 = 3.9.1 (2026-07-20) =

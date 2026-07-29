@@ -297,6 +297,12 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 		return 'section';
 	}
 
+	public function has_custom_markup(): bool {
+		$custom_markup = trim( $this->custom_markup );
+
+		return strlen( $custom_markup ) > 0;
+	}
+
 	public function is_wp_interactivity_in_use(): bool {
 		$markup = trim( $this->custom_markup );
 		$markup = '' === $markup ?

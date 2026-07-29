@@ -7,7 +7,6 @@ namespace Org\Wplake\Advanced_Views\Cpt\Layouts;
 defined( 'ABSPATH' ) || exit;
 
 use DateTime;
-use Error;
 use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
@@ -251,8 +250,8 @@ class Layout extends Instance {
 		array $variables,
 		bool $is_for_validation = false
 	): bool {
-		if ( false === $this->layout_settings->is_render_when_empty &&
-			false === $is_for_validation ) {
+		if ( ! $this->layout_settings->allows_empty_rendering() &&
+			! $is_for_validation ) {
 			$is_empty = true;
 
 			foreach ( $variables as $twig_variable_name => $twig_variable_value ) {

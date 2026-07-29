@@ -500,6 +500,16 @@ return new class extends Layout_Controller_Base {
 		return '' !== $this->parent_field;
 	}
 
+	public function allows_empty_rendering(): bool {
+		if ( $this->is_render_when_empty ) {
+			return true;
+		}
+
+		// automatically allow rendering for custom-data Layouts.
+		return 0 === count( $this->items ) &&
+			$this->has_custom_markup();
+	}
+
 	/**
 	 * @return array<string,string[]>
 	 */
