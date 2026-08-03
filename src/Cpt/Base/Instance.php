@@ -9,7 +9,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Template\Rendering\Template_Renderer_Base;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
-use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
+use function Org\Wplake\Advanced_Views\Utils\eval_snippet;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -108,7 +108,7 @@ abstract class Instance {
 	 * @return array<string,mixed>
 	 */
 	public function get_ajax_response( string $php_code = '' ): array {
-		$controller = eval_with_context( $php_code, array(), $error );
+		$controller = eval_snippet( $php_code, array(), $error );
 
 		return $this->get_ajax_response_args( $controller );
 	}
@@ -117,7 +117,7 @@ abstract class Instance {
 	 * @return array<string,mixed>
 	 */
 	public function get_rest_api_response( WP_REST_Request $wprest_request, string $php_code = '' ): array {
-		$controller = eval_with_context( $php_code, array(), $error );
+		$controller = eval_snippet( $php_code, array(), $error );
 
 		return $this->get_rest_api_response_args( $wprest_request, $controller );
 	}

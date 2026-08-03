@@ -16,7 +16,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
-use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
+use function Org\Wplake\Advanced_Views\Utils\eval_snippet;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -62,7 +62,7 @@ class Post_Selection extends Instance {
 		bool $is_for_validation,
 		$container
 	): array {
-		$template_controller = eval_with_context(
+		$template_controller = eval_snippet(
 			$php_code,
 			array(
 				// defined for back compatibility, as the old code may expect it.

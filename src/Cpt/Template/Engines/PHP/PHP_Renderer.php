@@ -8,14 +8,14 @@ defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Cpt\Template\Rendering\Template_Renderer_Base;
 use Throwable;
-use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
+use function Org\Wplake\Advanced_Views\Utils\eval_template;
 
 final class PHP_Renderer extends Template_Renderer_Base {
 	public function print( string $unique_id, string $template, array $args, bool $is_validation = false ): void {
 		$php_code = $this->replace_short_tags( $template );
 
 		$error = null;
-		eval_with_context( $php_code, $args, $error );
+		eval_template( $php_code, $args, $error );
 
 		if ( $error instanceof Throwable ) {
 			$this->handle_error( $error, $template, $args, $unique_id, $is_validation );

@@ -21,7 +21,7 @@ use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use WP_REST_Request;
-use function Org\Wplake\Advanced_Views\Utils\eval_with_context;
+use function Org\Wplake\Advanced_Views\Utils\eval_snippet;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
 class Layout extends Instance {
@@ -78,7 +78,7 @@ class Layout extends Instance {
 		bool $is_for_validation = false,
 		$container = null
 	): array {
-		$template_controller = eval_with_context(
+		$template_controller = eval_snippet(
 			$php_code,
 			array(
 				// declared variables for back compatibility.

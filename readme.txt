@@ -198,6 +198,9 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
+= 3.9.3 (2026-) =
+- Enhance: PHP snippet execution - now ignores top-level echo statements
+
 = 3.9.2 (2026-07-29) =
 - Enhance: Layout - "render template when it's empty" option - not required anymore for custom-data Layouts
 - Fix: make Layout/Selection preview rest-api endpoints unavailable to subscribers
