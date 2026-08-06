@@ -18,6 +18,7 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Logger;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Layout_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -57,61 +58,17 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		$this->state_report                     = $state_report;
 	}
 
-	/**
-	 * @param mixed $post_id
-	 */
-	protected function is_my_source( $post_id ): bool {
-		$screen = get_current_screen();
 
-		$settings_screen = sprintf( '%s_page_%s', Hard_Layout_Cpt::cpt_name(), self::SLUG );
-
-		return null !== $screen &&
-				$settings_screen === $screen->id &&
-				'options' === $post_id;
-	}
-
-	protected function activate_fs_storage(): void {
-		$wp_filesystem      = $this->layouts_settings_storage->get_file_system()->get_wp_filesystem();
-		$target_base_folder = $this->layouts_settings_storage->get_file_system()->get_target_base_folder();
-
-		if ( false === $wp_filesystem->mkdir( $target_base_folder, 0755 ) ) {
-			$this->saved_message = __(
-				'Fail to activate the file system storage. Check your FS permissions.',
-				'acf-views'
-			);
-
-			return;
+	public function set_hooks( Route_Detector $route_detector ): void {
+		if ( $route_detector->is_admin_route() ) {
+			// init, not acf/init, as the method uses 'get_edit_post_link' which will be available only since this hook
+			// (because we sign up the CPTs in this hook).
+			self::add_action( 'init', array( $this, 'add_page' ) );
+			self::add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
+			// priority 20, as it's after the ACF's save_post hook.
+			self::add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
+			self::add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
 		}
-
-		// set, as the folder was just created.
-		$this->layouts_settings_storage->get_file_system()->set_base_folder();
-		$this->post_selections_settings_storage->get_file_system()->set_base_folder();
-
-		$this->layouts_settings_storage->activate_file_system_storage();
-		$this->post_selections_settings_storage->activate_file_system_storage();
-	}
-
-	protected function deactivate_fs_storage(): void {
-		$theme_templates_folder = $this->layouts_settings_storage->get_file_system()->get_base_folder();
-
-		$this->layouts_settings_storage->deactivate_file_system_storage();
-		$this->post_selections_settings_storage->deactivate_file_system_storage();
-
-		$is_removed = $this->layouts_settings_storage->get_file_system()
-												->get_wp_filesystem()
-												->rmdir(
-													$theme_templates_folder,
-													true
-												);
-
-		if ( $is_removed ) {
-			return;
-		}
-
-		$this->saved_message = __(
-			'Fail to deactivate the file system storage. Check your FS permissions.',
-			'acf-views'
-		);
 	}
 
 	public function add_page(): void {
@@ -180,73 +137,20 @@ final class Settings_Page extends Action implements Hooks_Interface {
 			return;
 		}
 
+		$acf_field_values = $this->get_acf_field_values();
+
 		self::add_filter(
 			'acf/pre_load_value',
-			function ( $value, $post_id, $field ) {
+			function ( $value, $post_id, $field ) use ( $acf_field_values ) {
 				// extra check, as probably it's about another post.
-				if ( false === $this->is_my_source( $post_id ) ) {
+				if ( ! $this->is_my_source( $post_id ) ) {
 					return $value;
 				}
 
-				$field_name = $field['name'];
-				$value      = '';
+				$field_name = string( $field, 'name' );
 
-				switch ( $field_name ) {
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_DEV_MODE ):
-						$value = $this->settings_storage->is_dev_mode();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_FILE_SYSTEM_STORAGE ):
-						$value = '' !== $this->layouts_settings_storage->get_file_system()->get_base_folder();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES ):
-						$this->settings->git_repositories = array();
-
-						foreach ( $this->settings_storage->get_git_repositories() as $git_repository_data ) {
-							$git_repository = $this->git_repository->getDeepClone();
-
-							$git_repository->id           = $git_repository_data['id'];
-							$git_repository->access_token = $git_repository_data['accessToken'];
-							$git_repository->name         = $git_repository_data['name'];
-
-							$this->settings->git_repositories[] = $git_repository;
-						}
-
-						$git_repositories_field_name = Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES );
-						$value                       = $this->settings->getFieldValues()[ $git_repositories_field_name ] ?? array();
-
-						$value = is_array( $value ) ?
-							Group::convertRepeaterFieldValues( $field_name, $value, false ) :
-							array();
-
-						$this->settings->git_repositories = array();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_AUTOMATIC_REPORTS_DISABLED ):
-						$value = $this->settings_storage->is_automatic_reports_disabled();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_TEMPLATE_ENGINE ):
-						$value = $this->settings_storage->get_template_engine();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_WEB_COMPONENTS_TYPE ):
-						$value = $this->settings_storage->get_web_component_type();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_CLASSES_GENERATION ):
-						$value = $this->settings_storage->get_classes_generation();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_IS_CPT_ADMIN_OPTIMIZATION_ENABLED ):
-						$value = $this->settings_storage->is_cpt_admin_optimization_enabled();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_SASS_TEMPLATE ):
-						$value = $this->settings_storage->get_sass_code();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_TS_TEMPLATE ):
-						$value = $this->settings_storage->get_ts_code();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_LIVE_RELOAD_INTERVAL_SECONDS ):
-						$value = $this->settings_storage->get_live_reload_interval_seconds();
-						break;
-					case Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_LIVE_RELOAD_INACTIVE_DELAY_SECONDS ):
-						$value = $this->settings_storage->get_live_reload_inactive_delay_seconds();
-						break;
+				if ( key_exists( $field_name, $acf_field_values ) ) {
+					return $acf_field_values[ $field_name ];
 				}
 
 				return $value;
@@ -328,17 +232,124 @@ final class Settings_Page extends Action implements Hooks_Interface {
 		exit;
 	}
 
-	public function set_hooks( Route_Detector $route_detector ): void {
-		if ( false === $route_detector->is_admin_route() ) {
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_acf_field_values(): array {
+		$acf_field_values = array();
+
+		foreach ( $this->get_field_values() as $field_name => $value ) {
+			$acf_field_name = Plugin_Settings::getAcfFieldName( $field_name );
+
+			$acf_field_values[ $acf_field_name ] = $value;
+		}
+
+		return $acf_field_values;
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	protected function get_field_values(): array {
+		return array(
+			Plugin_Settings::FIELD_IS_DEV_MODE            => $this->settings_storage->is_dev_mode(),
+			Plugin_Settings::FIELD_IS_FILE_SYSTEM_STORAGE => strlen( $this->layouts_settings_storage->get_file_system()->get_base_folder() ) > 0,
+			Plugin_Settings::FIELD_GIT_REPOSITORIES       => $this->resolve_git_repositories(),
+			Plugin_Settings::FIELD_IS_AUTOMATIC_REPORTS_DISABLED => $this->settings_storage->is_automatic_reports_disabled(),
+			Plugin_Settings::FIELD_TEMPLATE_ENGINE        => $this->settings_storage->get_template_engine(),
+			Plugin_Settings::FIELD_WEB_COMPONENTS_TYPE    => $this->settings_storage->get_web_component_type(),
+			Plugin_Settings::FIELD_CLASSES_GENERATION     => $this->settings_storage->get_classes_generation(),
+			Plugin_Settings::FIELD_IS_CPT_ADMIN_OPTIMIZATION_ENABLED => $this->settings_storage->is_cpt_admin_optimization_enabled(),
+			Plugin_Settings::FIELD_SASS_TEMPLATE          => $this->settings_storage->get_sass_code(),
+			Plugin_Settings::FIELD_TS_TEMPLATE            => $this->settings_storage->get_ts_code(),
+			Plugin_Settings::FIELD_LIVE_RELOAD_INTERVAL_SECONDS => $this->settings_storage->get_live_reload_interval_seconds(),
+			Plugin_Settings::FIELD_LIVE_RELOAD_INACTIVE_DELAY_SECONDS => $this->settings_storage->get_live_reload_inactive_delay_seconds(),
+		);
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	protected function resolve_git_repositories(): array {
+		$this->settings->git_repositories = array();
+
+		foreach ( $this->settings_storage->get_git_repositories() as $git_repository_data ) {
+			$git_repository = $this->git_repository->getDeepClone();
+
+			$git_repository->id           = string( $git_repository_data, 'id' );
+			$git_repository->access_token = string( $git_repository_data, 'accessToken' );
+			$git_repository->name         = string( $git_repository_data, 'name' );
+
+			$this->settings->git_repositories[] = $git_repository;
+		}
+
+		$field_name = Plugin_Settings::getAcfFieldName( Plugin_Settings::FIELD_GIT_REPOSITORIES );
+		$value      = $this->settings->getFieldValues()[ $field_name ] ?? array();
+
+		$value = is_array( $value ) ?
+			Group::convertRepeaterFieldValues( $field_name, $value, false ) :
+			array();
+
+		$this->settings->git_repositories = array();
+
+		return $value;
+	}
+
+
+	/**
+	 * @param mixed $post_id
+	 */
+	protected function is_my_source( $post_id ): bool {
+		$screen = get_current_screen();
+
+		$settings_screen = sprintf( '%s_page_%s', Hard_Layout_Cpt::cpt_name(), self::SLUG );
+
+		return null !== $screen &&
+				$settings_screen === $screen->id &&
+				'options' === $post_id;
+	}
+
+	protected function activate_fs_storage(): void {
+		$wp_filesystem      = $this->layouts_settings_storage->get_file_system()->get_wp_filesystem();
+		$target_base_folder = $this->layouts_settings_storage->get_file_system()->get_target_base_folder();
+
+		if ( false === $wp_filesystem->mkdir( $target_base_folder, 0755 ) ) {
+			$this->saved_message = __(
+				'Fail to activate the file system storage. Check your FS permissions.',
+				'acf-views'
+			);
+
 			return;
 		}
 
-		// init, not acf/init, as the method uses 'get_edit_post_link' which will be available only since this hook
-		// (because we sign up the CPTs in this hook).
-		self::add_action( 'init', array( $this, 'add_page' ) );
-		self::add_action( 'acf/save_post', array( $this, 'maybe_catch_values' ) );
-		// priority 20, as it's after the ACF's save_post hook.
-		self::add_action( 'acf/save_post', array( $this, 'maybe_process' ), 20 );
-		self::add_action( 'acf/input/admin_head', array( $this, 'maybe_inject_values' ) );
+		// set, as the folder was just created.
+		$this->layouts_settings_storage->get_file_system()->set_base_folder();
+		$this->post_selections_settings_storage->get_file_system()->set_base_folder();
+
+		$this->layouts_settings_storage->activate_file_system_storage();
+		$this->post_selections_settings_storage->activate_file_system_storage();
+	}
+
+	protected function deactivate_fs_storage(): void {
+		$theme_templates_folder = $this->layouts_settings_storage->get_file_system()->get_base_folder();
+
+		$this->layouts_settings_storage->deactivate_file_system_storage();
+		$this->post_selections_settings_storage->deactivate_file_system_storage();
+
+		$is_removed = $this->layouts_settings_storage->get_file_system()
+												->get_wp_filesystem()
+												->rmdir(
+													$theme_templates_folder,
+													true
+												);
+
+		if ( $is_removed ) {
+			return;
+		}
+
+		$this->saved_message = __(
+			'Fail to deactivate the file system storage. Check your FS permissions.',
+			'acf-views'
+		);
 	}
 }

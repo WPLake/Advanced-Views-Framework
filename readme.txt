@@ -200,6 +200,7 @@ You're welcome to open issues or PRs there.
 
 = 3.9.3 (2026-) =
 - Enhance: PHP snippet execution - now ignores top-level echo statements
+- Enhance: Settings page behavior
 
 = 3.9.2 (2026-07-29) =
 - Enhance: Layout - "render template when it's empty" option - not required anymore for custom-data Layouts

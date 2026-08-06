@@ -6,7 +6,9 @@ namespace Org\Wplake\Advanced_Views\Plugin\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Theme_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Template\Engines_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Safe_Array_Arguments;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
@@ -273,18 +275,29 @@ class Settings_Storage implements Cpt_Theme_Settings {
 		$option_settings = $this->options->get_option( Options_Storage::OPTION_SETTINGS );
 		$this->settings  = arr( $option_settings );
 
-		$this->version                           = string( $this->settings, 'version' );
-		$this->demo_import                       = arr( $this->settings, 'demoImport' );
-		$this->is_dev_mode                       = bool( $this->settings, 'isDevMode' );
-		$this->is_automatic_reports_disabled     = bool( $this->settings, 'isWithoutAutomaticReports' );
-		$this->is_automatic_reports_confirmed    = bool( $this->settings, 'isAutomaticReportsConfirmed' );
-		$this->web_components_type               = string( $this->settings, 'webComponentsType' );
-		$this->template_engine                   = string( $this->settings, 'templateEngine' );
-		$this->classes_generation                = string( $this->settings, 'classesGeneration' );
-		$this->is_cpt_admin_optimization_enabled = bool( $this->settings, 'isCptAdminOptimizationEnabled' );
-		$this->sass_template                     = string( $this->settings, 'sassTemplate' );
-		$this->ts_template                       = string( $this->settings, 'tsTemplate' );
-		// these with defaults.
+		$this->version                            = string( $this->settings, 'version' );
+		$this->demo_import                        = arr( $this->settings, 'demoImport' );
+		$this->is_dev_mode                        = bool( $this->settings, 'isDevMode' );
+		$this->is_automatic_reports_disabled      = bool( $this->settings, 'isWithoutAutomaticReports' );
+		$this->is_automatic_reports_confirmed     = bool( $this->settings, 'isAutomaticReportsConfirmed' );
+		$this->web_components_type                = string(
+			$this->settings,
+			'webComponentsType',
+			Cpt_Settings::WEB_COMPONENT_CLASSIC
+		);
+		$this->template_engine                    = string(
+			$this->settings,
+			'templateEngine',
+			Engines_Storage::TWIG
+		);
+		$this->classes_generation                 = string(
+			$this->settings,
+			'classesGeneration',
+			Cpt_Settings::CLASS_GENERATION_BEM
+		);
+		$this->is_cpt_admin_optimization_enabled  = bool( $this->settings, 'isCptAdminOptimizationEnabled' );
+		$this->sass_template                      = string( $this->settings, 'sassTemplate' );
+		$this->ts_template                        = string( $this->settings, 'tsTemplate' );
 		$this->live_reload_interval_seconds       = int( $this->settings, 'liveReloadIntervalSeconds', 5 );
 		$this->live_reload_inactive_delay_seconds = int( $this->settings, 'liveReloadInactiveDelaySeconds', 20 );
 

@@ -310,12 +310,9 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @return mixed
 	 */
 	public function get_acf_field_from_instance( $value, string $unique_id, array $field, array $values ) {
-		$field_name = key_exists( 'name', $field ) &&
-						is_string( $field['name'] ) ?
-			$field['name'] :
-			'';
+		$field_name = string( $field, 'name' );
 
-		// skip sub-fields or fields from other groups.
+		// skip fields with default values, sub-fields or fields from other groups.
 		if ( ! key_exists( $field_name, $values ) ) {
 			return $value;
 		}

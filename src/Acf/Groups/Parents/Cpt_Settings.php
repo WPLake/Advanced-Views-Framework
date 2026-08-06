@@ -25,6 +25,7 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	const WEB_COMPONENT_SHADOW_DOM             = 'shadow_dom';
 	const WEB_COMPONENT_NONE                   = 'none';
 	const CLASS_GENERATION_NONE                = 'none';
+	const CLASS_GENERATION_BEM                 = 'bem';
 
 	const CODE_MODE_PREVIEW = 'preview';
 	const CODE_MODE_EDIT    = 'edit';

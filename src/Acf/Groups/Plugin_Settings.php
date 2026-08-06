@@ -46,11 +46,13 @@ class Plugin_Settings extends Group {
 	/**
 	 * @label Live Reload mode: interval (in seconds)
 	 * @instructions Controls how often the refresh requests are sent when on-page Live Reload Mode is enabled. A smaller number means faster updates, but it also increases server load.
+	 * Default value is defined by the Settings_Storage.
 	 */
 	public int $live_reload_interval_seconds;
 	/**
 	 * @label Live Reload mode: inactive delay (in seconds)
 	 * @instructions Controls the period after which Live Reload Mode is paused when no mouse events are registered. A smaller number decreases server load but may increase your waiting time.
+	 * Default value is defined by the Settings_Storage.
 	 */
 	public int $live_reload_inactive_delay_seconds;
 	/**
@@ -74,7 +76,7 @@ class Plugin_Settings extends Group {
 	 * @label Template engine
 	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Layouts and Post Selections.
 	 * @choices {"php":"vanilla PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
-	 * @default_value twig
+	 * Default value is defined by the Settings_Storage.
 	 */
 	public string $template_engine;
 
@@ -83,7 +85,7 @@ class Plugin_Settings extends Group {
 	 * @label Web components type
 	 * @instructions Controls the web component setting for new Layouts and Post Selections.
 	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
-	 * @default_value classic
+	 * Default value is defined by the Settings_Storage.
 	 */
 	public string $web_components_type;
 	/**
@@ -91,7 +93,7 @@ class Plugin_Settings extends Group {
 	 * @label Classes generation
 	 * @instructions Controls classes generation in the Default Template for new Layouts and Post Selections.
 	 * @choices {"bem":"BEM style","none":"None"}
-	 * @default_value bem
+	 * Default value is defined by the Settings_Storage.
 	 */
 	public string $classes_generation;
 	/**
