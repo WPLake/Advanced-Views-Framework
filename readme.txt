@@ -4,7 +4,7 @@ Tags: post grid, wp_query, meta fields, custom post types, taxonomy
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.9.2
+Stable tag: 3.9.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -198,7 +198,7 @@ You're welcome to open issues or PRs there.
 
 == Changelog ==
 
-= 3.9.3 (2026-) =
+= 3.9.3 (2026-08-07) =
 - Enhance: Layout/Selection Title on editor screens
 - Enhance: PHP snippet execution - now ignores top-level echo statements
 - Enhance: Settings page behavior
