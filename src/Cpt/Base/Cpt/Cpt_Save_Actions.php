@@ -24,6 +24,7 @@ use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Safe_Array_Arguments;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
@@ -189,8 +190,10 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			return null;
 		}
 
-		$post_id   = (int) $post_id;
-		$unique_id = get_post( $post_id )->post_name ?? '';
+		$post_id    = int( $post_id );
+		$post       = get_post( $post_id );
+		$unique_id  = string( $post, 'post_name' );
+		$post_title = string( $post, 'post_title' );
 
 		$cpt_data = $this->cpt_settings_storage->get( $unique_id );
 
@@ -221,7 +224,12 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$cpt_data->js_code  = $this->sync_code( $cpt_data->js_code, $js_code );
 		$cpt_data->css_code = $this->sync_code( $cpt_data->css_code, $css_code );
 
-		if ( true !== $is_skip_save ) {
+		// new title is already in the place, we compare with "post_title" just to detect the change.
+		if ( $post_title !== $cpt_data->title ) {
+			$this->cpt_settings_storage->rename( $cpt_data, $cpt_data->title );
+		}
+
+		if ( ! $is_skip_save ) {
 			$this->cpt_settings_storage->save( $cpt_data );
 		}
 
@@ -669,7 +677,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 	 * @throws Exception
 	 */
 	protected function save_caught_fields( int $post_id ): void {
-		$post_unique_id = get_post( $post_id )->post_name ?? '';
+		$post           = get_post( $post_id );
+		$post_unique_id = string( $post, 'post_name' );
 
 		// here is the right place to assign the uniqueId for new items.
 		$this->cpt_settings_storage->get_db_management()->maybe_assign_unique_id( $post_id, $this->cpt_settings );
@@ -683,7 +692,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			null;
 
 		$this->save_validation_instance_to_storage( $unique_id, $origin_instance );
-
 		$this->perform_save_actions( $post_id );
 	}
 }

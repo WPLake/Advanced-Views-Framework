@@ -263,12 +263,9 @@ abstract class Item_Management extends Action {
 	public function rename( Cpt_Settings $cpt_settings, string $new_title ): void {
 		$cpt_settings->title = $new_title;
 
-		if ( false === $this->file_system->is_active() ) {
-			return;
+		if ( $this->file_system->is_active() ) {
+			$this->file_system->rename_item( $cpt_settings->get_unique_id( true ), $new_title );
 		}
-
-		// do not use directly $newTitle, as we need the FS-suitable title.
-		$this->file_system->rename_item( $cpt_settings->get_unique_id( true ), $cpt_settings->title );
 	}
 
 	// note: the post must already be trashed by WP.
