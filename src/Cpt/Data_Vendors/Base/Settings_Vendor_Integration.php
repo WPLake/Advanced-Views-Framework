@@ -354,7 +354,7 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 		return array_merge(
 			$columns,
 			array(
-				'relatedAcfViews' => __( 'Assigned to View', 'acf-views' ),
+				'relatedAcfViews' => __( 'Assigned to Layout', 'acf-views' ),
 			)
 		);
 	}

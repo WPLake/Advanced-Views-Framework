@@ -28,7 +28,6 @@ class Db_Management extends Action {
 	 * @var array<string,int> uniqueId => postId
 	 */
 	private array $trashed_post_ids;
-	private bool $is_renaming_suppressed;
 	private bool $is_external_storage;
 
 	public function __construct(
@@ -45,7 +44,6 @@ class Db_Management extends Action {
 		$this->post_ids               = array();
 		$this->trashed_post_ids       = array();
 		$this->is_read_post_ids       = false;
-		$this->is_renaming_suppressed = false;
 		$this->is_external_storage    = $is_external_storage;
 	}
 
@@ -111,16 +109,12 @@ class Db_Management extends Action {
 	/**
 	 * @param array<string|int,mixed> $post_fields
 	 */
-	public function update_post_without_renaming( array $post_fields ): void {
-		$this->is_renaming_suppressed = true;
-
+	public function update_post( array $post_fields ): void {
 		// @phpstan-ignore-next-line
 		wp_update_post( $post_fields );
 
-		$this->is_renaming_suppressed = false;
-
 		$this->get_logger()->debug(
-			'updated post without renaming',
+			'updated post',
 			array(
 				'post_fields' => $post_fields,
 			)
@@ -144,10 +138,7 @@ class Db_Management extends Action {
 			$args['post_author'] = $author_id;
 		}
 
-		// suppress the renaming, it's going to break everything at this step.
-		$this->is_renaming_suppressed = true;
 		$post_id                      = wp_insert_post( $args, true );
-		$this->is_renaming_suppressed = false;
 
 		if ( is_wp_error( $post_id ) ) {
 			$this->get_logger()->warning(
@@ -193,7 +184,7 @@ class Db_Management extends Action {
 		}
 
 		// update the post fields.
-		$this->update_post_without_renaming(
+		$this->update_post(
 			array_merge(
 				$cpt_settings->get_exposed_post_fields(),
 				array(
@@ -201,10 +192,6 @@ class Db_Management extends Action {
 				)
 			)
 		);
-	}
-
-	public function is_renaming_suppressed(): bool {
-		return $this->is_renaming_suppressed;
 	}
 
 	/**
@@ -253,7 +240,7 @@ class Db_Management extends Action {
 
 		$unique_id = uniqid( $this->get_unique_id_prefix() );
 
-		$this->update_post_without_renaming(
+		$this->update_post(
 			array(
 				'ID'        => $post_id,
 				'post_name' => $unique_id,
@@ -279,7 +266,7 @@ class Db_Management extends Action {
 
 		// 1. first of all restore the origin slug
 		$unique_id = str_replace( '__trashed', '', $slug );
-		$this->update_post_without_renaming(
+		$this->update_post(
 			array(
 				'ID'        => $post_id,
 				'post_name' => $unique_id,

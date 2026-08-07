@@ -249,7 +249,7 @@ abstract class Item_Management extends Action {
 
 		// keep the exposed post fields actual, if the post is present.
 		if ( 0 !== $cpt_settings->get_post_id() ) {
-			$this->db_management->update_post_without_renaming(
+			$this->db_management->update_post(
 				array_merge(
 					$cpt_settings->get_exposed_post_fields(),
 					array(
@@ -326,7 +326,7 @@ abstract class Item_Management extends Action {
 		$this->save( $cpt_data );
 
 		// make the post content empty.
-		$this->db_management->update_post_without_renaming(
+		$this->db_management->update_post(
 			array(
 				'ID'           => $post_id,
 				'post_content' => '',

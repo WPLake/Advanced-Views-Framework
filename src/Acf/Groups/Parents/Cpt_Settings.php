@@ -43,6 +43,7 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	// fields have 'a-order' is 2 to be after current fields (they have '1' by default).
 	// @phpcs:ignore WordPress.NamingConventions.ValidVariableName.MemberNotSnakeCase
 
+	public string $title;
 	/**
 	 * @a-type tab
 	 * @label Mount Points
@@ -85,10 +86,6 @@ abstract class Cpt_Settings extends Group implements Cpt_Theme_Settings {
 	 * @a-deprecated This argument is used just to hide the field from the UI
 	 */
 	public string $unique_id;
-	/**
-	 * @a-deprecated This argument is used just to hide the field from the UI
-	 */
-	public string $title;
 	/**
 	 * This field is used in the Git feature, so old items can be updated while importing
 	 *

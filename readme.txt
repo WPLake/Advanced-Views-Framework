@@ -199,6 +199,7 @@ You're welcome to open issues or PRs there.
 == Changelog ==
 
 = 3.9.3 (2026-) =
+- Enhance: Layout/Selection Title on editor screens
 - Enhance: PHP snippet execution - now ignores top-level echo statements
 - Enhance: Settings page behavior
 

@@ -35,6 +35,14 @@ class Layout_Settings extends Cpt_Settings {
 	const UNIQUE_ID_PREFIX            = 'view_';
 	const MAGIC_CSS_SELECTOR          = 'layout';
 
+
+	/**
+	 * @label Layout name
+	 * @required 1
+	 * @instructions The internal name of the Layout, visible in the Layouts list.
+	 */
+	public string $title;
+
 	/**
 	 * @a-type tab
 	 * @label Fields
@@ -51,6 +59,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-no-tab 1
 	 */
 	public array $items;
+
 
 	/**
 	 * @a-type select

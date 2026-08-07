@@ -242,7 +242,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-views_shortcode',
-			__( 'Shortcode', 'acf-views' ),
+			__( 'Embedding shortcode', 'acf-views' ),
 			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
@@ -277,6 +277,25 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 		);
 
 		add_meta_box(
+			'acf-views_related_cards',
+			sprintf(
+			// translators: %s - singular name of the CPT.
+				__( 'Assigned to %s', 'acf-views' ),
+				$this->plugin_cpt->labels()->plural_name()
+			),
+			function ( WP_Post $wp_post ): void {
+				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
+
+				$this->print_related_acf_cards_meta_box( $view_data );
+			},
+			array(
+				$this->get_cpt_name(),
+			),
+			'side',
+			'core'
+		);
+
+		add_meta_box(
 			'acf-views_related_groups',
 			__( 'Assigned Groups', 'acf-views' ),
 			function ( WP_Post $wp_post ): void {
@@ -301,25 +320,6 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 
 				$this->print_related_views_meta_box( $view_data );
-			},
-			array(
-				$this->get_cpt_name(),
-			),
-			'side',
-			'core'
-		);
-
-		add_meta_box(
-			'acf-views_related_cards',
-			sprintf(
-			// translators: %s - singular name of the CPT.
-				__( 'Assigned to %s', 'acf-views' ),
-				$this->plugin_cpt->labels()->plural_name()
-			),
-			function ( WP_Post $wp_post ): void {
-				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
-
-				$this->print_related_acf_cards_meta_box( $view_data );
 			},
 			array(
 				$this->get_cpt_name(),

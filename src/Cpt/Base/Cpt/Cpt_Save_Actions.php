@@ -24,7 +24,6 @@ use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Safe_Array_Arguments;
-use WP_Post;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
@@ -93,8 +92,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		$this->mock_acf_saving();
 
 		self::add_action( 'acf/input/admin_head', array( $this, 'load_fields_from_json' ) );
-		// we need the built-in wp hook to have the latest title.
-		self::add_action( 'save_post_' . $this->get_cpt_name(), array( $this, 'maybe_rename_title' ), 10, 2 );
 		self::add_action( 'trashed_post', array( $this, 'trash' ) );
 		self::add_action( 'untrashed_post', array( $this, 'unTrash' ) );
 	}
@@ -549,35 +546,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 		);
 	}
 
-	public function maybe_rename_title( int $post_id, WP_Post $wp_post ): void {
-		// ignore wrong cases
-		// note: check on false, as it returns int in case of success.
-		if ( false !== wp_is_post_revision( $wp_post ) ||
-			false !== wp_is_post_autosave( $wp_post ) ||
-			in_array( $wp_post->post_status, array( 'auto-draft', 'trash' ), true ) ||
-			$this->cpt_settings_storage->get_db_management()->is_renaming_suppressed() ) {
-			return;
-		}
-
-		$cpt_data      = $this->cpt_settings_storage->get( $wp_post->post_name );
-		$current_title = trim( $wp_post->post_title );
-
-		// skip if cptData isn't loaded (e.g. it may happen within restoring item from the trash process).
-		if ( false === $cpt_data->isLoaded() ||
-			$current_title === $cpt_data->title ) {
-			return;
-		}
-
-		// id is not defined if the post is just created.
-		if ( $cpt_data->getSource() !== $post_id ) {
-			$cpt_data->setSource( $post_id );
-		}
-
-		$this->cpt_settings_storage->rename( $cpt_data, $current_title );
-
-		$this->cpt_settings_storage->save( $cpt_data );
-	}
-
 	public function trash( int $post_id ): void {
 		if ( false === $this->is_my_post( $post_id ) ) {
 			return;
@@ -661,7 +629,6 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 
 		// restore overwritten fields.
 		$this->cpt_settings->unique_id = get_post( $post_id )->post_name ?? '';
-		$this->cpt_settings->title     = get_post( $post_id )->post_title ?? '';
 	}
 
 	/**
