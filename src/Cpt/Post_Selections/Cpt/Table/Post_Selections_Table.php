@@ -111,7 +111,7 @@ class Post_Selections_Table extends Cpt_Table {
 			$columns,
 			array(
 				self::COLUMN_DESCRIPTION   => __( 'Description', 'acf-views' ),
-				self::COLUMN_SHORTCODE     => __( 'Shortcode', 'acf-views' ),
+				self::COLUMN_SHORTCODE     => __( 'Embedding shortcode', 'acf-views' ),
 				self::COLUMN_RELATED_VIEW  => sprintf(
 					// translators: %s - singular name of the CPT.
 					__( 'Related %s', 'acf-views' ),

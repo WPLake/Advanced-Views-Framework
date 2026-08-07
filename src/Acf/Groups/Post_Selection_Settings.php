@@ -46,6 +46,12 @@ class Post_Selection_Settings extends Cpt_Settings {
 	const ITEMS_SOURCE_CONTEXT_POSTS = 'context_posts';
 
 	/**
+	 * @label Selection name
+	 * @required 1
+	 * @instructions The internal name of the Post Selection, visible on the list screen.
+	 */
+	public string $title;
+	/**
 	 * @a-type tab
 	 * @label General
 	 */
