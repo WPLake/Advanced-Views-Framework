@@ -74,7 +74,7 @@ class Selection_Meta_Boxes extends Cpt_Meta_Boxes {
 	public function add_meta_boxes(): void {
 		add_meta_box(
 			'acf-cards_shortcode_cpt',
-			__( 'Shortcode', 'acf-views' ),
+			__( 'Embedding shortcode', 'acf-views' ),
 			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
