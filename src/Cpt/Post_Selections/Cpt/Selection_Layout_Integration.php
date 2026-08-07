@@ -66,23 +66,23 @@ class Selection_Layout_Integration extends Cpt_Settings_Creator implements Hooks
 			return;
 		}
 
-		$view_data = $this->layouts_settings_storage->get( $from_post->post_name );
+		$layout_settings = $this->layouts_settings_storage->get( $from_post->post_name );
 
-		$card_data = $this->post_selections_settings_storage->create_new( 'publish', $from_post->post_title );
+		$selection_settings = $this->post_selections_settings_storage->create_new( 'publish', $layout_settings->title );
 
-		if ( null === $card_data ) {
+		if ( null === $selection_settings ) {
 			return;
 		}
 
-		$card_data->acf_view_id  = $view_data->get_unique_id();
-		$card_data->post_types[] = 'post';
+		$selection_settings->acf_view_id  = $layout_settings->get_unique_id();
+		$selection_settings->post_types[] = 'post';
 
-		$this->set_defaults_from_settings( $card_data );
+		$this->set_defaults_from_settings( $selection_settings );
 
 		// the data above will be saved in this call (link to cardData is in the storage).
-		$this->post_selections_cpt_save_actions->perform_save_actions( $card_data->get_post_id() );
+		$this->post_selections_cpt_save_actions->perform_save_actions( $selection_settings->get_post_id() );
 
-		wp_safe_redirect( $card_data->get_edit_post_link( 'redirect' ) );
+		wp_safe_redirect( $selection_settings->get_edit_post_link( 'redirect' ) );
 		exit;
 	}
 

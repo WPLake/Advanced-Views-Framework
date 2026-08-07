@@ -41,10 +41,10 @@ class Db_Management extends Action {
 		$this->file_system = $file_system;
 		$this->plugin_cpt  = $plugin_cpt;
 
-		$this->post_ids               = array();
-		$this->trashed_post_ids       = array();
-		$this->is_read_post_ids       = false;
-		$this->is_external_storage    = $is_external_storage;
+		$this->post_ids            = array();
+		$this->trashed_post_ids    = array();
+		$this->is_read_post_ids    = false;
+		$this->is_external_storage = $is_external_storage;
 	}
 
 	protected function read_post_ids(): void {
@@ -138,7 +138,7 @@ class Db_Management extends Action {
 			$args['post_author'] = $author_id;
 		}
 
-		$post_id                      = wp_insert_post( $args, true );
+		$post_id = wp_insert_post( $args, true );
 
 		if ( is_wp_error( $post_id ) ) {
 			$this->get_logger()->warning(
@@ -238,17 +238,15 @@ class Db_Management extends Action {
 			return;
 		}
 
-		$unique_id = uniqid( $this->get_unique_id_prefix() );
+		$cpt_settings->unique_id = uniqid( $this->get_unique_id_prefix() );
+		$cpt_settings->setSource( $post_id );
 
 		$this->update_post(
 			array(
 				'ID'        => $post_id,
-				'post_name' => $unique_id,
+				'post_name' => $cpt_settings->unique_id,
 			)
 		);
-
-		$cpt_settings->unique_id = $unique_id;
-		$cpt_settings->setSource( $post_id );
 
 		// we always need to update the cache, even the IDs aren't read it
 		// otherwise it'll call read later, and the id will be missing (as the item missing in FS).
@@ -257,7 +255,7 @@ class Db_Management extends Action {
 			$this->read_post_ids();
 		}
 
-		$this->post_ids[ $unique_id ] = $post_id;
+		$this->post_ids[ $cpt_settings->unique_id ] = $post_id;
 	}
 
 	// note: the post must already be trashed by WP.

@@ -386,9 +386,9 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 					return;
 				}
 
-				$view_data = $this->layouts_settings_storage->create_new( 'publish', $from_post->post_title );
+				$layout_settings = $this->layouts_settings_storage->create_new( 'publish', $from_post->post_title );
 
-				if ( null === $view_data ) {
+				if ( null === $layout_settings ) {
 					return;
 				}
 
@@ -396,8 +396,8 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 				$group_fields          = $this->get_group_fields( $from_post );
 				$group_key             = '';
 
-				$view_data->title = $from_post->post_title;
-				$this->set_defaults_from_settings( $view_data );
+				$layout_settings->title = $from_post->post_title;
+				$this->set_defaults_from_settings( $layout_settings );
 
 				// get group field key if at least one field is present
 				// (e.g. Pods requires a field data to get the '_pod_name' part).
@@ -413,15 +413,15 @@ abstract class Settings_Vendor_Integration extends Cpt_Settings_Creator implemen
 					$this->add_item_to_view(
 						$group_key,
 						$field,
-						$view_data,
+						$layout_settings,
 						$supported_field_types
 					);
 				}
 
 				// it'll save the data above too.
-				$this->layouts_cpt_save_actions->perform_save_actions( $view_data->get_post_id() );
+				$this->layouts_cpt_save_actions->perform_save_actions( $layout_settings->get_post_id() );
 
-				wp_safe_redirect( $view_data->get_edit_post_link( 'redirect' ) );
+				wp_safe_redirect( $layout_settings->get_edit_post_link( 'redirect' ) );
 				exit;
 			}
 		);

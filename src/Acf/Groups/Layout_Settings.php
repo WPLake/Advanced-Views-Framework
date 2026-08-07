@@ -40,6 +40,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @label Layout name
 	 * @required 1
 	 * @instructions The internal name of the Layout, visible on the list screen.
+	 * @a-html-class advanced-views__title
 	 */
 	public string $title;
 

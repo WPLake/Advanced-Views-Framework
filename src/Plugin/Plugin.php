@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Plugin\Settings\Options_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Query_Arguments;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
@@ -164,6 +165,28 @@ class Plugin extends Hookable implements Hooks_Interface {
 		}
 
 		$field['wrapper']['class'] .= ' acf-field--deprecated';
+
+		return $field;
+	}
+
+	/**
+	 * @param array<string,mixed> $field
+	 *
+	 * @return array<string,mixed>
+	 */
+	protected function add_custom_field_class( array $field ): array {
+		$class_argument = 'a-html-class';
+
+		if ( key_exists( $class_argument, $field ) ) {
+			$wrapper          = arr( $field, 'wrapper' );
+			$class            = string( $wrapper, 'class' ) . ' ' . string( $field, $class_argument );
+			$field['wrapper'] = array_merge(
+				$wrapper,
+				array(
+					'class' => esc_html( $class ),
+				)
+			);
+		}
 
 		return $field;
 	}
@@ -391,6 +414,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 	public function amend_field_settings( array $field ): array {
 		$field = $this->amend_pro_field_label_and_instruction( $field );
 		$field = $this->add_deprecated_field_class( $field );
+		$field = $this->add_custom_field_class( $field );
 
 		return $field;
 	}
