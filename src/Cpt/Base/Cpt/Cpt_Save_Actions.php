@@ -202,8 +202,8 @@ abstract class Cpt_Save_Actions extends Action implements Hooks_Interface {
 			Cpt_Settings::WEB_COMPONENT_NONE !== $cpt_data->web_component ) {
 			// by default, Web component is inline, which is wrong, we expect it to be block.
 			$id                 = Hard_Layout_Cpt::cpt_name() === $this->get_cpt_name() ?
-				'view' :
-				'card';
+				'layout' :
+				'selection';
 			$cpt_data->css_code = sprintf( "#%s {\n\tdisplay: block;\n}\n", $id );
 		}
 
