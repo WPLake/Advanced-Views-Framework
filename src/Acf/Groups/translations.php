@@ -179,7 +179,7 @@ __("Add Field", "acf-views");
 
 // Layout_Settings.php : choices
 
-__("vanilla PHP", "acf-views");
+__("PHP", "acf-views");
 __("Twig", "acf-views");
 __("Blade (requires PHP >= 8.2.0)", "acf-views");
 __("Off", "acf-views");
@@ -321,7 +321,7 @@ __("Add Repository", "acf-views");
 
 // Plugin_Settings.php : choices
 
-__("vanilla PHP", "acf-views");
+__("PHP", "acf-views");
 __("Twig", "acf-views");
 __("Blade (requires PHP >= 8.2.0)", "acf-views");
 __("Classic (no CSS isolation)", "acf-views");
@@ -478,7 +478,7 @@ __("", "acf-views");
 __("None", "acf-views");
 __("BEM style", "acf-views");
 __("None", "acf-views");
-__("vanilla PHP", "acf-views");
+__("PHP", "acf-views");
 __("Twig", "acf-views");
 __("Blade (requires PHP >= 8.2.0)", "acf-views");
 __("None", "acf-views");
