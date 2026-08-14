@@ -140,9 +140,31 @@ Customers with an active Pro license have personal support via our [support form
 
 = Is it compatible with my theme? =
 
+Advanced Views uses native WordPress shortcodes for embedding, making it compatible with literally any theme.
+Below are integration guides for some of the most popular themes:
+
+* [Astra](https://docs.advanced-views.com/integrations/themes/astra)
+* [Avada](https://docs.advanced-views.com/integrations/themes/avada)
+* [Bricks](https://docs.advanced-views.com/integrations/themes/bricks)
+* [Blocksy](https://docs.advanced-views.com/integrations/themes/blocksy)
+* [Divi](https://docs.advanced-views.com/integrations/themes/divi)
+* [Flatsome](https://docs.advanced-views.com/integrations/themes/flatsome)
+* [GeneratePress](https://docs.advanced-views.com/integrations/themes/generate-press)
+* [Genesis](https://docs.advanced-views.com/integrations/themes/genesis)
+* [Kadence](https://docs.advanced-views.com/integrations/themes/kadence)
+* [any Classic](https://docs.advanced-views.com/integrations/themes/classic)
+
 = Is it compatible with my page builder? =
 
+Advanced Views uses native WordPress shortcodes for embedding, making it compatible with literally any page builder.
+Below are integration guides for some of the most popular page builders:
 
+* [Beaver Builder](https://docs.advanced-views.com/integrations/page-builders/beaver-builder)
+* [Brizy](https://docs.advanced-views.com/integrations/page-builders/brizy)
+* [Elementor](https://docs.advanced-views.com/integrations/page-builders/elementor)
+* [Oxygen](https://docs.advanced-views.com/integrations/page-builders/oxygen)
+* [Spectra](https://docs.advanced-views.com/integrations/page-builders/spectra)
+* [WPBackery](https://docs.advanced-views.com/integrations/page-builders/wp-backery)
 
 = Which field providers and types are supported? =
 
@@ -150,9 +172,9 @@ Advanced Views natively supports fields from multiple providers:
 
 * [Native WordPress fields](https://docs.advanced-views.com/fields/wordpress-fields) - 20+ fields
 * [WooCommerce Product fields](https://docs.advanced-views.com/fields/woo-product-fields) - 10+ fields
-* [Advanced Custom Fields](https://docs.advanced-views.com/fields/advanced-custom-fields) - all 30+ field types
-* [MetaBox fields](https://docs.advanced-views.com/fields/meta-box-fields) - all 40+ field types
-* [Pods fields](https://docs.advanced-views.com/fields/pods-fields) - all 18+ field types
+* [Advanced Custom Fields](https://docs.advanced-views.com/fields/meta-plugins/advanced-custom-fields) - all 30+ field types
+* [MetaBox fields](https://docs.advanced-views.com/fields/meta-plugins/meta-box-fields) - all 40+ field types
+* [Pods fields](https://docs.advanced-views.com/fields/meta-plugins/pods-fields) - all 18+ field types
 
 To [display other fields](https://docs.advanced-views.com/fields/other-fields) made by your theme or plugins, just [customize the default Layout template](https://docs.advanced-views.com/layouts/code-fields/custom-template).
 
