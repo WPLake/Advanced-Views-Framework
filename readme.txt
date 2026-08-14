@@ -199,10 +199,12 @@ Advanced Views lets you display fields from almost any WordPress data source:
 
 == Changelog ==
 
-= 3.9.3 (2026-08-07) =
+= 3.9.3 (2026-08-14) =
 - Enhance: Layout/Selection Title on editor screens
 - Enhance: PHP snippet execution - now ignores top-level echo statements
 - Enhance: Settings page behavior
+- Uphold: Docs links
+- Uphold: tested compatibility with WP 7.1
 
 = 3.9.2 (2026-07-29) =
 - Enhance: Layout - "render template when it's empty" option - not required anymore for custom-data Layouts

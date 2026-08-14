@@ -55,7 +55,7 @@ abstract class Git_Meta_Box extends Hookable implements Hooks_Interface {
 		echo '<p>';
 		printf(
 			'<a target="_blank" href="%s">%s</a> %s.',
-			'https://docs.advanced-views.com/templates/reusable-components-library-pro',
+			'https://docs.advanced-views.com/features/workflow/cross-installation-components',
 			esc_html(
 				__(
 					'Save the item',

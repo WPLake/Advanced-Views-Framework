@@ -85,7 +85,7 @@ abstract class Git_Tabs extends External_Storage_Tab {
 			)
 		);
 		printf(
-			' <a target="_blank" href="https://docs.advanced-views.com/templates/reusable-components-library-pro">%s</a>',
+			' <a target="_blank" href="https://docs.advanced-views.com/features/workflow/cross-installation-components">%s</a>',
 			esc_html( __( 'Read more' ) )
 		);
 		echo '<br>';

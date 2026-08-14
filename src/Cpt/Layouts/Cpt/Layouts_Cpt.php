@@ -21,7 +21,7 @@ class Layouts_Cpt extends Cpt {
 		$description = sprintf(
 		// translators: %s - singular name of the CPT.
 			__(
-				'Add a <a target="_blank" href="https://docs.advanced-views.com/getting-started/introduction/how-advanced-views-works#layouts">%s</a> and select target fields or import a pre-built component.',
+				'Add a <a target="_blank" href="https://docs.advanced-views.com/getting-started/first-layout">%s</a> and select target fields or import a pre-built component.',
 				'acf-views'
 			),
 			$singular_name
@@ -30,7 +30,7 @@ class Layouts_Cpt extends Cpt {
 						sprintf(
 							// translators: %s - singular name of the CPT.
 							__(
-								'Attach the %s to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/shortcode-attributes/layout-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
+								'Attach the %s to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/layouts/embedding-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
 								'acf-views'
 							),
 							$this->plugin_cpt->labels()->singular_name()

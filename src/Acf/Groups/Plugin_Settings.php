@@ -39,7 +39,7 @@ class Plugin_Settings extends Group {
 	public bool $is_dev_mode;
 	/**
 	 * @label File system storage
-	 * @instructions Enable to store Layout and Post Selection data inside the child theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage'>Read more</a> <br> Important: you should use a <a target='_blank' href='https://developer.wordpress.org/themes/advanced-topics/child-themes/'>child theme</a>, otherwise automatic theme updates will erase the data.
+	 * @instructions Enable to store Layout and Post Selection data inside the child theme folder (instead of the database). <br> This allows you to edit files using your favourite editor (IDE), and do version control with auto sync. <a target='_blank' href='https://docs.advanced-views.com/features/file-system-storage'>Read more</a> <br> Important: you should use a <a target='_blank' href='https://developer.wordpress.org/themes/advanced-topics/child-themes/'>child theme</a>, otherwise automatic theme updates will erase the data.
 	 */
 	public bool $is_file_system_storage;
 
@@ -74,7 +74,7 @@ class Plugin_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Template engine
-	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/templates/template-engines'>template engine</a> setting for new Layouts and Post Selections.
+	 * @instructions Controls the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>template engine</a> setting for new Layouts and Post Selections.
 	 * @choices {"php":"PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
 	 * Default value is defined by the Settings_Storage.
 	 */
@@ -98,7 +98,7 @@ class Plugin_Settings extends Group {
 	public string $classes_generation;
 	/**
 	 * @label Sass Template (for File System Storage)
-	 * @instructions When present, this value is used as the default for the 'style.scss' file of Layout and Post Selection, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/templates/file-system-storage#tailwind-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted.
+	 * @instructions When present, this value is used as the default for the 'style.scss' file of Layout and Post Selection, which is useful e.g. when <a target='_blank' href='https://docs.advanced-views.com/features/file-system-storage/advanced-usage'>Tailwind is in use</a>. <br> If skipped, 'style.scss' creation will be omitted.
 	 * @a-type textarea
 	 */
 	public string $sass_template;
@@ -120,7 +120,7 @@ class Plugin_Settings extends Group {
 	 * @var Git_Repository[]
 	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Git_Repository
 	 * @label Git Repositories
-	 * @instructions By saving Layouts and Post Selections in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/templates/reusable-components-library-pro'>Read more</a>
+	 * @instructions By saving Layouts and Post Selections in your GitLab repository, you can create your own library and reuse them on other websites. <br> <a target='_blank' href='https://docs.advanced-views.com/features/workflow/cross-installation-components'>Read more</a>
 	 * @button_label Add Repository
 	 * @a-no-tab 1
 	 * @layout block

@@ -70,7 +70,7 @@ class Tax_Field_Settings extends Group {
 	public string $meta_field;
 	/**
 	 * @label Custom argument name
-	 * @instructions Enter the <a target='_blank' href='https://docs.advanced-views.com/shortcode-attributes/common-arguments#custom-arguments'>custom shortcode argument</a> name which will be used in the query.
+	 * @instructions Enter the <a target='_blank' href='https://docs.advanced-views.com/post-selections/embedding-shortcode'>custom shortcode argument</a> name which will be used in the query.
 	 * @conditional_logic [[{"field": "local_acf_views_tax-field__dynamic-term","operator": "==","value": "$custom-argument$"}]]
 	 */
 	public string $custom_argument_name;

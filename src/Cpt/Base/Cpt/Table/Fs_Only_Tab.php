@@ -76,7 +76,7 @@ class Fs_Only_Tab extends Cpt_Table_Tab {
 				);
 				printf(
 					' <a target="_blank" href="%s">%s</a>',
-					esc_url( 'https://docs.advanced-views.com/templates/file-system-storage#auto-sync' ),
+					esc_url( 'https://docs.advanced-views.com/features/file-system-storage' ),
 					esc_html( __( 'Read more', 'acf-views' ) )
 				);
 			}

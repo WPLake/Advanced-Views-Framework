@@ -26,7 +26,7 @@ class Plugin extends Hookable implements Hooks_Interface {
 	const PRO_PRICING_URL   = 'https://advanced-views.com/pro/#pricing';
 	const BASIC_VERSION_URL = 'https://advanced-views.com';
 	const SURVEY_URL        = 'https://forms.gle/Wjb16B4mzgLEQvru6';
-	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/compatibility#conflicts';
+	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/debugging';
 	const PROLONG_POINT_URL = 'https://wplake.org';
 	const PRODUCT_SLUG      = 'acf-views';
 
