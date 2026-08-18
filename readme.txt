@@ -148,10 +148,15 @@ Below are integration guides for some of the most popular themes:
 * [Bricks](https://docs.advanced-views.com/integrations/themes/bricks)
 * [Blocksy](https://docs.advanced-views.com/integrations/themes/blocksy)
 * [Divi](https://docs.advanced-views.com/integrations/themes/divi)
+* [Enfold](https://docs.advanced-views.com/integrations/themes/enfold)
 * [Flatsome](https://docs.advanced-views.com/integrations/themes/flatsome)
 * [GeneratePress](https://docs.advanced-views.com/integrations/themes/generate-press)
 * [Genesis](https://docs.advanced-views.com/integrations/themes/genesis)
+* [Impreza](https://docs.advanced-views.com/integrations/themes/impreza)
 * [Kadence](https://docs.advanced-views.com/integrations/themes/kadence)
+* [OceanWP](https://docs.advanced-views.com/integrations/themes/ocean-wp)
+* [The7](https://docs.advanced-views.com/integrations/themes/the7)
+* [WoodMart](https://docs.advanced-views.com/integrations/themes/wood-mart)
 * [any Classic](https://docs.advanced-views.com/integrations/themes/classic)
 
 = Is it compatible with my page builder? =
@@ -160,11 +165,12 @@ Advanced Views uses native WordPress shortcodes for embedding, making it compati
 Below are integration guides for some of the most popular page builders:
 
 * [Beaver Builder](https://docs.advanced-views.com/integrations/page-builders/beaver-builder)
+* [Breakdance](https://docs.advanced-views.com/integrations/page-builders/breakdance)
 * [Brizy](https://docs.advanced-views.com/integrations/page-builders/brizy)
 * [Elementor](https://docs.advanced-views.com/integrations/page-builders/elementor)
 * [Oxygen](https://docs.advanced-views.com/integrations/page-builders/oxygen)
 * [Spectra](https://docs.advanced-views.com/integrations/page-builders/spectra)
-* [WPBackery](https://docs.advanced-views.com/integrations/page-builders/wp-backery)
+* [WPBakery](https://docs.advanced-views.com/integrations/page-builders/wp-bakery)
 
 = Which field providers and types are supported? =
 
