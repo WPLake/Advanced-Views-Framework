@@ -1,10 +1,10 @@
-=== Advanced Views - Display Custom Fields (ACF, Pods, MetaBox), Posts, CPT and Woo Products anywhere in Gutenberg, Elementor, Divi, Beaver... ===
+=== Advanced Views for Custom Fields and Posts ===
 Contributors: wplakeorg
 Tags: post grid, wp_query, meta fields, custom post types, taxonomy
-Requires at least: 5.5
+Requires at least: 5.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.9.3
+Stable tag: 3.9.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -204,6 +204,9 @@ Advanced Views lets you display fields from almost any WordPress data source:
 * [GitHub plugin repository](https://github.com/WPLake/Advanced-Views)
 
 == Changelog ==
+
+= 3.9.4 (2026-08-20) =
+- Readme updates: shorter title, bumped WP version requirement to 5.7
 
 = 3.9.3 (2026-08-14) =
 - Enhance: Layout/Selection Title on editor screens
