@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+defined( 'ABSPATH' ) || exit;
+
 use Org\Wplake\Advanced_Views\Bridge\Controllers\Layout\Layout_Controller_Base;
 
 return new class extends Layout_Controller_Base {

@@ -1,7 +1,7 @@
 === Advanced Views for Custom Fields and Posts ===
 Contributors: wplakeorg
 Tags: post grid, wp_query, meta fields, custom post types, taxonomy
-Requires at least: 5.7
+Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 3.9.4
@@ -204,6 +204,10 @@ Advanced Views lets you display fields from almost any WordPress data source:
 * [GitHub plugin repository](https://github.com/WPLake/Advanced-Views)
 
 == Changelog ==
+
+= 3.9.5 (2026-08-22) =
+- Readme updates: bumped WP version requirement to 5.9
+- Code style improvements
 
 = 3.9.4 (2026-08-20) =
 - Readme updates: shorter title, bumped WP version requirement to 5.7

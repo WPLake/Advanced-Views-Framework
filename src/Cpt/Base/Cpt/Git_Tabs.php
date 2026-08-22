@@ -86,14 +86,12 @@ abstract class Git_Tabs extends External_Storage_Tab {
 		);
 		printf(
 			' <a target="_blank" href="https://docs.advanced-views.com/features/workflow/cross-installation-components">%s</a>',
-			esc_html( __( 'Read more' ) )
+			esc_html__( 'Read more', 'acf-views' )
 		);
 		echo '<br>';
-		echo esc_html(
-			__(
-				'If you have made any external changes to this repository, please click',
-				'acf-views'
-			)
+		echo esc_html__(
+			'If you have made any external changes to this repository, please click',
+			'acf-views'
 		);
 
 		$reset_cache_link = $this->get_cpt_table()->get_tab_url(
@@ -108,9 +106,9 @@ abstract class Git_Tabs extends External_Storage_Tab {
 		printf(
 			' <a href="%s">%s</a> ',
 			esc_url( $reset_cache_link ),
-			esc_html( __( 'here', 'acf-views' ) )
+			esc_html__( 'here', 'acf-views' )
 		);
-		echo esc_html( __( 'to clear the cache.', 'acf-views' ) );
+		echo esc_html__( 'to clear the cache.', 'acf-views' );
 	}
 
 	protected function get_unique_id_prefix(): string {

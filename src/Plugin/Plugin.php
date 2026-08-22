@@ -75,8 +75,8 @@ class Plugin extends Hookable implements Hooks_Interface {
 		$label = str_replace( "'", '&#039;', $label );
 		$label = str_replace( '"', '&quot;', $label );
 
-		// phpcs:ignore
-		$translation = __( $label, $text_domain );
+		// this call is used only for translating within user (Twig) templates.
+		$translation = call_user_func_array( '__', array( $label, $text_domain ) );
 
 		$translation = str_replace( '&#039;', "'", $translation );
 		$translation = str_replace( '&quot;', '"', $translation );

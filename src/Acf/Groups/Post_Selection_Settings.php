@@ -422,6 +422,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 					'<?php
 
 declare(strict_types=1);
+defined( "ABSPATH" ) || exit;
 
 use Org\Wplake\Advanced_Views\Bridge\Controllers\Selection\Selection_Controller_Base;
 

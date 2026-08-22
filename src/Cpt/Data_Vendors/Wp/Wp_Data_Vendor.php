@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Wp;
 
+defined( 'ABSPATH' ) || exit;
+
 use DateTime;
 use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Item_Settings;
@@ -64,8 +66,6 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
 use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
-
-defined( 'ABSPATH' ) || exit;
 
 class Wp_Data_Vendor extends Data_Vendor {
 	// for back compatibility only.

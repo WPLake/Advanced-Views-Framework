@@ -4,13 +4,13 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Wp\Fields\Post;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
+use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Custom_Field;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Field_Meta_Interface;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Markup_Field_Data;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Variable_Field_Data;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Custom_Field;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Base\Fields\Markup_Field;
-use Org\Wplake\Advanced_Views\Acf\Groups\Field_Settings;
-use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -52,9 +52,6 @@ class Post_Excerpt_Field extends Markup_Field {
 			 */
 			// _removed
 
-			/* translators: Maximum number of words used in a post excerpt. */
-			$excerpt_length = (int) _x( '55', 'excerpt_length' );
-
 			/**
 			 * Filters the maximum number of words in a post excerpt.
 			 *
@@ -62,7 +59,7 @@ class Post_Excerpt_Field extends Markup_Field {
 			 *
 			 * @since 2.7.0
 			 */
-			$excerpt_length = apply_filters( 'excerpt_length', $excerpt_length );
+			$excerpt_length = apply_filters( 'excerpt_length', 55 );
 
 			/**
 			 * Filters the string in the "more" link displayed after a trimmed excerpt.

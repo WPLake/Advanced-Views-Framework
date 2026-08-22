@@ -270,6 +270,7 @@ class Layout_Settings extends Cpt_Settings {
 					'<?php
 
 declare(strict_types=1);
+defined( "ABSPATH" ) || exit;
 
 use Org\Wplake\Advanced_Views\Bridge\Controllers\Layout\Layout_Controller_Base;
 

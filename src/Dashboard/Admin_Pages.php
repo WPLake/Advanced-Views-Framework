@@ -342,7 +342,7 @@ class Admin_Pages extends Hookable implements Hooks_Interface {
 				'<a href="%s" target="_blank" style="%s" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">%s</a>',
 				Plugin::PRO_VERSION_URL,
 				esc_attr( $link_style ),
-				esc_html_x( 'Get Pro', 'acf-views' )
+				esc_html__( 'Get Pro', 'acf-views' )
 			),
 		);
 	}

@@ -2,6 +2,8 @@
 // stub for the multilingual detection 
 // labels and descriptions will be translated on the fly (from the PHPDoc comments) 
 
+defined( 'ABSPATH' ) || exit;
+
 // Demo_Group.php : labels
 
 __("Brand", "acf-views");
@@ -71,20 +73,13 @@ __("If enabled, image(s) will include a zoom icon on hover, and when clicked, a 
 
 __("None", "acf-views");
 __("Classic Masonry (macy v2", "acf-views");
-__("", "acf-views");
 __("Flat Masonry (acf-views", "acf-views");
-__("", "acf-views");
 __("Inline-Gallery (lightgallery v2", "acf-views");
-__("", "acf-views");
-__("", "acf-views");
 __("None", "acf-views");
 __("LightGallery v2 (47.1KB js", "acf-views");
-__("", "acf-views");
 __("Simple (no settings", "acf-views");
-__("", "acf-views");
 __("None", "acf-views");
 __("Splide v4 (29.8KB js", "acf-views");
-__("", "acf-views");
 
 // Git_Repository.php : labels
 
@@ -188,9 +183,7 @@ __("Meta Box Block", "acf-views");
 __("Pods Block", "acf-views");
 __("Classic (no CSS isolation)", "acf-views");
 __("Declarative Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("JS Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("None", "acf-views");
 __("BEM style", "acf-views");
 __("None", "acf-views");
@@ -326,9 +319,7 @@ __("Twig", "acf-views");
 __("Blade (requires PHP >= 8.2.0)", "acf-views");
 __("Classic (no CSS isolation)", "acf-views");
 __("Declarative Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("JS Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("None", "acf-views");
 __("BEM style", "acf-views");
 __("None", "acf-views");
@@ -472,9 +463,7 @@ __("Ascending", "acf-views");
 __("Descending", "acf-views");
 __("Classic (no CSS isolation)", "acf-views");
 __("Declarative Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("JS Shadow DOM (CSS isolated", "acf-views");
-__("", "acf-views");
 __("None", "acf-views");
 __("BEM style", "acf-views");
 __("None", "acf-views");
@@ -483,7 +472,6 @@ __("Twig", "acf-views");
 __("Blade (requires PHP >= 8.2.0)", "acf-views");
 __("None", "acf-views");
 __("Splide v4 (29.8KB js", "acf-views");
-__("", "acf-views");
 __("Load More Button", "acf-views");
 __("Infinity Scroll", "acf-views");
 __("Page Numbers", "acf-views");
