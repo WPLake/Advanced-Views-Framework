@@ -44,13 +44,10 @@ abstract class Cpt_Settings_Storage extends Item_Management {
 		global $wpdb;
 
 		// wp doesn't support %s in the IN clause, so paste "hardy" (it's safe for integers).
+		// no placeholders to bind here, so prepare() isn't applicable (it errors on a query with none).
 		$post_ids_string = implode( ',', $post_ids );
-		$query           = $wpdb->prepare(
 		// phpcs:ignore
-			"UPDATE {$wpdb->posts} SET post_content = '' WHERE ID IN ({$post_ids_string})"
-		);
-		// phpcs:ignore
-		$wpdb->query( $query );
+		$wpdb->query( "UPDATE {$wpdb->posts} SET post_content = '' WHERE ID IN ({$post_ids_string})" );
 
 		foreach ( $post_ids as $post_id ) {
 			clean_post_cache( $post_id );
