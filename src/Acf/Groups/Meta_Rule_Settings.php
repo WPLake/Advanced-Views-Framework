@@ -16,9 +16,9 @@ class Meta_Rule_Settings extends Group {
 	 * @a-type select
 	 * @ui 1
 	 * @required 1
-	 * @label Relation
+	 * @label Condition
 	 * @instructions Controls how the meta fields will be joined within the meta rule
-	 * @choices {"AND":"AND","OR":"OR"}
+	 * @choices {"AND":"Match ALL","OR":"Match ANY"}
 	 * @default_value AND
 	 * @conditional_logic [[{"field": "local_acf_views_meta-rule__fields","operator": ">","value": "1"}]]
 	 */

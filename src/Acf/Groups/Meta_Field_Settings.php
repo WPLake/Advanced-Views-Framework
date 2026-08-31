@@ -37,7 +37,7 @@ class Meta_Field_Settings extends Group {
 	 * @required 1
 	 * @label Comparison
 	 * @instructions Controls how field value will be compared
-	 * @choices {"=":"Equal to","!=":"Not Equal to",">":"Bigger than",">=":"Bigger than or Equal to","<":"Less than","<=":"Less than or Equal to","LIKE":"Contains","NOT LIKE":"Does Not Contain","EXISTS":"Exists","NOT EXISTS":"Does Not Exist"}
+	 * @choices {"=":"Equal to","!=":"Not Equal to",">":"Greater than",">=":"At least","<":"Less than","<=":"At most","LIKE":"Contains","NOT LIKE":"Does not contain","EXISTS":"Exists","NOT EXISTS":"Does not exist"}
 	 * @default_value =
 	 */
 	public string $comparison;

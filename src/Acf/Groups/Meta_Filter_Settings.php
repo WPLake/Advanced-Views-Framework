@@ -16,9 +16,9 @@ class Meta_Filter_Settings extends Group {
 	 * @a-type select
 	 * @ui 1
 	 * @required 1
-	 * @label Relation
+	 * @label Condition
 	 * @instructions Controls how meta rules will be joined within the meta query
-	 * @choices {"AND":"AND","OR":"OR"}
+	 * @choices {"AND":"Match ALL","OR":"Match ANY"}
 	 * @default_value AND
 	 * @conditional_logic [[{"field": "local_acf_views_meta-filter__rules","operator": ">","value": "1"}]]
 	 * @a-pro The field must be not required or have default value!
