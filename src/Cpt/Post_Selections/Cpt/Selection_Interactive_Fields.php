@@ -211,6 +211,11 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 				'identifierInputId' => '',
 			),
 			array(
+				'mainSelectId'      => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_POST_GROUP ),
+				'subSelectId'       => Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_POST_FIELD ),
+				'identifierInputId' => '',
+			),
+			array(
 				'mainSelectId'      => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TAXONOMY ),
 				'subSelectId'       => Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_TERM ),
 				'identifierInputId' => '',

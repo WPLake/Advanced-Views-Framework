@@ -51,9 +51,9 @@ __("If filled will be added to the markup as a prefix label of the field above",
 __("You can set the link label here. Leave empty to use the default", "acf-views");
 __("Controls the size of the image, it changes the image src", "acf-views");
 __("By default, an Object field is rendered in the Layout template as an HTML link to the selected object. <br><br> To display fields from within the selected object, assign a separate Layout with the target object fields. <br><br> Example: To display an excerpt from a Post Object, create a separate Layout with the Post Excerpt field and assign it here. <a target='_blank' href='https://docs.advanced-views.com/field-types/relational/relationship-field'>Read more</a>", "acf-views");
-__("Select the gallery layout type. Customize the layout after saving, by editing the JS Code in the CSS & JS tab", "acf-views");
-__("Select the lightbox library to enable. Customize the lightbox after saving, by editing the JS Code in the CSS & JS tab", "acf-views");
-__("Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab", "acf-views");
+__("Select the gallery layout type. Customize the layout after saving, by editing the JS Code in the Styles & Scripts tab", "acf-views");
+__("Select the lightbox library to enable. Customize the lightbox after saving, by editing the JS Code in the Styles & Scripts tab", "acf-views");
+__("Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the Styles & Scripts tab", "acf-views");
 __("Used in the markup. <br> Allowed symbols : letters, numbers, underline and dash. <br> Important! Should be unique within the View", "acf-views");
 __("Set up default value, only used when the field is empty", "acf-views");
 __("By default, empty fields are hidden. <br> Turn on to show even when field has no value", "acf-views");
@@ -124,9 +124,9 @@ __("Styles & Scripts", "acf-views");
 __("CSS Code", "acf-views");
 __("JS Code", "acf-views");
 __("Output", "acf-views");
-__("Description", "acf-views");
 __("Register Gutenberg Block", "acf-views");
 __("Render template when it's empty", "acf-views");
+__("Editorial description", "acf-views");
 __("Developer", "acf-views");
 __("PHP Controller", "acf-views");
 __("Web Component Type", "acf-views");
@@ -153,9 +153,9 @@ __("Write your own template with full control over the HTML markup. <br> Copy th
 __("Choose one of the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>supported template engines</a>, which will be used for this Layout.", "acf-views");
 __("Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option.", "acf-views");
 __("Add Custom Javascript code to your Layout. <br><br> By default, the Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
-__("Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.", "acf-views");
 __("If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.", "acf-views");
 __("By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.", "acf-views");
+__("Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.", "acf-views");
 __("By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/layout-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
 __("By default, every Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>.", "acf-views");
 __("Controls classes generation in the Default Template.", "acf-views");
@@ -194,32 +194,44 @@ __("None", "acf-views");
 __("Group", "acf-views");
 __("Field", "acf-views");
 __("Comparison", "acf-views");
-__("Value", "acf-views");
+__("Static Value", "acf-views");
+__("Dynamic Value", "acf-views");
+__("Post Field Group", "acf-views");
+__("Post Field", "acf-views");
+__("Date Modifier", "acf-views");
+__("Query Parameter Name", "acf-views");
+__("Custom Argument Name", "acf-views");
 
 // Meta_Field_Settings.php : descriptions
 
 __("Select a target group", "acf-views");
 __("Select a target field", "acf-views");
 __("Controls how field value will be compared", "acf-views");
-__("Value that will be compared.<br>Can be empty, in case you want to compare with empty string.<br>Use <strong>&#36;post&#36;</strong> to pick up the actual ID or <strong>&#36;post&#36;.field-name</strong> to pick up field value dynamically. <br>Use <strong>&#36;now&#36;</strong> to pick up the current datetime dynamically. <br>Use <strong>&#36;query&#36;.my-field</strong> to pick up the query value (from &#36;_GET) dynamically. <br>Use <strong>&#36;custom-arguments&#36;.my-field</strong> to pick up the <a target='_blank' href='https://docs.advanced-views.com/post-selections/embedding-shortcode'>custom shortcode argument</a> value dynamically.", "acf-views");
+__("Static value that will be compared.<br>Can be empty, in case you want to compare with empty string.", "acf-views");
+__("Dynamic value that will be compared.", "acf-views");
+__("Select the group that contains the field whose value (from the current post) should be picked up dynamically.", "acf-views");
+__("Select the field (from the current post) whose value should be picked up dynamically.", "acf-views");
+__("Optionally enter a <a target='_blank' href='https://www.php.net/manual/en/function.strtotime.php'>relative date modifier</a> (e.g. <strong>+1 day</strong>, <strong>-1 week</strong>) to offset the current date/time. Leave empty to use the current date/time as-is.", "acf-views");
+__("Enter the name of the URL query parameter (from &#36;_GET) whose value should be picked up dynamically.", "acf-views");
+__("Enter the <a target='_blank' href='https://docs.advanced-views.com/post-selections/embedding-shortcode'>custom shortcode argument</a> name whose value should be picked up dynamically.", "acf-views");
 
 // Meta_Field_Settings.php : choices
 
 __("Equal to", "acf-views");
 __("Not Equal to", "acf-views");
-__("Bigger than", "acf-views");
-__("Bigger than or Equal to", "acf-views");
+__("Greater than", "acf-views");
+__("At least", "acf-views");
 __("Less than", "acf-views");
-__("Less than or Equal to", "acf-views");
+__("At most", "acf-views");
 __("Contains", "acf-views");
-__("Does Not Contain", "acf-views");
+__("Does not contain", "acf-views");
 __("Exists", "acf-views");
-__("Does Not Exist", "acf-views");
+__("Does not exist", "acf-views");
 
 // Meta_Filter_Settings.php : labels
 
-__("Relation", "acf-views");
-__("Rules", "acf-views");
+__("Condition", "acf-views");
+__("Meta Filters", "acf-views");
 
 // Meta_Filter_Settings.php : descriptions
 
@@ -232,12 +244,12 @@ __("Add Rule", "acf-views");
 
 // Meta_Filter_Settings.php : choices
 
-__("AND", "acf-views");
-__("OR", "acf-views");
+__("Match ALL", "acf-views");
+__("Match ANY", "acf-views");
 
 // Meta_Rule_Settings.php : labels
 
-__("Relation", "acf-views");
+__("Condition", "acf-views");
 __("Fields", "acf-views");
 
 // Meta_Rule_Settings.php : descriptions
@@ -251,8 +263,8 @@ __("Add Field", "acf-views");
 
 // Meta_Rule_Settings.php : choices
 
-__("AND", "acf-views");
-__("OR", "acf-views");
+__("Match ALL", "acf-views");
+__("Match ANY", "acf-views");
 
 // Mount_Point_Settings.php : labels
 
@@ -363,7 +375,6 @@ __("Sort by", "acf-views");
 __("Sort by Meta Field Group", "acf-views");
 __("Sort by Meta Field", "acf-views");
 __("Sort order", "acf-views");
-__("Description", "acf-views");
 __("Pool of posts", "acf-views");
 __("Exclude posts", "acf-views");
 __("Ignore Sticky Posts", "acf-views");
@@ -373,15 +384,16 @@ __("Taxonomy Filters", "acf-views");
 __("Meta Filters", "acf-views");
 __("Display", "acf-views");
 __("Layout for Results", "acf-views");
+__("No Posts Found Message", "acf-views");
 __("Enable Slider", "acf-views");
+__("Editorial description", "acf-views");
+__("Enable Responsive rules", "acf-views");
+__("Responsive Rules", "acf-views");
 __("Pagination", "acf-views");
 __("With Pagination", "acf-views");
 __("Pagination Type", "acf-views");
 __("'Load More' button label", "acf-views");
 __("Posts Per Page", "acf-views");
-__("Enable Responsive rules", "acf-views");
-__("Responsive Rules", "acf-views");
-__("No Posts Found Message", "acf-views");
 __("Template", "acf-views");
 __("Default Selection Template", "acf-views");
 __("Custom Selection Template", "acf-views");
@@ -391,10 +403,10 @@ __("CSS Code", "acf-views");
 __("JS Code", "acf-views");
 __("Developer", "acf-views");
 __("PHP Controller", "acf-views");
-__("BEM Unique Name", "acf-views");
-__("CSS classes", "acf-views");
 __("Web Component Type", "acf-views");
 __("Classes generation", "acf-views");
+__("BEM Unique Name", "acf-views");
+__("CSS classes", "acf-views");
 __("Use the Post ID as the Post Selection ID in the markup", "acf-views");
 __("Preview", "acf-views");
 __("Preview", "acf-views");
@@ -410,30 +422,30 @@ __("Sort results by selecting an option. <br> 'Default' keeps the default order:
 __("Select a target group.", "acf-views");
 __("Select a target field.", "acf-views");
 __("Defines the sorting order of posts.", "acf-views");
-__("Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list.", "acf-views");
 __("Manually assign specific posts to limit the query to. Only this pool of posts will then be considered for other filters. The 'Pool of posts' option can be selected to 'Sort by'.", "acf-views");
 __("Here you can manually exclude specific posts from the query. It means the query will ignore posts from this list, even if they fit the filters. Warning : this field can't be used together with 'Pool of posts'.", "acf-views");
 __("If unchecked then sticky posts will be at the top of results. <a target='_blank' href='https://wordpress.org/support/article/sticky-posts/'>Learn more about Sticky Posts</a>.", "acf-views");
 __("For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query.", "acf-views");
 __("Assigned Layout is used to display every post from the query results.", "acf-views");
-__("Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab.", "acf-views");
-__("If enabled then the selected pagination type is applied and the 'Posts per page' rule takes effect. <a target='_blank' href='https://docs.advanced-views.com/post-selections/features/posts-pagination'>Read more</a>.", "acf-views");
-__("Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab.", "acf-views");
-__("Define a Custom label for the load more button.", "acf-views");
-__("Controls how many posts will be displayed initially and how many posts will be appended every time when user triggers 'Load More'. Total amount of posts is limited by the 'Maximum number of posts' field in the 'Query' tab.", "acf-views");
+__("Add a message that will be displayed if there are no results. Leave empty for no message.", "acf-views");
+__("Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the Styles & Scripts tab.", "acf-views");
+__("Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list.", "acf-views");
 __("When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.", "acf-views");
 __("These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.", "acf-views");
-__("Add a message that will be displayed if there are no results. Leave empty for no message.", "acf-views");
+__("If enabled then the selected pagination type is applied and the 'Posts per page' rule takes effect. <a target='_blank' href='https://docs.advanced-views.com/post-selections/features/posts-pagination'>Read more</a>.", "acf-views");
+__("Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the Styles & Scripts tab.", "acf-views");
+__("Define a Custom label for the load more button.", "acf-views");
+__("Controls how many posts will be displayed initially and how many posts will be appended every time when user triggers 'Load More'. Total amount of posts is limited by the 'Maximum number of posts' field in the 'Query' tab.", "acf-views");
 __("Output preview of the generated template using the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>chosen template engine</a>. <br> Important! Publish or Update your Post Selection to see the latest markup.", "acf-views");
 __("Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work.", "acf-views");
 __("Choose one of the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>supported template engines</a>, which will be used for this Post Selection.", "acf-views");
 __("Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option.", "acf-views");
 __("Add Custom Javascript code to your Post Selection.<br><br> By default, the Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
 __("By customizing the PHP Controller instance, you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/selection-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
-__("Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').", "acf-views");
-__("Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.", "acf-views");
 __("By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>.", "acf-views");
 __("Controls classes generation in the Default Template.", "acf-views");
+__("Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').", "acf-views");
+__("Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.", "acf-views");
 __("Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.", "acf-views");
 __("See an output preview of your Post Selection, where you can test some CSS styles. <br> Styles from your front page are included in the preview (some differences may appear). <br>Note: Press 'Update' if you have changed Custom Markup (in the Template tab) to see the latest preview. <br> After testing: Copy and paste the Card styles to the CSS Code field. <br> Important! Don't style your View here, instead use the CSS Code field in your View for this goal.", "acf-views");
 
@@ -515,13 +527,13 @@ __("Does Not Exist", "acf-views");
 
 // Tax_Filter_Settings.php : labels
 
-__("Relation", "acf-views");
-__("Rules", "acf-views");
+__("Condition", "acf-views");
+__("Taxonomy Filters", "acf-views");
 
 // Tax_Filter_Settings.php : descriptions
 
 __("Controls how taxonomy rules will be joined within the taxonomy query", "acf-views");
-__("Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/post-selections/filters/taxonomy-filters'>Read more</a> <br> If you want to see the query that was created by your input, update the Post Selection and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab", "acf-views");
+__("Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/post-selections/filters/taxonomy-filters'>Read more</a> <br> If you want to see the query that was created by your input, update the Post Selection and reload the page. After have a look at the 'Query Preview' field in the 'Query' tab", "acf-views");
 
 // Tax_Filter_Settings.php : buttons
 
@@ -529,12 +541,12 @@ __("Add Rule", "acf-views");
 
 // Tax_Filter_Settings.php : choices
 
-__("AND", "acf-views");
-__("OR", "acf-views");
+__("Match ALL", "acf-views");
+__("Match ANY", "acf-views");
 
 // Tax_Rule_Settings.php : labels
 
-__("Relation", "acf-views");
+__("Condition", "acf-views");
 __("Taxonomies", "acf-views");
 
 // Tax_Rule_Settings.php : descriptions
@@ -548,8 +560,8 @@ __("Add Taxonomy", "acf-views");
 
 // Tax_Rule_Settings.php : choices
 
-__("AND", "acf-views");
-__("OR", "acf-views");
+__("Match ALL", "acf-views");
+__("Match ANY", "acf-views");
 
 // Tools_Settings.php : labels
 

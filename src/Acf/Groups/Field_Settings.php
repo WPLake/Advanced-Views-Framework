@@ -306,19 +306,23 @@ class Field_Settings extends Group {
 
 	public function get_field_meta(): Field_Meta_Interface {
 		if ( null === $this->field_meta ) {
-			if ( null !== self::$data_vendors ) {
-				$this->field_meta = self::$data_vendors->get_field_meta(
-					$this->get_vendor_name(),
-					$this->get_field_id()
-				);
-			} else {
-				// dataVendors isn't available. So even we know source and fieldId, do not put them
-				// to make possible debugging easier.
-				$this->field_meta = new Field_Meta( 'unset-data-vendors', '' );
-			}
+			$this->field_meta = self::get_field_meta_by_key( $this->key );
 		}
 
 		return $this->field_meta;
+	}
+
+	public static function get_field_meta_by_key( string $key ): Field_Meta_Interface {
+		if ( null !== self::$data_vendors ) {
+			return self::$data_vendors->get_field_meta(
+				self::get_vendor_name_by_key( $key ),
+				self::get_field_id_by_key( $key )
+			);
+		}
+
+		// dataVendors isn't available. So even we know source and fieldId, do not put them
+		// to make possible debugging easier.
+		return new Field_Meta( 'unset-data-vendors', '' );
 	}
 
 	// for RepeaterField.php and tests only!

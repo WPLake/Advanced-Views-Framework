@@ -36,5 +36,39 @@ class Meta_Field_Settings_Integration extends Acf_Integration {
 				return $field;
 			}
 		);
+
+		self::add_filter(
+			'acf/load_field/name=' . Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_POST_GROUP ),
+			function ( array $field ) {
+				$field['choices'] = $this->data_vendors->get_group_choices( true );
+
+				return $field;
+			}
+		);
+
+		self::add_filter(
+			'acf/load_field/name=' . Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_POST_FIELD ),
+			function ( array $field ) {
+				$field['choices'] = $this->data_vendors->get_field_choices( true );
+
+				return $field;
+			}
+		);
+
+		self::add_filter(
+			'acf/load_field/name=' . Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_VALUE ),
+			function ( array $field ) {
+				$field['choices'] = array(
+					''                                     => __( 'Select', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_POST => __( 'Current post', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_POST_FIELD => __( 'Current post field', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_NOW => __( 'Current date/time', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_QUERY => __( 'URL parameter', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_CUSTOM_ARGUMENT => __( 'Shortcode argument', 'acf-views' ),
+				);
+
+				return $field;
+			}
+		);
 	}
 }
