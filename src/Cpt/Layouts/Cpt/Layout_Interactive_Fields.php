@@ -189,7 +189,7 @@ final class Layout_Interactive_Fields extends Cpt_Interactive_Fields {
 			),
 			array(
 				'idSelector'    => Layout_Settings::get_acf_field_id( Layout_Settings::FIELD_PHP_VARIABLES ),
-				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_TEMPLATE_TAB ),
+				'tabIdSelector' => Layout_Settings::getAcfFieldName( Layout_Settings::FIELD_DEVELOPER_TAB ),
 				'isReadOnly'    => false,
 				// null ensures engine is resolved automatically.
 				'mode'          => null,

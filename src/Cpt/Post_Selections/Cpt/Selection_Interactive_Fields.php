@@ -164,7 +164,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			),
 			array(
 				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_QUERY_PREVIEW ),
-				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_ADVANCED_TAB ),
+				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_BASIC_TAB ),
 				'isReadOnly'    => true,
 				'mode'          => ACE_Mods::TWIG,
 				'linkTitle'     => __( 'Query Preview', 'acf-views' ),
@@ -187,7 +187,7 @@ final class Selection_Interactive_Fields extends Cpt_Interactive_Fields {
 			),
 			array(
 				'idSelector'    => Post_Selection_Settings::get_acf_field_id( Post_Selection_Settings::FIELD_EXTRA_QUERY_ARGUMENTS ),
-				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_TEMPLATE_TAB ),
+				'tabIdSelector' => Post_Selection_Settings::getAcfFieldName( Post_Selection_Settings::FIELD_DEVELOPER_TAB ),
 				'isReadOnly'    => false,
 				// null ensures engine is resolved automatically.
 				'mode'          => null,

@@ -29,6 +29,7 @@ class Layout_Settings extends Cpt_Settings {
 	const FIELD_PHP_VARIABLES         = 'php_variables';
 	const FIELD_TEMPLATE_TAB          = 'template_tab';
 	const FIELD_CSS_AND_JS_TAB        = 'css_and_js_tab';
+	const FIELD_DEVELOPER_TAB         = 'developer_tab';
 	const POST_FIELD_IS_HAS_GUTENBERG = 'post_mime_type';
 	// keep the WP format 'image/jpg' to use WP_Query without issues.
 	const POST_VALUE_IS_HAS_GUTENBERG = 'block/block';
@@ -46,7 +47,7 @@ class Layout_Settings extends Cpt_Settings {
 
 	/**
 	 * @a-type tab
-	 * @label Fields
+	 * @label Data
 	 */
 	public bool $fields_tab;
 
@@ -110,6 +111,57 @@ class Layout_Settings extends Cpt_Settings {
 	 * @default_value twig
 	 */
 	public string $template_engine;
+
+	/**
+	 * @a-type tab
+	 * @label Styles & Scripts
+	 */
+	public bool $css_and_js_tab;
+	/**
+	 * @a-type textarea
+	 * @label CSS Code
+	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option.
+	 */
+	public string $css_code;
+	/**
+	 * @a-type textarea
+	 * @label JS Code
+	 * @instructions Add Custom Javascript code to your Layout. <br><br> By default, the Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 */
+	public string $js_code;
+
+	/**
+	 * @a-type tab
+	 * @label Output
+	 */
+	public bool $options_tab;
+	/**
+	 * @a-type textarea
+	 * @label Description
+	 * @instructions Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.
+	 */
+	public string $description;
+	/**
+	 * @a-type select
+	 * @label Register Gutenberg Block
+	 * @instructions If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.
+	 * @choices {"off":"Off","acf":"ACF Block","meta-box":"Meta Box Block","pods":"Pods Block"}
+	 * @default_value off
+	 * @a-pro The field must be not required or have default value!
+	 */
+	public string $gutenberg_block_vendor;
+	/**
+	 * @a-type true_false
+	 * @label Render template when it's empty
+	 * @instructions By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.
+	 */
+	public bool $is_render_when_empty;
+
+	/**
+	 * @a-type tab
+	 * @label Developer
+	 */
+	public bool $developer_tab;
 	/**
 	 * @a-type textarea
 	 * @label PHP Controller
@@ -138,45 +190,6 @@ class Layout_Settings extends Cpt_Settings {
 	 * @instructions By default, empty wrappers in the markup are skipped to optimize the output. For example, the '__row' wrapper will be skipped if there is no field label. <br> Enable this feature if you need all the wrappers in the output.
 	 */
 	public bool $is_with_unnecessary_wrappers;
-
-	/**
-	 * @a-type tab
-	 * @label CSS & JS
-	 */
-	public bool $css_and_js_tab;
-	/**
-	 * @a-type textarea
-	 * @label CSS Code
-	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option.
-	 */
-	public string $css_code;
-	/**
-	 * @a-type textarea
-	 * @label JS Code
-	 * @instructions Add Custom Javascript code to your Layout. <br><br> By default, the Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
-	 */
-	public string $js_code;
-
-	/**
-	 * @a-type tab
-	 * @label Options
-	 */
-	public bool $options_tab;
-	/**
-	 * @a-type textarea
-	 * @label Description
-	 * @instructions Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.
-	 */
-	public string $description;
-	/**
-	 * @a-type select
-	 * @label Register Gutenberg Block
-	 * @instructions If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.
-	 * @choices {"off":"Off","acf":"ACF Block","meta-box":"Meta Box Block","pods":"Pods Block"}
-	 * @default_value off
-	 * @a-pro The field must be not required or have default value!
-	 */
-	public string $gutenberg_block_vendor;
 	/**
 	 * @a-type select
 	 * @label Web Component Type
@@ -193,12 +206,6 @@ class Layout_Settings extends Cpt_Settings {
 	 * @default_value bem
 	 */
 	public string $classes_generation;
-	/**
-	 * @a-type true_false
-	 * @label Render template when it's empty
-	 * @instructions By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.
-	 */
-	public bool $is_render_when_empty;
 	/**
 	 * @a-type true_false
 	 * @label Use the Post ID as the Layout ID in the markup

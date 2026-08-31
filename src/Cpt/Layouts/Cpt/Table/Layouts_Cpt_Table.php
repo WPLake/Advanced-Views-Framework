@@ -130,7 +130,7 @@ class Layouts_Cpt_Table extends Cpt_Table {
 			$columns,
 			array(
 				self::COLUMN_DESCRIPTION             => __( 'Description', 'acf-views' ),
-				self::COLUMN_SHORTCODE               => __( 'Embedding shortcode', 'acf-views' ),
+				self::COLUMN_SHORTCODE               => __( 'Embed the Layout', 'acf-views' ),
 				self::COLUMN_RELATED_GROUPS          => __( 'Assigned Field Group', 'acf-views' ),
 				self::COLUMN_RELATED_POST_SELECTIONS => sprintf(
 					// translators: %s - singular name of the CPT.

@@ -21,22 +21,11 @@ class Layouts_Cpt extends Cpt {
 		$description = sprintf(
 		// translators: %s - singular name of the CPT.
 			__(
-				'Add a <a target="_blank" href="https://docs.advanced-views.com/getting-started/first-layout">%s</a> and select target fields or import a pre-built component.',
+				'Create reusable displays for WordPress and custom-field data. <br>Use a <a target="_blank" href="https://docs.advanced-views.com/getting-started/first-layout">%s</a> directly, or use it to display each result in a Post Selection.',
 				'acf-views'
 			),
 			$singular_name
 		);
-		$description .= '<br>' .
-						sprintf(
-							// translators: %s - singular name of the CPT.
-							__(
-								'Attach the %s to the target place, for example using <a target="_blank" href="https://docs.advanced-views.com/layouts/embedding-shortcode">the shortcode</a>, to display field values of the post, page or CPT item.',
-								'acf-views'
-							),
-							$this->plugin_cpt->labels()->singular_name()
-						);
-		$description .= '<br><br>';
-		$description .= $this->get_storage_label();
 
 		$cpt_args = array(
 			'label'         => $plural_name,

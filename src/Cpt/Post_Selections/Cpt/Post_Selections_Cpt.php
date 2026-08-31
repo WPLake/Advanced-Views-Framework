@@ -34,22 +34,11 @@ class Post_Selections_Cpt extends Cpt {
 		$description = sprintf(
 		// translators: %s - singular name of the CPT.
 			__(
-				'Add a <a target="_blank" href="https://docs.advanced-views.com/getting-started/first-post-selection">%s</a> to display a set of posts or import a ready-made component.',
+				'Query posts, products or custom post types and display each result using a Layout with a <a target="_blank" href="https://docs.advanced-views.com/getting-started/first-post-selection">%s</a>. <br>Add filters, sorting and pagination as needed.',
 				'acf-views'
 			),
 			$singular_name
 		);
-		$description .= '<br>';
-		$description .=
-			// translators: %s - singular name of the CPT.
-			__(
-				'Attach it where you want to show the results (e.g. <a target="_blank" href="https://docs.advanced-views.com/post-selections/embedding-shortcode">via shortcode</a>).',
-				'acf-views'
-			) . '<br/>'
-						. __( 'The assigned Layout determines which fields are displayed.', 'acf-views' );
-
-		$description .= '<br><br>';
-		$description .= $this->get_storage_label();
 
 		$cpt_args = array(
 			'label'        => $plural_name,

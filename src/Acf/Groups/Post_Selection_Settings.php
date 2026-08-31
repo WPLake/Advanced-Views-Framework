@@ -33,9 +33,10 @@ class Post_Selection_Settings extends Cpt_Settings {
 	const FIELD_ORDER_BY_META_FIELD_KEY   = 'order_by_meta_field_key';
 	const FIELD_CUSTOM_MARKUP             = 'custom_markup';
 	const FIELD_ACF_VIEW_ID               = 'acf_view_id';
-	const FIELD_ADVANCED_TAB              = 'advanced_tab';
+	const FIELD_BASIC_TAB                 = 'basic_tab';
 	const FIELD_TEMPLATE_TAB              = 'template_tab';
 	const FIELD_CSS_AND_JS_TAB            = 'css_and_js_tab';
+	const FIELD_DEVELOPER_TAB             = 'developer_tab';
 
 	const PAGINATION_TYPE_LOAD_MORE_BUTTON = 'load_more_button';
 	const PAGINATION_TYPE_INFINITY         = 'infinity_scroll';
@@ -54,17 +55,9 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public string $title;
 	/**
 	 * @a-type tab
-	 * @label General
+	 * @label Query
 	 */
 	public bool $basic_tab;
-	/**
-	 * @a-type av_slug_select
-	 * @allow_null 1
-	 * @label Item Layout
-	 * @required 1
-	 * @instructions Assigned Layout is used to display every post from the query results.
-	 */
-	public string $acf_view_id;
 	/**
 	 * @label Source
 	 * @a-type select
@@ -146,22 +139,11 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public string $order;
 
 	/**
-	 * @a-type tab
-	 * @label Advanced
-	 */
-	public bool $advanced_tab;
-	/**
 	 * @a-type textarea
 	 * @label Description
 	 * @instructions Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list.
 	 */
 	public string $description;
-	/**
-	 * @label No Posts Found Message
-	 * @instructions Add a message that will be displayed if there are no results. Leave empty for no message.
-	 * @default_value No posts found
-	 */
-	public string $no_posts_found_message;
 	/**
 	 * @a-type post_object
 	 * @return_format id
@@ -189,28 +171,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 */
 	public bool $is_ignore_sticky_posts;
 	/**
-	 * @a-type select
-	 * @label Web Component Type
-	 * @instructions By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>.
-	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
-	 * @default_value classic
-	 */
-	public string $web_component;
-	/**
-	 * @a-type select
-	 * @label Classes generation
-	 * @instructions Controls classes generation in the Default Template.
-	 * @choices {"bem":"BEM style","none":"None"}
-	 * @default_value bem
-	 */
-	public string $classes_generation;
-	/**
-	 * @a-type true_false
-	 * @label Use the Post ID as the Post Selection ID in the markup
-	 * @instructions Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.
-	 */
-	public bool $is_markup_with_digital_id;
-	/**
 	 * @a-type textarea
 	 * @label Query Preview
 	 * @instructions For debugging purposes, this shows the query used to fetch posts for this Post Selection. Tip: Publish or update your Post Selection, then reload the page to view the latest query.
@@ -220,103 +180,12 @@ class Post_Selection_Settings extends Cpt_Settings {
 
 	/**
 	 * @a-type tab
-	 * @label Template
-	 */
-	public bool $template_tab;
-	/**
-	 * @a-type textarea
-	 * @new_lines br
-	 * @label Default Template
-	 * @instructions Output preview of the generated template using the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>chosen template engine</a>. <br> Important! Publish or Update your Post Selection to see the latest markup.
-	 * @disabled 1
-	 */
-	public string $markup;
-	/**
-	 * @a-type textarea
-	 * @label Custom Template
-	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work.
-	 */
-	public string $custom_markup;
-	/**
-	 * @a-type select
-	 * @label Template Engine
-	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>supported template engines</a>, which will be used for this Post Selection.
-	 * @choices {"php":"PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
-	 * @default_value twig
-	 */
-	public string $template_engine;
-	/**
-	 * @a-type textarea
-	 * @label PHP Controller
-	 * @instructions By customizing the PHP Controller instance, you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/selection-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
-	 */
-	public string $extra_query_arguments;
-	/**
-	 * @label BEM Unique Name
-	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').
-	 */
-	public string $bem_name;
-	/**
-	 * @label CSS classes
-	 * @instructions Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.
-	 */
-	public string $css_classes;
-
-	/**
-	 * @a-type tab
-	 * @label CSS & JS
-	 */
-	public bool $css_and_js_tab;
-	/**
-	 * @a-type textarea
-	 * @label CSS Code
-	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option.
-	 */
-	public string $css_code;
-	/**
-	 * @a-type textarea
-	 * @label JS Code
-	 * @instructions Add Custom Javascript code to your Post Selection.<br><br> By default, the Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
-	 */
-	public string $js_code;
-
-	/**
-	 * @a-type tab
-	 * @label Display Settings
-	 */
-	public bool $layout_tab;
-	/**
-	 * @a-type select
-	 * @label Enable Slider
-	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab.
-	 * @choices {"none":"None","splide_v4":"Splide v4 (29.8KB js, 5KB css)"}
-	 * @default_value none
-	 * @a-pro The field must be not required or have default value!
-	 */
-	public string $slider_type;
-	/**
-	 * @label Enable Responsive rules
-	 * @instructions When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
-	 */
-	public bool $is_use_layout_css;
-	/**
-	 * @var Post_Selection_Layout_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings
-	 * @label Responsive Rules
-	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
-	 * @button_label Add Rule
-	 * @a-no-tab 1
-	 */
-	public array $layout_rules;
-
-	/**
-	 * @a-type tab
-	 * @label Taxonomy Filters
+	 * @label Filters
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public bool $tax_filters_tab;
 	/**
-	 * @label Rules
+	 * @label Taxonomy Filters
 	 * @a-no-tab 1
 	 * @display seamless
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
@@ -336,6 +205,29 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public Meta_Filter_Settings $meta_filter;
+
+	/**
+	 * @a-type tab
+	 * @label Display
+	 */
+	public bool $layout_tab;
+	/**
+	 * @a-type av_slug_select
+	 * @allow_null 1
+	 * @label Layout for Results
+	 * @required 1
+	 * @instructions Assigned Layout is used to display every post from the query results.
+	 */
+	public string $acf_view_id;
+	/**
+	 * @a-type select
+	 * @label Enable Slider
+	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab.
+	 * @choices {"none":"None","splide_v4":"Splide v4 (29.8KB js, 5KB css)"}
+	 * @default_value none
+	 * @a-pro The field must be not required or have default value!
+	 */
+	public string $slider_type;
 
 	/**
 	 * @a-type tab
@@ -374,13 +266,123 @@ class Post_Selection_Settings extends Cpt_Settings {
 	public string $load_more_button_label;
 	/**
 	 * @label Posts Per Page
-	 * @instructions Controls how many posts will be displayed initially and how many posts will be appended every time when user triggers 'Load More'. Total amount of posts is limited by the 'Maximum number of posts' field in the 'General' tab.
+	 * @instructions Controls how many posts will be displayed initially and how many posts will be appended every time when user triggers 'Load More'. Total amount of posts is limited by the 'Maximum number of posts' field in the 'Query' tab.
 	 * @required 1
 	 * @default_value 9
 	 * @a-pro The field must be not required or have default value!
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public int $pagination_per_page;
+	/**
+	 * @label Enable Responsive rules
+	 * @instructions When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
+	 */
+	public bool $is_use_layout_css;
+	/**
+	 * @var Post_Selection_Layout_Settings[]
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings
+	 * @label Responsive Rules
+	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
+	 * @button_label Add Rule
+	 * @a-no-tab 1
+	 */
+	public array $layout_rules;
+	/**
+	 * @label No Posts Found Message
+	 * @instructions Add a message that will be displayed if there are no results. Leave empty for no message.
+	 * @default_value No posts found
+	 */
+	public string $no_posts_found_message;
+
+	/**
+	 * @a-type tab
+	 * @label Template
+	 */
+	public bool $template_tab;
+	/**
+	 * @a-type textarea
+	 * @new_lines br
+	 * @label Default Selection Template
+	 * @instructions Output preview of the generated template using the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>chosen template engine</a>. <br> Important! Publish or Update your Post Selection to see the latest markup.
+	 * @disabled 1
+	 */
+	public string $markup;
+	/**
+	 * @a-type textarea
+	 * @label Custom Selection Template
+	 * @instructions Write your own template with full control over the HTML markup. <br> Copy the Default Template code and make your changes. <br><br> Check out our Docs to learn more about the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>available template engines</a>. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace). <br><br> Make sure you've retained all the default classes; otherwise, pagination won't work.
+	 */
+	public string $custom_markup;
+	/**
+	 * @a-type select
+	 * @label Template Engine
+	 * @instructions Choose one of the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>supported template engines</a>, which will be used for this Post Selection.
+	 * @choices {"php":"PHP","twig":"Twig","blade":"Blade (requires PHP >= 8.2.0)"}
+	 * @default_value twig
+	 */
+	public string $template_engine;
+
+	/**
+	 * @a-type tab
+	 * @label Styles & Scripts
+	 */
+	public bool $css_and_js_tab;
+	/**
+	 * @a-type textarea
+	 * @label CSS Code
+	 * @instructions Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#selection' as a unique instance selector, will be replaced with '.avf-selection--id--{x}' <br> 2. '#selection__' as a full element selector, so '#selection__element' will be replaced with '.avf-selection--id--{x} .avf-selection__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-selection__element' <br> Note: all the shortcuts are compatible with the BEM name option.
+	 */
+	public string $css_code;
+	/**
+	 * @a-type textarea
+	 * @label JS Code
+	 * @instructions Add Custom Javascript code to your Post Selection.<br><br> By default, the Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this Post Selection. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 */
+	public string $js_code;
+
+	/**
+	 * @a-type tab
+	 * @label Developer
+	 */
+	public bool $developer_tab;
+	/**
+	 * @a-type textarea
+	 * @label PHP Controller
+	 * @instructions By customizing the PHP Controller instance, you can add extra variables to the template, extra arguments to the <a target='_blank' href='https://developer.wordpress.org/reference/classes/wp_query/#parameters'>WP_Query instance</a>, and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/selection-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
+	 */
+	public string $extra_query_arguments;
+	/**
+	 * @label BEM Unique Name
+	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').
+	 */
+	public string $bem_name;
+	/**
+	 * @label CSS classes
+	 * @instructions Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.
+	 */
+	public string $css_classes;
+	/**
+	 * @a-type select
+	 * @label Web Component Type
+	 * @instructions By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>.
+	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
+	 * @default_value classic
+	 */
+	public string $web_component;
+	/**
+	 * @a-type select
+	 * @label Classes generation
+	 * @instructions Controls classes generation in the Default Template.
+	 * @choices {"bem":"BEM style","none":"None"}
+	 * @default_value bem
+	 */
+	public string $classes_generation;
+	/**
+	 * @a-type true_false
+	 * @label Use the Post ID as the Post Selection ID in the markup
+	 * @instructions Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.
+	 */
+	public bool $is_markup_with_digital_id;
 
 	/**
 	 * @a-type tab

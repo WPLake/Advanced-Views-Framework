@@ -74,7 +74,7 @@ class Selection_Meta_Boxes extends Cpt_Meta_Boxes {
 	public function add_meta_boxes(): void {
 		add_meta_box(
 			'acf-cards_shortcode_cpt',
-			__( 'Embedding shortcode', 'acf-views' ),
+			__( 'Embed the Post Selection', 'acf-views' ),
 			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
@@ -108,11 +108,7 @@ class Selection_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-cards_related_view',
-			sprintf(
-				// translators: %s - singular name of the CPT.
-				__( 'Related %s', 'acf-views' ),
-				$this->plugin_cpt->labels()->singular_name()
-			),
+			__( 'Layout for Results', 'acf-views' ),
 			function ( WP_Post $wp_post ): void {
 				$card_data = $this->post_selections_settings_storage->get( $wp_post->post_name );
 

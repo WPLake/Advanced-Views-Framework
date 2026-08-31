@@ -227,7 +227,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 				admin_url( '/post-new.php' )
 			);
 
-			$label = __( 'Add new', 'acf-views' );
+			$label = __( 'Query posts to display using this Layout', 'acf-views' );
 			$style = 'min-height: 0;line-height: 1.2;padding: 3px 7px;font-size:11px;transition:all .3s ease;';
 			printf(
 				'<a href="%s" target="_blank" class="button" style="%s">%s</a>',
@@ -242,7 +242,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-views_shortcode',
-			__( 'Embedding shortcode', 'acf-views' ),
+			__( 'Embed the Layout', 'acf-views' ),
 			function ( $post ): void {
 				if ( ! $post ||
 					'publish' !== $post->post_status ) {
@@ -279,8 +279,8 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 		add_meta_box(
 			'acf-views_related_cards',
 			sprintf(
-			// translators: %s - singular name of the CPT.
-				__( 'Assigned to %s', 'acf-views' ),
+			// translators: %s - plural name of the CPT.
+				__( 'Used by %s', 'acf-views' ),
 				$this->plugin_cpt->labels()->plural_name()
 			),
 			function ( WP_Post $wp_post ): void {
@@ -297,7 +297,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 
 		add_meta_box(
 			'acf-views_related_groups',
-			__( 'Assigned Groups', 'acf-views' ),
+			__( 'Field Groups', 'acf-views' ),
 			function ( WP_Post $wp_post ): void {
 				$view_data = $this->layouts_settings_storage->get( $wp_post->post_name );
 				$this->print_related_groups_meta_box( $view_data );
@@ -313,7 +313,7 @@ class Layout_Meta_Boxes extends Cpt_Meta_Boxes {
 			'acf-views_related_views',
 			sprintf(
 			// translators: %s is the plural name of the CPT.
-				__( 'Object %s', 'acf-views' ),
+				__( 'Nested %s', 'acf-views' ),
 				$this->public_cpt->labels()->plural_name()
 			),
 			function ( WP_Post $wp_post ): void {

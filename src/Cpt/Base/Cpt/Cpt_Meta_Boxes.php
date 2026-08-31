@@ -31,7 +31,7 @@ abstract class Cpt_Meta_Boxes extends Hookable implements Hooks_Interface {
 	public function add_meta_boxes(): void {
 		add_meta_box(
 			'acf-views_support',
-			__( 'Having issues?', 'acf-views' ),
+			__( 'Help & Documentation', 'acf-views' ),
 			function (): void {
 				$this->html->print_postbox_support();
 			},
