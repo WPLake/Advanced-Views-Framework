@@ -136,12 +136,6 @@ class Layout_Settings extends Cpt_Settings {
 	 */
 	public bool $options_tab;
 	/**
-	 * @a-type textarea
-	 * @label Description
-	 * @instructions Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.
-	 */
-	public string $description;
-	/**
 	 * @a-type select
 	 * @label Register Gutenberg Block
 	 * @instructions If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.
@@ -156,6 +150,12 @@ class Layout_Settings extends Cpt_Settings {
 	 * @instructions By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.
 	 */
 	public bool $is_render_when_empty;
+	/**
+	 * @a-type textarea
+	 * @label Editorial description
+	 * @instructions Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.
+	 */
+	public string $description;
 
 	/**
 	 * @a-type tab
@@ -168,6 +168,22 @@ class Layout_Settings extends Cpt_Settings {
 	 * @instructions By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/layout-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).
 	 */
 	public string $php_variables;
+	/**
+	 * @a-type select
+	 * @label Web Component Type
+	 * @instructions By default, every Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>.
+	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
+	 * @default_value classic
+	 */
+	public string $web_component;
+	/**
+	 * @a-type select
+	 * @label Classes generation
+	 * @instructions Controls classes generation in the Default Template.
+	 * @choices {"bem":"BEM style","none":"None"}
+	 * @default_value bem
+	 */
+	public string $classes_generation;
 	/**
 	 * @label BEM Unique Name
 	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-layout').
@@ -191,38 +207,16 @@ class Layout_Settings extends Cpt_Settings {
 	 */
 	public bool $is_with_unnecessary_wrappers;
 	/**
-	 * @a-type select
-	 * @label Web Component Type
-	 * @instructions By default, every Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>.
-	 * @choices {"classic":"Classic (no CSS isolation)","shadow_root_template":"Declarative Shadow DOM (CSS isolated, server-side)","shadow_dom":"JS Shadow DOM (CSS isolated, client-side)","none":"None"}
-	 * @default_value classic
-	 */
-	public string $web_component;
-	/**
-	 * @a-type select
-	 * @label Classes generation
-	 * @instructions Controls classes generation in the Default Template.
-	 * @choices {"bem":"BEM style","none":"None"}
-	 * @default_value bem
-	 */
-	public string $classes_generation;
-	/**
 	 * @a-type true_false
 	 * @label Use the Post ID as the Layout ID in the markup
 	 * @instructions Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.
 	 */
 	public bool $is_markup_with_digital_id;
-	/**
-	 * @a-type true_false
-	 * @label Use the Post ID in the Gutenberg block's name
-	 * @instructions Note: For backward compatibility purposes only.
-	 * @a-deprecated IT'S INVISIBLE FIELD FOR BACK COMPATIBILITY ONLY
-	 */
-	public bool $is_gutenberg_block_with_digital_id;
 
 	/**
 	 * @a-type tab
 	 * @label Preview
+	 * @a-order 3
 	 */
 	public bool $preview_tab;
 	/**
@@ -231,6 +225,7 @@ class Layout_Settings extends Cpt_Settings {
 	 * @allow_null 1
 	 * @label Preview Object
 	 * @instructions Select a data object (which field values will be used) and update the View. After reload the page to see the markup in the preview.
+	 * @a-order 3
 	 */
 	public int $preview_post;
 	/**
@@ -238,8 +233,10 @@ class Layout_Settings extends Cpt_Settings {
 	 * @instructions Here you can see the preview of the Layout and play with CSS rules. <br>Important! Update the View after changes and reload the page to see the latest markup here. <br>Your changes to the preview won't be applied to the view automatically, if you want to keep them copy amended CSS to the 'CSS Code' field and press the 'Update' button. <br> Note: styles from your front page are included in the preview (some differences may appear).
 	 * @placeholder Loading... Please wait a few seconds
 	 * @disabled 1
+	 * @a-order 3
 	 */
 	public string $preview;
+
 	/**
 	 * @label With Gutenberg Block
 	 * @instructions This field is deprecated.
@@ -247,6 +244,13 @@ class Layout_Settings extends Cpt_Settings {
 	 * @a-deprecated IT'S INVISIBLE FIELD FOR BACK COMPATIBILITY ONLY
 	 */
 	public bool $is_has_gutenberg_block;
+	/**
+	 * @a-type true_false
+	 * @label Use the Post ID in the Gutenberg block's name
+	 * @instructions Note: For backward compatibility purposes only.
+	 * @a-deprecated IT'S INVISIBLE FIELD FOR BACK COMPATIBILITY ONLY
+	 */
+	public bool $is_gutenberg_block_with_digital_id;
 
 	/**
 	 * @return array<string|int,mixed>

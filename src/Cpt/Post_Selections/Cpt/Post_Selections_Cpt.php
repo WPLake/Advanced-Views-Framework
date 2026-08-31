@@ -39,6 +39,7 @@ class Post_Selections_Cpt extends Cpt {
 			),
 			$singular_name
 		);
+		$description .= $this->get_storage_label();
 
 		$cpt_args = array(
 			'label'        => $plural_name,

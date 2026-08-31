@@ -137,13 +137,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public string $order;
-
-	/**
-	 * @a-type textarea
-	 * @label Description
-	 * @instructions Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list.
-	 */
-	public string $description;
 	/**
 	 * @a-type post_object
 	 * @return_format id
@@ -220,14 +213,40 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 */
 	public string $acf_view_id;
 	/**
+	 * @label No Posts Found Message
+	 * @instructions Add a message that will be displayed if there are no results. Leave empty for no message.
+	 * @default_value No posts found
+	 */
+	public string $no_posts_found_message;
+	/**
 	 * @a-type select
 	 * @label Enable Slider
-	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab.
+	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the Styles & Scripts tab.
 	 * @choices {"none":"None","splide_v4":"Splide v4 (29.8KB js, 5KB css)"}
 	 * @default_value none
 	 * @a-pro The field must be not required or have default value!
 	 */
 	public string $slider_type;
+	/**
+	 * @a-type textarea
+	 * @label Editorial description
+	 * @instructions Add a short description for your Post Selection's purpose. Only seen on the admin Post Selections list.
+	 */
+	public string $description;
+	/**
+	 * @label Enable Responsive rules
+	 * @instructions When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
+	 */
+	public bool $is_use_layout_css;
+	/**
+	 * @var Post_Selection_Layout_Settings[]
+	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings
+	 * @label Responsive Rules
+	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
+	 * @button_label Add Rule
+	 * @a-no-tab 1
+	 */
+	public array $layout_rules;
 
 	/**
 	 * @a-type tab
@@ -247,7 +266,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @a-type select
 	 * @required 1
 	 * @label Pagination Type
-	 * @instructions Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the CSS & JS Code tab.
+	 * @instructions Defines a way in which user can load more. For 'Load More Button' and 'Page Numbers' cases a special markup will be added to the Post Selection automatically, you can style it in the Styles & Scripts tab.
 	 * @choices {"load_more_button":"Load More Button","infinity_scroll":"Infinity Scroll","page_numbers":"Page Numbers"}
 	 * @default_value load_more_button
 	 * @a-pro The field must be not required or have default value!
@@ -273,26 +292,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @conditional_logic [[{"field": "local_acf_views_acf-card-data__items-source","operator": "==","value": "posts_query"}]]
 	 */
 	public int $pagination_per_page;
-	/**
-	 * @label Enable Responsive rules
-	 * @instructions When enabled responsive CSS styles are added to the CSS Code field. These styles are automatically updated each time you save. <br>Tip: If you’d like to edit the Post Selection CSS manually, simply disable this option. Disabling this does not remove the previously added CSS Code.
-	 */
-	public bool $is_use_layout_css;
-	/**
-	 * @var Post_Selection_Layout_Settings[]
-	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Layout_Settings
-	 * @label Responsive Rules
-	 * @instructions These rules control Post Selection items responsiveness. <br>Note: These rules are inherited from small to large. For example: If you’ve set up 'Mobile' and 'Desktop' screen rules, then 'Tablet' will have the same rules as 'Mobile' and 'Large Desktop' will have the same rules as 'Desktop'.
-	 * @button_label Add Rule
-	 * @a-no-tab 1
-	 */
-	public array $layout_rules;
-	/**
-	 * @label No Posts Found Message
-	 * @instructions Add a message that will be displayed if there are no results. Leave empty for no message.
-	 * @default_value No posts found
-	 */
-	public string $no_posts_found_message;
 
 	/**
 	 * @a-type tab
@@ -352,16 +351,6 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 */
 	public string $extra_query_arguments;
 	/**
-	 * @label BEM Unique Name
-	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').
-	 */
-	public string $bem_name;
-	/**
-	 * @label CSS classes
-	 * @instructions Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.
-	 */
-	public string $css_classes;
-	/**
 	 * @a-type select
 	 * @label Web Component Type
 	 * @instructions By default, every Post Selection is a <a target='_blank' href='https://docs.advanced-views.com/post-selections/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/post-selections/component-options/interactivity-api'>WP Interactivity API</a>.
@@ -378,15 +367,25 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 */
 	public string $classes_generation;
 	/**
+	 * @label BEM Unique Name
+	 * @instructions Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-selection').
+	 */
+	public string $bem_name;
+	/**
+	 * @label CSS classes
+	 * @instructions Add a class name without a dot (e.g. 'class-name') or multiple classes with single space as a delimiter (e.g. 'class-name1 class-name2'). These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.
+	 */
+	public string $css_classes;
+	/**
 	 * @a-type true_false
 	 * @label Use the Post ID as the Post Selection ID in the markup
 	 * @instructions Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.
 	 */
 	public bool $is_markup_with_digital_id;
-
 	/**
 	 * @a-type tab
 	 * @label Preview
+	 * @a-order 3
 	 */
 	public bool $preview_tab;
 	/**
@@ -394,6 +393,7 @@ class Post_Selection_Settings extends Cpt_Settings {
 	 * @instructions See an output preview of your Post Selection, where you can test some CSS styles. <br> Styles from your front page are included in the preview (some differences may appear). <br>Note: Press 'Update' if you have changed Custom Markup (in the Template tab) to see the latest preview. <br> After testing: Copy and paste the Card styles to the CSS Code field. <br> Important! Don't style your View here, instead use the CSS Code field in your View for this goal.
 	 * @placeholder Loading... Please wait a few seconds
 	 * @disabled 1
+	 * @a-order 3
 	 */
 	public string $preview;
 

@@ -27,7 +27,7 @@ class Meta_Filter_Settings extends Group {
 	/**
 	 * @var Meta_Rule_Settings[]
 	 * @item \Org\Wplake\Advanced_Views\Acf\Groups\Meta_Rule_Settings
-	 * @label Rules
+	 * @label Meta Filters
 	 * @instructions Rules for the meta query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/post-selections/filters/meta-filters'>Read more</a> <br>If you want to see the query that was created by your input, update the Post Selection and reload the page. After have a look at the 'Query Preview' field in the 'Advanced' tab
 	 * @button_label Add Rule
 	 * @a-no-tab 1

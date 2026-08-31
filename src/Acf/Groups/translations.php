@@ -129,18 +129,18 @@ __("Register Gutenberg Block", "acf-views");
 __("Render template when it's empty", "acf-views");
 __("Developer", "acf-views");
 __("PHP Controller", "acf-views");
+__("Web Component Type", "acf-views");
+__("Classes generation", "acf-views");
 __("BEM Unique Name", "acf-views");
 __("CSS classes", "acf-views");
 __("Add classification classes to the markup", "acf-views");
 __("Do not skip unused wrappers", "acf-views");
-__("Web Component Type", "acf-views");
-__("Classes generation", "acf-views");
 __("Use the Post ID as the Layout ID in the markup", "acf-views");
-__("Use the Post ID in the Gutenberg block's name", "acf-views");
 __("Preview", "acf-views");
 __("Preview Object", "acf-views");
 __("Preview", "acf-views");
 __("With Gutenberg Block", "acf-views");
+__("Use the Post ID in the Gutenberg block's name", "acf-views");
 
 // Layout_Settings.php : descriptions
 
@@ -157,17 +157,17 @@ __("Add a short description for your Views’ purpose. <br> Note : This descript
 __("If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.", "acf-views");
 __("By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.", "acf-views");
 __("By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/layout-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
+__("By default, every Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>.", "acf-views");
+__("Controls classes generation in the Default Template.", "acf-views");
 __("Define a unique <a target='_blank' href='https://getbem.com/introduction/'>BEM name</a> for the element that will be used in the markup, or leave it empty to use the default ('avf-layout').", "acf-views");
 __("Add a class name without a dot (e.g. “class-name”) or multiple classes with single space as a delimiter (e.g. “class-name1 class-name2”). <br> These classes are added to the wrapping HTML element. <a target='_blank' href='https://www.w3schools.com/cssref/sel_class.asp'>Learn more about CSS Classes</a>.", "acf-views");
 __("By default, the field name is added as a prefix to all inner classes. For example, the image within the 'avatar' field will have the '__avatar-image' class. <br> Enabling this setting adds the generic class as well, such as '__image'. This feature can be useful if you want to apply styles based on field types.", "acf-views");
 __("By default, empty wrappers in the markup are skipped to optimize the output. For example, the '__row' wrapper will be skipped if there is no field label. <br> Enable this feature if you need all the wrappers in the output.", "acf-views");
-__("By default, every Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, which allows you to work easily with the element in the JS code field. <br><br> Set it to 'None' if you're going to use the <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>.", "acf-views");
-__("Controls classes generation in the Default Template.", "acf-views");
 __("Note: For backward compatibility purposes only. Enable this option if you have external CSS selectors that rely on outdated digital IDs.", "acf-views");
-__("Note: For backward compatibility purposes only.", "acf-views");
 __("Select a data object (which field values will be used) and update the View. After reload the page to see the markup in the preview.", "acf-views");
 __("Here you can see the preview of the Layout and play with CSS rules. <br>Important! Update the View after changes and reload the page to see the latest markup here. <br>Your changes to the preview won't be applied to the view automatically, if you want to keep them copy amended CSS to the 'CSS Code' field and press the 'Update' button. <br> Note: styles from your front page are included in the preview (some differences may appear).", "acf-views");
 __("This field is deprecated.", "acf-views");
+__("Note: For backward compatibility purposes only.", "acf-views");
 
 // Layout_Settings.php : buttons
 

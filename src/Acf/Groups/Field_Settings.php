@@ -82,7 +82,7 @@ class Field_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Gallery layout
-	 * @instructions Select the gallery layout type. Customize the layout after saving, by editing the JS Code in the CSS & JS tab
+	 * @instructions Select the gallery layout type. Customize the layout after saving, by editing the JS Code in the Styles & Scripts tab
 	 * @choices {"plain":"None","macy_v2":"Classic Masonry (macy v2, 10.6KB js)", "masonry":"Flat Masonry (acf-views, 4.9KB js)", "lightgallery_v2":"Inline-Gallery (lightgallery v2, 47.1KB js, 9.2KB css)"}
 	 * @default_value plain
 	 * @a-order 2
@@ -92,7 +92,7 @@ class Field_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Enable Lightbox
-	 * @instructions Select the lightbox library to enable. Customize the lightbox after saving, by editing the JS Code in the CSS & JS tab
+	 * @instructions Select the lightbox library to enable. Customize the lightbox after saving, by editing the JS Code in the Styles & Scripts tab
 	 * @choices {"none":"None","lightgallery_v2":"LightGallery v2 (47.1KB js, 9.2KB css)", "simple":"Simple (no settings, 5.2KB js)"}
 	 * @default_value none
 	 * @a-order 2
@@ -101,7 +101,7 @@ class Field_Settings extends Group {
 	/**
 	 * @a-type select
 	 * @label Enable Slider
-	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the CSS & JS tab
+	 * @instructions Select the slider library to enable. <br> Customize the slider after saving, by editing the JS Code in the Styles & Scripts tab
 	 * @choices {"none":"None","splide_v4":"Splide v4 (29.8KB js, 5KB css)"}
 	 * @default_value none
 	 * @a-order 2

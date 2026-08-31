@@ -87,18 +87,6 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 		self::add_filter( 'admin_footer_text', array( $this, 'print_survey_link' ) );
 		self::add_filter( 'post_updated_messages', array( $this, 'replace_post_updated_message' ) );
 		self::add_filter( 'enter_title_here', array( $this, 'get_title_placeholder' ) );
-		self::add_action(
-			sprintf( 'manage_%s_posts_extra_tablenav', $this->get_cpt_name() ),
-			array( $this, 'print_storage_label' )
-		);
-	}
-
-	public function print_storage_label( string $which ): void {
-		if ( 'bottom' !== $which ) {
-			return;
-		}
-
-		printf( '<p>%s</p>', wp_kses_post( $this->get_storage_label() ) );
 	}
 
 	protected function get_cpt_name(): string {
@@ -164,7 +152,8 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 	}
 
 	protected function get_storage_label(): string {
-		$description  = __(
+		$description  = '<span style="display:inline-block; float:right;">';
+		$description .= __(
 			'<a target="_blank" href="https://docs.advanced-views.com/features/file-system-storage">File system storage</a> is',
 			'acf-views'
 		);
@@ -173,6 +162,7 @@ abstract class Cpt extends Hookable implements Hooks_Interface {
 			__( 'enabled', 'acf-views' )
 			: __( 'disabled', 'acf-views' );
 		$description .= '.';
+		$description .= '</span>';
 
 		return $description;
 	}
