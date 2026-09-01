@@ -485,9 +485,11 @@ class Acf_Data_Vendor extends Data_Vendor {
 				return $date_time->format( 'H:i:s' );
 			case 'date_time_picker':
 				return $date_time->format( 'Y-m-d H:i:s' );
+			// any other field type (e.g. text/number) storing a date/timestamp in a custom format:
+			// fall back to a generic, widely-comparable format instead of an empty value.
+			default:
+				return $date_time->format( 'Y-m-d H:i:s' );
 		}
-
-		return '';
 	}
 
 	/**
