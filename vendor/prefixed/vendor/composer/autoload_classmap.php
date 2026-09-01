@@ -82,6 +82,7 @@ return array(
     'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_3_0' => $baseDir . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_3_0.php',
     'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_8_0' => $baseDir . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php',
     'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_8_9' => $baseDir . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_8_9.php',
+    'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_9_6' => $baseDir . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_9_6.php',
     'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version_Migrator' => $baseDir . '/../../src/Compatibility/Migration/Version_Migrator.php',
     'Org\\Wplake\\Advanced_Views\\Cpt\\Base\\Cpt\\Cpt' => $baseDir . '/../../src/Cpt/Base/Cpt/Cpt.php',
     'Org\\Wplake\\Advanced_Views\\Cpt\\Base\\Cpt\\Cpt_Assets_Reducer' => $baseDir . '/../../src/Cpt/Base/Cpt/Cpt_Assets_Reducer.php',

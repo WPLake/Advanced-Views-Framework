@@ -133,6 +133,7 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors
         'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_3_0' => __DIR__ . '/../..' . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_3_0.php',
         'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_8_0' => __DIR__ . '/../..' . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_8_0.php',
         'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_8_9' => __DIR__ . '/../..' . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_8_9.php',
+        'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version\\V_3\\Migration_3_9_6' => __DIR__ . '/../..' . '/../../src/Compatibility/Migration/Version/V_3/Migration_3_9_6.php',
         'Org\\Wplake\\Advanced_Views\\Compatibility\\Migration\\Version_Migrator' => __DIR__ . '/../..' . '/../../src/Compatibility/Migration/Version_Migrator.php',
         'Org\\Wplake\\Advanced_Views\\Cpt\\Base\\Cpt\\Cpt' => __DIR__ . '/../..' . '/../../src/Cpt/Base/Cpt/Cpt.php',
         'Org\\Wplake\\Advanced_Views\\Cpt\\Base\\Cpt\\Cpt_Assets_Reducer' => __DIR__ . '/../..' . '/../../src/Cpt/Base/Cpt/Cpt_Assets_Reducer.php',
