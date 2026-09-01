@@ -56,7 +56,7 @@ class Meta_Field_Settings_Integration extends Acf_Integration {
 		);
 
 		self::add_filter(
-			'acf/load_field/name=' . Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_VALUE ),
+			'acf/load_field/name=' . Meta_Field_Settings::getAcfFieldName( Meta_Field_Settings::FIELD_DYNAMIC_SOURCE ),
 			function ( array $field ) {
 				$field['choices'] = array(
 					''                                     => __( 'Select', 'acf-views' ),

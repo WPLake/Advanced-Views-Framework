@@ -13,13 +13,15 @@ class Meta_Field_Settings extends Group {
 	const CUSTOM_GROUP_NAME           = self::GROUP_NAME_PREFIX . 'meta-field';
 	const FIELD_GROUP                 = 'group';
 	const FIELD_FIELD_KEY             = 'field_key';
-	const FIELD_DYNAMIC_VALUE         = 'dynamic_value';
+	const FIELD_DYNAMIC_SOURCE        = 'dynamic_source';
 	const FIELD_DYNAMIC_POST_GROUP    = 'dynamic_post_group';
 	const FIELD_DYNAMIC_POST_FIELD    = 'dynamic_post_field';
 	const FIELD_DYNAMIC_DATE_MODIFIER = 'dynamic_date_modifier';
 	const FIELD_DYNAMIC_QUERY_FIELD   = 'dynamic_query_field';
 	const FIELD_DYNAMIC_ARGUMENT      = 'dynamic_argument_name';
 
+	const VALUE_TYPE_LITERAL            = 'literal';
+	const VALUE_TYPE_DYNAMIC            = 'dynamic';
 	const DYNAMIC_VALUE_POST            = '$post$';
 	const DYNAMIC_VALUE_POST_FIELD      = '$post$.';
 	const DYNAMIC_VALUE_NOW             = '$now$';
@@ -55,26 +57,35 @@ class Meta_Field_Settings extends Group {
 	public string $comparison;
 	// not required, as it's user should be able to select != ''.
 	/**
-	 * @label Static Value
+	 * @a-type select
+	 * @label Value Type
+	 * @instructions Choose the compared value type
+	 * @choices {"literal":"Literal value","dynamic":"Dynamic binding"}
+	 * @default_value literal
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"}]]
+	 */
+	public string $value_type;
+	/**
+	 * @label Literal Value
 	 * @instructions Static value that will be compared.<br>Can be empty, in case you want to compare with empty string.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"},{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": ""}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__value-type","operator": "==","value": "literal"}]]
 	 */
 	public string $value;
 	/**
 	 * @a-type select
 	 * @return_format value
-	 * @label Dynamic Value
-	 * @instructions Dynamic value that will be compared.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"},{"field": "local_acf_views_meta-field__value","operator": "==","value": ""}]]
+	 * @label Dynamic Source
+	 * @instructions Dynamic source that will be compared.
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__value-type","operator": "==","value": "dynamic"}]]
 	 */
-	public string $dynamic_value;
+	public string $dynamic_source;
 	/**
 	 * @a-type select
 	 * @return_format value
 	 * @ui 1
 	 * @label Post Field Group
 	 * @instructions Select the group that contains the field whose value (from the current post) should be picked up dynamically.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": "$post$."}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-source","operator": "==","value": "$post$."}]]
 	 */
 	public string $dynamic_post_group;
 	/**
@@ -82,25 +93,25 @@ class Meta_Field_Settings extends Group {
 	 * @return_format value
 	 * @label Post Field
 	 * @instructions Select the field (from the current post) whose value should be picked up dynamically.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": "$post$."}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-source","operator": "==","value": "$post$."}]]
 	 */
 	public string $dynamic_post_field;
 	/**
 	 * @label Date Modifier
 	 * @instructions Optionally enter a <a target='_blank' href='https://www.php.net/manual/en/function.strtotime.php'>relative date modifier</a> (e.g. <strong>+1 day</strong>, <strong>-1 week</strong>) to offset the current date/time. Leave empty to use the current date/time as-is.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": "$now$"}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-source","operator": "==","value": "$now$"}]]
 	 */
 	public string $dynamic_date_modifier;
 	/**
 	 * @label Query Parameter Name
 	 * @instructions Enter the name of the URL query parameter (from &#36;_GET) whose value should be picked up dynamically.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": "$query$."}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-source","operator": "==","value": "$query$."}]]
 	 */
 	public string $dynamic_query_field;
 	/**
 	 * @label Custom Argument Name
 	 * @instructions Enter the <a target='_blank' href='https://docs.advanced-views.com/post-selections/embedding-shortcode'>custom shortcode argument</a> name whose value should be picked up dynamically.
-	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-value","operator": "==","value": "$custom-arguments$."}]]
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__dynamic-source","operator": "==","value": "$custom-arguments$."}]]
 	 */
 	public string $dynamic_argument_name;
 
@@ -113,19 +124,23 @@ class Meta_Field_Settings extends Group {
 	}
 
 	public function get_raw_value(): string {
-		$resolvers = $this->get_resolvers();
+		if ( self::VALUE_TYPE_DYNAMIC === $this->value_type ) {
+			$resolvers = $this->get_dynamic_value_resolvers();
 
-		$resolve_value = $resolvers[ $this->dynamic_value ] ?? null;
+			$value_resolvers = $resolvers[ $this->dynamic_source ] ?? null;
 
-		return is_callable( $resolve_value ) ?
-			$resolve_value() :
-			$this->value;
+			return is_callable( $value_resolvers ) ?
+				$value_resolvers() :
+				'';
+		}
+
+		return $this->value;
 	}
 
 	/**
 	 * @return array<string, callable(): string> dynamic value token => resolve_value()
 	 */
-	protected function get_resolvers(): array {
+	protected function get_dynamic_value_resolvers(): array {
 		return array(
 			self::DYNAMIC_VALUE_POST            => fn(): string => self::DYNAMIC_VALUE_POST,
 			self::DYNAMIC_VALUE_POST_FIELD      => fn(): string => self::DYNAMIC_VALUE_POST_FIELD . Field_Settings::get_field_meta_by_key( $this->dynamic_post_field )->get_name(),

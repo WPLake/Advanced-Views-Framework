@@ -36,6 +36,8 @@ class Tax_Field_Settings extends Group {
 	 * @default_value IN
 	 */
 	public string $comparison;
+	// todo.
+	public string $value_type;
 	/**
 	 * @a-type select
 	 * @return_format value
