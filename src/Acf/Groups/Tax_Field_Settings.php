@@ -16,6 +16,8 @@ class Tax_Field_Settings extends Group {
 	const FIELD_DYNAMIC_TERM = 'dynamic_term';
 	const FIELD_META_GROUP   = 'meta_group';
 	const FIELD_META_FIELD   = 'meta_field';
+	const VALUE_TYPE_DYNAMIC = 'dynamic';
+	const VALUE_TYPE_STATIC  = 'static';
 
 	/**
 	 * @a-type select
@@ -36,22 +38,29 @@ class Tax_Field_Settings extends Group {
 	 * @default_value IN
 	 */
 	public string $comparison;
-	// todo.
+	/**
+	 * @a-type select
+	 * @label Value Type
+	 * @instructions Choose the compared value type
+	 * @choices {"static":"Static term","dynamic":"Dynamic binding"}
+	 * @default_value static
+	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"}]]
+	 */
 	public string $value_type;
 	/**
 	 * @a-type select
 	 * @return_format value
 	 * @label Static Term
 	 * @instructions Static term that will be compared.
-	 * @conditional_logic [[{"field": "local_acf_views_tax-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_tax-field__comparison","operator": "!=","value": "NOT EXISTS"},{"field": "local_acf_views_tax-field__dynamic-term","operator": "==","value": ""}]]
+	 * @conditional_logic [[{"field": "local_acf_views_tax-field__value-type","operator": "==","value": "static"}]]
 	 */
 	public string $term;
 	/**
 	 * @a-type select
 	 * @return_format value
-	 * @label Dynamic Term
-	 * @instructions Dynamic term that will be compared.
-	 * @conditional_logic [[{"field": "local_acf_views_tax-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_tax-field__comparison","operator": "!=","value": "NOT EXISTS"},{"field": "local_acf_views_tax-field__term","operator": "==","value": ""}]]
+	 * @label Dynamic Source
+	 * @instructions Dynamic source that will be compared.
+	 * @conditional_logic [[{"field": "local_acf_views_tax-field__value-type","operator": "==","value": "dynamic"}]]
 	 */
 	public string $dynamic_term;
 	/**

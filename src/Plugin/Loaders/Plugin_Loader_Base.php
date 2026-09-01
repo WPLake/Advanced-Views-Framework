@@ -39,6 +39,7 @@ use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_0_
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_3_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_0;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_8_9;
+use Org\Wplake\Advanced_Views\Compatibility\Migration\Version\V_3\Migration_3_9_6;
 use Org\Wplake\Advanced_Views\Compatibility\Migration\Version_Migrator;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System_Loader;
@@ -354,6 +355,7 @@ abstract class Plugin_Loader_Base extends Module_Loader {
 					$this->layouts_settings_storage,
 					$this->post_selections_settings_storage,
 				),
+				new Migration_3_9_6( $this->logger, $this->post_selections_settings_storage ),
 			)
 		);
 	}

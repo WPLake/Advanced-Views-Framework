@@ -44,17 +44,6 @@ if ( ! $is_short ) {
 	<span>
 		<?php
 		if ( $is_single ) {
-			echo esc_html(
-				sprintf(
-						// translators: %s: singular name of the CPT.
-					__(
-						'displays the %s, posts will be loaded according to the settings and displayed according to the selected Layout.',
-						'acf-views'
-					),
-					$public_cpt->labels()->singular_name()
-				)
-			);
-			echo '<br><br>';
 			esc_html_e( 'See how to limit visibility by roles', 'acf-views' );
 			echo ' ';
 			printf(
@@ -63,17 +52,6 @@ if ( ! $is_short ) {
 			);
 			echo '.';
 		} else {
-			echo esc_html(
-				sprintf(
-						// translators: %s: singular name of the CPT.
-					__(
-						'displays the %s, chosen fields should be filled at the same object where the shortcode is pasted (post/page).',
-						'acf-views'
-					),
-					$public_cpt->labels()->singular_name()
-				)
-			);
-			echo '<br><br>';
 			esc_html_e( 'See how to load from other sources or limit visibility by roles', 'acf-views' );
 			echo ' ';
 			printf(

@@ -194,8 +194,9 @@ __("None", "acf-views");
 __("Group", "acf-views");
 __("Field", "acf-views");
 __("Comparison", "acf-views");
-__("Static Value", "acf-views");
-__("Dynamic Value", "acf-views");
+__("Value Type", "acf-views");
+__("Literal Value", "acf-views");
+__("Dynamic Source", "acf-views");
 __("Post Field Group", "acf-views");
 __("Post Field", "acf-views");
 __("Date Modifier", "acf-views");
@@ -207,8 +208,9 @@ __("Custom Argument Name", "acf-views");
 __("Select a target group", "acf-views");
 __("Select a target field", "acf-views");
 __("Controls how field value will be compared", "acf-views");
+__("Choose the compared value type", "acf-views");
 __("Static value that will be compared.<br>Can be empty, in case you want to compare with empty string.", "acf-views");
-__("Dynamic value that will be compared.", "acf-views");
+__("Dynamic source that will be compared.", "acf-views");
 __("Select the group that contains the field whose value (from the current post) should be picked up dynamically.", "acf-views");
 __("Select the field (from the current post) whose value should be picked up dynamically.", "acf-views");
 __("Optionally enter a <a target='_blank' href='https://www.php.net/manual/en/function.strtotime.php'>relative date modifier</a> (e.g. <strong>+1 day</strong>, <strong>-1 week</strong>) to offset the current date/time. Leave empty to use the current date/time as-is.", "acf-views");
@@ -227,6 +229,8 @@ __("Contains", "acf-views");
 __("Does not contain", "acf-views");
 __("Exists", "acf-views");
 __("Does not exist", "acf-views");
+__("Literal value", "acf-views");
+__("Dynamic binding", "acf-views");
 
 // Meta_Filter_Settings.php : labels
 
@@ -502,8 +506,9 @@ __("This list contains fields for the selected repeater or group. <a target='_bl
 
 __("Taxonomy", "acf-views");
 __("Comparison", "acf-views");
+__("Value Type", "acf-views");
 __("Static Term", "acf-views");
-__("Dynamic Term", "acf-views");
+__("Dynamic Source", "acf-views");
 __("Source meta group", "acf-views");
 __("Source meta field", "acf-views");
 __("Custom argument name", "acf-views");
@@ -512,8 +517,9 @@ __("Custom argument name", "acf-views");
 
 __("Select a target taxonomy", "acf-views");
 __("Controls how taxonomy will be compared", "acf-views");
+__("Choose the compared value type", "acf-views");
 __("Static term that will be compared.", "acf-views");
-__("Dynamic term that will be compared.", "acf-views");
+__("Dynamic source that will be compared.", "acf-views");
 __("Choose a Group that contains the source meta field.", "acf-views");
 __("Choose a Term field whose value should be used in the query.", "acf-views");
 __("Enter the <a target='_blank' href='https://docs.advanced-views.com/post-selections/embedding-shortcode'>custom shortcode argument</a> name which will be used in the query.", "acf-views");
@@ -524,6 +530,8 @@ __("Equal to", "acf-views");
 __("Not Equal to", "acf-views");
 __("Exists", "acf-views");
 __("Does Not Exist", "acf-views");
+__("Static term", "acf-views");
+__("Dynamic binding", "acf-views");
 
 // Tax_Filter_Settings.php : labels
 

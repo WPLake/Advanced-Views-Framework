@@ -6,11 +6,11 @@ namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Taxonomy;
 
 defined( 'ABSPATH' ) || exit;
 
+use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Field_Settings;
+use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Context_Container_Base;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context_Container;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Query_Utils;
-use Org\Wplake\Advanced_Views\Cpt\Data_Vendors\Data_Vendors;
-use Org\Wplake\Advanced_Views\Acf\Groups\Tax_Field_Settings;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
@@ -95,7 +95,6 @@ final class Term_Query_Builder implements Query_Context_Container {
 	 */
 	protected function get_value_resolvers( Tax_Field_Settings $term ): array {
 		return array(
-			''                  => fn() => array( $term->get_term_id() ),
 			'$current$'         => fn() => array( $this->resolve_current_term_id() ),
 			'$meta$'            => fn() => $this->resolve_meta_value( $term ),
 			'$custom-argument$' => fn() => $this->resolve_custom_value( $term ),
@@ -106,15 +105,17 @@ final class Term_Query_Builder implements Query_Context_Container {
 	 * @return mixed[]
 	 */
 	protected function resolve_term_value( Tax_Field_Settings $term ): array {
-		$resolvers = $this->get_value_resolvers( $term );
+		if ( Tax_Field_Settings::VALUE_TYPE_DYNAMIC === $term->value_type ) {
+			$resolvers = $this->get_value_resolvers( $term );
 
-		$resolver = $resolvers[ $term->dynamic_term ] ?? null;
+			$resolver = $resolvers[ $term->dynamic_term ] ?? null;
 
-		if ( is_callable( $resolver ) ) {
-			return $resolver();
+			return is_callable( $resolver ) ?
+				$resolver() :
+				array();
 		}
 
-		return array();
+		return array( $term->get_term_id() );
 	}
 
 	/**

@@ -90,10 +90,9 @@ class Tax_Field_Settings_Integration extends Acf_Integration {
 			'acf/load_field/name=' . Tax_Field_Settings::getAcfFieldName( Tax_Field_Settings::FIELD_DYNAMIC_TERM ),
 			function ( array $field ) {
 				$field['choices'] = array(
-					''                  => __( 'Select', 'acf-views' ),
-					'$current$'         => __( '$current$ (archive and category pages)', 'acf-views' ),
-					'$meta$'            => __( '$meta$ (from specific meta field)', 'acf-views' ),
-					'$custom-argument$' => __( '$custom-argument$ (from the shortcode arguments)', 'acf-views' ),
+					'$current$'         => __( 'Current term (archive and category pages)', 'acf-views' ),
+					'$meta$'            => __( 'Meta field value', 'acf-views' ),
+					'$custom-argument$' => __( 'Custom shortcode argument', 'acf-views' ),
 				);
 
 				return $field;
