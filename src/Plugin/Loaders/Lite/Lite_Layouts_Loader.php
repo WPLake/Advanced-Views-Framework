@@ -26,6 +26,7 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Field_Markup;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Markup;
+use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Block;
 use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Layouts_Loader_Base;
@@ -83,6 +84,12 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->live_reloader_component,
 			$this->factory,
 			$this->shortcode_block
+		);
+
+		$this->block = new Layout_Block(
+			$base->layouts_settings_storage,
+			$this->shortcode,
+			$base->plugin
 		);
 
 		$this->cpt                 = new Layouts_Cpt( $base->layout_cpt, $base->layouts_settings_storage );

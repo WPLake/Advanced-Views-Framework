@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Block;
 use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
@@ -39,6 +40,7 @@ abstract class Layouts_Loader_Base extends Module_Loader {
 
 	public Layout_Shortcode $shortcode;
 	public Shortcode_Block $shortcode_block;
+	public Layout_Block $block;
 	public Layout_Save_Actions $save_actions;
 	public Layout_Factory $factory;
 	public Layout_Interactive_Fields $interactive_fields;
@@ -57,6 +59,7 @@ abstract class Layouts_Loader_Base extends Module_Loader {
 				$this->save_actions,
 				$this->shortcode,
 				$this->shortcode_block,
+				$this->block,
 				$this->git_box,
 				$this->git_tabs,
 				$this->interactive_fields,
