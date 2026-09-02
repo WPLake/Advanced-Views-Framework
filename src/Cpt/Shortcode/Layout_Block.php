@@ -66,6 +66,10 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 				'description'     => __( 'Displays an Advanced Views Layout.', 'acf-views' ),
 				'category'        => self::CATEGORY,
 				'icon'            => 'layout',
+				'uses_context'    => array( 'postId' ),
+				'supports'        => array(
+					'customClassName' => false,
+				),
 				'attributes'      => array(
 					'layoutId'        => array(
 						'type'    => 'string',
