@@ -89,6 +89,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 		$this->block = new Layout_Block(
 			$base->layouts_settings_storage,
 			$this->shortcode,
+			$base->front_assets,
 			$base->plugin
 		);
 
