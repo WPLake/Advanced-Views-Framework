@@ -43,9 +43,6 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 		if ( $route_detector->is_admin_route() ) {
 			self::add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 			self::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
-			// unlike 'enqueue_block_editor_assets', this one is also mirrored by Gutenberg into the
-			// editor canvas iframe, which is where the block's own rendered markup actually lives.
-			self::add_action( 'enqueue_block_assets', array( $this, 'enqueue_content_styles' ) );
 		}
 	}
 
@@ -117,7 +114,39 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 			'custom-arguments' => string( $attributes, 'customArguments' ),
 		);
 
-		return $this->layout_shortcode->render_shortcode( $attrs );
+		$html = $this->layout_shortcode->render_shortcode( $attrs );
+
+		return $this->add_style_tag( $html, $attrs['id'] );
+	}
+
+	/**
+	 * Every render carries its own scoped 'data-avf-id' style tag, instead of relying solely on
+	 * Front_Assets' page-level 'wp_head'/'wp_footer' printing - a dynamic 'render_callback' can't reach
+	 * that when rendered through the block editor's ServerSideRender REST call, which is a request of its
+	 * own with no such page to print into. layout-block.ts (editor-only) then moves this tag into <head>,
+	 * replacing any existing tag with the same id, so repeated/updated uses of the same Layout in the
+	 * editor don't keep accumulating duplicate CSS.
+	 */
+	protected function add_style_tag( string $html, string $short_unique_id ): string {
+		$unique_id = Layout_Settings::UNIQUE_ID_PREFIX . $short_unique_id;
+
+		if ( ! key_exists( $unique_id, $this->layouts_settings_storage->get_unique_id_with_name_items_list() ) ) {
+			return $html;
+		}
+
+		$layout_settings = $this->layouts_settings_storage->get( $unique_id );
+
+		// internal (e.g. shadow DOM) CSS is scoped to its own markup and inlined there instead.
+		if ( $layout_settings->is_css_internal() ) {
+			return $html;
+		}
+
+		$css = $this->front_assets->minify_code(
+			$layout_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
+			Front_Assets::MINIFY_TYPE_CSS
+		);
+
+		return sprintf( '<style data-avf-id="%s">%s</style>', esc_attr( $unique_id ), $css ) . $html;
 	}
 
 	public function enqueue_editor_assets(): void {
@@ -147,26 +176,6 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 	}
 
 	/**
-	 * Layouts render via a dynamic 'render_callback', so the editor never gets their CSS through the usual
-	 * Front_Assets 'wp_head'/'wp_footer' printing (that only runs on a real front-end page load). Enqueue it
-	 * once here instead of inlining it per block instance - otherwise every repeated use of the same Layout
-	 * (e.g. inside a Query Loop) would duplicate it. This must run on 'enqueue_block_assets', not
-	 * 'enqueue_block_editor_assets': only the former is mirrored by Gutenberg into the editor canvas iframe,
-	 * which is where the block's own rendered markup actually lives.
-	 *
-	 * Every Layout's CSS is loaded unconditionally here, not just ones already used on the current page:
-	 * this hook only fires once, on the initial editor page load, so it can't react to a Layout picked
-	 * afterwards from the block's own inserter - the same reason WordPress core loads all registered
-	 * blocks' styles up front in the editor and only restricts to what's actually used on the front end
-	 * (see 'wp_should_load_separate_core_block_assets()', which is admin-exempt for exactly this reason).
-	 */
-	public function enqueue_content_styles(): void {
-		wp_register_style( self::NAME, false, array(), $this->plugin->get_version() );
-		wp_enqueue_style( self::NAME );
-		wp_add_inline_style( self::NAME, $this->get_layouts_css() );
-	}
-
-	/**
 	 * @return array<string,string>
 	 */
 	protected function get_layouts_list(): array {
@@ -178,25 +187,5 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 		}
 
 		return $list;
-	}
-
-	protected function get_layouts_css(): string {
-		$css = '';
-
-		foreach ( array_keys( $this->layouts_settings_storage->get_unique_id_with_name_items_list() ) as $unique_id ) {
-			$layout_settings = $this->layouts_settings_storage->get( $unique_id );
-
-			// internal (e.g. shadow DOM) CSS is scoped to its own markup and inlined there instead.
-			if ( $layout_settings->is_css_internal() ) {
-				continue;
-			}
-
-			$css .= $this->front_assets->minify_code(
-				$layout_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
-				Front_Assets::MINIFY_TYPE_CSS
-			);
-		}
-
-		return $css;
 	}
 }
