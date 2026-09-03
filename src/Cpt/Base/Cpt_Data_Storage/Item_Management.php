@@ -181,22 +181,28 @@ abstract class Item_Management extends Action {
 	}
 
 	public function get_unique_id_from_shortcode_id( string $id, string $post_type ): string {
-		// A) short unique id.
+		$post_ids = $this->db_management->get_post_ids();
+
+		// A) already a full unique id (e.g. from the block editor, which stores/passes it as-is).
+		// do not check trashedPostIds, as we don't allow to use trashed items in the shortcodes.
+		if ( key_exists( $id, $post_ids ) ) {
+			return $id;
+		}
+
+		// B) short unique id.
 		if ( 13 === strlen( $id ) ) {
 			$id_prefix = Hard_Layout_Cpt::cpt_name() === $post_type ?
 				Layout_Settings::UNIQUE_ID_PREFIX :
 				Post_Selection_Settings::UNIQUE_ID_PREFIX;
 
 			$unique_id = $id_prefix . $id;
-			$post_ids  = $this->db_management->get_post_ids();
 
-			// do not check trashedPostIds, as we don't allow to use trashed items in the shortcodes.
 			return key_exists( $unique_id, $post_ids ) ?
 				$unique_id :
 				'';
 		}
 
-		// B) digital post id (back compatibility).
+		// C) digital post id (back compatibility).
 		$post = get_post( int( $id ) );
 
 		if ( $post instanceof WP_Post &&
