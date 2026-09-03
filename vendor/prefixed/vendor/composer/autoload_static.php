@@ -317,7 +317,7 @@ class ComposerStaticInit_org_wplake_advanced_views_prefixed_vendors {
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Layouts\\Integrations\\Layout_Shortcode' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Layout_Shortcode.php',
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Post_Selections\\Integrations\\Post_Selection_Shortcode' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Post_Selection_Shortcode.php',
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Base' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Shortcode.php',
-		'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Gutenberg_Block' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Shortcode_Block.php',
+		'Org\\Wplake\\Advanced_Views\\Cpt\\Layouts\\Integrations\\Shortcode_Gutenberg_Block' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Shortcode_Block.php',
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Renderer' => __DIR__ . '/../..' . '/../../src/Cpt/Shortcode/Shortcode_Renderer.php',
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Template\\Engines\\Blade\\Blade_Integration' => __DIR__ . '/../..' . '/../../src/Cpt/Template/Engines/Blade/Blade_Integration.php',
 		'Org\\Wplake\\Advanced_Views\\Cpt\\Template\\Engines\\Blade\\Blade_Renderer' => __DIR__ . '/../..' . '/../../src/Cpt/Template/Engines/Blade/Blade_Renderer.php',

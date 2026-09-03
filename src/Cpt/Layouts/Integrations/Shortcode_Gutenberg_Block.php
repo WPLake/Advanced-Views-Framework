@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Integrations;
+namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 

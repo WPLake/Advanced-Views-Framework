@@ -266,7 +266,7 @@ return array(
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Layouts\\Integrations\\Layout_Shortcode' => $baseDir . '/../../src/Cpt/Shortcode/Layout_Shortcode.php',
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Post_Selections\\Integrations\\Post_Selection_Shortcode' => $baseDir . '/../../src/Cpt/Shortcode/Post_Selection_Shortcode.php',
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Base' => $baseDir . '/../../src/Cpt/Shortcode/Shortcode.php',
-	'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Gutenberg_Block' => $baseDir . '/../../src/Cpt/Shortcode/Shortcode_Block.php',
+	'Org\\Wplake\\Advanced_Views\\Cpt\\Layouts\\Integrations\\Shortcode_Gutenberg_Block' => $baseDir . '/../../src/Cpt/Shortcode/Shortcode_Block.php',
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Integrations\\Shortcode_Renderer' => $baseDir . '/../../src/Cpt/Shortcode/Shortcode_Renderer.php',
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Template\\Engines\\Blade\\Blade_Integration' => $baseDir . '/../../src/Cpt/Template/Engines/Blade/Blade_Integration.php',
 	'Org\\Wplake\\Advanced_Views\\Cpt\\Template\\Engines\\Blade\\Blade_Renderer' => $baseDir . '/../../src/Cpt/Template/Engines/Blade/Blade_Renderer.php',
