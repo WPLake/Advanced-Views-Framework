@@ -10,31 +10,38 @@ use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 final class Layout_Block extends Hookable implements Hooks_Interface {
-	const NAME     = 'acf-views/layout';
-	const CATEGORY = 'advanced-views';
+	const NAME           = 'acf-views/layout';
+	const CATEGORY       = 'advanced-views';
+	const REST_ROUTE     = 'layout-block/layouts';
+	const REST_NAMESPACE = 'advanced_views/v1';
 
 	private Layout_Settings_Storage $layouts_settings_storage;
 	private Layout_Shortcode $layout_shortcode;
 	private Front_Assets $front_assets;
 	private Plugin $plugin;
+	private Public_Cpt $layout_cpt;
 
 	public function __construct(
 		Layout_Settings_Storage $layouts_settings_storage,
 		Layout_Shortcode $layout_shortcode,
 		Front_Assets $front_assets,
-		Plugin $plugin
+		Plugin $plugin,
+		Public_Cpt $layout_cpt
 	) {
 		$this->layouts_settings_storage = $layouts_settings_storage;
 		$this->layout_shortcode         = $layout_shortcode;
 		$this->front_assets             = $front_assets;
 		$this->plugin                   = $plugin;
+		$this->layout_cpt               = $layout_cpt;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
@@ -43,6 +50,7 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 		if ( $route_detector->is_admin_route() ) {
 			self::add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 			self::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+			self::add_action( 'rest_api_init', array( $this, 'register_layouts_rest_route' ) );
 		}
 	}
 
@@ -160,6 +168,7 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 				'wp-components',
 				'wp-server-side-render',
 				'wp-i18n',
+				'wp-api-fetch',
 			),
 			$this->plugin->get_version(),
 			true
@@ -169,21 +178,43 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 			self::NAME,
 			'avfLayoutBlock',
 			array(
-				'blockName' => self::NAME,
-				'layouts'   => $this->get_layouts_list(),
+				'blockName'      => self::NAME,
+				'layouts'        => $this->get_layouts_list(),
+				'newLayoutUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->layout_cpt->cpt_name() ) ),
+				'layoutsRestUrl' => sprintf( '/%s/%s', self::REST_NAMESPACE, self::REST_ROUTE ),
+				'canManage'      => Avf_User::can_manage(),
+			)
+		);
+	}
+
+	public function register_layouts_rest_route(): void {
+		register_rest_route(
+			self::REST_NAMESPACE,
+			self::REST_ROUTE,
+			array(
+				'methods'             => 'GET',
+				'permission_callback' => fn(): bool => Avf_User::can_manage(),
+				/**
+				 * @return array<string,array{title:string,editUrl:string}>
+				 */
+				'callback'            => fn(): array => $this->get_layouts_list(),
 			)
 		);
 	}
 
 	/**
-	 * @return array<string,string>
+	 * @return array<string,array{title:string,editUrl:string}>
 	 */
 	protected function get_layouts_list(): array {
 		$list = array();
 
 		foreach ( $this->layouts_settings_storage->get_unique_id_with_name_items_list() as $unique_id => $title ) {
-			$short_id          = substr( $unique_id, strlen( Layout_Settings::UNIQUE_ID_PREFIX ) );
-			$list[ $short_id ] = $title;
+			$short_id = substr( $unique_id, strlen( Layout_Settings::UNIQUE_ID_PREFIX ) );
+
+			$list[ $short_id ] = array(
+				'title'   => $title,
+				'editUrl' => $this->layouts_settings_storage->get( $unique_id )->get_edit_post_link( 'raw' ),
+			);
 		}
 
 		return $list;
