@@ -20,6 +20,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Selection_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
@@ -38,6 +39,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Post_Selections_Pre_Built_Tab $pre_built_tab;
 	public Selection_Layout_Integration $layout_integration;
 	public Post_Selection_Shortcode $shortcode;
+	public Selection_Gutenberg_Block $block;
 	public Selection_Save_Actions $save_actions;
 	public Selection_Git_Tabs $git_tabs;
 	public Selection_Git_Box $git_box;
@@ -82,6 +84,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 				$this->save_actions,
 				$this->layout_integration,
 				$this->shortcode,
+				$this->block,
 				$this->git_tabs,
 				$this->git_box,
 				$this->interactive_fields,

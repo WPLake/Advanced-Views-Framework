@@ -14,9 +14,10 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 /**
  * Stateless logic shared by every Gutenberg block backed by a Cpt_Settings_Storage (Layout, Post Selection...):
  * the block category filter, the scoped 'data-avf-id' style tag, and the "list items" lookup used both for the
- * editor's SelectControl and its "Refresh" REST route. A concrete block (e.g. Layout_Block) still owns its own
- * hook registration, block metadata, and REST/enqueue wiring directly - only the actual computation that's
- * identical across CPTs lives here, not the WP-API glue around it.
+ * editor's SelectControl and its "Refresh" REST route. A concrete block (e.g. Layout_Gutenberg_Block,
+ * Selection_Gutenberg_Block) still owns its own hook registration, block metadata, and REST/enqueue wiring
+ * directly - only the actual computation/declarations that are identical across CPTs live here, not the WP-API
+ * glue around them.
  */
 final class Cpt_Gutenberg_Block {
 	const CATEGORY       = 'advanced-views';
@@ -39,6 +40,30 @@ final class Cpt_Gutenberg_Block {
 				),
 			),
 			$categories
+		);
+	}
+
+	/**
+	 * The attributes every Cpt_Gutenberg_Block-backed block supports, regardless of which CPT it targets.
+	 * A concrete block merges its own item-id attribute (and any CPT-specific ones, e.g. Layout's 'objectId')
+	 * on top.
+	 *
+	 * @return array<string,array{type:string,default:string}>
+	 */
+	public static function get_common_block_attributes(): array {
+		return array(
+			'class'           => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'userWithRoles'   => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'customArguments' => array(
+				'type'    => 'string',
+				'default' => '',
+			),
 		);
 	}
 

@@ -25,6 +25,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Tabl
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Selection_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Query;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
@@ -163,6 +164,14 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->front_assets,
 			$base->live_reloader_component,
 			$this->factory
+		);
+
+		$this->block = new Selection_Gutenberg_Block(
+			$base->post_selections_settings_storage,
+			$this->shortcode,
+			$base->front_assets,
+			$base->plugin,
+			$base->post_selection_cpt
 		);
 
 		$this->interactive_fields = new Selection_Interactive_Fields(
