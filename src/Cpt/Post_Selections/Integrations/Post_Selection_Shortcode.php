@@ -2,10 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations;
 
 use Org\Wplake\Advanced_Views\Acf\Groups\Post_Selection_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Base;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Context\Query_Context;
@@ -18,7 +19,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Post_Selection_Shortcode extends Shortcode {
+final class Post_Selection_Shortcode extends Shortcode_Base {
 	protected Post_Selection_Factory $selection_factory;
 	protected Selection_Settings_Storage $cards_data_storage;
 

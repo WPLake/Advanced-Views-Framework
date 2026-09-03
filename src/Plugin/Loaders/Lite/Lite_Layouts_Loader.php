@@ -12,6 +12,7 @@ use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Db_Management;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\File_System;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Git_Box;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Git_Tabs;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Interactive_Fields;
@@ -24,11 +25,10 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Field_Markup;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Gutenberg_Block;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Markup;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Block;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Layouts_Loader_Base;
 
 final class Lite_Layouts_Loader extends Layouts_Loader_Base {
@@ -62,7 +62,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->layout_cpt,
 			$base->post_selection_cpt
 		);
-		$this->shortcode_block = new Shortcode_Block( $base->layout_cpt->shortcodes() );
+		$this->shortcode_block = new Shortcode_Gutenberg_Block( $base->layout_cpt->shortcodes() );
 
 		$this->save_actions = new Layout_Save_Actions(
 			$base->logger,
@@ -86,7 +86,7 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$this->shortcode_block
 		);
 
-		$this->block = new Layout_Block(
+		$this->block = new Layout_Gutenberg_Block(
 			$base->layouts_settings_storage,
 			$this->shortcode,
 			$base->front_assets,

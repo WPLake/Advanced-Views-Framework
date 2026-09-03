@@ -2,11 +2,12 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Cpt_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
@@ -16,7 +17,7 @@ use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
-final class Layout_Block extends Hookable implements Hooks_Interface {
+final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 	const NAME       = 'acf-views/layout';
 	const REST_ROUTE = 'layout-block/layouts';
 
@@ -44,14 +45,14 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 		self::add_action( 'init', array( $this, 'register_block' ) );
 
 		if ( $route_detector->is_admin_route() ) {
-			self::add_filter( 'block_categories_all', array( Cpt_Block::class, 'add_block_category' ) );
+			self::add_filter( 'block_categories_all', array( Cpt_Gutenberg_Block::class, 'add_block_category' ) );
 			self::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 			self::add_action(
 				'rest_api_init',
 				fn() => register_rest_route(
-					Cpt_Block::REST_NAMESPACE,
+					Cpt_Gutenberg_Block::REST_NAMESPACE,
 					self::REST_ROUTE,
-					Cpt_Block::get_items_list_rest_args( $this->layouts_settings_storage ),
+					Cpt_Gutenberg_Block::get_items_list_rest_args( $this->layouts_settings_storage ),
 				)
 			);
 		}
@@ -63,7 +64,7 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 			array(
 				'title'           => __( 'Advanced Views Layout', 'acf-views' ),
 				'description'     => __( 'Displays an Advanced Views Layout.', 'acf-views' ),
-				'category'        => Cpt_Block::CATEGORY,
+				'category'        => Cpt_Gutenberg_Block::CATEGORY,
 				'icon'            => 'layout',
 				'uses_context'    => array( 'postId' ),
 				'supports'        => array(
@@ -116,14 +117,14 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 		);
 		$cpt_settings = $this->layouts_settings_storage->get( $unique_id );
 
-		return Cpt_Block::get_style_tag( $cpt_settings, $this->front_assets ) . $html;
+		return Cpt_Gutenberg_Block::get_style_tag( $cpt_settings, $this->front_assets ) . $html;
 	}
 
 	public function enqueue_editor_assets(): void {
 		wp_enqueue_script(
 			self::NAME,
 			$this->plugin->get_assets_url( 'admin/js/blocks/layout-block.min.js' ),
-			Cpt_Block::get_block_js_dependencies(),
+			Cpt_Gutenberg_Block::get_block_js_dependencies(),
 			$this->plugin->get_version(),
 			true
 		);
@@ -133,9 +134,9 @@ final class Layout_Block extends Hookable implements Hooks_Interface {
 			'avfLayoutBlock',
 			array(
 				'blockName'    => self::NAME,
-				'items'        => Cpt_Block::get_items_list( $this->layouts_settings_storage ),
+				'items'        => Cpt_Gutenberg_Block::get_items_list( $this->layouts_settings_storage ),
 				'newItemUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->layout_cpt->cpt_name() ) ),
-				'itemsRestUrl' => sprintf( '/%s/%s', Cpt_Block::REST_NAMESPACE, self::REST_ROUTE ),
+				'itemsRestUrl' => sprintf( '/%s/%s', Cpt_Gutenberg_Block::REST_NAMESPACE, self::REST_ROUTE ),
 				'canManage'    => Avf_User::can_manage(),
 			)
 		);

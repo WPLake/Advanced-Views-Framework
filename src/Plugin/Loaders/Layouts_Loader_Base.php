@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Git_Box;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Git_Tabs;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layout_Interactive_Fields;
@@ -18,10 +19,9 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Gutenberg_Block;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Block;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Shortcode_Block;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
 
 abstract class Layouts_Loader_Base extends Module_Loader {
@@ -39,8 +39,8 @@ abstract class Layouts_Loader_Base extends Module_Loader {
 	public Cpt_Assets_Reducer $cpt_assets_reducer;
 
 	public Layout_Shortcode $shortcode;
-	public Shortcode_Block $shortcode_block;
-	public Layout_Block $block;
+	public Shortcode_Gutenberg_Block $shortcode_block;
+	public Layout_Gutenberg_Block $block;
 	public Layout_Save_Actions $save_actions;
 	public Layout_Factory $factory;
 	public Layout_Interactive_Fields $interactive_fields;

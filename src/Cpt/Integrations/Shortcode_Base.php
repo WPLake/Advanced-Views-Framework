@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -21,7 +21,7 @@ use WP_REST_Request;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 
-abstract class Shortcode extends Hookable implements Shortcode_Renderer, Hooks_Interface {
+abstract class Shortcode_Base extends Hookable implements Shortcode_Renderer, Hooks_Interface {
 	private Instance_Factory $instance_factory;
 	private Settings_Storage $settings;
 	private Cpt_Settings_Storage $cpt_settings_storage;

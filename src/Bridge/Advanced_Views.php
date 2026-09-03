@@ -8,7 +8,7 @@ use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\Card_Shortcode_Interf
 use Org\Wplake\Advanced_Views\Bridge\Interfaces\Shortcodes\View_Shortcode_Interface;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Bridge\Shortcodes\Selection_Shortcode;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Shortcode_Renderer;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Renderer;
 
 defined( 'ABSPATH' ) || exit;
 

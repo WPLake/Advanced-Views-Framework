@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +18,7 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
  * hook registration, block metadata, and REST/enqueue wiring directly - only the actual computation that's
  * identical across CPTs lives here, not the WP-API glue around it.
  */
-final class Cpt_Block {
+final class Cpt_Gutenberg_Block {
 	const CATEGORY       = 'advanced-views';
 	const REST_NAMESPACE = 'advanced_views/v1';
 

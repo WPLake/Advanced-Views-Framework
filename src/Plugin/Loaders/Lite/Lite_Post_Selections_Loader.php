@@ -24,11 +24,11 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Query;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Markup;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Query\Builders\Selection_Query_Builder;
-use Org\Wplake\Advanced_Views\Cpt\Shortcode\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Loaders\Post_Selections_Loader_Base;
 
 final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {

@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ use WP_Block_Template;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\arr;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\int;
 
-final class Shortcode_Block extends Hookable implements Hooks_Interface {
+final class Shortcode_Gutenberg_Block extends Hookable implements Hooks_Interface {
 	private int $context_post_id;
 	/**
 	 * @var string[]

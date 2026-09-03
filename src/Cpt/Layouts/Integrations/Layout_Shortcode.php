@@ -2,10 +2,12 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Shortcode;
+namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations;
 
 use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Base;
+use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
@@ -21,7 +23,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 defined( 'ABSPATH' ) || exit;
 
-final class Layout_Shortcode extends Shortcode {
+final class Layout_Shortcode extends Shortcode_Base {
 
 	use Safe_Array_Arguments;
 
@@ -33,7 +35,7 @@ final class Layout_Shortcode extends Shortcode {
 	 * @var array<string,bool>
 	 */
 	private array $displaying_views;
-	private Shortcode_Block $shortcode_block;
+	private Shortcode_Gutenberg_Block $shortcode_block;
 
 	public function __construct(
 		Public_Cpt $public_cpt,
@@ -42,7 +44,7 @@ final class Layout_Shortcode extends Shortcode {
 		Front_Assets $front_assets,
 		Live_Reloader_Component $live_reloader_component,
 		Layout_Factory $layout_factory,
-		Shortcode_Block $shortcode_block
+		Shortcode_Gutenberg_Block $shortcode_block
 	) {
 		parent::__construct( $public_cpt, $settings, $layouts_settings_storage, $layout_factory, $front_assets, $live_reloader_component );
 
