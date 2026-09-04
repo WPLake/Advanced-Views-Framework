@@ -2,3 +2,5 @@ pro
 src/mix-manifest.json
 vendor/standalone/advanced-custom-fields/lang/*.mo
 vendor/standalone/advanced-custom-fields/lang/*.po
+src/Assets/**/*.min.js
+src/Assets/**/*.min.css

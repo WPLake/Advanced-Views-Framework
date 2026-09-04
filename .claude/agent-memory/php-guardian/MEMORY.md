@@ -1,1 +1,0 @@
-- [Shortcode id-resolution coverage gap](project_shortcode_id_resolution_coverage_gap.md) — no Pest/wpunit test covers get_unique_id_from_shortcode_id, render_shortcode, or Cpt_Block/Layout_Block; flag this on future passes there.
