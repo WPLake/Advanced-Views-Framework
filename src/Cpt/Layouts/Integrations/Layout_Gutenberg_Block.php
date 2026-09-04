@@ -125,6 +125,7 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 			'id'                 => string( $attributes, 'layoutId' ),
 			// fixme it's a mess. Should pass the real final value from the front already (id/post/options/user/term/comment/menu)
 			'object-id'          => self::resolve_object_id_attribute( $attributes ),
+			// fixme since they're common with Selection block, move to the Cpt_Gutenberg_Block, just like get_common_block_attributes().
 			'class'              => string( $attributes, 'class' ),
 			'user-with-roles'    => string( $attributes, 'userWithRoles' ),
 			'user-without-roles' => string( $attributes, 'userWithoutRoles' ),
