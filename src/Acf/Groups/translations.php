@@ -195,7 +195,7 @@ __("Group", "acf-views");
 __("Field", "acf-views");
 __("Comparison", "acf-views");
 __("Value Type", "acf-views");
-__("Literal Value", "acf-views");
+__("Static Value", "acf-views");
 __("Dynamic Source", "acf-views");
 __("Post Field Group", "acf-views");
 __("Post Field", "acf-views");
@@ -229,8 +229,8 @@ __("Contains", "acf-views");
 __("Does not contain", "acf-views");
 __("Exists", "acf-views");
 __("Does not exist", "acf-views");
-__("Literal value", "acf-views");
-__("Dynamic binding", "acf-views");
+__("Static value", "acf-views");
+__("Dynamic value", "acf-views");
 
 // Meta_Filter_Settings.php : labels
 
@@ -531,7 +531,7 @@ __("Not Equal to", "acf-views");
 __("Exists", "acf-views");
 __("Does Not Exist", "acf-views");
 __("Static term", "acf-views");
-__("Dynamic binding", "acf-views");
+__("Dynamic term", "acf-views");
 
 // Tax_Filter_Settings.php : labels
 

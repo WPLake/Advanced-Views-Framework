@@ -60,7 +60,7 @@ class Meta_Field_Settings_Integration extends Acf_Integration {
 			function ( array $field ) {
 				$field['choices'] = array(
 					''                                     => __( 'Select', 'acf-views' ),
-					Meta_Field_Settings::DYNAMIC_VALUE_POST => __( 'Current post', 'acf-views' ),
+					Meta_Field_Settings::DYNAMIC_VALUE_POST => __( 'Current post ID', 'acf-views' ),
 					Meta_Field_Settings::DYNAMIC_VALUE_POST_FIELD => __( 'Current post field', 'acf-views' ),
 					Meta_Field_Settings::DYNAMIC_VALUE_NOW => __( 'Current date/time', 'acf-views' ),
 					Meta_Field_Settings::DYNAMIC_VALUE_QUERY => __( 'URL parameter', 'acf-views' ),

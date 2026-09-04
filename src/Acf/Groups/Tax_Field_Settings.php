@@ -42,7 +42,7 @@ class Tax_Field_Settings extends Group {
 	 * @a-type select
 	 * @label Value Type
 	 * @instructions Choose the compared value type
-	 * @choices {"static":"Static term","dynamic":"Dynamic binding"}
+	 * @choices {"static":"Static term","dynamic":"Dynamic term"}
 	 * @default_value static
 	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"}]]
 	 */

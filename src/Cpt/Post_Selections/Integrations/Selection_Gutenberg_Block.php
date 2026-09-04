@@ -68,6 +68,7 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 				'icon'            => 'grid-view',
 				'supports'        => array(
 					'customClassName' => false,
+					'customCSS'       => false,
 				),
 				'attributes'      => array_merge(
 					array(
@@ -88,10 +89,11 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 	 */
 	public function render_block( array $attributes ): string {
 		$attrs = array(
-			'id'               => string( $attributes, 'selectionId' ),
-			'class'            => string( $attributes, 'class' ),
-			'user-with-roles'  => string( $attributes, 'userWithRoles' ),
-			'custom-arguments' => string( $attributes, 'customArguments' ),
+			'id'                 => string( $attributes, 'selectionId' ),
+			'class'              => string( $attributes, 'class' ),
+			'user-with-roles'    => string( $attributes, 'userWithRoles' ),
+			'user-without-roles' => string( $attributes, 'userWithoutRoles' ),
+			'custom-arguments'   => string( $attributes, 'customArguments' ),
 		);
 
 		$html = $this->post_selection_shortcode->render_shortcode( $attrs );

@@ -52,15 +52,19 @@ final class Cpt_Gutenberg_Block {
 	 */
 	public static function get_common_block_attributes(): array {
 		return array(
-			'class'           => array(
+			'class'            => array(
 				'type'    => 'string',
 				'default' => '',
 			),
-			'userWithRoles'   => array(
+			'userWithRoles'    => array(
 				'type'    => 'string',
 				'default' => '',
 			),
-			'customArguments' => array(
+			'userWithoutRoles' => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'customArguments'  => array(
 				'type'    => 'string',
 				'default' => '',
 			),

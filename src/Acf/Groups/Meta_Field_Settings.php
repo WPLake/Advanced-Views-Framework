@@ -60,13 +60,13 @@ class Meta_Field_Settings extends Group {
 	 * @a-type select
 	 * @label Value Type
 	 * @instructions Choose the compared value type
-	 * @choices {"literal":"Literal value","dynamic":"Dynamic binding"}
+	 * @choices {"literal":"Static value","dynamic":"Dynamic value"}
 	 * @default_value literal
 	 * @conditional_logic [[{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "EXISTS"},{"field": "local_acf_views_meta-field__comparison","operator": "!=","value": "NOT EXISTS"}]]
 	 */
 	public string $value_type;
 	/**
-	 * @label Literal Value
+	 * @label Static Value
 	 * @instructions Static value that will be compared.<br>Can be empty, in case you want to compare with empty string.
 	 * @conditional_logic [[{"field": "local_acf_views_meta-field__value-type","operator": "==","value": "literal"}]]
 	 */

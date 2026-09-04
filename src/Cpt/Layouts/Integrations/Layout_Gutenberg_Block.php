@@ -69,14 +69,43 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 				'uses_context'    => array( 'postId' ),
 				'supports'        => array(
 					'customClassName' => false,
+					'customCSS'       => false,
 				),
 				'attributes'      => array_merge(
 					array(
-						'layoutId' => array(
+						'layoutId'     => array(
 							'type'    => 'string',
 							'default' => '',
 						),
-						'objectId' => array(
+						'objectSource' => array(
+							'type'    => 'string',
+							'default' => 'post',
+						),
+						'postLookup'   => array(
+							'type'    => 'string',
+							'default' => 'current',
+						),
+						'postId'       => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'userId'       => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'termId'       => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'menuSlug'     => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'postSlug'     => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'commentId'    => array(
 							'type'    => 'string',
 							'default' => '',
 						),
@@ -93,12 +122,21 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 	 */
 	public function render_block( array $attributes ): string {
 		$attrs = array(
-			'id'               => string( $attributes, 'layoutId' ),
-			'object-id'        => string( $attributes, 'objectId' ),
-			'class'            => string( $attributes, 'class' ),
-			'user-with-roles'  => string( $attributes, 'userWithRoles' ),
-			'custom-arguments' => string( $attributes, 'customArguments' ),
+			'id'                 => string( $attributes, 'layoutId' ),
+			// fixme it's a mess. Should pass the real final value from the front already (id/post/options/user/term/comment/menu)
+			'object-id'          => self::resolve_object_id_attribute( $attributes ),
+			'class'              => string( $attributes, 'class' ),
+			'user-with-roles'    => string( $attributes, 'userWithRoles' ),
+			'user-without-roles' => string( $attributes, 'userWithoutRoles' ),
+			'custom-arguments'   => string( $attributes, 'customArguments' ),
 		);
+
+		// fixme use array filter & merge instead.
+		foreach ( self::get_object_source_lookup_attributes( $attributes ) as $key => $value ) {
+			if ( '' !== $value ) {
+				$attrs[ $key ] = $value;
+			}
+		}
 
 		$html = $this->layout_shortcode->render_shortcode( $attrs );
 
@@ -109,6 +147,51 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 		$cpt_settings = $this->layouts_settings_storage->get( $unique_id );
 
 		return Cpt_Gutenberg_Block::get_style_tag( $cpt_settings, $this->front_assets ) . $html;
+	}
+
+	/**
+	 * Turns the Object Source control's selection (see layoutObjectSource.ts) back into the raw 'object-id'
+	 * shortcode value Layout_Shortcode::get_data_post_id() expects.
+	 *
+	 * @param array<string,mixed> $attributes
+	 */
+	private static function resolve_object_id_attribute( array $attributes ): string {
+		$object_source = string( $attributes, 'objectSource' );
+
+		if ( 'post' === $object_source ) {
+			switch ( string( $attributes, 'postLookup' ) ) {
+				case 'slug':
+					return 'post';
+				case 'id':
+					return string( $attributes, 'postId' );
+				default:
+					// the "Current Post" lookup - an empty 'object-id' falls back to the current object.
+					return '';
+			}
+		}
+
+		// 'menu' isn't its own 'object-id' value - it's the 'term' case, resolved via the 'menu-slug' lookup below.
+		return 'menu' === $object_source ?
+			'term' :
+			$object_source; // 'options' | 'user' | 'term' | 'comment'
+	}
+
+	/**
+	 * The lookup values the Object Source control's subfields collect (Post Slug, User/Term/Comment ID, Menu Slug),
+	 * keyed by their shortcode attribute name.
+	 *
+	 * @param array<string,mixed> $attributes
+	 *
+	 * @return array<string,string>
+	 */
+	private static function get_object_source_lookup_attributes( array $attributes ): array {
+		return array(
+			'post-slug'  => string( $attributes, 'postSlug' ),
+			'user-id'    => string( $attributes, 'userId' ),
+			'term-id'    => string( $attributes, 'termId' ),
+			'menu-slug'  => string( $attributes, 'menuSlug' ),
+			'comment-id' => string( $attributes, 'commentId' ),
+		);
 	}
 
 	public function enqueue_editor_assets(): void {
