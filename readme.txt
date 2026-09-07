@@ -1,6 +1,6 @@
-=== Advanced Views for Custom Fields and Posts ===
+=== Advanced Views - Display Framework for Gutenberg & Elementor ===
 Contributors: wplakeorg
-Tags: post grid, wp_query, meta fields, custom post types, taxonomy
+Tags: gutenberg, elementor, posts grid, custom fields, templates
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -8,11 +8,11 @@ Stable tag: 3.9.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
+Query, filter and display content dynamically - WooCommerce and CPT Grids, ACF Galleries, MetaBox Maps and more.
 
 == Description ==
 
-Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder.
+Query, filter and display content dynamically - WooCommerce and CPT Grids, ACF Galleries, MetaBox Maps and more.
 
 ==⭐ Why Choose Advanced Views?==
 
