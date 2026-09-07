@@ -18,14 +18,15 @@ use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interface {
-	const NAME       = 'acf-views/post-selection';
+	const NAME       = 'advanced-views/post-selection';
 	const REST_ROUTE = 'post-selection-block/selections';
 
-	private Selection_Settings_Storage $post_selections_settings_storage;
-	private Post_Selection_Shortcode $post_selection_shortcode;
+	private Selection_Settings_Storage $selections_settings_storage;
+	private Post_Selection_Shortcode $selection_shortcode;
 	private Front_Assets $front_assets;
 	private Plugin $plugin;
-	private Public_Cpt $post_selection_cpt;
+	private Public_Cpt $selection_cpt;
+	private Route_Detector $route_detector;
 
 	public function __construct(
 		Selection_Settings_Storage $post_selections_settings_storage,
@@ -34,14 +35,16 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 		Plugin $plugin,
 		Public_Cpt $post_selection_cpt
 	) {
-		$this->post_selections_settings_storage = $post_selections_settings_storage;
-		$this->post_selection_shortcode         = $post_selection_shortcode;
-		$this->front_assets                     = $front_assets;
-		$this->plugin                           = $plugin;
-		$this->post_selection_cpt               = $post_selection_cpt;
+		$this->selections_settings_storage = $post_selections_settings_storage;
+		$this->selection_shortcode         = $post_selection_shortcode;
+		$this->front_assets                = $front_assets;
+		$this->plugin                      = $plugin;
+		$this->selection_cpt               = $post_selection_cpt;
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
+		$this->route_detector = $route_detector;
+
 		self::add_action( 'init', array( $this, 'register_block' ) );
 
 		if ( $route_detector->is_admin_route() ) {
@@ -52,7 +55,7 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 				fn() => register_rest_route(
 					Cpt_Gutenberg_Block::REST_NAMESPACE,
 					self::REST_ROUTE,
-					Cpt_Gutenberg_Block::get_items_list_rest_args( $this->post_selections_settings_storage ),
+					Cpt_Gutenberg_Block::get_items_list_rest_args( $this->selections_settings_storage ),
 				)
 			);
 		}
@@ -62,10 +65,10 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 		register_block_type(
 			self::NAME,
 			array(
-				'title'           => __( 'Advanced Views Post Selection', 'acf-views' ),
-				'description'     => __( 'Displays an Advanced Views Post Selection.', 'acf-views' ),
+				'title'           => __( 'Post Selection: Advanced Views', 'acf-views' ),
+				'description'     => __( 'Displays a Post Selection from Advanced Views.', 'acf-views' ),
 				'category'        => Cpt_Gutenberg_Block::CATEGORY,
-				'icon'            => 'grid-view',
+				'icon'            => 'layout',
 				'supports'        => array(
 					'customClassName' => false,
 					'customCSS'       => false,
@@ -77,7 +80,7 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 							'default' => '',
 						),
 					),
-					Cpt_Gutenberg_Block::get_common_block_attributes()
+					Cpt_Gutenberg_Block::get_attribute_declarations()
 				),
 				'render_callback' => array( $this, 'render_block' ),
 			)
@@ -88,23 +91,22 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 	 * @param array<string,mixed> $attributes
 	 */
 	public function render_block( array $attributes ): string {
-		$attrs = array(
-			'id'                 => string( $attributes, 'selectionId' ),
-			'class'              => string( $attributes, 'class' ),
-			'user-with-roles'    => string( $attributes, 'userWithRoles' ),
-			'user-without-roles' => string( $attributes, 'userWithoutRoles' ),
-			'custom-arguments'   => string( $attributes, 'customArguments' ),
-		);
+		$attrs = self::parse_attributes( $attributes );
 
-		$html = $this->post_selection_shortcode->render_shortcode( $attrs );
+		$unique_id          = string( $attrs, 'id' );
+		$selection_settings = $this->selections_settings_storage->get( $unique_id );
 
-		$unique_id    = $this->post_selections_settings_storage->get_unique_id_from_shortcode_id(
-			string( $attrs, 'id' ),
-			$this->post_selection_cpt->cpt_name()
-		);
-		$cpt_settings = $this->post_selections_settings_storage->get( $unique_id );
+		if ( $selection_settings->isLoaded() ) {
+			$html = $this->selection_shortcode->render_shortcode( $attrs );
 
-		return Cpt_Gutenberg_Block::get_style_tag( $cpt_settings, $this->front_assets ) . $html;
+			return $this->route_detector->is_admin_route() ?
+				Cpt_Gutenberg_Block::render_preview( $selection_settings, $this->front_assets, $html ) :
+				$html;
+		}
+
+		return $this->route_detector->is_admin_route() ?
+			Cpt_Gutenberg_Block::get_empty_preview_placeholder( $this->selection_cpt->labels()->singular_name() ) :
+			'';
 	}
 
 	public function enqueue_editor_assets(): void {
@@ -121,11 +123,29 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 			'avfSelectionBlock',
 			array(
 				'blockName'    => self::NAME,
-				'items'        => Cpt_Gutenberg_Block::get_items_list( $this->post_selections_settings_storage ),
-				'newItemUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->post_selection_cpt->cpt_name() ) ),
+				'items'        => Cpt_Gutenberg_Block::get_items_list( $this->selections_settings_storage ),
+				'newItemUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->selection_cpt->cpt_name() ) ),
 				'itemsRestUrl' => sprintf( '/%s/%s', Cpt_Gutenberg_Block::REST_NAMESPACE, self::REST_ROUTE ),
 				'canManage'    => Avf_User::can_manage(),
+				'itemLabel'    => $this->selection_cpt->labels()->singular_name(),
 			)
+		);
+	}
+
+	/**
+	 * @param array<string,mixed> $attributes
+	 *
+	 * @return array<string,string>
+	 */
+	protected static function parse_attributes( array $attributes ): array {
+		$attrs = array_merge(
+			array( 'id' => string( $attributes, 'selectionId' ) ),
+			Cpt_Gutenberg_Block::parse_attributes( $attributes )
+		);
+
+		return array_filter(
+			$attrs,
+			fn( string $value ): bool => strlen( $value ) > 0
 		);
 	}
 }

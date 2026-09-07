@@ -10,14 +10,10 @@ use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt_Data_Storage\Cpt_Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 /**
  * Stateless logic shared by every Gutenberg block backed by a Cpt_Settings_Storage (Layout, Post Selection...):
- * the block category filter, the scoped 'data-avf-id' style tag, and the "list items" lookup used both for the
- * editor's SelectControl and its "Refresh" REST route. A concrete block (e.g. Layout_Gutenberg_Block,
- * Selection_Gutenberg_Block) still owns its own hook registration, block metadata, and REST/enqueue wiring
- * directly - only the actual computation/declarations that are identical across CPTs live here, not the WP-API
- * glue around them.
  */
 final class Cpt_Gutenberg_Block {
 	const CATEGORY       = 'advanced-views';
@@ -44,13 +40,9 @@ final class Cpt_Gutenberg_Block {
 	}
 
 	/**
-	 * The attributes every Cpt_Gutenberg_Block-backed block supports, regardless of which CPT it targets.
-	 * A concrete block merges its own item-id attribute (and any CPT-specific ones, e.g. Layout's 'objectId')
-	 * on top.
-	 *
 	 * @return array<string,array{type:string,default:string}>
 	 */
-	public static function get_common_block_attributes(): array {
+	public static function get_attribute_declarations(): array {
 		return array(
 			'class'            => array(
 				'type'    => 'string',
@@ -72,6 +64,44 @@ final class Cpt_Gutenberg_Block {
 	}
 
 	/**
+	 * @param array<string,mixed> $attributes
+	 *
+	 * @return array<string,string>
+	 */
+	public static function parse_attributes( array $attributes ): array {
+		return array(
+			'class'              => string( $attributes, 'class' ),
+			'user-with-roles'    => string( $attributes, 'userWithRoles' ),
+			'user-without-roles' => string( $attributes, 'userWithoutRoles' ),
+			'custom-arguments'   => string( $attributes, 'customArguments' ),
+		);
+	}
+
+	public static function render_preview( Cpt_Settings $cpt_settings, Front_Assets $assets, string $html ): string {
+		$has_output = strlen( trim( $html ) ) > 0;
+
+		if ( $has_output ) {
+			$style_tag = self::make_style_tag( $cpt_settings, $assets );
+
+			return $style_tag . $html;
+		}
+
+		$label = __( 'no output to preview', 'acf-views' );
+
+		return self::make_placeholder( $label );
+	}
+
+	public static function get_empty_preview_placeholder( string $singular_name ): string {
+		$label = sprintf(
+		// translators: %s is a singular post-type name, e.g. "Layout".
+			__( 'Select a %s to see the preview', 'acf-views' ),
+			$singular_name
+		);
+
+		return self::make_placeholder( $label );
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public static function get_block_js_dependencies(): array {
@@ -86,36 +116,6 @@ final class Cpt_Gutenberg_Block {
 		);
 	}
 
-	/**
-	 * Every render carries its own scoped 'data-avf-id' style tag, instead of relying solely on
-	 * Front_Assets' page-level 'wp_head'/'wp_footer' printing - a dynamic 'render_callback' can't reach
-	 * that when rendered through the block editor's ServerSideRender REST call, which is a request of its
-	 * own with no such page to print into. cpt-block.ts (editor-only) then moves this tag into <head>,
-	 * replacing any existing tag with the same id, so repeated/updated uses of the same item in the
-	 * editor don't keep accumulating duplicate CSS.
-	 */
-	public static function get_style_tag(
-		Cpt_Settings $cpt_settings,
-		Front_Assets $front_assets
-	): string {
-		// isLoaded() is false for a missing/blank id (e.g. nothing selected in the block yet).
-		if ( $cpt_settings->isLoaded() &&
-			// internal (e.g. shadow DOM) CSS is scoped to its own markup and inlined there instead.
-			! $cpt_settings->is_css_internal() ) {
-			$css = $front_assets->minify_code(
-				$cpt_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
-				Front_Assets::MINIFY_TYPE_CSS
-			);
-
-			return sprintf(
-				'<style data-avf-id="%s">%s</style>',
-				esc_attr( $cpt_settings->get_unique_id() ),
-				$css
-			);
-		}
-
-		return '';
-	}
 
 	/**
 	 * Keyed by the item's full unique id - not the short id used in legacy hand-typed shortcodes - so
@@ -149,5 +149,35 @@ final class Cpt_Gutenberg_Block {
 			 */
 			'callback'            => fn(): array => self::get_items_list( $settings_storage ),
 		);
+	}
+
+	protected static function make_placeholder( string $message ): string {
+		return sprintf( '<p class="avf-cpt-block__placeholder">[%s]</p>', esc_html( $message ) );
+	}
+
+	/**
+	 * Every render carries its own scoped 'data-avf-id' style tag, instead of relying solely on
+	 * Front_Assets' page-level 'wp_head'/'wp_footer' printing - a dynamic 'render_callback' can't reach
+	 * that when rendered through the block editor's ServerSideRender REST call, which is a request of its
+	 * own with no such page to print into. cpt-block.ts (editor-only) then moves this tag into <head>,
+	 * replacing any existing tag with the same id, so repeated/updated uses of the same item in the
+	 * editor don't keep accumulating duplicate CSS.
+	 */
+	protected static function make_style_tag( Cpt_Settings $cpt_settings, Front_Assets $front_assets ): string {
+		// internal (e.g. shadow DOM) CSS is scoped to its own markup and inlined there instead.
+		if ( ! $cpt_settings->is_css_internal() ) {
+			$css = $front_assets->minify_code(
+				$cpt_settings->get_css_code( Cpt_Settings::CODE_MODE_DISPLAY ),
+				Front_Assets::MINIFY_TYPE_CSS
+			);
+
+			return sprintf(
+				'<style data-avf-id="%s">%s</style>',
+				esc_attr( $cpt_settings->get_unique_id() ),
+				$css
+			);
+		}
+
+		return '';
 	}
 }
