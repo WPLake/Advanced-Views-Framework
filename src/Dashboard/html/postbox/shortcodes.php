@@ -21,15 +21,6 @@ $type = $is_short ?
 	'full';
 ?>
 
-<?php
-if ( ! $is_short ) {
-	?>
-<ul style="list-style: disc;">
-	<li><?php echo esc_html__( 'Using Gutenberg integration block', 'acf-views' ); ?></li>
-	<li><?php echo esc_html__( 'Using cross-editor shortcode:', 'acf-views' ); ?></li>
-</ul>
-<?php } ?>
-
 <?php printf( '<av-shortcodes class="av-shortcodes av-shortcodes--type--%s">', esc_attr( $type ) ); ?>
 <?php printf( '<span class="av-sortcodes__code av-shortcodes__code--type--short">' ); ?>
 <?php
@@ -49,9 +40,18 @@ if ( ! $is_short ) {
 	<button class="av-shortcodes__copy-button button button-primary button-large"
 			data-target=".av-shortcodes__code--type--short">
 		<?php
-		echo esc_html( __( 'Copy to clipboard', 'acf-views' ) );
+		echo esc_html( __( 'Copy Shortcode', 'acf-views' ) );
 		?>
 	</button>
+
+	<p>
+			<?php
+			echo ! $is_single ?
+				esc_html__( 'Using Gutenberg? Embed with the AV Layout block.', 'acf-views' ) :
+				esc_html__( 'Using Gutenberg? Embed with the AV Post Selection block.', 'acf-views' );
+			?>
+		</p>
+
 	<span>
 		<?php
 		if ( $is_single ) {
@@ -77,3 +77,4 @@ if ( ! $is_short ) {
 }
 ?>
 </av-shortcodes>
+

@@ -2,8 +2,8 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "acf-views/post-selection",
-  "title": "Post Selection: Advanced Views",
+  "title": "AV Post Selection",
   "description": "Displays a Post Selection from Advanced Views.",
-  "icon": "layout",
+  "icon": "welcome-widgets-menus",
   "textdomain": "acf-views"
 }
