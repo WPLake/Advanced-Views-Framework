@@ -205,10 +205,9 @@ Advanced Views lets you display fields from almost any WordPress data source:
 
 == Changelog ==
 
-= 3.9.6 (2026-) =
+= 3.9.6 (2026-09-08) =
 - Feature: Gutenberg integration (Layout & Selection integration blocks)
-- Enhance: Edit screen - grouping & labeling
-- Enhance: edit screen - removed bottom margin
+- Enhance: Edit screen - grouping & labeling, cut bottom margin
 
 = 3.9.5 (2026-08-22) =
 - Readme updates: bumped WP version requirement to 5.9
