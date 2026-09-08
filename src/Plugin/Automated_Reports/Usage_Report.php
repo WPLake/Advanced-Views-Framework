@@ -228,12 +228,7 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 				Hard_Post_Selection_Cpt::cpt_name(),
 				array( Plugin_Environment::STARTER_SELECTION_ID )
 			),
-			// 'is_plugin_active()' is available only later
-			'_isAcfPro'             => class_exists( 'acf_pro' ),
-			'_isAcf'                => class_exists( 'acf' ) && ! defined( 'ACF_VIEWS_INNER_ACF' ),
-			'_isWoo'                => class_exists( 'WooCommerce' ),
-			'_isMetaBox'            => class_exists( 'RW_Meta_Box' ),
-			'_isPods'               => class_exists( 'Pods' ),
+			'_vendorPlugins'        => $this->detect_vendor_plugins_usage(),
 			'_isFsStorageActive'    => $this->is_fs_storage_active(),
 			'_gitRepositoriesCount' => count( $this->settings->get_git_repositories() ),
 			'_language'             => get_bloginfo( 'language' ),
@@ -251,6 +246,25 @@ class Usage_Report extends Report_Base implements Hooks_Interface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @return array<string,bool> plugin => is active
+	 */
+	protected function detect_vendor_plugins_usage(): array {
+		$is_acf_pro       = class_exists( 'acf_pro' );
+		$is_elementor_pro = class_exists( 'ElementorPro\Plugin' );
+
+		// 'is_plugin_active()' is available only later.
+		return array(
+			'acfPro'       => $is_acf_pro,
+			'acf'          => ! $is_acf_pro && class_exists( 'acf' ) && ! defined( 'ACF_VIEWS_INNER_ACF' ),
+			'woo'          => class_exists( 'WooCommerce' ),
+			'metaBox'      => class_exists( 'RW_Meta_Box' ),
+			'pods'         => class_exists( 'Pods' ),
+			'elementor'    => ! $is_elementor_pro && class_exists( 'Elementor\Plugin' ),
+			'elementorPro' => $is_elementor_pro,
+		);
 	}
 
 	/**
