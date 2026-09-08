@@ -137,8 +137,8 @@ class Layout_Settings extends Cpt_Settings {
 	public bool $options_tab;
 	/**
 	 * @a-type select
-	 * @label Register Gutenberg Block
-	 * @instructions If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.
+	 * @label Register custom Gutenberg Block
+	 * @instructions If a block vendor is selected then a <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>custom Gutenberg block</a> for this Layout will be available. <br><br> Note: this option is separate from the built-in Gutenberg integration block.
 	 * @choices {"off":"Off","acf":"ACF Block","meta-box":"Meta Box Block","pods":"Pods Block"}
 	 * @default_value off
 	 * @a-pro The field must be not required or have default value!

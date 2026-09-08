@@ -25,8 +25,8 @@ $type = $is_short ?
 if ( ! $is_short ) {
 	?>
 <ul style="list-style: disc;">
-	<li><?php echo esc_html__( 'Using in-Gutenberg integration', 'acf-views' ); ?></li>
-	<li><?php echo esc_html__( 'Using shortcode:', 'acf-views' ); ?></li>
+	<li><?php echo esc_html__( 'Using Gutenberg integration block', 'acf-views' ); ?></li>
+	<li><?php echo esc_html__( 'Using cross-editor shortcode:', 'acf-views' ); ?></li>
 </ul>
 <?php } ?>
 

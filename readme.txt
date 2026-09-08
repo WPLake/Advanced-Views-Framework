@@ -22,7 +22,7 @@ Advanced Views is a framework that empowers you to create the layouts and select
 ✅ **Content-driven**: pull content dynamically, with granular filtering and sorting options, built on top of the native WordPress Query. Master advanced database queries with post fields, taxonomies, and meta values.
 ✅ **Time-saver**: automate the groundwork and data fetching. Focus on creating while leaving typical routines behind.
 ✅ **Fully customizable**: directly access the template code to create advanced elements, like Grids and Sliders, and harness your theme styles and scripts.
-✅ **Easy to embed**: copy and paste a native WordPress shortcode to add layouts anywhere.
+✅ **Easy to embed**: using a Gutenberg integration block or a cross-editor shortcode.
 
 ==🧩 Plenty of Use Cases==
 
@@ -140,7 +140,7 @@ Customers with an active Pro license have personal support via our [support form
 
 = Is it compatible with my theme? =
 
-Advanced Views uses native WordPress shortcodes for embedding, making it compatible with literally any theme.
+Advanced Views plugin includes a Gutenberg integration block and a cross-editor embedding shortcode - making it compatible with any theme.
 Below are integration guides for some of the most popular themes:
 
 * [Astra](https://docs.advanced-views.com/integrations/themes/astra)
@@ -161,7 +161,7 @@ Below are integration guides for some of the most popular themes:
 
 = Is it compatible with my page builder? =
 
-Advanced Views uses native WordPress shortcodes for embedding, making it compatible with literally any page builder.
+Advanced Views plugin includes a Gutenberg integration block and a cross-editor embedding shortcode - making it compatible with any page builder.
 Below are integration guides for some of the most popular page builders:
 
 * [Beaver Builder](https://docs.advanced-views.com/integrations/page-builders/beaver-builder)
