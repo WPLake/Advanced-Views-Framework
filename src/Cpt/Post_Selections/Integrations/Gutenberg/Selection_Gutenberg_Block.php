@@ -2,13 +2,14 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations;
+namespace Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Gutenberg;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Integrations\Cpt_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
@@ -18,7 +19,8 @@ use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interface {
-	const NAME       = 'advanced-views/post-selection';
+	// prefixed by the plugin name for wp.org Plugin directory discover.
+	const NAME       = Plugin::PRODUCT_SLUG . '/post-selection';
 	const REST_ROUTE = 'post-selection-block/selections';
 
 	private Selection_Settings_Storage $selections_settings_storage;
@@ -53,7 +55,7 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 			self::add_action(
 				'rest_api_init',
 				fn() => register_rest_route(
-					Cpt_Gutenberg_Block::REST_NAMESPACE,
+					Plugin::REST_NAMESPACE,
 					self::REST_ROUTE,
 					Cpt_Gutenberg_Block::get_items_list_rest_args( $this->selections_settings_storage ),
 				)
@@ -63,16 +65,10 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 
 	public function register_block(): void {
 		register_block_type(
-			self::NAME,
+			__DIR__ . '/block.json',
 			array(
-				'title'           => __( 'Post Selection: Advanced Views', 'acf-views' ),
-				'description'     => __( 'Displays a Post Selection from Advanced Views.', 'acf-views' ),
 				'category'        => Cpt_Gutenberg_Block::CATEGORY,
-				'icon'            => 'layout',
-				'supports'        => array(
-					'customClassName' => false,
-					'customCSS'       => false,
-				),
+				'supports'        => Cpt_Gutenberg_Block::get_supports(),
 				'attributes'      => array_merge(
 					array(
 						'selectionId' => array(
@@ -125,7 +121,7 @@ final class Selection_Gutenberg_Block extends Hookable implements Hooks_Interfac
 				'blockName'    => self::NAME,
 				'items'        => Cpt_Gutenberg_Block::get_items_list( $this->selections_settings_storage ),
 				'newItemUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->selection_cpt->cpt_name() ) ),
-				'itemsRestUrl' => sprintf( '/%s/%s', Cpt_Gutenberg_Block::REST_NAMESPACE, self::REST_ROUTE ),
+				'itemsRestUrl' => sprintf( '/%s/%s', Plugin::REST_NAMESPACE, self::REST_ROUTE ),
 				'canManage'    => Avf_User::can_manage(),
 				'itemLabel'    => $this->selection_cpt->labels()->singular_name(),
 			)

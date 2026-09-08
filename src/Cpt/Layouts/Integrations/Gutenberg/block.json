@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "acf-views/layout",
+  "title": "Layout: Advanced Views",
+  "description": "Displays a Layout from Advanced Views.",
+  "icon": "layout",
+  "textdomain": "acf-views",
+  "usesContext": [
+    "postId"
+  ]
+}

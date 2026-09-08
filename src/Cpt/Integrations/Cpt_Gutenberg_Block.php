@@ -16,8 +16,7 @@ use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
  * Stateless logic shared by every Gutenberg block backed by a Cpt_Settings_Storage (Layout, Post Selection...):
  */
 final class Cpt_Gutenberg_Block {
-	const CATEGORY       = 'advanced-views';
-	const REST_NAMESPACE = 'advanced_views/v1';
+	const CATEGORY = 'advanced-views';
 
 	private function __construct() {
 	}
@@ -36,6 +35,16 @@ final class Cpt_Gutenberg_Block {
 				),
 			),
 			$categories
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public static function get_supports(): array {
+		return array(
+			'customClassName' => false,
+			'customCSS'       => false,
 		);
 	}
 

@@ -28,7 +28,9 @@ class Plugin extends Hookable implements Hooks_Interface {
 	const SURVEY_URL        = 'https://forms.gle/Wjb16B4mzgLEQvru6';
 	const CONFLICTS_URL     = 'https://docs.advanced-views.com/troubleshooting/debugging';
 	const PROLONG_POINT_URL = 'https://wplake.org';
-	const PRODUCT_SLUG      = 'acf-views';
+	// single product slug. Do not override in Pro, as it's used as a prefix for Gutenberg blocks and more.
+	const PRODUCT_SLUG   = 'acf-views';
+	const REST_NAMESPACE = 'advanced_views/v1';
 
 	protected string $slug         = 'acf-views/acf-views.php';
 	protected string $short_slug   = 'acf-views';

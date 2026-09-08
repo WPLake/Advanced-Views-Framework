@@ -14,6 +14,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Sh
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Safe_Array_Arguments;
 use WP_REST_Request;
@@ -464,8 +465,7 @@ class Live_Reloader extends Hookable implements Hooks_Interface {
 
 	public function register_rest_routes(): void {
 		register_rest_route(
-			// todo replace to 'advanced-views' (here and in JS).
-			'acf_views/v1',
+			Plugin::REST_NAMESPACE,
 			'/live-reloader',
 			array(
 				'methods'             => 'POST',

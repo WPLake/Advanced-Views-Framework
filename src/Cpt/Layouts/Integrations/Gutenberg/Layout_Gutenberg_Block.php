@@ -2,13 +2,14 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations;
+namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg;
 
 defined( 'ABSPATH' ) || exit;
 
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Integrations\Cpt_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
@@ -18,7 +19,8 @@ use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
-	const NAME       = 'advanced-views/layout';
+	// prefixed by the plugin name for wp.org Plugin directory discover.
+	const NAME       = Plugin::PRODUCT_SLUG . '/layout';
 	const REST_ROUTE = 'layout-block/layouts';
 
 	private Layout_Settings_Storage $layouts_settings_storage;
@@ -53,7 +55,7 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 			self::add_action(
 				'rest_api_init',
 				fn() => register_rest_route(
-					Cpt_Gutenberg_Block::REST_NAMESPACE,
+					Plugin::REST_NAMESPACE,
 					self::REST_ROUTE,
 					Cpt_Gutenberg_Block::get_items_list_rest_args( $this->layouts_settings_storage ),
 				)
@@ -63,17 +65,10 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 
 	public function register_block(): void {
 		register_block_type(
-			self::NAME,
+			__DIR__ . '/block.json',
 			array(
-				'title'           => __( 'Layout: Advanced Views', 'acf-views' ),
-				'description'     => __( 'Displays a Layout from Advanced Views.', 'acf-views' ),
 				'category'        => Cpt_Gutenberg_Block::CATEGORY,
-				'icon'            => 'layout',
-				'uses_context'    => array( 'postId' ),
-				'supports'        => array(
-					'customClassName' => false,
-					'customCSS'       => false,
-				),
+				'supports'        => Cpt_Gutenberg_Block::get_supports(),
 				'attributes'      => array_merge(
 					self::get_attribute_declarations(),
 					Cpt_Gutenberg_Block::get_attribute_declarations()
@@ -121,7 +116,7 @@ final class Layout_Gutenberg_Block extends Hookable implements Hooks_Interface {
 				'blockName'    => self::NAME,
 				'items'        => Cpt_Gutenberg_Block::get_items_list( $this->layouts_settings_storage ),
 				'newItemUrl'   => admin_url( sprintf( 'post-new.php?post_type=%s', $this->layout_cpt->cpt_name() ) ),
-				'itemsRestUrl' => sprintf( '/%s/%s', Cpt_Gutenberg_Block::REST_NAMESPACE, self::REST_ROUTE ),
+				'itemsRestUrl' => sprintf( '/%s/%s', Plugin::REST_NAMESPACE, self::REST_ROUTE ),
 				'canManage'    => Avf_User::can_manage(),
 				'itemLabel'    => $this->layout_cpt->labels()->singular_name(),
 			)

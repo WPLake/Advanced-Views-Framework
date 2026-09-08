@@ -15,6 +15,7 @@ use Org\Wplake\Advanced_Views\Plugin\Base\Avf_User;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hookable;
 use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
+use Org\Wplake\Advanced_Views\Plugin\Plugin;
 use Org\Wplake\Advanced_Views\Plugin\Settings\Settings_Storage;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_REST_Request;
@@ -268,7 +269,7 @@ abstract class Shortcode_Base extends Hookable implements Shortcode_Renderer, Ho
 	public function register_rest_route(): void {
 		foreach ( $this->public_cpt->rest_route_names() as $route_name ) {
 			register_rest_route(
-				'advanced_views/v1',
+				Plugin::REST_NAMESPACE,
 				$route_name . '/(?P<unique_id>[a-z0-9]+)',
 				$this->get_rest_route_args()
 			);

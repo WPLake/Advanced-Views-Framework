@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations;
+namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg;
 
 defined( 'ABSPATH' ) || exit;
 

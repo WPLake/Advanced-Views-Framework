@@ -8,6 +8,7 @@ use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Assets\Front_Assets;
 use Org\Wplake\Advanced_Views\Cpt\Integrations\Shortcode_Base;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Source;
 use Org\Wplake\Advanced_Views\Dashboard\Live_Reloader\Live_Reloader_Component;

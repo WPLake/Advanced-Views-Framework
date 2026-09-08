@@ -18,9 +18,9 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Gutenberg_Block;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Layout_Gutenberg_Block;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
 

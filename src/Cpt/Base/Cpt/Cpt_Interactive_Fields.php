@@ -72,7 +72,7 @@ abstract class Cpt_Interactive_Fields extends Hookable implements Hooks_Interfac
 
 	public function register_rest_routes(): void {
 		register_rest_route(
-			'acf_views/v1',
+			Plugin::REST_NAMESPACE,
 			static::REST_REFRESH_ROUTE,
 			array(
 				'methods'             => 'POST',

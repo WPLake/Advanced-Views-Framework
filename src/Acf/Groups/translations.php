@@ -124,7 +124,7 @@ __("Styles & Scripts", "acf-views");
 __("CSS Code", "acf-views");
 __("JS Code", "acf-views");
 __("Output", "acf-views");
-__("Register Gutenberg Block", "acf-views");
+__("Register custom Gutenberg Block", "acf-views");
 __("Render template when it's empty", "acf-views");
 __("Editorial description", "acf-views");
 __("Developer", "acf-views");
@@ -153,7 +153,7 @@ __("Write your own template with full control over the HTML markup. <br> Copy th
 __("Choose one of the <a target='_blank' href='https://docs.advanced-views.com/features/smart-templates'>supported template engines</a>, which will be used for this Layout.", "acf-views");
 __("Define your CSS style rules. <br> Rules defined here will be added within &lt;style&gt;&lt;/style&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code; Ctrl + F to search/replace; Ctrl + Space for autocomplete. <br><br> Magic shortcuts are available: <br><br>  1. '#layout' as a unique instance selector, will be replaced with '.avf-layout--id--{x}' <br> 2. '#layout__' as a full element selector, so '#layout__element' will be replaced with '.avf-layout--id--{x} .avf-layout__element' <br> 3. '#this' as a short element selector, so '#this__element' will be replaced with '.avf-layout__element' <br> Note: all the shortcuts are compatible with the BEM name option.", "acf-views");
 __("Add Custom Javascript code to your Layout. <br><br> By default, the Layout is a <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/javascript-code'>web component</a>, so this code will be executed once for every instance, and 'this', that refers to the current instance, is available. <br><br> If the Web Component Type is set to none, the js code here is plain, and can be used for any goals, including <a target='_blank' href='https://docs.advanced-views.com/layouts/component-options/interactivity-api'>WP Interactivity API</a>. <br><br> The code snippet will be added within &lt;script type='module'&gt;&lt;/script&gt; tags ONLY to pages that have this View. <br><br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
-__("If a block vendor is selected then a separate Gutenberg block for this Layout will be available. <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>Read more</a>.", "acf-views");
+__("If a block vendor is selected then a <a target='_blank' href='https://docs.advanced-views.com/layouts/features/custom-gutenberg-blocks'>custom Gutenberg block</a> for this Layout will be available. <br><br> Note: this option is separate from the built-in Gutenberg integration block.", "acf-views");
 __("By default, if all the selected fields are empty, the Twig template won't be rendered. <br> Enable this option if you have specific logic inside the template and you want to render it even when all the fields are empty.", "acf-views");
 __("Add a short description for your Views’ purpose. <br> Note : This description is only seen on the admin Advanced Views list.", "acf-views");
 __("By customizing the PHP Controller instance you can add extra variables to the template and define the AJAX and REST API handlers. <a target='_blank' href='https://docs.advanced-views.com/layouts/code-fields/layout-controller'>Read more</a> <br> Press Ctrl (Cmd) + Alt + L to format the code. Press Ctrl + F to search (or replace).", "acf-views");
