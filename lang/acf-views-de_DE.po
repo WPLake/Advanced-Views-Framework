@@ -104,12 +104,12 @@ msgid "Card draft updated."
 msgstr "Kartenentwurf aktualisiert."
 
 #: src/Cpt/Data_Vendors/Wp/Wp_Data_Vendor.php:147
-#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:132
+#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:86
 #: src/Cpt/Post_Selections/Cpt/Table/Post_Selections_Table.php:113
 msgid "Description"
 msgstr "Beschreibung"
 
-#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:140
+#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:94
 #: src/Cpt/Post_Selections/Cpt/Table/Post_Selections_Table.php:120
 msgid "Last modified"
 msgstr "Zuletzt geändert"
@@ -282,6 +282,7 @@ msgstr "Erweiterte Ansicht"
 #: src/Cpt/Data_Vendors/Base/Settings_Vendor_Integration.php:94
 #: src/Cpt/Data_Vendors/Base/Settings_Vendor_Integration.php:334
 #: src/Cpt/Data_Vendors/Pods/Pods_Integration.php:219
+#: src/Cpt/Integrations/Cpt_Gutenberg_Block.php:35
 #: src/Dashboard/Admin_Bar.php:47
 msgid "Advanced Views"
 msgstr "Erweiterte Ansichten"
@@ -1354,7 +1355,7 @@ msgstr "\"Telefone\" Karte"
 msgid "\"Most popular phones in 2022\" page"
 msgstr "\"Beliebteste Telefone in 2022\" Seite"
 
-#: src/Dashboard/html/postbox/shortcodes.php:41
+#: src/Dashboard/html/postbox/shortcodes.php:52
 msgid "Copy to clipboard"
 msgstr "In die Zwischenablage kopieren"
 
@@ -1418,7 +1419,7 @@ msgid "Bulk validation - Used to validate the Custom Template field of all exist
 msgstr "Massenvalidierung - Wird verwendet, um das benutzerdefinierte Vorlagenfeld aller vorhandenen Elemente zu validieren und Elemente anzuzeigen, die die Validierung nicht bestanden haben."
 
 #: src/Cpt/Base/Cpt/Table/Bulk_Validation_Tab.php:125
-#: src/Cpt/Shortcode/Shortcode.php:226
+#: src/Cpt/Integrations/Shortcode_Base.php:226
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1545,7 +1546,7 @@ msgstr "Ansichtsentwurf aktualisiert."
 msgid "No assigned ACF Groups."
 msgstr "Keine zugewiesenen ACF-Gruppen."
 
-#: src/Cpt/Shortcode/Layout_Shortcode.php:174
+#: src/Cpt/Layouts/Integrations/Layout_Shortcode.php:175
 msgid "object-id argument contains the wrong value"
 msgstr "object-id Argument enthält den falschen Wert"
 
@@ -1638,17 +1639,17 @@ msgstr "Bitte %1$s kontaktieren Sie %2$s unser Support-Team für weitere Unterst
 msgid "View for Card along with responsive CSS rules are included."
 msgstr "Ansicht für Karte zusammen mit responsiven CSS-Regeln ist enthalten."
 
-#: src/Dashboard/html/postbox/shortcodes.php:47
+#: src/Dashboard/html/postbox/shortcodes.php:58
 msgid "See how to limit visibility by roles"
 msgstr "Sehen Sie, wie Sie die Sichtbarkeit durch Rollen einschränken können"
 
 #: src/Cpt/Base/Cpt/Git_Tabs.php:109
-#: src/Dashboard/html/postbox/shortcodes.php:51
-#: src/Dashboard/html/postbox/shortcodes.php:59
+#: src/Dashboard/html/postbox/shortcodes.php:62
+#: src/Dashboard/html/postbox/shortcodes.php:70
 msgid "here"
 msgstr "hier"
 
-#: src/Dashboard/html/postbox/shortcodes.php:55
+#: src/Dashboard/html/postbox/shortcodes.php:66
 msgid "See how to load from other sources or limit visibility by roles"
 msgstr "Sehen Sie, wie Sie aus anderen Quellen laden oder die Sichtbarkeit durch Rollen einschränken können"
 
@@ -1964,7 +1965,7 @@ msgstr ""
 msgid "Turn this on and click 'Process' to download the file. The above logs and other information about your server environment will be included. <br> Send this to Advanced Views Support on request."
 msgstr ""
 
-#: src/Cpt/Shortcode/Shortcode.php:120
+#: src/Cpt/Integrations/Shortcode_Base.php:120
 msgid "AVF shortcode render error:"
 msgstr ""
 
@@ -2075,7 +2076,7 @@ msgid "No assigned %s."
 msgstr ""
 
 #. translators: %s - singular name of the CPT.
-#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:137
+#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:91
 #, php-format
 msgid "Assigned to %s"
 msgstr ""
@@ -2149,11 +2150,11 @@ msgstr[1] ""
 msgid "Layouts"
 msgstr ""
 
-#: src/Plugin/Loaders/Post_Selections_Loader_Base.php:60
+#: src/Plugin/Loaders/Post_Selections_Loader_Base.php:62
 msgid "Post Selection"
 msgstr ""
 
-#: src/Plugin/Loaders/Post_Selections_Loader_Base.php:64
+#: src/Plugin/Loaders/Post_Selections_Loader_Base.php:66
 msgid "Post Selections"
 msgstr ""
 
@@ -2177,8 +2178,8 @@ msgid "Related %s"
 msgstr ""
 
 #. translators: %s is a singular post-type name.
-#: src/Cpt/Shortcode/Layout_Shortcode.php:87
-#: src/Cpt/Shortcode/Post_Selection_Shortcode.php:62
+#: src/Cpt/Layouts/Integrations/Layout_Shortcode.php:88
+#: src/Cpt/Post_Selections/Integrations/Post_Selection_Shortcode.php:63
 #, php-format
 msgid "%s is missing"
 msgstr ""
@@ -2301,7 +2302,7 @@ msgstr ""
 msgid "Import Demo Now"
 msgstr ""
 
-#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:134
+#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:88
 msgid "Assigned Field Group"
 msgstr ""
 
@@ -2411,11 +2412,6 @@ msgstr ""
 msgid "You entered the invalid version number"
 msgstr ""
 
-#. Description of the plugin
-#: acf-views.php
-msgid "Display content with full control over selection and layout. Lightweight and compatible with any theme or page builder."
-msgstr ""
-
 #: src/Acf/Groups/translations.php:27
 msgid "Object Layout"
 msgstr ""
@@ -2520,11 +2516,11 @@ msgstr ""
 msgid "Item successfully cloned."
 msgstr ""
 
-#: src/Cpt/Shortcode/Layout_Shortcode.php:253
+#: src/Cpt/Layouts/Integrations/Layout_Shortcode.php:254
 msgid "Layout id is wrong"
 msgstr ""
 
-#: src/Cpt/Shortcode/Post_Selection_Shortcode.php:132
+#: src/Cpt/Post_Selections/Integrations/Post_Selection_Shortcode.php:133
 msgid "Post Selection ID is wrong"
 msgstr ""
 
@@ -2706,10 +2702,6 @@ msgstr ""
 msgid "Value Type"
 msgstr ""
 
-#: src/Acf/Groups/translations.php:198
-msgid "Literal Value"
-msgstr ""
-
 #: src/Acf/Groups/translations.php:199
 #: src/Acf/Groups/translations.php:511
 msgid "Dynamic Source"
@@ -2789,15 +2781,6 @@ msgstr ""
 msgid "Does not exist"
 msgstr ""
 
-#: src/Acf/Groups/translations.php:232
-msgid "Literal value"
-msgstr ""
-
-#: src/Acf/Groups/translations.php:233
-#: src/Acf/Groups/translations.php:534
-msgid "Dynamic binding"
-msgstr ""
-
 #: src/Acf/Groups/translations.php:237
 #: src/Acf/Groups/translations.php:256
 #: src/Acf/Groups/translations.php:538
@@ -2864,10 +2847,6 @@ msgstr ""
 msgid "Rules for the taxonomy query. Multiple rules are supported. <a target='_blank' href='https://docs.advanced-views.com/post-selections/filters/taxonomy-filters'>Read more</a> <br> If you want to see the query that was created by your input, update the Post Selection and reload the page. After have a look at the 'Query Preview' field in the 'Query' tab"
 msgstr ""
 
-#: src/Acf/Group_Integrations/Meta_Field_Settings_Integration.php:63
-msgid "Current post"
-msgstr ""
-
 #: src/Acf/Group_Integrations/Meta_Field_Settings_Integration.php:64
 msgid "Current post field"
 msgstr ""
@@ -2911,7 +2890,7 @@ msgid "Query posts to display using this Layout"
 msgstr ""
 
 #: src/Cpt/Layouts/Cpt/Layout_Meta_Boxes.php:245
-#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:133
+#: src/Cpt/Layouts/Cpt/Table/Layouts_Cpt_Table.php:87
 msgid "Embed the Layout"
 msgstr ""
 
@@ -2940,4 +2919,63 @@ msgstr ""
 #: src/Cpt/Post_Selections/Cpt/Selection_Meta_Boxes.php:77
 #: src/Cpt/Post_Selections/Cpt/Table/Post_Selections_Table.php:114
 msgid "Embed the Post Selection"
+msgstr ""
+
+#. Description of the plugin
+#: acf-views.php
+msgid "Display framework with full control over selection and layout. Lightweight and compatible with any theme or page builder."
+msgstr ""
+
+#: src/Acf/Groups/translations.php:198
+msgid "Static Value"
+msgstr ""
+
+#: src/Acf/Groups/translations.php:232
+msgid "Static value"
+msgstr ""
+
+#: src/Acf/Groups/translations.php:233
+msgid "Dynamic value"
+msgstr ""
+
+#: src/Acf/Groups/translations.php:534
+msgid "Dynamic term"
+msgstr ""
+
+#: src/Acf/Group_Integrations/Meta_Field_Settings_Integration.php:63
+msgid "Current post ID"
+msgstr ""
+
+#: src/Cpt/Integrations/Cpt_Gutenberg_Block.php:89
+msgid "No output to preview"
+msgstr ""
+
+#. translators: %s is a singular post-type name, e.g. "Layout".
+#: src/Cpt/Integrations/Cpt_Gutenberg_Block.php:97
+#, php-format
+msgid "Select a %s to see the preview"
+msgstr ""
+
+#: src/Cpt/Layouts/Integrations/Layout_Gutenberg_Block.php:68
+msgid "Layout: Advanced Views"
+msgstr ""
+
+#: src/Cpt/Layouts/Integrations/Layout_Gutenberg_Block.php:69
+msgid "Displays a Layout from Advanced Views."
+msgstr ""
+
+#: src/Cpt/Post_Selections/Integrations/Selection_Gutenberg_Block.php:68
+msgid "Post Selection: Advanced Views"
+msgstr ""
+
+#: src/Cpt/Post_Selections/Integrations/Selection_Gutenberg_Block.php:69
+msgid "Displays a Post Selection from Advanced Views."
+msgstr ""
+
+#: src/Dashboard/html/postbox/shortcodes.php:28
+msgid "Using in-Gutenberg integration"
+msgstr ""
+
+#: src/Dashboard/html/postbox/shortcodes.php:29
+msgid "Using shortcode:"
 msgstr ""

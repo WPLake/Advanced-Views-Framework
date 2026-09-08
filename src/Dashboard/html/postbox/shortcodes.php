@@ -19,9 +19,20 @@ $entry_name  = $view['entryName'] ?? '';
 $type = $is_short ?
 	'short' :
 	'full';
+?>
 
-printf( '<av-shortcodes class="av-shortcodes av-shortcodes--type--%s">', esc_attr( $type ) );
-printf( '<span class="av-sortcodes__code av-shortcodes__code--type--short">' );
+<?php
+if ( ! $is_short ) {
+	?>
+<ul style="list-style: disc;">
+	<li><?php echo esc_html__( 'Using in-Gutenberg integration', 'acf-views' ); ?></li>
+	<li><?php echo esc_html__( 'Using shortcode:', 'acf-views' ); ?></li>
+</ul>
+<?php } ?>
+
+<?php printf( '<av-shortcodes class="av-shortcodes av-shortcodes--type--%s">', esc_attr( $type ) ); ?>
+<?php printf( '<span class="av-sortcodes__code av-shortcodes__code--type--short">' ); ?>
+<?php
 printf(
 	'[%s name="%s" %s="%s"]',
 	esc_html( $public_cpt->shortcode() ),
@@ -29,8 +40,8 @@ printf(
 	esc_html( $id_argument ),
 	esc_html( $view_id )
 );
-echo '</span>';
 ?>
+<?php echo '</span>'; ?>
 
 <?php
 if ( ! $is_short ) {

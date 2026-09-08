@@ -86,7 +86,7 @@ final class Cpt_Gutenberg_Block {
 			return $style_tag . $html;
 		}
 
-		$label = __( 'no output to preview', 'acf-views' );
+		$label = __( 'No output to preview', 'acf-views' );
 
 		return self::make_placeholder( $label );
 	}

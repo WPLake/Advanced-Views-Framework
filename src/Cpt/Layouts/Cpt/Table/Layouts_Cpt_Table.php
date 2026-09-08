@@ -4,6 +4,9 @@ declare( strict_types=1 );
 
 namespace Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table;
 
+defined( 'ABSPATH' ) || exit;
+
+use Closure;
 use Org\Wplake\Advanced_Views\Acf\Groups\Layout_Settings;
 use Org\Wplake\Advanced_Views\Acf\Groups\Parents\Cpt_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Cpt_Table;
@@ -14,8 +17,7 @@ use Org\Wplake\Advanced_Views\Plugin\Cpt\Plugin_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Utils\Route_Detector;
 use WP_Query;
-
-defined( 'ABSPATH' ) || exit;
+use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\any;
 
 class Layouts_Cpt_Table extends Cpt_Table {
 	const COLUMN_DESCRIPTION             = self::COLUMN_PREFIX . 'description';
@@ -40,54 +42,6 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		$this->html                   = $html;
 		$this->layouts_cpt_meta_boxes = $layouts_cpt_meta_boxes;
 		$this->plugin_cpt             = $plugin_cpt;
-	}
-
-	protected function get_views_meta_boxes(): Layout_Meta_Boxes {
-		return $this->layouts_cpt_meta_boxes;
-	}
-
-	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
-		if ( false === ( $cpt_settings instanceof Layout_Settings ) ) {
-			return;
-		}
-
-		$view_data = $cpt_settings;
-
-		switch ( $short_column_name ) {
-			case self::COLUMN_DESCRIPTION:
-				echo esc_html( $view_data->description );
-				break;
-			case self::COLUMN_SHORTCODE:
-				$this->html->print_postbox_shortcode(
-					$view_data->get_unique_id( true ),
-					true,
-					$this->public_plugin_cpt,
-					$view_data->title,
-					false,
-					$view_data->is_for_internal_usage_only()
-				);
-				break;
-			case self::COLUMN_RELATED_GROUPS:
-				// without the not found message.
-				$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data, true );
-				break;
-			case self::COLUMN_RELATED_POST_SELECTIONS:
-				$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box( $view_data, true );
-				break;
-			case self::COLUMN_LAST_MODIFIED:
-				$post_id = $view_data->get_post_id();
-
-				$post = 0 !== $post_id ?
-					get_post( $post_id ) :
-					null;
-
-				if ( null === $post ) {
-					break;
-				}
-
-				echo esc_html( explode( ' ', $post->post_modified )[0] );
-				break;
-		}
 	}
 
 	/**
@@ -154,6 +108,58 @@ class Layouts_Cpt_Table extends Cpt_Table {
 		self::add_filter(
 			sprintf( 'manage_edit-%s_sortable_columns', $this->get_cpt_name() ),
 			array( $this, 'get_sortable_columns' )
+		);
+	}
+
+	protected function get_views_meta_boxes(): Layout_Meta_Boxes {
+		return $this->layouts_cpt_meta_boxes;
+	}
+
+	protected function print_column( string $short_column_name, Cpt_Settings $cpt_settings ): void {
+		if ( $cpt_settings instanceof Layout_Settings ) {
+			$column_printers = $this->get_column_printers( $cpt_settings );
+			$column_printer  = any( $column_printers, $short_column_name );
+
+			if ( is_callable( $column_printer ) ) {
+				$column_printer();
+			}
+		}
+	}
+
+	/**
+	 * @return array<string, Closure():void>
+	 */
+	protected function get_column_printers( Layout_Settings $view_data ): array {
+		return array(
+			self::COLUMN_DESCRIPTION             => function () use ( $view_data ): void {
+				echo esc_html( $view_data->description );
+			},
+			self::COLUMN_SHORTCODE               => fn() =>
+				$this->html->print_postbox_shortcode(
+					$view_data->get_unique_id( true ),
+					true,
+					$this->public_plugin_cpt,
+					$view_data->title,
+					false,
+					$view_data->is_for_internal_usage_only()
+				),
+			self::COLUMN_RELATED_GROUPS          => fn() =>
+				$this->layouts_cpt_meta_boxes->print_related_groups_meta_box( $view_data, true ),
+			self::COLUMN_RELATED_POST_SELECTIONS => fn() =>
+				$this->layouts_cpt_meta_boxes->print_related_acf_cards_meta_box( $view_data, true ),
+			self::COLUMN_LAST_MODIFIED           => function () use ( $view_data ): void {
+				$post_id = $view_data->get_post_id();
+
+				$post = 0 !== $post_id ?
+					get_post( $post_id ) :
+					null;
+
+				if ( null === $post ) {
+					return;
+				}
+
+				echo esc_html( explode( ' ', $post->post_modified )[0] );
+			},
 		);
 	}
 }
