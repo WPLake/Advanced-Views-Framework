@@ -22,7 +22,7 @@ Advanced Views is a framework that empowers you to create the layouts and select
 ✅ **Content-driven**: pull content dynamically, with granular filtering and sorting options, built on top of the native WordPress Query. Master advanced database queries with post fields, taxonomies, and meta values.
 ✅ **Time-saver**: automate the groundwork and data fetching. Focus on creating while leaving typical routines behind.
 ✅ **Fully customizable**: directly access the template code to create advanced elements, like Grids and Sliders, and harness your theme styles and scripts.
-✅ **Easy to embed**: using a Gutenberg integration block or a cross-editor shortcode.
+✅ **Easy to embed**: using cross-editor shortcode or a Gutenberg integration block.
 
 ==🧩 Plenty of Use Cases==
 
