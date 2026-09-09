@@ -95,11 +95,13 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$base->layout_cpt
 		);
 
-		$this->elementor_integration = new Layout_Elementor_Integration(
-			$base->layouts_settings_storage,
-			$this->shortcode,
-			$base->front_assets,
-			$base->layout_cpt
+		$this->create_elementor_integration = fn(): array => array(
+			new Layout_Elementor_Integration(
+				$base->layouts_settings_storage,
+				$this->shortcode,
+				$base->front_assets,
+				$base->layout_cpt
+			),
 		);
 
 		$this->cpt                 = new Layouts_Cpt( $base->layout_cpt, $base->layouts_settings_storage );

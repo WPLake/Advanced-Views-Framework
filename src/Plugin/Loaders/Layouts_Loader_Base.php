@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Plugin\Loaders;
 
 defined( 'ABSPATH' ) || exit;
 
+use Closure;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
@@ -18,11 +19,11 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Layouts_Cpt;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Cpt_Table;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
-use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Elementor\Layout_Elementor_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Layout_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Layout_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Module_Loader;
 
 abstract class Layouts_Loader_Base extends Module_Loader {
@@ -42,10 +43,14 @@ abstract class Layouts_Loader_Base extends Module_Loader {
 	public Layout_Shortcode $shortcode;
 	public Shortcode_Gutenberg_Block $shortcode_block;
 	public Layout_Gutenberg_Block $block;
-	public Layout_Elementor_Integration $elementor_integration;
 	public Layout_Save_Actions $save_actions;
 	public Layout_Factory $factory;
 	public Layout_Interactive_Fields $interactive_fields;
+
+	/**
+	 * @var Closure():array<int, Hooks_Interface>
+	 */
+	protected Closure $create_elementor_integration;
 
 	public function load(): void {
 		$this->add_hookable(
@@ -62,11 +67,15 @@ abstract class Layouts_Loader_Base extends Module_Loader {
 				$this->shortcode,
 				$this->shortcode_block,
 				$this->block,
-				$this->elementor_integration,
 				$this->git_box,
 				$this->git_tabs,
 				$this->interactive_fields,
 			)
+		);
+
+		$this->add_plugin_extension(
+			fn(): bool => did_action( 'elementor/loaded' ) > 0,
+			$this->create_elementor_integration
 		);
 
 		$this->load_hookable();

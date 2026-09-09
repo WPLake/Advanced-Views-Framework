@@ -175,11 +175,13 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$base->post_selection_cpt
 		);
 
-		$this->elementor_integration = new Selection_Elementor_Integration(
-			$base->post_selections_settings_storage,
-			$this->shortcode,
-			$base->front_assets,
-			$base->post_selection_cpt
+		$this->make_elementor_integration = fn(): array => array(
+			new Selection_Elementor_Integration(
+				$base->post_selections_settings_storage,
+				$this->shortcode,
+				$base->front_assets,
+				$base->post_selection_cpt
+			),
 		);
 
 		$this->interactive_fields = new Selection_Interactive_Fields(

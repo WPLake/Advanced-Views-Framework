@@ -6,6 +6,7 @@ namespace Org\Wplake\Advanced_Views\Plugin\Loaders;
 
 defined( 'ABSPATH' ) || exit;
 
+use Closure;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Assets_Reducer;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Cpt_Gutenberg_Editor_Settings;
 use Org\Wplake\Advanced_Views\Cpt\Base\Cpt\Table\Fs_Only_Tab;
@@ -19,10 +20,10 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
-use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Elementor\Selection_Elementor_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Gutenberg\Selection_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
+use Org\Wplake\Advanced_Views\Plugin\Base\Hooks_Interface;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Hard\Hard_Post_Selection_Cpt;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Labels\Cpt_Labels_Base;
 use Org\Wplake\Advanced_Views\Plugin\Cpt\Pub\Public_Cpt;
@@ -41,12 +42,16 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Selection_Layout_Integration $layout_integration;
 	public Post_Selection_Shortcode $shortcode;
 	public Selection_Gutenberg_Block $block;
-	public Selection_Elementor_Integration $elementor_integration;
 	public Selection_Save_Actions $save_actions;
 	public Selection_Git_Tabs $git_tabs;
 	public Selection_Git_Box $git_box;
 	public Post_Selection_Factory $factory;
 	public Selection_Interactive_Fields $interactive_fields;
+
+	/**
+	 * @var Closure():array<int, Hooks_Interface>
+	 */
+	protected Closure $make_elementor_integration;
 
 	public static function make_post_selection_cpt(): Public_Cpt {
 		$public_cpt_base = new Public_Cpt_Base();
@@ -87,11 +92,15 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 				$this->layout_integration,
 				$this->shortcode,
 				$this->block,
-				$this->elementor_integration,
 				$this->git_tabs,
 				$this->git_box,
 				$this->interactive_fields,
 			)
+		);
+
+		$this->add_plugin_extension(
+			fn(): bool => did_action( 'elementor/loaded' ) > 0,
+			$this->make_elementor_integration
 		);
 
 		$this->load_hookable();
