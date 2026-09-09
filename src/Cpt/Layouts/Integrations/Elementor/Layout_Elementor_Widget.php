@@ -20,11 +20,12 @@ final class Layout_Elementor_Widget extends Widget_Base {
 	}
 
 	public function get_name(): string {
+		// important: do not use slash (/) in the widget name - it breaks Elementor's editor JS.
 		return 'avf-layout';
 	}
 
 	public function get_title(): string {
-		return __( 'Advanced Views Layout', 'acf-views' );
+		return __( 'AV Layout', 'acf-views' );
 	}
 
 	public function get_icon(): string {
@@ -42,7 +43,7 @@ final class Layout_Elementor_Widget extends Widget_Base {
 	 * @return string[]
 	 */
 	public function get_keywords(): array {
-		return array( 'layout', 'acf views', 'advanced views' );
+		return array( 'layout', 'advanced views' );
 	}
 
 	protected function register_controls(): void {
@@ -180,7 +181,8 @@ final class Layout_Elementor_Widget extends Widget_Base {
 			fn( string $value ): bool => strlen( $value ) > 0
 		);
 
-		echo self::get_bridge()->render( $attrs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo self::get_bridge()->render( $attrs );
 	}
 
 	protected static function get_bridge(): Cpt_Elementor_Bridge {

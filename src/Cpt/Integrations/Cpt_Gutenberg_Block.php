@@ -167,7 +167,9 @@ final class Cpt_Gutenberg_Block {
 	 * Every render carries its own scoped 'data-avf-id' style tag, instead of relying solely on
 	 * Front_Assets' page-level 'wp_head'/'wp_footer' printing - a dynamic 'render_callback' can't reach
 	 * that when rendered through the block editor's ServerSideRender REST call, which is a request of its
-	 * own with no such page to print into. cpt-block.ts (editor-only) then moves this tag into <head>,
+	 * own with no such page to print into.
+	 *
+	 * Cpt-block.ts (editor-only) then moves this tag into <head>,
 	 * replacing any existing tag with the same id, so repeated/updated uses of the same item in the
 	 * editor don't keep accumulating duplicate CSS.
 	 */

@@ -20,11 +20,12 @@ final class Selection_Elementor_Widget extends Widget_Base {
 	}
 
 	public function get_name(): string {
+		// important: do not use slash (/) in the widget name - it breaks Elementor's editor JS.
 		return 'avf-post-selection';
 	}
 
 	public function get_title(): string {
-		return __( 'Advanced Views Post Selection', 'acf-views' );
+		return __( 'AV Post Selection', 'acf-views' );
 	}
 
 	public function get_icon(): string {
@@ -42,7 +43,7 @@ final class Selection_Elementor_Widget extends Widget_Base {
 	 * @return string[]
 	 */
 	public function get_keywords(): array {
-		return array( 'post selection', 'acf views', 'advanced views' );
+		return array( 'post selection', 'advanced views' );
 	}
 
 	protected function register_controls(): void {
@@ -78,7 +79,8 @@ final class Selection_Elementor_Widget extends Widget_Base {
 			fn( string $value ): bool => strlen( $value ) > 0
 		);
 
-		echo self::get_bridge()->render( $attrs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo self::get_bridge()->render( $attrs );
 	}
 
 	protected static function get_bridge(): Cpt_Elementor_Bridge {
