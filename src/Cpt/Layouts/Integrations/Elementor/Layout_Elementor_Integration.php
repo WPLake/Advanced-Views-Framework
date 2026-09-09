@@ -37,14 +37,14 @@ final class Layout_Elementor_Integration extends Hookable implements Hooks_Inter
 	}
 
 	public function set_hooks( Route_Detector $route_detector ): void {
-		/**
-		 * fixme
-		 * the goal of isElementorAvailable() check will fail at this point, as set_hooks called before plugins_loaded.
-		 * should be handled on the level above - Loader:
-		 * 1. introduce isElementorAvailable() method into Cpt_Elementor_Widget.
-		 * 2. Loader: add load_plugin_extensions method, and bind to 'plugins_loaded' hooks, with return of hookable array.
-		 * then create Elementor_Integration instance only if isElementorAvailable(), and return it.
-		 */
+		// this Hookable's own set_hooks() runs while this plugin's main file is still being included, before WP has
+		// included every active plugin's main file - so 'elementor/loaded' (fired from the bottom of Elementor's own
+		// main file) may not have happened yet even when Elementor is active. Deferring the check to 'plugins_loaded'
+		// (fired only once every plugin's main file has been included) makes it reliable regardless of load order.
+		self::add_action( 'plugins_loaded', array( $this, 'maybe_register_elementor_hooks' ) );
+	}
+
+	public function maybe_register_elementor_hooks(): void {
 		if ( did_action( 'elementor/loaded' ) === 0 ) {
 			return;
 		}

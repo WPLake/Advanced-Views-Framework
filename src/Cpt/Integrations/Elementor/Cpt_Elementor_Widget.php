@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 use Elementor\Controls_Manager;
 use Elementor\Elements_Manager;
 use Elementor\Widget_Base;
+use LogicException;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
 
 /**
@@ -97,5 +98,26 @@ final class Cpt_Elementor_Widget {
 		}
 
 		return $attrs;
+	}
+
+	/**
+	 * @return array<string,string>
+	 */
+	public static function get_item_options( Cpt_Elementor_Bridge $bridge ): array {
+		$options = array();
+
+		foreach ( $bridge->get_items_list() as $unique_id => $item ) {
+			$options[ $unique_id ] = $item['title'];
+		}
+
+		return $options;
+	}
+
+	public static function require_bridge( ?Cpt_Elementor_Bridge $bridge ): Cpt_Elementor_Bridge {
+		if ( ! $bridge instanceof Cpt_Elementor_Bridge ) {
+			throw new LogicException( 'Cpt_Elementor_Bridge dependencies were not set before rendering the widget.' );
+		}
+
+		return $bridge;
 	}
 }

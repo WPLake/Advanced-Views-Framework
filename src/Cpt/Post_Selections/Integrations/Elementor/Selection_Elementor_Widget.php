@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Elementor\Controls_Manager;
 use Elementor\Widget_Base;
-use LogicException;
 use Org\Wplake\Advanced_Views\Cpt\Integrations\Elementor\Cpt_Elementor_Bridge;
 use Org\Wplake\Advanced_Views\Cpt\Integrations\Elementor\Cpt_Elementor_Widget;
 use function Org\Wplake\Advanced_Views\Vendors\WPLake\Typed\string;
@@ -59,7 +58,7 @@ final class Selection_Elementor_Widget extends Widget_Base {
 			array(
 				'label'   => __( 'Post Selection', 'acf-views' ),
 				'type'    => Controls_Manager::SELECT2,
-				'options' => self::get_item_options(),
+				'options' => Cpt_Elementor_Widget::get_item_options( self::get_bridge() ),
 			)
 		);
 
@@ -82,24 +81,7 @@ final class Selection_Elementor_Widget extends Widget_Base {
 		echo self::get_bridge()->render( $attrs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
-	/**
-	 * @return array<string,string>
-	 */
-	protected static function get_item_options(): array {
-		$options = array();
-
-		foreach ( self::get_bridge()->get_items_list() as $unique_id => $item ) {
-			$options[ $unique_id ] = $item['title'];
-		}
-
-		return $options;
-	}
-
 	protected static function get_bridge(): Cpt_Elementor_Bridge {
-		if ( ! self::$bridge instanceof Cpt_Elementor_Bridge ) {
-			throw new LogicException( 'Cpt_Elementor_Bridge dependencies were not set before rendering the widget.' );
-		}
-
-		return self::$bridge;
+		return Cpt_Elementor_Widget::require_bridge( self::$bridge );
 	}
 }
