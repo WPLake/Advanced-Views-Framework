@@ -24,6 +24,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Post_Selection_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Data_Storage\Selection_Settings_Storage;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Elementor\Selection_Elementor_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Gutenberg\Selection_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Query;
@@ -171,6 +172,13 @@ final class Lite_Post_Selections_Loader extends Post_Selections_Loader_Base {
 			$this->shortcode,
 			$base->front_assets,
 			$base->plugin,
+			$base->post_selection_cpt
+		);
+
+		$this->elementor_integration = new Selection_Elementor_Integration(
+			$base->post_selections_settings_storage,
+			$this->shortcode,
+			$base->front_assets,
 			$base->post_selection_cpt
 		);
 

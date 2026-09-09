@@ -125,7 +125,6 @@ final class Cpt_Gutenberg_Block {
 		);
 	}
 
-
 	/**
 	 * Keyed by the item's full unique id - not the short id used in legacy hand-typed shortcodes - so
 	 * consumers (the block editor's SelectControl, the "Refresh" REST route) never need to add/strip a

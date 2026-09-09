@@ -19,6 +19,7 @@ use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Selection_Save_Actions;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Bulk_Validation_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Cpt\Table\Post_Selections_Table;
+use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Elementor\Selection_Elementor_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Gutenberg\Selection_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Integrations\Post_Selection_Shortcode;
 use Org\Wplake\Advanced_Views\Cpt\Post_Selections\Post_Selection_Factory;
@@ -40,6 +41,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 	public Selection_Layout_Integration $layout_integration;
 	public Post_Selection_Shortcode $shortcode;
 	public Selection_Gutenberg_Block $block;
+	public Selection_Elementor_Integration $elementor_integration;
 	public Selection_Save_Actions $save_actions;
 	public Selection_Git_Tabs $git_tabs;
 	public Selection_Git_Box $git_box;
@@ -85,6 +87,7 @@ abstract class Post_Selections_Loader_Base extends Module_Loader {
 				$this->layout_integration,
 				$this->shortcode,
 				$this->block,
+				$this->elementor_integration,
 				$this->git_tabs,
 				$this->git_box,
 				$this->interactive_fields,

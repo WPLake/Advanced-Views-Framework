@@ -24,6 +24,7 @@ use Org\Wplake\Advanced_Views\Cpt\Layouts\Cpt\Table\Layouts_Pre_Built_Tab;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Fs_Fields;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Data_Storage\Layout_Settings_Storage;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Fields\Field_Markup;
+use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Elementor\Layout_Elementor_Integration;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Layout_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Gutenberg\Shortcode_Gutenberg_Block;
 use Org\Wplake\Advanced_Views\Cpt\Layouts\Integrations\Layout_Shortcode;
@@ -91,6 +92,13 @@ final class Lite_Layouts_Loader extends Layouts_Loader_Base {
 			$this->shortcode,
 			$base->front_assets,
 			$base->plugin,
+			$base->layout_cpt
+		);
+
+		$this->elementor_integration = new Layout_Elementor_Integration(
+			$base->layouts_settings_storage,
+			$this->shortcode,
+			$base->front_assets,
 			$base->layout_cpt
 		);
 
